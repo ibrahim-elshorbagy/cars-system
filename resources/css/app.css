@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* .ps-sidebar-container li li{
+    color: black !important;
+}
+.ps-sidebar-container li:hover {
+    color: black !important;
+} */
+
+.css-um1o6k {
+    display: none !important;
+}
+
+.css-18unl23 {
+background-color: transparent !important;
+}
+
+
+.css-16jesut > .ps-menu-button:hover,.css-1tqrhto >.ps-menu-button:hover,.css-14xmt93 >.ps-menu-button:hover
+{
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.css-pjtha9
+{
+    border: none !important;
+}
+
+
+.css-ewdv3l a{
+    width: 100% !important;
+}
+
+.css-ewdv3l a:hover{
+    color: black !important;
+
+}
+
+
+@media print {
+  /* Hide everything outside the .print class */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Only show the .print class content */
+  .print, .print * {
+    visibility: visible;
+  }
+
+  /* Ensure the .print class content is positioned correctly */
+  .print {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
