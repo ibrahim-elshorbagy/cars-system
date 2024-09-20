@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Customer;
-use App\Models\Product\ProductCategory;
-use App\Models\Product\SubCategory;
+
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+use Database\Seeders\Admin\Transportation\VendorSeeder;
+use Database\Seeders\Admin\Transportation\DestinationSeeder;
+use Database\Seeders\Admin\Transportation\TerminalSeeder;
+use Database\Seeders\Admin\Transportation\LineSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +22,10 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(VendorSeeder::class);
+        $this->call(DestinationSeeder::class);
+        $this->call(TerminalSeeder::class);
+        $this->call(LineSeeder::class);
 
         //admin
         $user = User::factory()->create([

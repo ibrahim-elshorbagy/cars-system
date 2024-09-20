@@ -16,9 +16,10 @@ class BoxController extends Controller
 
 
         if (request("name")) {
+            request()->merge(['page' => 1]);
             $query->where("name", "like", "%" . request("name") . "%");
         }
-        $boxes = $query->paginate(10)->onEachSide(1);
+        $boxes = $query->paginate(25)->onEachSide(1);
 
         return inertia("Admin/Box/Index", [
             "boxes" => BoxResource::collection($boxes),
@@ -43,6 +44,7 @@ class BoxController extends Controller
 
     public function update(Request $request, Box $box)
     {
+
         $rules = [
             'name' => ['required', 'string', Rule::unique('boxes')->ignore($box->id, 'id')],
         ];
@@ -61,7 +63,7 @@ class BoxController extends Controller
 
         $box->delete();
         return to_route('box.index')
-            ->with('success', "تم حذف الصنف بنجاح");
+            ->with('success', "تم حذف الصندوق بنجاح");
 
     }
 }

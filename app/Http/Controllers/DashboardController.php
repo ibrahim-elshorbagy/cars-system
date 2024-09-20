@@ -10,18 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function changeLanguage(Request $request)
-    {
-        $language = $request->input('language');
-
-        if (in_array($language, ['en', 'ar'])) {
-
-            session(['app_locale' => $language]);
-
-        }
-
-        return back();
-    }
 
     public function markAsRead($id,$order)
     {

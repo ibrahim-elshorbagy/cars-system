@@ -39,7 +39,6 @@ Route::get('customers/dashboard', [DashboardController::class, 'CustomerDashboar
 
 });
 
-Route::post('/change-language', [DashboardController::class, 'changeLanguage'])->name('language.change');
 
 
 Route::post('/notifications/{id}/markAsRead/{order}', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
@@ -60,5 +59,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
+require __DIR__.'/transportation.php';
 require __DIR__.'/box.php';
 require __DIR__.'/customer.php';

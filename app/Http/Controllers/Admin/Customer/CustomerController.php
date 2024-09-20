@@ -39,7 +39,7 @@ Full opertions For Customers (add,delete ,update)
         }
 
         $users = $query->with('customer')->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(25)
             ->onEachSide(1);
 
         return inertia("Admin/Customer/Index", [

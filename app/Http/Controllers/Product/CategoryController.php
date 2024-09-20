@@ -26,7 +26,7 @@ class CategoryController extends Controller
             $query->where("name", "like", "%" . request("name") . "%");
         }
         $productCategories = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(25)
             ->onEachSide(1);
 
         return inertia("Product/ProductCategory/Index", [

@@ -2,68 +2,49 @@ import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
-import { useState, useEffect } from "react";
 
-export default function Index({ auth, boxes, queryParams = null, success, danger }) {
+export default function Index({ auth, makes, queryParams = null, success }) {
   queryParams = queryParams || {};
 
+  // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingBox, setEditingBox] = useState(null);
+  const [editingMake, setEditingMake] = useState(null);
 
+  // Toggle Create Modal
   const toggleCreateModal = () => {
     setIsCreateModalOpen(!isCreateModalOpen);
   };
 
-  const toggleEditModal = (box = null) => {
-    setEditingBox(box);
-    setIsEditModalOpen(!isEditModalOpen);
-  };
+  // Toggle Edit Modal
+    const toggleEditModal = (make = null) => {
+        if (make) {
+            setEditingMake(make);
 
-  const { data: createData, setData: setCreateData, post: createPost, errors: createErrors, reset: createReset } = useForm({
-    name: "",
-  });
-
-  const { data: editData, setData: setEditData, post: editPost, errors: editErrors, reset: editReset } = useForm({
-    name: "",
-    _method: "PUT",
-  });
-
-  const handleCreateBox = (e) => {
-    e.preventDefault();
-    createPost(route("box.store"), {
-      onSuccess: () => {
-        createReset();
-        toggleCreateModal();
-      }
-    });
-  };
-
-  const handleEditBox = (e) => {
-    e.preventDefault();
-    editPost(route("box.update", editingBox.id), {
-      onSuccess: () => {
+        setEditData({
+            name: make.name,
+            _method: "PUT",
+        });
+        } else {
+        setEditingMake(null);
         editReset();
-        toggleEditModal();
-      }
-    });
-  };
+        }
+        setIsEditModalOpen(!isEditModalOpen);
+    };
 
-  useEffect(() => {
-    if (editingBox) {
-      setEditData("name", editingBox.name);
-    }
-  }, [editingBox]);
-
+  // Search functionality
   const searchFieldChanged = (name, value) => {
     if (value) {
       queryParams[name] = value;
     } else {
       delete queryParams[name];
     }
-    router.get(route("box.index"), queryParams);
+      delete queryParams.page;
+      
+    router.get(route("make.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -72,7 +53,6 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
-  const [visibleDanger, setVisibleDanger] = useState(danger);
 
   useEffect(() => {
     if (success) {
@@ -84,29 +64,66 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
     }
   }, [success]);
 
-  useEffect(() => {
-    if (danger) {
-      setVisibleDanger(danger);
-      const timer = setTimeout(() => {
-        setVisibleDanger(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [danger]);
-
-  const deleteBox = (box) => {
-    if (!window.confirm("هل انت متاكد من حذف الصندوق ؟ ")) {
+  const deleteMake = (make) => {
+    if (!window.confirm("هل انت متأكد من حذف الماركه ؟ ")) {
       return;
     }
-      console.log(box)
-      router.delete(route("box.destroy", box), {
-
-        onSuccess: (page) => {
+    router.delete(route("make.destroy", make.id), {
+      onSuccess: (page) => {
         setVisibleSuccess(page.props.success);
-        setVisibleDanger(page.props.danger);
-      }
+      },
     });
   };
+
+  // Form handling for create and edit
+  const {
+    data: createData,
+    setData: setCreateData,
+    post: createPost,
+    errors: createErrors,
+    reset: createReset,
+  } = useForm({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const {
+    data: editData,
+    setData: setEditData,
+    post: editPost,
+    errors: editErrors,
+    reset: editReset,
+  } = useForm({
+    name: "",
+    email: "",
+    password: "",
+    _method: "PUT",
+  });
+
+  // Handle Create
+  const handleCreateMake = (e) => {
+    e.preventDefault();
+    createPost(route("make.store"), {
+      onSuccess: () => {
+        createReset();
+        toggleCreateModal();
+      },
+    });
+  };
+
+  // Handle Edit
+  const handleEditMake = (e) => {
+    e.preventDefault();
+    editPost(route("make.update", editingMake.id), {
+      onSuccess: () => {
+        editReset();
+        toggleEditModal();
+      },
+    });
+  };
+
+
 
   return (
     <AuthenticatedLayout
@@ -114,20 +131,20 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            الصناديق
+            المركات (Makes)
           </h2>
-          {auth.user.permissions.includes("create-box") && (
+          {auth.user.permissions.includes("create-make") && (
             <button
               onClick={toggleCreateModal}
               className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
             >
-              اضافة جديد
+              إضافة مركه
             </button>
           )}
         </div>
       }
     >
-      <Head title={"الصناديق"} />
+      <Head title={"المركات (Makes)"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -136,22 +153,16 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
               {visibleSuccess}
             </div>
           )}
-          {visibleDanger && (
-            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
-              {visibleDanger}
-            </div>
-          )}
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <td>ID</td>
+                      <td>Id</td>
                       <td>الاسم</td>
-                      <td>تاريخ الانشاء</td>
-                      <td>تاريخ التحديث</td>
-                      <td>الاجراءات</td>
+
+                      <th className="px-3 py-3">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -161,42 +172,39 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
-                          placeholder={"اسم الصندوق"}
+                          placeholder={"الاسم"}
+                          onBlur={(e) =>
+                            searchFieldChanged("name", e.target.value)
+                          }
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
-                      </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                                          </th>
+
                       <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {boxes && boxes.data.length > 0 ? (
-                      boxes.data.map((box) => (
+                    {makes && makes.data.length > 0 ? (
+                      makes.data.map((make) => (
                         <tr
                           className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                          key={box.id}
+                          key={make.id}
                         >
-                          <td className="px-3 py-2">{box.id}</td>
-                          <th className="px-3 py-2 text-nowrap">{box.name}</th>
+                          <td className="px-3 py-2">{make.id}</td>
+                          <th className="px-3 py-2 text-nowrap">{make.name}</th>
+
                           <td className="px-3 py-2 text-nowrap">
-                            {box.created_at}
-                          </td>
-                          <td className="px-3 py-2 text-nowrap">
-                            {box.updated_at}
-                          </td>
-                          <td className="px-3 py-2 text-nowrap">
-                            {auth.user.permissions.includes("update-box") && (
+                            {auth.user.permissions.includes("update-make") && (
                               <button
-                                onClick={() => toggleEditModal(box)}
+                                 onClick={() => toggleEditModal(make)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                               >
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-box") && (
+                            {auth.user.permissions.includes("delete-make") && (
                               <button
-                                onClick={() => deleteBox(box.id)}
+                                onClick={() => deleteMake(make)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                               >
                                 حذف
@@ -208,34 +216,32 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
                     ) : (
                       <tr>
                         <td colSpan="5" className="px-3 py-2 text-center">
-                          لا يوجد صناديق
+                          لا يوجد مركات (Makes)
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
-              {boxes && <Pagination links={boxes.meta.links} />}
+              {makes && <Pagination links={makes.meta.links} />}
             </div>
           </div>
         </div>
       </div>
 
-
-
-      {/* Modal for adding a new box */}
+      {/* Modal for adding a new make */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold text-black dark:text-white ">إضافة صندوق جديد</h2>
+              <h2 className="text-lg font-semibold">إضافة مركه</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleCreateBox}>
+              <form onSubmit={handleCreateMake}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="box_name" value={"اسم الصندوق"} />
+                  <InputLabel htmlFor="make_name" value={"اسم المركه"} />
                   <TextInput
-                    id="box_name"
+                    id="make_name"
                     type="text"
                     name="name"
                     value={createData.name}
@@ -244,7 +250,7 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
                     onChange={(e) => setCreateData("name", e.target.value)}
                   />
                   <InputError message={createErrors.name} className="mt-2" />
-                </div>
+                    </div>
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
@@ -266,22 +272,19 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
         </div>
       )}
 
-
-
-
-      {/* Modal for editing a box */}
+      {/* Modal for editing a make */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل الصندوق</h2>
+              <h2 className="text-lg font-semibold">تعديل المركه</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleEditBox}>
+              <form onSubmit={handleEditMake}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_box_name" value={"اسم الصندوق"} />
+                  <InputLabel htmlFor="edit_make_name" value={"اسم المركه"} />
                   <TextInput
-                    id="edit_box_name"
+                    id="edit_make_name"
                     type="text"
                     name="name"
                     value={editData.name}
@@ -311,6 +314,7 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
           </div>
         </div>
       )}
+
     </AuthenticatedLayout>
   );
 }

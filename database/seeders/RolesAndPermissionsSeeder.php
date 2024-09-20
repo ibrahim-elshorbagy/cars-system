@@ -21,6 +21,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'user',
             'customer',
 
+            'vendor',
+            'destination',
+            'terminal',
+            'line',
+            'facility',
+            'make',
+            'model',
+
         ];
 
         // Insert CRUD permissions for each entity

@@ -41,10 +41,15 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
                         <th className="px-6 py-3 ">وصف</th>
                       </tr>
                     </thead>
-                    <tbody>
+                        <tbody>
+
+
+
+
+
                       {/* Main CRUD Permissions */}
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات الانشاء الاساسيه</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات الانشاء الاساسيه :صندوق</th>
                       </tr>
                       {/* Main Box */}
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -91,6 +96,401 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
                         </td>
                         <td className="px-6 py-4">حذف صندوق</td>
                       </tr>
+
+
+
+
+
+
+
+
+                            {/* Main CRUD Permissions for المزادات (Vendors) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات المزادات</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-vendor</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-vendor")}
+                            onChange={() => handleCheckboxChange("create-vendor")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء مزاد</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-vendor</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-vendor")}
+                            onChange={() => handleCheckboxChange("read-vendor")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض المزادات</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-vendor</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-vendor")}
+                            onChange={() => handleCheckboxChange("update-vendor")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث مزاد</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-vendor</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-vendor")}
+                            onChange={() => handleCheckboxChange("delete-vendor")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف مزاد</td>
+                        </tr>
+
+
+
+
+
+
+
+
+
+
+
+                        {/* Main CRUD Permissions for الوجهات (Destinations) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات الوجهات</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-destination</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-destination")}
+                            onChange={() => handleCheckboxChange("create-destination")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء وجهة</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-destination</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-destination")}
+                            onChange={() => handleCheckboxChange("read-destination")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض الوجهات</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-destination</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-destination")}
+                            onChange={() => handleCheckboxChange("update-destination")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث وجهة</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-destination</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-destination")}
+                            onChange={() => handleCheckboxChange("delete-destination")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف وجهة</td>
+                        </tr>
+
+
+
+
+
+
+
+
+                        {/* Main CRUD Permissions for خطوط الملاحه (Lines) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات خطوط الملاحه</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-line</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-line")}
+                            onChange={() => handleCheckboxChange("create-line")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء خط ملاحي</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-line</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-line")}
+                            onChange={() => handleCheckboxChange("read-line")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض خطوط الملاحه</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-line</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-line")}
+                            onChange={() => handleCheckboxChange("update-line")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث خط ملاحي</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-line</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-line")}
+                            onChange={() => handleCheckboxChange("delete-line")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف خط ملاحي</td>
+                        </tr>
+
+
+
+
+
+
+
+
+
+
+                        {/* Main CRUD Permissions for محطات الشحن (Terminals) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات محطات الشحن</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-terminal</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-terminal")}
+                            onChange={() => handleCheckboxChange("create-terminal")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء محطة شحن</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-terminal</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-terminal")}
+                            onChange={() => handleCheckboxChange("read-terminal")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض محطات الشحن</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-terminal</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-terminal")}
+                            onChange={() => handleCheckboxChange("update-terminal")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث محطة شحن</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-terminal</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-terminal")}
+                            onChange={() => handleCheckboxChange("delete-terminal")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف محطة شحن</td>
+                        </tr>
+
+
+
+
+
+
+
+
+                        {/* Main CRUD Permissions for ماركه (Make) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات ماركه</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-make</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-make")}
+                            onChange={() => handleCheckboxChange("create-make")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء ماركه</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-make</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-make")}
+                            onChange={() => handleCheckboxChange("read-make")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض الماركات</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-make</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-make")}
+                            onChange={() => handleCheckboxChange("update-make")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث ماركه</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-make</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-make")}
+                            onChange={() => handleCheckboxChange("delete-make")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف ماركه</td>
+                        </tr>
+
+
+
+
+
+
+                        {/* Main CRUD Permissions for المودل (Model) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات المودل</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-model</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-model")}
+                            onChange={() => handleCheckboxChange("create-model")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء مودل</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-model</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-model")}
+                            onChange={() => handleCheckboxChange("read-model")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض المودلات</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-model</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-model")}
+                            onChange={() => handleCheckboxChange("update-model")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث مودل</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-model</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-model")}
+                            onChange={() => handleCheckboxChange("delete-model")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف مودل</td>
+                        </tr>
+
+
+
+
+
+                            {/* Main CRUD Permissions for المرافق (Facilities) */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات المرافق</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-facility</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-facility")}
+                            onChange={() => handleCheckboxChange("create-facility")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء منشأة</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-facility</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-facility")}
+                            onChange={() => handleCheckboxChange("read-facility")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض المرافق</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-facility</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-facility")}
+                            onChange={() => handleCheckboxChange("update-facility")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث منشأة</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-facility</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-facility")}
+                            onChange={() => handleCheckboxChange("delete-facility")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف منشأة</td>
+                        </tr>
+
+
+
 
 
                      {/* Customer Permissions */}
@@ -142,6 +542,15 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
                         <td className="px-6 py-4">حذف عميل</td>
                       </tr>
 
+
+
+
+
+
+
+
+
+
                      {/*ALL System Users That are not customers */}
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
                         <th className="px-6 py-3 " colSpan="3">مستخدمي النظام</th>
@@ -156,10 +565,21 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
                           />
                         </td>
                         <td className="px-6 py-4">لوحة تحكم الخاصه بمستخدمي النظام</td>
-                      </tr>
-                     {/*Only System Admin */}
+                    </tr>
+
+
+
+
+
+
+
+
+
+
+                    {/*Only System Admin */}
+
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">مستخدمي النظام</th>
+                        <th className="px-6 py-3 " colSpan="3">انشاء مستخدم للنظام</th>
                       </tr>
 
 

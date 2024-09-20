@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Sidebar, Menu, SubMenu } from "react-pro-sidebar";
 import { MdDashboard, MdChevronLeft, MdChevronRight,MdOutlineCategory,MdInventory } from "react-icons/md";
-import {FaUser} from "react-icons/fa";
 import SideNavLink from "@/Components/SideNavLink";
 import { Link } from "@inertiajs/react";
 
 import { SiSpringsecurity } from "react-icons/si";
+import { FaUser, FaGavel, FaMapMarkerAlt, FaShip, FaTruck, FaBuilding, FaCar, FaCogs } from "react-icons/fa";
 
 
 const MySidebar = ({ user, direction }) => {
@@ -43,6 +43,57 @@ const MySidebar = ({ user, direction }) => {
             ],
             icon: <MdDashboard />,
         },
+        { // admin
+        title: "البيانات",
+        links: [
+            {
+                text: "المزادات (Vendors)",
+                href: "vendor.index",
+                icon: <FaGavel />,  // Auction icon for vendors
+                permissions: ["read-vendor"],
+            },
+            {
+                text: "الوجهات (Destinations)",
+                href: "destination.index",
+                icon: <FaMapMarkerAlt />,  // Map marker icon for destinations
+                permissions: ["read-destination"],
+            },
+            {
+                text: "خطوط الملاحه (Lines)",
+                href: "line.index",
+                icon: <FaShip />,  // Ship icon for lines
+                permissions: ["read-line"],
+            },
+            {
+                text: "محطات الشحن (Terminals)",
+                href: "terminal.index",
+                icon: <FaTruck />,  // Truck icon for terminals
+                permissions: ["read-terminal"],
+            },
+            {
+                text: "المرافق (Facilities)",
+                href: "facility.index",
+                icon: <FaBuilding />,  // Building icon for facilities
+                permissions: ["read-facility"],
+            },
+            {
+                text: "الماركات (Makes)",
+                href: "make.index",
+                icon: <FaCar />,  // Car icon for makes
+                permissions: ["read-make"],
+            },
+            {
+                text: "الموديلات (Models)",
+                href: "model.index",
+                icon: <FaCogs />,  // Cogs icon for models
+                permissions: ["read-model"],
+            },
+
+            ],
+
+        icon: <MdDashboard />,
+    },
+
         { // customer
             title: "لوحة التحكم",
             links: [
@@ -97,7 +148,7 @@ const MySidebar = ({ user, direction }) => {
                         />
                         <span className="pt-1">WebsiteName</span>
                     </h1>
-                    <button
+                    {/* <button
                         onClick={() => setCollapsed(!collapsed)}
                         className={`p-2 rounded-full bg-burntOrange dark:bg-burntOrange transition-all duration-300 ${
                             collapsed ? "rotate-180" : ""
@@ -109,7 +160,7 @@ const MySidebar = ({ user, direction }) => {
                             className="text-white "
                         />
 
-                    </button>
+                    </button> */}
                 </div>
                 <div className="px-6 pt-2">
                     <hr className="border-gray-300 dark:border-gray-900" />
@@ -123,7 +174,7 @@ const MySidebar = ({ user, direction }) => {
                             key={`${index}-${section.title}`}
                             icon={section.icon}
                             label={section.title}
-                            className="py-2 my-2 dark:hover:text-white hover:text-black"
+                            className="py-2 my-2 dark:hover:text-white hover:text-burntOrange"
                         >
                             {section.links.map((link, idx) => (
                                 <SideNavLink
@@ -132,7 +183,7 @@ const MySidebar = ({ user, direction }) => {
                                     active={route().current(link.href)}
                                     className="flex items-center justify-between px-4 py-2"
                                 >
-                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
+                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-50 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
                                         {link.icon}{link.text}
                                     </div>
                                 </SideNavLink>

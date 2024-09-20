@@ -23,13 +23,15 @@ class UserCRUDController extends Controller
         $roles = Role::whereNotIn('name', ['customer'])->get();
 
         if (request("name")) {
+            request()->merge(['page' => 1]);
             $query->where("name", "like", "%" . request("name") . "%");
         }
         if (request("email")) {
+            request()->merge(['page' => 1]);
             $query->where("email", "like", "%" . request("email") . "%");
         }
 
-        $users = $query->paginate(10)->onEachSide(1);
+        $users = $query->paginate(25)->onEachSide(1);
 
         return inertia("Admin/User/UserCURD/Index", [
             "users" => UserCRUDResource::collection($users),
@@ -124,7 +126,7 @@ class UserCRUDController extends Controller
 
 
         return to_route('user.index')
-            ->with('success', "تم حذف المستخدم بنجاح"); 
+            ->with('success', "تم حذف المستخدم بنجاح");
     }
 
 }

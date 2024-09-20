@@ -46,6 +46,8 @@ export default function Index({ auth, users, queryParams = null, success ,roles}
     } else {
       delete queryParams[name];
     }
+      delete queryParams.page;
+      
     router.get(route("user.index"), queryParams);
   };
 
@@ -67,7 +69,7 @@ export default function Index({ auth, users, queryParams = null, success ,roles}
   }, [success]);
 
   const deleteUser = (user) => {
-    if (!window.confirm("هل انت متأكد من مسح المستخدم ؟ ")) {
+    if (!window.confirm("هل انت متأكد من حذف المستخدم ؟ ")) {
       return;
     }
     router.delete(route("user.destroy", user.id), {
