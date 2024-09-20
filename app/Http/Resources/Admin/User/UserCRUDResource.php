@@ -21,6 +21,9 @@ class UserCRUDResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "email" => $this->email,
+            "role"=> $this->roles->pluck('name'),
+            "role_id"=> $this->roles->pluck('id'),
+
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'roles' => $this->roles->pluck('id')
         ];

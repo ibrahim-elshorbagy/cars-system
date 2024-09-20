@@ -20,8 +20,7 @@ class UserCRUDController extends Controller
     {
         $query = User::whereDoesntHave('roles', function ($q) {$q->where('name', 'customer'); });
 
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
+        $roles = Role::whereNotIn('name', ['customer'])->get();
 
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
@@ -30,29 +29,18 @@ class UserCRUDController extends Controller
             $query->where("email", "like", "%" . request("email") . "%");
         }
 
-        $users = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
+        $users = $query->paginate(10)->onEachSide(1);
 
         return inertia("Admin/User/UserCURD/Index", [
             "users" => UserCRUDResource::collection($users),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
-
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $roles = Role::whereNotIn('name', ['customer'])->get();
-        return inertia("Admin/User/UserCURD/Create", [
             'roles' => $roles,
-        ]);
 
+
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -70,14 +58,9 @@ class UserCRUDController extends Controller
         $user->assignRole($role);
         }
 
-        $locale = session('app_locale', 'en');
-
-        $message = $locale === 'ar'
-            ? "تم إنشاء المستخدم \"{$user->name}\" بنجاح"
-            : "User \"{$user->name}\" was created successfully";
 
         return to_route('user.index')
-            ->with('success', $message);
+            ->with('success', "تم انشاء المستخدم بنجاح");
 
     }
 
@@ -123,17 +106,11 @@ class UserCRUDController extends Controller
         $user->update($data);
 
 
-        // Get the locale from the session
-        $locale = session('app_locale', 'en');  // Default to 'en' if no session locale is set
 
-        // Set the success message based on the session-stored locale
-        $message = $locale === 'ar'
-            ? "تم تحديث المستخدم \"{$user->name}\" بنجاح"
-            : "User \"{$user->name}\" was updated successfully";
 
         // Return the success message and redirect
         return to_route('user.index')
-            ->with('success', $message);
+            ->with('success', "تم تحديث المستخدم بنجاح");
     }
 
     /**
@@ -144,16 +121,10 @@ class UserCRUDController extends Controller
         $name = $user->name;
         $user->delete();
 
-        // Get the locale from the session
-        $locale = session('app_locale', 'en');  // Default to 'en' if not set
 
-        // Set the success message based on the session-stored locale
-        $message = $locale === 'ar'
-            ? "تم حذف المستخدم \"{$name}\" بنجاح"
-            : "User \"{$name}\" was deleted successfully";
 
         return to_route('user.index')
-            ->with('success', $message);  // Return the success message
+            ->with('success', "تم حذف المستخدم بنجاح"); 
     }
 
 }

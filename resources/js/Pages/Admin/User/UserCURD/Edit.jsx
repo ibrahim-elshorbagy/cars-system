@@ -5,32 +5,10 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useTranslation } from "react-i18next"; // Import the useTranslation hook
-import i18n from "@/i18nConfig";
+
 
 export default function Create({ auth, user, roles }) {
 
-    const resources = {
-    en: {
-        translation: {},
-    },
-    ar: {
-        translation: {
-                "Users": "المستخدمين",
-                "Edit user": "تعديل المستخدم",
-                "ID": "الرقم التعريفي",
-                "Name": "الاسم",
-                "Email": "البريد الإلكتروني",
-                "User Name": "اسم المستخدم",
-                "User Email": "بريد المستخدم",
-
-        },
-    },
-};
-
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
-  const { t } = useTranslation();
 
   const { data, setData, post, errors, reset } = useForm({
     name: user.name || "",

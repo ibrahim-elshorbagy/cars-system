@@ -5,39 +5,6 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useTranslation } from "react-i18next";
-import i18n from "@/i18nConfig";
-
-    const resources = {
-    en: {
-        translation: {
-            "Create user": "Create user",
-            "Users": "Users",
-            "User Name": "User Name",
-            "User Email": "User Email",
-            "Password": "Password",
-            "Role": "Role",
-            "Select Role": "Select Role",
-            "Cancel": "Cancel",
-            "Submit": "Submit"        },
-    },
-    ar: {
-        translation: {
-            "Create user": "انشاء مستخدم",
-            "Users": "المستخدمين",
-            "User Name": "اسم المستخدم",
-            "User Email": "البريد الإلكتروني",
-            "Password": "كلمة المرور",
-            "Role": "الدور",
-            "Select Role": "اختر الدور",
-            "Cancel": "إلغاء",
-            "Submit": "إرسال"
-        },
-    },
-};
-
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function Create({ auth, user, roles }) {
   const { t } = useTranslation(); // Hook to get translations

@@ -1,4 +1,4 @@
-# Laravel-Reactjs-Inertiajs-Inventory-Management-System
+# Laravel-Reactjs-Inertiajs-Cars-System
 
 
 ### Installation

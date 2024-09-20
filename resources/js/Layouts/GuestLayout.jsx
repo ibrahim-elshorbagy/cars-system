@@ -40,7 +40,7 @@ export default function Guest({ children }) {
                                 href={route("login")}
                                 active={route().current("login")}
                             >
-                                {t("Login")}
+                                تسجيل الدخول
                             </NavLink>
 
                             <ThemeToggleButton />
@@ -102,7 +102,7 @@ export default function Guest({ children }) {
                             href={route("login")}
                             className="block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-900"
                         >
-                            {t("Login")}
+                            تسجيل الدخول
                         </Link>
                         <ThemeToggleButton />
                     </div>

@@ -23,6 +23,12 @@ const MySidebar = ({ user, direction }) => {
                     permissions: ["view-admin-dashboard"],
                 },
                 {
+                    text: "الصندايق",
+                    href: "box.index",
+                    icon: <MdDashboard />,
+                    permissions: ["view-admin-dashboard"],
+                },
+                {
                     text: "كل المستخدمين",
                     href: "user.index",
                     icon: <FaUser />,
@@ -97,7 +103,7 @@ const MySidebar = ({ user, direction }) => {
                             collapsed ? "rotate-180" : ""
                         }`}
                     >
-                   
+
                         <MdChevronRight
                             size={24}
                             className="text-white "

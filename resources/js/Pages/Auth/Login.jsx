@@ -7,34 +7,9 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import i18n from "@/i18nConfig";
 
-const resources = {
-    en: {
-        translation: {
-            "Log in": "Log in",
-            Email: "Email",
-            Password: "Password",
-            "Remember me": "Remember me",
-            "Forgot your password?": "Forgot your password?",
-        },
-    },
-    ar: {
-        translation: {
-            "Log in": "تسجيل الدخول",
-            Email: "البريد الإلكتروني",
-            Password: "كلمة المرور",
-            "Remember me": "تذكرني",
-            "Forgot your password?": "هل نسيت كلمة المرور؟",
-        },
-    },
-};
-
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function Login({ status, canResetPassword }) {
-    const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -54,7 +29,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout centerContent box_width="max-w-xl">
-            <Head title={t("Log in")} />
+            <Head title={"تسجيل الدخول"} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     {status && (
@@ -65,7 +40,7 @@ export default function Login({ status, canResetPassword }) {
 
                     <form onSubmit={submit}>
                         <div>
-                            <InputLabel htmlFor="email" value={t("Email")} />
+                            <InputLabel htmlFor="email" value={"البريد الاكتروني"} />
                             <TextInput
                                 id="email"
                                 type="email"
@@ -87,7 +62,7 @@ export default function Login({ status, canResetPassword }) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password"
-                                value={t("Password")}
+                                value={"كلمة االسر"}
                             />
                             <TextInput
                                 id="password"
@@ -116,25 +91,25 @@ export default function Login({ status, canResetPassword }) {
                                     }
                                 />
                                 <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                                    {t("Remember me")}
+                                    تذكرني
                                 </span>
                             </label>
                         </div>
 
                         <div className="flex items-center justify-end gap-3 mt-6">
-                            {canResetPassword && (
+                            {/* {canResetPassword && (
                                 <Link
                                     href={route("password.request")}
                                     className="text-sm text-gray-600 underline dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
                                 >
                                     {t("Forgot your password?")}
                                 </Link>
-                            )}
+                            )} */}
                             <PrimaryButton
                                 className="ml-4"
                                 disabled={processing}
                             >
-                                {t("Log in")}
+                                {"دخول"}
                             </PrimaryButton>
                         </div>
                     </form>

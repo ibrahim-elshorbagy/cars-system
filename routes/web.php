@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\User\UserCRUDController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -47,9 +46,7 @@ Route::post('/notifications/{id}/markAsRead/{order}', [DashboardController::clas
 
 
 //--------------------------------------------------------------------------------------------- Top permissions
-Route::group(['middleware' => ['permission:for-SystemAdmin-manage-users']], function () {
-    Route::resource('admin/user', UserCRUDController::class);
-});
+
 
 
 //--------------------------------------------------------------------------------------------- Profile
@@ -62,7 +59,6 @@ Route::middleware('auth')->group(function () {
 //---------------------------------------------------------------------------------------------
 
 require __DIR__.'/auth.php';
-require __DIR__.'/product.php';
-require __DIR__.'/customer.php';
-require __DIR__.'/warehouse.php';
 require __DIR__.'/admin.php';
+require __DIR__.'/box.php';
+require __DIR__.'/customer.php';

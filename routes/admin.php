@@ -1,54 +1,37 @@
 <?php
 
-use App\Http\Controllers\Admin\ReleaseOrder\OrdersController;
-use App\Http\Controllers\Admin\ReleaseOrder\OrdersCRUDController;
-use App\Http\Controllers\Admin\ReleaseOrder\ReleaseOrdersDashboardController;
 use App\Http\Controllers\Admin\RolesPermissionsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\User\UserCRUDController;
 
 
 
 
-//--------------------------------------------------------------------------------------------- Release Order Dashboard
+//--------------------------------------------------------------------------------------------- Only SystemAdmin
+Route::group(['prefix' => 'admin'], function () {
 
-Route::group(['middleware' => ['permission:admin-orders-index']], function () {
+    // Create User Route
+    Route::group(['middleware' => ['permission:create-user']], function () {
+        Route::post('/user', [UserCRUDController::class, 'store'])->name('user.store');
+    });
 
-    Route::get('/admin/release-orders',[ReleaseOrdersDashboardController::class,'index'])->name('admin.index.orders');
-    Route::get('/admin/release-orders/{order}',[ReleaseOrdersDashboardController::class,'show'])->name('admin.show.order');
+    // Read Users Route
+    Route::group(['middleware' => ['permission:read-user']], function () {
+        Route::get('/user', [UserCRUDController::class, 'index'])->name('user.index');
+    });
 
-});
+    // Update User Route
+    Route::group(['middleware' => ['permission:update-user']], function () {
+        Route::put('/user/{user}', [UserCRUDController::class, 'update'])->name('user.update');
+    });
 
-//--------------------------------------------------------------------------------------------- Change Status Data Entry +  Confirmation for Admin only
-
-Route::group(['middleware' => ['permission:admin-orders-change-status']], function () {
-
-    Route::post('/admin/orders/change-status/{order}',[OrdersController::class,'ChangeStatus'])->name('admin.orders.changeStatus');
-
-});
-
-
-//--------------------------------------------------------------------------------------------- Release Order Admin CRUD Methods
-
-Route::group(['middleware' => ['permission:admin-orders-make']], function () {
-
-    Route::get('/admin/make-order/{customer}',[OrdersCRUDController::class,'create'])->name('admin.make-order');
-    Route::post('/admin/store-order',[OrdersCRUDController::class,'store'])->name('admin.store-order');
-
-});
-
-Route::group(['middleware' => ['permission:admin-orders-update']], function () {
-
-    Route::get('/admin/edit-order/{customerId}/{orderId}',[OrdersCRUDController::class,'edit'])->name('admin.edit-order');
-    Route::put('/admin/updte-order/{id}',[OrdersCRUDController::class,'update'])->name('admin.update-order');
-
-});
-Route::group(['middleware' => ['permission:admin-orders-delete']], function () {
-
-    Route::delete('/admin/delete-order/{order}', [OrdersCRUDController::class, 'destroy'])->name('admin.delete-order');
+    // Delete User Route
+    Route::group(['middleware' => ['permission:delete-user']], function () {
+        Route::delete('/user/{user}', [UserCRUDController::class, 'destroy'])->name('user.destroy');
+    });
 
 });
 //--------------------------------------------------------------------------------------------- Only SystemAdmin
-
 
 Route::group(['middleware' => ['permission:for-SystemAdmin-manage-roles-permissions']], function () {
     Route::get('/admin/roles-permissions', [RolesPermissionsController::class, 'index'])->name('admin.roles-permissions.index');

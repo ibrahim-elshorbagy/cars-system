@@ -1,59 +1,45 @@
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, router } from "@inertiajs/react";
-import TableHeading from "@/Components/TableHeading";
-import { useTranslation } from "react-i18next";
-import i18n from "@/i18nConfig";
+import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
+import InputLabel from "@/Components/InputLabel";
+import InputError from "@/Components/InputError";
+import SelectInput from "@/Components/SelectInput";
 
-    const resources = {
-    en: {
-        translation: {
-            "Users": "Users",
-            "Add new": "Add new",
-            "ID": "ID",
-            "Name": "Name",
-            "Email": "Email",
-            "Create Date": "Create Date",
-            "Actions": "Actions",
-            "User Name": "User Name",
-            "User Email": "User Email",
-            "Edit": "Edit",
-            "Delete": "Delete",
-            "Are you sure you want to delete the user?": "Are you sure you want to delete the user?"
-        },
-    },
-    ar: {
-        translation: {
-                "Users": "المستخدمين",
-                "Add new": "إضافة جديد",
-                "ID": "الرقم التعريفي",
-                "Name": "الاسم",
-                "Email": "البريد الإلكتروني",
-                "Create Date": "تاريخ الإنشاء",
-                "Actions": "الإجراءات",
-                "User Name": "اسم المستخدم",
-                "User Email": "بريد المستخدم",
-                "Edit": "تعديل",
-                "Delete": "حذف",
-                "Are you sure you want to delete the user?": "هل أنت متأكد أنك تريد حذف المستخدم؟",
-                "No Users Found": "لا يوجد مستخدمين"
-        },
-    },
-};
-
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
-
-
-export default function Index({ auth, users, queryParams = null, success }) {
-
-
-  const { t } = useTranslation();
-
+export default function Index({ auth, users, queryParams = null, success ,roles}) {
   queryParams = queryParams || {};
 
+  // Modal state
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+
+  // Toggle Create Modal
+  const toggleCreateModal = () => {
+    setIsCreateModalOpen(!isCreateModalOpen);
+  };
+
+  // Toggle Edit Modal
+    const toggleEditModal = (user = null) => {
+        if (user) {
+            setEditingUser(user);
+            const roleId = Array.isArray(user.role_id) ? user.role_id[0] : user.role_id;
+
+        setEditData({
+            name: user.name,
+            email: user.email,
+            role: roleId,
+            _method: "PUT",
+        });
+        } else {
+        setEditingUser(null);
+        editReset();
+        }
+        setIsEditModalOpen(!isEditModalOpen);
+    };
+
+  // Search functionality
   const searchFieldChanged = (name, value) => {
     if (value) {
       queryParams[name] = value;
@@ -65,50 +51,81 @@ export default function Index({ auth, users, queryParams = null, success }) {
 
   const onKeyPress = (name, e) => {
     if (e.key !== "Enter") return;
-
     searchFieldChanged(name, e.target.value);
   };
 
-  const sortChanged = (name) => {
-    if (name === queryParams.sort_field) {
-      if (queryParams.sort_direction === "asc") {
-        queryParams.sort_direction = "desc";
-      } else {
-        queryParams.sort_direction = "asc";
-      }
-    } else {
-      queryParams.sort_field = name;
-      queryParams.sort_direction = "asc";
-    }
-    router.get(route("user.index"), queryParams);
-  };
+  const [visibleSuccess, setVisibleSuccess] = useState(success);
 
-      const [visibleSuccess, setVisibleSuccess] = useState(success);
-
- useEffect(() => {
+  useEffect(() => {
     if (success) {
       setVisibleSuccess(success);
-
       const timer = setTimeout(() => {
         setVisibleSuccess(null);
       }, 3000);
-
       return () => clearTimeout(timer);
     }
   }, [success]);
 
-    const deleteUser = (user) => {
-       const confirmationMessage = t("Are you sure you want to delete the user?");
-    if (!window.confirm(t(confirmationMessage))) {
+  const deleteUser = (user) => {
+    if (!window.confirm("هل انت متأكد من مسح المستخدم ؟ ")) {
       return;
     }
-
     router.delete(route("user.destroy", user.id), {
       onSuccess: (page) => {
         setVisibleSuccess(page.props.success);
-      }
+      },
     });
   };
+
+  // Form handling for create and edit
+  const {
+    data: createData,
+    setData: setCreateData,
+    post: createPost,
+    errors: createErrors,
+    reset: createReset,
+  } = useForm({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const {
+    data: editData,
+    setData: setEditData,
+    post: editPost,
+    errors: editErrors,
+    reset: editReset,
+  } = useForm({
+    name: "",
+    email: "",
+    password: "",
+    _method: "PUT",
+  });
+
+  // Handle Create
+  const handleCreateUser = (e) => {
+    e.preventDefault();
+    createPost(route("user.store"), {
+      onSuccess: () => {
+        createReset();
+        toggleCreateModal();
+      },
+    });
+  };
+
+  // Handle Edit
+  const handleEditUser = (e) => {
+    e.preventDefault();
+    editPost(route("user.update", editingUser.id), {
+      onSuccess: () => {
+        editReset();
+        toggleEditModal();
+      },
+    });
+  };
+
+
 
   return (
     <AuthenticatedLayout
@@ -116,18 +133,20 @@ export default function Index({ auth, users, queryParams = null, success }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Users")}
+            المستخدمين
           </h2>
-          <Link
-            href={route("user.create")}
-            className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
-          >
-            {t("Add new")}
-          </Link>
+          {auth.user.permissions.includes("create-user") && (
+            <button
+              onClick={toggleCreateModal}
+              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+            >
+              إضافة مستخدم
+            </button>
+          )}
         </div>
       }
     >
-      <Head title={t("Users")} />
+      <Head title={"المستخدمين"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -142,42 +161,12 @@ export default function Index({ auth, users, queryParams = null, success }) {
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <TableHeading
-                        name="id"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        {t("ID")}
-                      </TableHeading>
-                      <TableHeading
-                        name="name"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        {t("Name")}
-                      </TableHeading>
-
-                      <TableHeading
-                        name="email"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        {t("Email")}
-                      </TableHeading>
-
-                      <TableHeading
-                        name="created_at"
-                        sort_field={queryParams.sort_field}
-                        sort_direction={queryParams.sort_direction}
-                        sortChanged={sortChanged}
-                      >
-                        {t("Create Date")}
-                      </TableHeading>
-
-                      <th className="px-3 py-3">{t("Actions")}</th>
+                      <td>Id</td>
+                      <td>الاسم</td>
+                      <td>البريد الإلكتروني</td>
+                      <td>الدور</td>
+                      <td>تاريخ الإنشاء</td>
+                      <th className="px-3 py-3">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -187,7 +176,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
-                          placeholder={t("User Name")}
+                          placeholder={"الاسم"}
                           onBlur={(e) =>
                             searchFieldChanged("name", e.target.value)
                           }
@@ -198,7 +187,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.email}
-                          placeholder={t("User Email")}
+                          placeholder={"البريد الإلكتروني"}
                           onBlur={(e) =>
                             searchFieldChanged("email", e.target.value)
                           }
@@ -207,48 +196,49 @@ export default function Index({ auth, users, queryParams = null, success }) {
                       </th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {users && users.data.length > 0 ? (users.data.map((user) => (
-                      <tr
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                        key={user.id}
-                      >
-                        <td className="px-3 py-2">{user.id}</td>
-                        <th className="px-3 py-2 text-nowrap">{user.name}</th>
-                        <td className="px-3 py-2">{user.email}</td>
-                        <td className="px-3 py-2 text-nowrap">
-                          {user.created_at}
-                        </td>
-                            <td className="px-3 py-2 text-nowrap">
-                            {/* Check if the user has permission to manage users */}
-                            {auth.user.permissions.includes("for-SystemAdmin-manage-users") && (
-                                <>
-                                <Link
-                                    href={route("user.edit", user.id)}
-                                    className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                >
-                                    {t("Edit")}
-                                </Link>
-                                <button
-                                    onClick={(e) => deleteUser(user)}
-                                    className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
-                                >
-                                    {t("Delete")}
-                                </button>
-                                </>
+                    {users && users.data.length > 0 ? (
+                      users.data.map((user) => (
+                        <tr
+                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                          key={user.id}
+                        >
+                          <td className="px-3 py-2">{user.id}</td>
+                          <th className="px-3 py-2 text-nowrap">{user.name}</th>
+                          <td className="px-3 py-2">{user.email}</td>
+                          <td className="px-3 py-2">{user.role}</td>
+                          <td className="px-3 py-2 text-nowrap">
+                            {user.created_at}
+                          </td>
+                          <td className="px-3 py-2 text-nowrap">
+                            {auth.user.permissions.includes("update-user") && (
+                              <button
+                                 onClick={() => toggleEditModal(user)}
+                                className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                              >
+                                تعديل
+                              </button>
                             )}
-                            </td>
-
+                            {auth.user.permissions.includes("delete-user") && (
+                              <button
+                                onClick={() => deleteUser(user)}
+                                className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
+                              >
+                                حذف
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="px-3 py-2 text-center">
+                          لا يوجد مستخدمين
+                        </td>
                       </tr>
-                    ))) : (
-                            <tr>
-                                <td colSpan="5" className="px-3 py-2 text-center">
-                                    {t("No Users Found")}
-                                </td>
-                            </tr>
-
                     )}
                   </tbody>
                 </table>
@@ -258,6 +248,180 @@ export default function Index({ auth, users, queryParams = null, success }) {
           </div>
         </div>
       </div>
+
+      {/* Modal for adding a new user */}
+      {isCreateModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold">إضافة مستخدم جديد</h2>
+            </div>
+            <div className="p-6">
+              <form onSubmit={handleCreateUser}>
+                <div className="mb-4">
+                  <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
+                  <TextInput
+                    id="user_name"
+                    type="text"
+                    name="name"
+                    value={createData.name}
+                    className="block w-full mt-1"
+                    isFocused={true}
+                    onChange={(e) => setCreateData("name", e.target.value)}
+                  />
+                  <InputError message={createErrors.name} className="mt-2" />
+                    </div>
+                 <div className="mb-4">
+                <InputLabel htmlFor="role" value={"الدور"} />
+
+                <SelectInput
+                  name="role"
+                  id="role"
+                  className="block w-full mt-1"
+                  value={createData.role}
+                  onChange={(e) => setCreateData("role", e.target.value)}
+                >
+                  <option value="">اختر</option>
+                  {roles.map((role) => (
+                    <option value={role.id} key={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
+                </SelectInput>
+
+                <InputError message={createErrors.role} className="mt-2" />
+              </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
+                  <TextInput
+                    id="user_email"
+                    type="email"
+                    name="email"
+                    value={createData.email}
+                    className="block w-full mt-1"
+                    onChange={(e) => setCreateData("email", e.target.value)}
+                  />
+                  <InputError message={createErrors.email} className="mt-2" />
+                </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
+                  <TextInput
+                    id="user_password"
+                    type="password"
+                    name="password"
+                    value={createData.password}
+                    className="block w-full mt-1"
+                    onChange={(e) => setCreateData("password", e.target.value)}
+                  />
+                  <InputError message={createErrors.password} className="mt-2" />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={toggleCreateModal}
+                    className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                  >
+                    حفظ
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for editing a user */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold">تعديل المستخدم</h2>
+            </div>
+            <div className="p-6">
+              <form onSubmit={handleEditUser}>
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
+                  <TextInput
+                    id="edit_user_name"
+                    type="text"
+                    name="name"
+                    value={editData.name}
+                    className="block w-full mt-1"
+                    isFocused={true}
+                    onChange={(e) => setEditData("name", e.target.value)}
+                  />
+                  <InputError message={editErrors.name} className="mt-2" />
+                </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_role" value={"الدور"} />
+                  <SelectInput
+                    name="role"
+                    id="edit_user_role"
+                    className="block w-full mt-1"
+                    value={editData.role}
+                    onChange={(e) => setEditData("role", e.target.value)}
+                  >
+                    <option value="">اختر</option>
+                    {roles.map((role) => (
+                      <option value={role.id} key={role.id}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </SelectInput>
+                  <InputError message={editErrors.role} className="mt-2" />
+                </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
+                  <TextInput
+                    id="edit_user_email"
+                    type="email"
+                    name="email"
+                    value={editData.email}
+                    className="block w-full mt-1"
+                    onChange={(e) => setEditData("email", e.target.value)}
+                  />
+                  <InputError message={editErrors.email} className="mt-2" />
+                </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
+                  <TextInput
+                    id="edit_user_password"
+                    type="password"
+                    name="password"
+                    value={editData.password}
+                    className="block w-full mt-1"
+                    placeholder="اكتب في حالة اردت تغيرها"
+                    onChange={(e) => setEditData("password", e.target.value)}
+                  />
+                  <InputError message={editErrors.password} className="mt-2" />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleEditModal()}
+                    className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                  >
+                    حفظ التغييرات
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
     </AuthenticatedLayout>
   );
 }
