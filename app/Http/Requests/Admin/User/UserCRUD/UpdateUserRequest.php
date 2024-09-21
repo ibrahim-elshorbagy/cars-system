@@ -31,6 +31,8 @@ class UpdateUserRequest extends FormRequest
                 "email",
                 Rule::unique('users')->ignore($user->id),
             ],
+            "phone" => ["nullable", "string"],
+            "whatsapp" => ["nullable", "string"],
             "password" => [
                 'nullable',
                 Password::min(8)->letters(),

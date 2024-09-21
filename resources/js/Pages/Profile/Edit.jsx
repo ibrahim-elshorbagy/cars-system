@@ -5,7 +5,7 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import { Head } from "@inertiajs/react";
 import UpdateProfileImage from "./Partials/UpdateProfileImage";
 
-const Edit = ({ auth, mustVerifyEmail, status }) => {
+const Edit = ({ auth,site_settings, mustVerifyEmail, status }) => {
     return (
         <>
             <Head title={site_settings.websiteName + " - " +"Profile"} />

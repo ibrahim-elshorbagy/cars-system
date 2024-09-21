@@ -29,6 +29,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         setEditData({
             name: user.name,
             email: user.email,
+            phone: user.phone,
+            whatsapp: user.whatsapp,
+
             role: roleId,
             _method: "PUT",
         });
@@ -90,6 +93,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     name: "",
     email: "",
     password: "",
+    phone: "",
+    whatsapp: "",
+
   });
 
   const {
@@ -102,6 +108,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     name: "",
     email: "",
     password: "",
+    phone: "",
+    whatsapp: "",
+
     _method: "PUT",
   });
 
@@ -162,11 +171,13 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                  <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td>Id</td>
                       <td>الاسم</td>
                       <td>البريد الإلكتروني</td>
+                      <td>الهاتف</td>
+                      <td>whatsapp</td>
                       <td>الدور</td>
                       <td>تاريخ الإنشاء</td>
                       <th className="px-3 py-3">الإجراءات</th>
@@ -200,6 +211,8 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -212,12 +225,14 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           <td className="px-3 py-2">{user.id}</td>
                           <th className="px-3 py-2 text-nowrap">{user.name}</th>
                           <td className="px-3 py-2">{user.email}</td>
+                          <td className="px-3 py-2">{user.phone}</td>
+                          <td className="px-3 py-2">{user.whatsapp}</td>
                           <td className="px-3 py-2">{user.role}</td>
                           <td className="px-3 py-2 text-nowrap">
                             {user.created_at}
                           </td>
                           <td className="px-3 py-2 text-nowrap">
-                            {auth.user.permissions.includes("update-user") && (
+                            {auth.user.permissions.includes("update-user") && (user.id !=1) && (
                               <button
                                  onClick={() => toggleEditModal(user)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -225,7 +240,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-user") && (
+                            {auth.user.permissions.includes("delete-user") && (user.id !=1) &&  (
                               <button
                                 onClick={() => deleteUser(user)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
@@ -273,7 +288,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     onChange={(e) => setCreateData("name", e.target.value)}
                   />
                   <InputError message={createErrors.name} className="mt-2" />
-                    </div>
+                </div>
                  <div className="mb-4">
                 <InputLabel htmlFor="role" value={"الدور"} />
 
@@ -306,6 +321,37 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   />
                   <InputError message={createErrors.email} className="mt-2" />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="mb-4">
+                      <InputLabel htmlFor="phone" value={"الهاتف"} />
+                      <TextInput
+                          id="phone"
+                          type="text"
+                          name="phone"
+                          dir="ltr"
+                          value={createData.phone}
+                          className="block w-full mt-1"
+                          isFocused={true}
+                          onChange={(e) => setCreateData("phone", e.target.value)}
+                      />
+                      <InputError message={createErrors.phone} className="mt-2" />
+                  </div>
+                 <div className="mb-4">
+                  <InputLabel htmlFor="whatsapp" value={"whatsapp"} />
+                  <TextInput
+                      id="whatsapp"
+                      type="text"
+                      name="whatsapp"
+                      dir="ltr"
+                      value={createData.whatsapp}
+                      className="block w-full mt-1"
+                      isFocused={true}
+                      onChange={(e) => setCreateData("whatsapp", e.target.value)}
+                  />
+                  <InputError message={createErrors.whatsapp} className="mt-2" />
+                  </div>
+                </div>
+
                 <div className="mb-4">
                   <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
                   <TextInput
@@ -390,6 +436,36 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     onChange={(e) => setEditData("email", e.target.value)}
                   />
                   <InputError message={editErrors.email} className="mt-2" />
+                              </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="mb-4">
+                      <InputLabel htmlFor="edit_phone" value={"الهاتف"} />
+                      <TextInput
+                          id="edit_phone"
+                          type="text"
+                          name="phone"
+                          dir="ltr"
+                          value={editData.phone}
+                          className="block w-full mt-1"
+                          isFocused={true}
+                          onChange={(e) => setEditData("phone", e.target.value)}
+                      />
+                      <InputError message={createErrors.phone} className="mt-2" />
+                  </div>
+                 <div className="mb-4">
+                  <InputLabel htmlFor="edit_whatsapp" value={"whatsapp"} />
+                  <TextInput
+                      id="edit_whatsapp"
+                      type="text"
+                      name="whatsapp"
+                      dir="ltr"
+                      value={editData.whatsapp}
+                      className="block w-full mt-1"
+                      isFocused={true}
+                      onChange={(e) => setEditData("whatsapp", e.target.value)}
+                  />
+                  <InputError message={createErrors.whatsapp} className="mt-2" />
+                  </div>
                 </div>
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />

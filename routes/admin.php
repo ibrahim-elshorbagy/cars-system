@@ -44,7 +44,7 @@ Route::group(['prefix' => 'admin'], function () {
 
     });
     //Site Settings
-    Route::group(['middleware' => ['permission:for-SystemAdmin-manage-site-settings','InjectSiteName']], function () {
+    Route::group(['middleware' => ['permission:for-SystemAdmin-manage-site-settings']], function () {
 
         Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
         Route::post('/settings/update', [SettingController::class, 'update'])->name('admin.settings.update');

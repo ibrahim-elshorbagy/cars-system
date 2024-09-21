@@ -98,7 +98,19 @@ const MySidebar = ({ user, direction,site_settings }) => {
             ],
 
         icon: <MdDashboard />,
-    },
+        },
+            { // customer
+            title: "العملاء",
+            links: [
+                {
+                    text: "العملاء",
+                    href: "customer.index",
+                    icon: <MdDashboard />,
+                    permissions: ["read-customer"],
+                },
+            ],
+            icon: <MdDashboard />,
+        },
 
         { // customer
             title: "لوحة التحكم",

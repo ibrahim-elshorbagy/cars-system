@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Customer\StoreCustomerRequest;
 use App\Http\Requests\Admin\Customer\UpdateCustomerRequest;
 use App\Http\Resources\Admin\Customer\CustomerResource;
-use App\Http\Resources\Admin\User\UserCRUDResource;
-use App\Models\Customer;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -28,8 +27,6 @@ Full opertions For Customers (add,delete ,update)
     {
         $query = User::role('customer');
 
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
 
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
@@ -38,9 +35,7 @@ Full opertions For Customers (add,delete ,update)
             $query->where("email", "like", "%" . request("email") . "%");
         }
 
-        $users = $query->with('customer')->orderBy($sortField, $sortDirection)
-            ->paginate(25)
-            ->onEachSide(1);
+        $users = $query->paginate(25)->onEachSide(1);
 
         return inertia("Admin/Customer/Index", [
             "users" => CustomerResource::collection($users),
@@ -52,24 +47,12 @@ Full opertions For Customers (add,delete ,update)
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return inertia("Admin/Customer/Create");
-
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->validated();
 
-        $phone = $data['phone'] ?? null;
-        $address = $data['address'] ?? null;
-        unset($data['phone'], $data['address']);
 
         $data['email_verified_at'] = now();
         $data['password'] = bcrypt($data['password']);
@@ -78,40 +61,10 @@ Full opertions For Customers (add,delete ,update)
 
         $user->assignRole('customer');
 
-        Customer::create([
-            'user_id' => $user->id,
-            'phone' => $phone,
-            'address' => $address
-        ]);
 
-        $locale = session('app_locale', 'en');
-        $message = $locale === 'ar'
-            ? "تم إنشاء العميل \"{$user->name}\" بنجاح"
-            : "Customer \"{$user->name}\" was created successfully";
-
-        return to_route('customer.index')
-            ->with('success', $message);
+        return back()->with('success', "تم انشاء العميل بنجاح");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $customer)
-    {
-            $customer->load('customer');
-
-        return inertia('Admin/Customer/Edit', [
-            'user' => new CustomerResource($customer),
-        ]);
-    }
 
     /**
      * Update the specified resource in storage.
@@ -131,34 +84,11 @@ Full opertions For Customers (add,delete ,update)
             $customer->syncRoles([$role]);
         }
 
-        $phone = $data['phone'] ?? null;
-        $address = $data['address'] ?? null;
-        unset($data['phone'], $data['address']);
-
         // Update the user details
         $customer->update($data);
 
-        if ($customer->customer) {
-            $customer->customer->update([
-                'phone' => $phone,
-                'address' => $address,
-            ]);
-        } else {
-            Customer::create([
-                'user_id' => $customer->id,
-                'phone' => $phone,
-                'address' => $address,
-            ]);
-        }
 
-        $locale = session('app_locale', 'en');
-
-        $message = $locale === 'ar'
-            ? "تم تحديث العميل \"{$customer->name}\" بنجاح"
-            : "Customer \"{$customer->name}\" was updated successfully";
-
-        return to_route('customer.index')
-            ->with('success', $message);
+        return back()->with('success', 'تم تحديث العميل بنجاح');
     }
 
 
@@ -169,26 +99,16 @@ Full opertions For Customers (add,delete ,update)
     public function destroy(User $customer)
     {
         $name = $customer->name;
-        if ($customer->customer->products->count() > 0) {
-        $locale = session('app_locale', 'en');
+        // if ($customer->customer->products->count() > 0) {  has cars
+        // $locale = session('app_locale', 'en');
 
-        $message = $locale === 'ar'
-            ? "لا يمكن العميل \"{$name}\" لان لديه منتجات "
-            : "Cannot delete Customer \"{$name}\" because he has products";
 
-        return to_route('customer.index')
-            ->with('danger', $message);
-        }
+        // return back()->with('danger', "لايمكن حذف العميل لديه سيارات");
+        // }
         $customer->delete();
 
-        $locale = session('app_locale', 'en');
 
-        $message = $locale === 'ar'
-            ? "تم حذف العميل \"{$name}\" بنجاح"
-            : "Customer \"{$name}\" was deleted successfully";
-
-        return to_route('customer.index')
-            ->with('success', $message);
+        return back()->with('success', "تم حذف العميل بنجاح");
     }
 
 }

@@ -23,11 +23,9 @@ class UserCRUDController extends Controller
         $roles = Role::whereNotIn('name', ['customer'])->get();
 
         if (request("name")) {
-            request()->merge(['page' => 1]);
             $query->where("name", "like", "%" . request("name") . "%");
         }
         if (request("email")) {
-            request()->merge(['page' => 1]);
             $query->where("email", "like", "%" . request("email") . "%");
         }
 
@@ -61,32 +59,10 @@ class UserCRUDController extends Controller
         }
 
 
-        return to_route('user.index')
-            ->with('success', "تم انشاء المستخدم بنجاح");
+        return back()->with('success', "تم انشاء المستخدم بنجاح");
 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-         $roles = Role::whereIn('name', ['admin', 'systemadmin'])->get();
-
-        return inertia('Admin/User/UserCURD/Edit', [
-            'user' => new UserCrudResource($user),
-            'roles' => $roles,
-
-        ]);
-    }
 
     /**
      * Update the specified resource in storage.
@@ -94,6 +70,9 @@ class UserCRUDController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
 
+        if($user->id == 1){
+            return back();
+        }
         $data = $request->validated();
         $password = $data['password'] ?? null;
         if ($password) {
@@ -103,7 +82,7 @@ class UserCRUDController extends Controller
         }
             if (isset($data['role'])) {
             $role = Role::findById($data['role']);
-            $user->syncRoles([$role]);  // This will replace any existing roles with the new one
+            $user->syncRoles([$role]);
         }
         $user->update($data);
 
@@ -111,8 +90,7 @@ class UserCRUDController extends Controller
 
 
         // Return the success message and redirect
-        return to_route('user.index')
-            ->with('success', "تم تحديث المستخدم بنجاح");
+        return back()->with('success', "تم تحديث المستخدم بنجاح");
     }
 
     /**
@@ -120,6 +98,9 @@ class UserCRUDController extends Controller
      */
     public function destroy(User $user)
     {
+        if($user->id == 1){
+            return back();
+        }
         $name = $user->name;
         $user->delete();
 

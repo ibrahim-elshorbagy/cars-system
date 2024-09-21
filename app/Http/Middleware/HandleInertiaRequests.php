@@ -42,12 +42,12 @@ class HandleInertiaRequests extends Middleware
                         'id' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
-                        'phone' => $user->customer?->phone ?? null,
-                        'address' => $user->customer?->address ?? null,
+                        // 'phone' => $user->customer?->phone ?? null,
+                        // 'address' => $user->customer?->address ?? null,
                         'roles' => $user->getRoleNames(),
                         'permissions' => $user->getAllPermissions()->pluck('name'),
                         'profile_photo_url'=> $user->profile_photo_url ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-                        'notifications' => $user->unreadNotifications ?? [],
+                        // 'notifications' => $user->unreadNotifications ?? [],
 
                     ] : null;
                 },

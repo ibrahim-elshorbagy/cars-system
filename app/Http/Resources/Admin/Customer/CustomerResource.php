@@ -22,12 +22,9 @@ class CustomerResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
-            'address' => $this->whenLoaded('customer', function () {
-                return $this->customer->address;
-            }),
-            'phone' => $this->whenLoaded('customer', function () {
-                return $this->customer->phone;
-            }),
+            'phone'=>$this->phone,
+            'whatsapp'=>$this->whatsapp,
+
 
         ];
     }

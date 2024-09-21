@@ -34,9 +34,6 @@ export default function UpdateProfileInformation({
                     معلوماتي
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    {t("Profile Information Description")}
-                </p>
             </header>
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
