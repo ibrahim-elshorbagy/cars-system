@@ -9,7 +9,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword ,site_settings}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -28,8 +28,8 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <GuestLayout centerContent box_width="max-w-xl">
-            <Head title={"تسجيل الدخول"} />
+        <GuestLayout centerContent box_width="max-w-xl" site_settings={site_settings}>
+            <Head title={site_settings.websiteName + " - " +"تسجيل الدخول"} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     {status && (

@@ -6,7 +6,8 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { useState, useEffect } from "react";
 
-export default function Index({ auth, boxes, queryParams = null, success, danger }) {
+export default function Index({ auth, site_settings, boxes, queryParams = null, success, danger }) {
+    document.title = "الصناديق";
   queryParams = queryParams || {};
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -110,7 +111,8 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+          site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -127,7 +129,7 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
         </div>
       }
     >
-      <Head title={"الصناديق"} />
+          <Head title={site_settings.websiteName + " - " +"الصناديق"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -314,3 +316,5 @@ export default function Index({ auth, boxes, queryParams = null, success, danger
     </AuthenticatedLayout>
   );
 }
+
+

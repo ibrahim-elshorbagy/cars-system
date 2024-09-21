@@ -5,10 +5,10 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import { Head } from "@inertiajs/react";
 import UpdateProfileImage from "./Partials/UpdateProfileImage";
 
-const Edit = ({ auth, mustVerifyEmail, status,  }) => {
+const Edit = ({ auth, mustVerifyEmail, status }) => {
     return (
         <>
-            <Head title="Profile" />
+            <Head title={site_settings.websiteName + " - " +"Profile"} />
             <div className="py-12">
                 <div className="mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
                     <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
@@ -39,6 +39,7 @@ const Edit = ({ auth, mustVerifyEmail, status,  }) => {
 Edit.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
+        site_settings={page.props.site_settings}
         header={
             <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
                 Profile

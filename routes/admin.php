@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\RolesPermissionsController;
+use App\Http\Controllers\Admin\SiteSetting\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\User\UserCRUDController;
 
@@ -32,9 +33,22 @@ Route::group(['prefix' => 'admin'], function () {
 
 });
 //--------------------------------------------------------------------------------------------- Only SystemAdmin
+Route::group(['prefix' => 'admin'], function () {
 
-Route::group(['middleware' => ['permission:for-SystemAdmin-manage-roles-permissions']], function () {
-    Route::get('/admin/roles-permissions', [RolesPermissionsController::class, 'index'])->name('admin.roles-permissions.index');
-    Route::get('/admin/roles-permissions/{role}/edit', [RolesPermissionsController::class, 'edit'])->name('admin.roles-permissions.edit');
-    Route::put('/admin/roles-permissions/{role}', [RolesPermissionsController::class, 'update'])->name('admin.roles-permissions.update');
+    //permission
+    Route::group(['middleware' => ['permission:for-SystemAdmin-manage-roles-permissions']], function () {
+
+        Route::get('/roles-permissions', [RolesPermissionsController::class, 'index'])->name('admin.roles-permissions.index');
+        Route::get('/roles-permissions/{role}/edit', [RolesPermissionsController::class, 'edit'])->name('admin.roles-permissions.edit');
+        Route::put('/roles-permissions/{role}', [RolesPermissionsController::class, 'update'])->name('admin.roles-permissions.update');
+
+    });
+    //Site Settings
+    Route::group(['middleware' => ['permission:for-SystemAdmin-manage-site-settings','InjectSiteName']], function () {
+
+        Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
+        Route::post('/settings/update', [SettingController::class, 'update'])->name('admin.settings.update');
+
+    });
+
 });

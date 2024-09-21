@@ -4,12 +4,12 @@ import { Head } from "@inertiajs/react";
  ;
 
 
-const Dashboard = ({ auth }) => {
+const Dashboard = ({ auth,site_settings }) => {
 
 
     return (
         <>
-            <Head title="لوحة التحكم" />
+            <Head title={site_settings.websiteName + " - " +"لوحة التحكم"} />
             <div className="py-12">
                 <div className="px-1 mx-auto sm:px-6 lg:px-6">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
@@ -35,6 +35,7 @@ const DashboardHeader = () => {
 Dashboard.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
+        site_settings={page.props.site_settings}
         header={<DashboardHeader />}
     >
         {page}

@@ -6,9 +6,9 @@ import { Link } from "@inertiajs/react";
 
 import { SiSpringsecurity } from "react-icons/si";
 import { FaUser, FaGavel, FaMapMarkerAlt, FaShip, FaTruck, FaBuilding, FaCar, FaCogs } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
 
-
-const MySidebar = ({ user, direction }) => {
+const MySidebar = ({ user, direction,site_settings }) => {
 
     const [collapsed, setCollapsed] = useState(false);
 
@@ -45,11 +45,17 @@ const MySidebar = ({ user, direction }) => {
         },
         { // admin
         title: "البيانات",
-        links: [
+            links: [
+            {
+                text: "الاعدادات",
+                href: "admin.settings.index",
+                icon: <IoMdSettings />,  // vendor icon for vendors
+                permissions: ["for-SystemAdmin-manage-site-settings"],
+            },
             {
                 text: "المزادات (Vendors)",
                 href: "vendor.index",
-                icon: <FaGavel />,  // Auction icon for vendors
+                icon: <FaGavel />,  // vendor icon for vendors
                 permissions: ["read-vendor"],
             },
             {
@@ -146,9 +152,9 @@ const MySidebar = ({ user, direction }) => {
                             alt="Logo"
                             className="w-8 h-8"
                         />
-                        <span className="pt-1">WebsiteName</span>
+                        <span className="pt-1">{ site_settings.websiteName}</span>
                     </h1>
-                    {/* <button
+                    <button
                         onClick={() => setCollapsed(!collapsed)}
                         className={`p-2 rounded-full bg-burntOrange dark:bg-burntOrange transition-all duration-300 ${
                             collapsed ? "rotate-180" : ""
@@ -160,7 +166,7 @@ const MySidebar = ({ user, direction }) => {
                             className="text-white "
                         />
 
-                    </button> */}
+                    </button>
                 </div>
                 <div className="px-6 pt-2">
                     <hr className="border-gray-300 dark:border-gray-900" />
@@ -183,7 +189,7 @@ const MySidebar = ({ user, direction }) => {
                                     active={route().current(link.href)}
                                     className="flex items-center justify-between px-4 py-2"
                                 >
-                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-50 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
+                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
                                         {link.icon}{link.text}
                                     </div>
                                 </SideNavLink>

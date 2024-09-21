@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, users, queryParams = null, success ,roles}) {
+export default function Index({ auth,site_settings, users, queryParams = null, success ,roles}) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -47,7 +47,7 @@ export default function Index({ auth, users, queryParams = null, success ,roles}
       delete queryParams[name];
     }
       delete queryParams.page;
-      
+
     router.get(route("user.index"), queryParams);
   };
 
@@ -131,7 +131,8 @@ export default function Index({ auth, users, queryParams = null, success ,roles}
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+          site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -148,7 +149,7 @@ export default function Index({ auth, users, queryParams = null, success ,roles}
         </div>
       }
     >
-      <Head title={"المستخدمين"} />
+      <Head title={site_settings.websiteName + " - " +"المستخدمين"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">

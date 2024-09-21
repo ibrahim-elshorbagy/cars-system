@@ -7,11 +7,12 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import MySidebar from "./sidebar/MySidebar";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
+import { FaBars } from "react-icons/fa6";
 
 import { FaBell } from "react-icons/fa"; // Notification bell icon
 import { router } from '@inertiajs/react';
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ user,site_settings,header, children }) {
 
     const [notifications, setNotifications] = useState(user.notifications || []);
 
@@ -41,12 +42,21 @@ export default function Authenticated({ user, header, children }) {
                             <div className="flex items-center shrink-0">
                                 {user.permissions.includes("view-admin-dashboard") && (
                                     <Link href={route("admin.dashboard")}>
-                                        <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
+                                                <img
+                                                    src={site_settings.websiteLogo}
+                                                    alt="Logo"
+                                                    className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200"
+                                        />
                                     </Link>
                                 )}
                                 {user.permissions.includes("for-customer-view-dashboard") && (
                                     <Link href={route("customer.dashboard")}>
-                                        <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
+                                                <img
+                                                    src={site_settings.company_logo}
+                                                    alt="Logo"
+                                                    className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200"
+
+                                                />
                                     </Link>
                                 )}
                             </div>
@@ -154,7 +164,7 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         {/* Notification Bell for Mobile */}
-                        <div className="flex items-center -mr-2 sm:hidden">
+                        {/* <div className="flex items-center -mr-2 sm:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
                                 className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
@@ -166,7 +176,16 @@ export default function Authenticated({ user, header, children }) {
                                     </span>
                                 )}
                             </button>
+                        </div> */}
+                        <div className="flex items-center ml-5 sm:hidden">
+                            <button
+                                onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
+                                className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
+                            >
+                                <FaBars />
+                            </button>
                         </div>
+
                     </div>
                 </div>
 
@@ -227,7 +246,7 @@ export default function Authenticated({ user, header, children }) {
             </nav>
 
             <div className="flex flex-1 pt-16 bg-white">
-                <MySidebar user={user}  />
+                <MySidebar user={user} site_settings={site_settings}  />
                 <div className="flex flex-col flex-1 min-h-screen">
                     {header && (
                         <header className="bg-indigoBlue dark:bg-gray-800">

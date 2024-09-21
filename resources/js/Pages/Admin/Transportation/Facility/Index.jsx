@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, facilities, queryParams = null, success }) {
+export default function Index({ auth, facilities,site_settings, queryParams = null, success }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -130,7 +130,8 @@ export default function Index({ auth, facilities, queryParams = null, success })
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+          site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -147,7 +148,7 @@ export default function Index({ auth, facilities, queryParams = null, success })
         </div>
       }
     >
-      <Head title={"المرافق (Facilities)"} />
+      <Head title={site_settings.websiteName + " - " +"المرافق (Facilities)"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">

@@ -5,13 +5,13 @@ import { useTranslation } from "react-i18next";
 
 
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth,site_settings }) {
 
 
     return (
         <>
-            <GuestLayout>
-                <Head title={"مرحبا"} />
+            <GuestLayout site_settings={site_settings}>
+                <Head title={site_settings.websiteName + " - " +"مرحبا"} />
                 <div className="flex flex-col items-center justify-center min-h-screen text-white bg-gradient-to-r bg-indigoBlue">
                     <h1 className="text-5xl font-bold">
                         {"مرحبا"}

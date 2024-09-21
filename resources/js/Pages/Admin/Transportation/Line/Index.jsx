@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, lines, queryParams = null, success }) {
+export default function Index({site_settings ,auth, lines, queryParams = null, success }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -45,7 +45,7 @@ export default function Index({ auth, lines, queryParams = null, success }) {
       delete queryParams[name];
     }
       delete queryParams.page;
-      
+
     router.get(route("line.index"), queryParams);
   };
 
@@ -129,7 +129,8 @@ export default function Index({ auth, lines, queryParams = null, success }) {
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+          site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -146,7 +147,7 @@ export default function Index({ auth, lines, queryParams = null, success }) {
         </div>
       }
     >
-      <Head title={"خطوط الملاحه (Lines)"} />
+      <Head title={site_settings.websiteName + " - " +"خطوط الملاحه (Lines)"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -159,7 +160,7 @@ export default function Index({ auth, lines, queryParams = null, success }) {
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                  <thead className="text-gray-700 uppercase border-b-2 border-gray-500  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td>Id</td>
                       <td>الاسم</td>

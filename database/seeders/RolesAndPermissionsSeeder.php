@@ -42,15 +42,16 @@ class RolesAndPermissionsSeeder extends Seeder
         // Additional permissions for specific roles
         $additionalPermissions = [
 
-            //system admin
+            //Only System Admin
+            //permisions
             'view-admin-dashboard',
             'for-SystemAdmin-manage-users',
             'for-SystemAdmin-manage-roles-permissions',
+            //Site settings
+            'for-SystemAdmin-manage-site-settings',
 
             //customer
             'for-customer-view-dashboard',
-            // 'for-customer-my-products-report',
-            // 'for-customer-make-release-repuest',
 
 
 

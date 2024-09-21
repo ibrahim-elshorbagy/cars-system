@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 
-export default function Index({ auth, vendors, queryParams = null, success }) {
+export default function Index({ auth,site_settings, vendors, queryParams = null, success }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -43,7 +43,7 @@ export default function Index({ auth, vendors, queryParams = null, success }) {
       delete queryParams[name];
     }
       delete queryParams.page;
-      
+
     router.get(route("vendor.index"), queryParams);
   };
 
@@ -127,7 +127,8 @@ export default function Index({ auth, vendors, queryParams = null, success }) {
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+          site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -144,7 +145,7 @@ export default function Index({ auth, vendors, queryParams = null, success }) {
         </div>
       }
     >
-      <Head title={"المزادات (Vendors)"} />
+      <Head title={site_settings.websiteName + " - " +"المزادات (Vendors)"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">

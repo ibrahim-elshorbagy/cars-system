@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 
-export default function EditPermissions({ auth, role, rolePermissions }) {
+export default function EditPermissions({ auth, role,site_settings, rolePermissions }) {
 
   const { data, setData, put } = useForm({ permissions: rolePermissions });
 
@@ -19,8 +19,8 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
   };
 
   return (
-    <AuthenticatedLayout user={auth.user}>
-      <Head title={"الصلاحيات"} />
+    <AuthenticatedLayout user={auth.user} site_settings={auth.site_settings}>
+      <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">

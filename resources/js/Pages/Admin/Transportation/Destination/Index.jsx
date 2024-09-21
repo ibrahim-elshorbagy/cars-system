@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, destinations, queryParams = null, success }) {
+export default function Index({ auth, destinations,site_settings ,queryParams = null, success }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -45,7 +45,7 @@ export default function Index({ auth, destinations, queryParams = null, success 
       delete queryParams[name];
     }
       delete queryParams.page;
-      
+
     router.get(route("destination.index"), queryParams);
   };
 
@@ -128,7 +128,8 @@ export default function Index({ auth, destinations, queryParams = null, success 
 
 
   return (
-    <AuthenticatedLayout
+      <AuthenticatedLayout
+        site_settings={site_settings}
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
@@ -146,7 +147,7 @@ export default function Index({ auth, destinations, queryParams = null, success 
         </div>
       }
     >
-      <Head title={"الوجهات (Destinations)"} />
+      <Head title={site_settings.websiteName + " - " +"الوجهات (Destinations)"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">

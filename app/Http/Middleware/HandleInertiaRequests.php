@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin\SiteSetting\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,6 +30,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $websiteName = Setting::where('name', 'site_name')->value('value');
+        $websiteLogo = Setting::where('name', 'company_logo')->value('value');
         return [
             ...parent::share($request),
             'auth' => [
@@ -49,6 +52,12 @@ class HandleInertiaRequests extends Middleware
                     ] : null;
                 },
                 ],
+            'site_settings' => [
+                'websiteName' => $websiteName ,
+                'websiteLogo' => $websiteLogo ,
+            ],
+
+
         ];
     }
 }

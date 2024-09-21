@@ -1,28 +1,21 @@
 import { useState, useEffect } from "react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Link } from "@inertiajs/react";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 import NavLink from "@/Components/NavLink";
-import { useTranslation } from "react-i18next";
-
-import { FaFlagUsa } from "react-icons/fa";
-import { FaFlag } from "react-icons/fa";
-import SelectInput from "@/Components/SelectInput";
 
 
 
-export default function Guest({ children }) {
+export default function Guest({ children ,site_settings }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-    const [direction, setDirection] = useState("ltr");
+    document.documentElement.dir = "rtl";
 
 
 
     return (
         <div
             className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900"
-            style={{ direction }}
         >
             <nav className="bg-white border-b border-gray-300 shadow-lg dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -30,7 +23,10 @@ export default function Guest({ children }) {
                         <div className="flex">
                             <div className="flex items-center shrink-0">
                                 <Link href="/">
-                                    <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
+                                                <img
+                                                    src={site_settings.websiteLogo}
+                                                    alt="Logo"
+                                                    className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200"/>
                                 </Link>
                             </div>
                         </div>

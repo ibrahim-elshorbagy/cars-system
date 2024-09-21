@@ -2,12 +2,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 
-export default function Index({ auth, roles, success }) {
+export default function Index({ auth, roles,site_settings, success }) {
 
 
   return (
     <AuthenticatedLayout user={auth.user}>
-      <Head title={"الصلاحيات"} />
+      <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

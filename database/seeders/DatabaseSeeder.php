@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 
 use App\Models\User;
+use Database\Seeders\Admin\SiteSetting\SettingSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Database\Seeders\Admin\Transportation\VendorSeeder;
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(SettingSeeder::class);
         $this->call(VendorSeeder::class);
         $this->call(DestinationSeeder::class);
         $this->call(TerminalSeeder::class);
