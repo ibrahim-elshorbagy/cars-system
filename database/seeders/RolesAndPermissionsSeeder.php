@@ -17,9 +17,15 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Base entities for CRUD operations
         $basePermissions = [
-            'box',
+
+            // ------------------------------ Admin CRUD ------------------------------
+
             'user',
             'customer',
+            'customer-credit',
+
+            'box',
+            'box-transfer',
 
             'vendor',
             'destination',
@@ -28,6 +34,11 @@ class RolesAndPermissionsSeeder extends Seeder
             'facility',
             'make',
             'model',
+
+            'car',
+            
+            // ------------------------------ End Admin CRUD ------------------------------
+
 
         ];
 
@@ -47,6 +58,10 @@ class RolesAndPermissionsSeeder extends Seeder
             'view-admin-dashboard',
             'for-SystemAdmin-manage-users',
             'for-SystemAdmin-manage-roles-permissions',
+
+            //Reports
+            'read-box-transaction', //موجودات الصندوق
+
             //Site settings
             'for-SystemAdmin-manage-site-settings',
 

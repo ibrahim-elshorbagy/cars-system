@@ -16,7 +16,7 @@ class MakeController extends Controller
 
 
         if (request("name")) {
-            request()->merge(['page' => 1]);
+
             $query->where("name", "like", "%" . request("name") . "%");
         }
         $makes = $query->paginate(25)->onEachSide(1);

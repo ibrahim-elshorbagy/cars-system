@@ -55,16 +55,19 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
+
 
   const deleteTerminal = (terminal) => {
     if (!window.confirm("هل انت متأكد من حذف محطه الشحن ؟ ")) {
@@ -72,7 +75,9 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
     }
     router.delete(route("terminal.destroy", terminal.id), {
       onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
+            setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+            
       },
     });
   };
@@ -109,7 +114,9 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
     createPost(route("terminal.store"), {
       onSuccess: () => {
         createReset();
-        toggleCreateModal();
+            toggleCreateModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -120,7 +127,10 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
     editPost(route("terminal.update", editingTerminal.id), {
       onSuccess: () => {
         editReset();
-        toggleEditModal();
+            toggleEditModal();
+        setOperationPerformed(true);
+
+
       },
     });
   };
@@ -237,7 +247,7 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة محطه شحن</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة محطه شحن</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateTerminal}>
@@ -280,7 +290,7 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل محطه الشحن</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل محطه الشحن</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditTerminal}>

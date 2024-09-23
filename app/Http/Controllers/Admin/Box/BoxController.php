@@ -16,7 +16,7 @@ class BoxController extends Controller
 
 
         if (request("name")) {
-            request()->merge(['page' => 1]);
+
             $query->where("name", "like", "%" . request("name") . "%");
         }
         $boxes = $query->paginate(25)->onEachSide(1);

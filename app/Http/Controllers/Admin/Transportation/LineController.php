@@ -16,7 +16,7 @@ class LineController extends Controller
 
 
         if (request("name")) {
-            request()->merge(['page' => 1]);
+
             $query->where("name", "like", "%" . request("name") . "%");
         }
         $lines = $query->paginate(25)->onEachSide(1);

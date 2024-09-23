@@ -56,16 +56,18 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+    const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
 
   const deleteFacility = (facility) => {
     if (!window.confirm("هل انت متأكد من حذف المرفق ؟ ")) {
@@ -73,7 +75,9 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
     }
     router.delete(route("facility.destroy", facility.id), {
       onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
+            setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+            
       },
     });
   };
@@ -111,6 +115,8 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
       onSuccess: () => {
         createReset();
         toggleCreateModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -121,7 +127,9 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
     editPost(route("facility.update", editingFacility.id), {
       onSuccess: () => {
         editReset();
-        toggleEditModal();
+            toggleEditModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -156,7 +164,8 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
             <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
               {visibleSuccess}
             </div>
-          )}
+                  )}
+
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
@@ -226,7 +235,8 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
                     )}
                   </tbody>
                 </table>
-              </div>
+                          </div>
+
               {facilities && <Pagination links={facilities.meta.links} />}
             </div>
           </div>
@@ -238,7 +248,7 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة مرفق  جديده</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة مرفق  جديده</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateFacility}>
@@ -281,7 +291,7 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل المرفق</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل المرفق</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditFacility}>

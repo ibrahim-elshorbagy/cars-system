@@ -6,7 +6,7 @@ export default function Index({ auth, roles,site_settings, success }) {
 
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
 
       <div className="py-12">

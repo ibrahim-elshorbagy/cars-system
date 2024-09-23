@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-
+use App\Models\Admin\Box\Box;
+use App\Models\Admin\Transportation\ShipStatus;
 use App\Models\User;
 use Database\Seeders\Admin\SiteSetting\SettingSeeder;
 use Illuminate\Database\Seeder;
@@ -39,6 +40,46 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('SystemAdmin');
 
+        $user = User::factory()->create([
+            'name' => 'ibrahim ',
+            'email' => 'c@c.c',
+            'password' =>Hash::make('c'),
+        ]);
 
+        $user->assignRole('customer');
+
+        Box::create(
+            [
+                'id' => 1,
+                'name'=>'الصندوق الاساسي'
+            ]
+        );
+        Box::create(
+            [
+                'id' => 2,
+                'name'=>'الصندوق الثانوي'
+            ]
+        );
+                Box::create(
+            [
+                'id' => 3,
+                'name'=>'االحمداني'
+            ]
+        );
+
+    $statuses = [
+            ['id' => 1, 'name' => 'Pending'],
+            ['id' => 2, 'name' => 'Loading'],
+            ['id' => 3, 'name' => 'Shipped'],
+            ['id' => 4, 'name' => 'Delivered'],
+            ['id' => 5, 'name' => 'Dispatch'],
+            ['id' => 6, 'name' => 'Picked up'],
+            ['id' => 7, 'name' => 'Booked'],
+        ];
+
+        // Seed the ship statuses into the database
+        foreach ($statuses as $status) {
+            ShipStatus::updateOrCreate(['id' => $status['id']], $status);
+        }
     }
 }

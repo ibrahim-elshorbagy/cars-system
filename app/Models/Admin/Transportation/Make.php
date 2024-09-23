@@ -11,4 +11,7 @@ class Make extends Model
     public $timestamps = false;
     protected $guarded = ['id'];
 
+    public function models(){
+        return $this->hasMany(Modell::class);
+    }
 }

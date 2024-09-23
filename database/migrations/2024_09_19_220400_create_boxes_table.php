@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('boxes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('income', 10, 2)->default(0.00);
-            $table->decimal('outcome', 10, 2)->default(0.00);
             $table->timestamps();
         });
     }

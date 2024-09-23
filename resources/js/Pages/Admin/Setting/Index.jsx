@@ -12,7 +12,7 @@ export default function SettingsPage({ auth, site_settings,settings, success }) 
     const [visibleSuccess, setVisibleSuccess] = useState(success);
 
     useEffect(() => {
-        if (success) {
+        if (success && operationPerformed) {
             setVisibleSuccess(success);
             const timer = setTimeout(() => {
                 setVisibleSuccess(null);

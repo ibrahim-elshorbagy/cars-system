@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Admin\Users\Accountant\Accountant;
 use App\Models\Warehouse\StockReleaseOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -53,9 +54,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function customer()
+    public function accountant()
     {
-        return $this->hasOne(Customer::class, 'user_id');
+        return $this->hasOne(Accountant::class, 'user_id');
     }
 
     public static function boot()

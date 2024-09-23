@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->primary();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('address')->nullable();
-            $table->string('phone')->nullable();
+        Schema::create('bill_payments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('bill_id')->constrained('bills')->onDelete('cascade');
+            $table->decimal('amount', 10, 2);
+            $table->timestamps();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('bill_payments');
     }
 };

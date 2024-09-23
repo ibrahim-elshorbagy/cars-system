@@ -60,16 +60,19 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
+
 
   const deleteUser = (user) => {
     if (!window.confirm("هل انت متأكد من حذف المستخدم ؟ ")) {
@@ -77,7 +80,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     }
     router.delete(route("user.destroy", user.id), {
       onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
+            setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+            
       },
     });
   };
@@ -120,7 +125,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     createPost(route("user.store"), {
       onSuccess: () => {
         createReset();
-        toggleCreateModal();
+            toggleCreateModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -131,7 +138,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     editPost(route("user.update", editingUser.id), {
       onSuccess: () => {
         editReset();
-        toggleEditModal();
+            toggleEditModal();
+        setOperationPerformed(true);
+
+
       },
     });
   };

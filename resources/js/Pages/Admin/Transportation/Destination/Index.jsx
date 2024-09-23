@@ -55,16 +55,18 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
 
   const deleteDestination = (destination) => {
     if (!window.confirm("هل انت متأكد من حذف الوجه ؟ ")) {
@@ -72,7 +74,9 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
     }
     router.delete(route("destination.destroy", destination.id), {
       onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
+            setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+            
       },
     });
   };
@@ -106,10 +110,13 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
   // Handle Create
   const handleCreateDestination = (e) => {
     e.preventDefault();
-    createPost(route("destination.store"), {
-      onSuccess: () => {
+      createPost(route("destination.store"), {
+        onSuccess: () => {
         createReset();
         toggleCreateModal();
+        setOperationPerformed(true);
+
+
       },
     });
   };
@@ -117,10 +124,11 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
   // Handle Edit
   const handleEditDestination = (e) => {
     e.preventDefault();
-    editPost(route("destination.update", editingDestination.id), {
-      onSuccess: () => {
+      editPost(route("destination.update", editingDestination.id), {
+        onSuccess: () => {
         editReset();
         toggleEditModal();
+        setOperationPerformed(true);
       },
     });
   };
@@ -237,7 +245,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة وجه جديده</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة وجه جديده</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateDestination}>
@@ -280,7 +288,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل الوجه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الوجه</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditDestination}>

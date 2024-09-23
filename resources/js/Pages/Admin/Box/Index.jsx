@@ -7,7 +7,7 @@ import InputError from "@/Components/InputError";
 import { useState, useEffect } from "react";
 
 export default function Index({ auth, site_settings, boxes, queryParams = null, success, danger }) {
-    document.title = "الصناديق";
+
   queryParams = queryParams || {};
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -76,7 +76,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
   const [visibleDanger, setVisibleDanger] = useState(danger);
 
   useEffect(() => {
-    if (success) {
+    if (success && operationPerformed) {
       setVisibleSuccess(success);
       const timer = setTimeout(() => {
         setVisibleSuccess(null);
@@ -99,12 +99,13 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
     if (!window.confirm("هل انت متاكد من حذف الصندوق ؟ ")) {
       return;
     }
-      console.log(box)
       router.delete(route("box.destroy", box), {
 
         onSuccess: (page) => {
         setVisibleSuccess(page.props.success);
-        setVisibleDanger(page.props.danger);
+              setVisibleDanger(page.props.danger);
+        setOperationPerformed(true);
+              
       }
     });
   };

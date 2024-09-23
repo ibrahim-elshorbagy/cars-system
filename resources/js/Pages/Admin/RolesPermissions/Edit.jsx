@@ -19,7 +19,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
   };
 
   return (
-    <AuthenticatedLayout user={auth.user} site_settings={auth.site_settings}>
+    <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -98,6 +98,74 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                       </tr>
 
 
+
+
+
+
+
+
+
+
+                     {/* Money */}
+                      <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">الصندوق و التحويلات</th>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-box-transaction</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-box-transaction")}
+                            onChange={() => handleCheckboxChange("read-box-transaction")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">حركات الصندوق</td>
+                      </tr>
+
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-box-transfer</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-box-transfer")}
+                            onChange={() => handleCheckboxChange("create-box-transfer")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">اضافة تحويل</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-box-transfer</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-box-transfer")}
+                            onChange={() => handleCheckboxChange("read-box-transfer")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">سجل التحويلات</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-box-transfer</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-box-transfer")}
+                            onChange={() => handleCheckboxChange("update-box-transfer")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">تحديث تحويل </td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-box-transfer</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-box-transfer")}
+                            onChange={() => handleCheckboxChange("delete-box-transfer")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">حذف التحويل</td>
+                      </tr>
 
 
 
@@ -357,7 +425,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("read-make")}
                             />
                         </td>
-                        <td className="px-6 py-4">عرض الماركات</td>
+                        <td className="px-6 py-4">عرض المركات</td>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">update-make</td>
@@ -493,9 +561,65 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
 
 
+
+
+
+                     {/* Car Permissions */}
+                      <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اضافة سياراه</th>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-car</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-car")}
+                            onChange={() => handleCheckboxChange("create-car")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">اضافة سياراه</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-car</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-car")}
+                            onChange={() => handleCheckboxChange("read-car")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">كل السيارات</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-car</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-car")}
+                            onChange={() => handleCheckboxChange("update-car")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">تحديث سياره</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-car</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-car")}
+                            onChange={() => handleCheckboxChange("delete-car")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">حذف سياره</td>
+                      </tr>
+
+
+
+
+
                      {/* Customer Permissions */}
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">انشاء عميل</th>
+                        <th className="px-6 py-3 " colSpan="3">اضافة عميل</th>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-customer</td>
@@ -506,7 +630,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("create-customer")}
                           />
                         </td>
-                        <td className="px-6 py-4">انشاء عميل</td>
+                        <td className="px-6 py-4">اضافة عميل</td>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">read-customer</td>
@@ -543,6 +667,56 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                       </tr>
 
 
+
+
+                     {/* Car Permissions */}
+                      <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">ارصده العملاء</th>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-customer-credit</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-customer-credit")}
+                            onChange={() => handleCheckboxChange("create-customer-credit")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">اضافة رصيد</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-customer-credit</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-customer-credit")}
+                            onChange={() => handleCheckboxChange("read-customer-credit")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">سجل الرصيد</td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-customer-credit</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-customer-credit")}
+                            onChange={() => handleCheckboxChange("update-customer-credit")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">تحديث رصيد </td>
+                      </tr>
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-customer-credit</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-customer-credit")}
+                            onChange={() => handleCheckboxChange("delete-customer-credit")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">حذف رصيد</td>
+                      </tr>
 
 
 

@@ -58,16 +58,18 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
 
    const [visibleDanger, setVisibleDanger] = useState(danger);
 
@@ -144,6 +146,8 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       onSuccess: () => {
         createReset();
             toggleCreateModal();
+        setOperationPerformed(true);
+
 
       },
     });
@@ -155,7 +159,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     editPost(route("customer.update", editingUser.id), {
       onSuccess: () => {
         editReset();
-        toggleEditModal();
+            toggleEditModal();
+        setOperationPerformed(true);
+
       },
     });
   };

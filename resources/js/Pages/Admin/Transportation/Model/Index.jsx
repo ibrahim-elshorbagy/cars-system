@@ -28,16 +28,18 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingModel, setEditingModel] = useState(null);
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
 
   const {
     data: createData,
@@ -105,7 +107,9 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
     if (window.confirm("هل انت متأكد من حذف الموديل ؟ ")) {
       router.delete(route("model.destroy", model.id), {
         onSuccess: (page) => {
-          setVisibleSuccess(page.props.success);
+              setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+              
         },
       });
     }
@@ -116,7 +120,9 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
     createPost(route("model.store"), {
       onSuccess: () => {
         createReset();
-        toggleCreateModal();
+            toggleCreateModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -126,7 +132,10 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
     editPost(route("model.update", editingModel.id), {
       onSuccess: () => {
         editReset();
-        toggleEditModal();
+            toggleEditModal();
+        setOperationPerformed(true);
+
+
       },
     });
   };
@@ -239,7 +248,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة موديل</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة موديل</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateModel}>
@@ -295,7 +304,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل الموديل</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الموديل</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditModel}>

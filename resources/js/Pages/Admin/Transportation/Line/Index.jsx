@@ -55,16 +55,19 @@ export default function Index({site_settings ,auth, lines, queryParams = null, s
   };
 
   const [visibleSuccess, setVisibleSuccess] = useState(success);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
-  useEffect(() => {
-    if (success) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
+    useEffect(() => {
+    if (success && operationPerformed) {
+        setVisibleSuccess(success);
+        const timer = setTimeout(() => {
         setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
+        setOperationPerformed(false);
+        }, 3000);
+        return () => clearTimeout(timer);
     }
-  }, [success]);
+    }, [success, operationPerformed]);
+
 
   const deleteLine = (line) => {
     if (!window.confirm("هل انت متأكد من حذف الخط الملاحي ؟ ")) {
@@ -72,7 +75,9 @@ export default function Index({site_settings ,auth, lines, queryParams = null, s
     }
     router.delete(route("line.destroy", line.id), {
       onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
+            setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+            
       },
     });
   };
@@ -110,6 +115,8 @@ export default function Index({site_settings ,auth, lines, queryParams = null, s
       onSuccess: () => {
         createReset();
         toggleCreateModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -120,7 +127,9 @@ export default function Index({site_settings ,auth, lines, queryParams = null, s
     editPost(route("line.update", editingLine.id), {
       onSuccess: () => {
         editReset();
-        toggleEditModal();
+            toggleEditModal();
+        setOperationPerformed(true);
+
       },
     });
   };
@@ -240,7 +249,7 @@ export default function Index({site_settings ,auth, lines, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة خط ملاحي</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة خط ملاحي</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateLine}>
@@ -296,7 +305,7 @@ export default function Index({site_settings ,auth, lines, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل الخط الملاحي</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الخط الملاحي</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditLine}>

@@ -7,6 +7,9 @@ import { Link } from "@inertiajs/react";
 import { SiSpringsecurity } from "react-icons/si";
 import { FaUser, FaGavel, FaMapMarkerAlt, FaShip, FaTruck, FaBuilding, FaCar, FaCogs } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
+import { TbArrowsTransferUp } from "react-icons/tb";
+import { PiToolboxThin } from "react-icons/pi";
+import { TbReportMoney } from "react-icons/tb";
 
 const MySidebar = ({ user, direction,site_settings }) => {
 
@@ -83,7 +86,7 @@ const MySidebar = ({ user, direction,site_settings }) => {
                 permissions: ["read-facility"],
             },
             {
-                text: "الماركات (Makes)",
+                text: "المركات (Makes)",
                 href: "make.index",
                 icon: <FaCar />,  // Car icon for makes
                 permissions: ["read-make"],
@@ -107,6 +110,30 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     href: "customer.index",
                     icon: <MdDashboard />,
                     permissions: ["read-customer"],
+                },
+                {
+                    text: "السيارات",
+                    href: "car.index",
+                    icon: <FaCar />,
+                    permissions: ["read-car"],
+                },
+                {
+                    text: "ارصده العملاء",
+                    href: "customer-credit.index",
+                    icon: <TbReportMoney  />,
+                    permissions: ["read-customer-credit"],
+                },
+                {
+                    text: "موجودات الصندوق",
+                    href: "box.index.transaction",
+                    icon: <PiToolboxThin  />,
+                    permissions: ["read-box-transaction"],
+                },
+                {
+                    text: "تحويلات",
+                    href: "box-transfer.index",
+                    icon: <TbArrowsTransferUp  />,
+                    permissions: ["read-box-transfer"],
                 },
             ],
             icon: <MdDashboard />,

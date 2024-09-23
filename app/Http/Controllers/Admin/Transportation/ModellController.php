@@ -17,7 +17,7 @@ class ModellController extends Controller
     {
         $query = Modell::query();
         if (request("name")) {
-            request()->merge(['page' => 1]);
+
             $query->where("name", "like", "%" . request("name") . "%");
         }
         $models = $query->with('make')->paginate(25)->onEachSide(1);
