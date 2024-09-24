@@ -40,6 +40,8 @@ class BoxTransactionResource extends JsonResource
                 'outcome' => $transaction->outcome,
                 'balance' => $runningBalance,
                 'created_at' => (new Carbon($transaction->created_at))->format('Y-m-d H:i:s'),
+                'created_by' => $transaction->createdBy->name ?? null,
+                'updated_by' => $transaction->updatedBy->name ?? null,
             ];
         });
 

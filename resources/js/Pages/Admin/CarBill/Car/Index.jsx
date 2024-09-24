@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/popover";
 import Input from "@/Components/ui/input";
 
-export default function Index({ auth,site_settings, cars,customers, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null, success,ErrorAlert }) {
+export default function Index({ auth,site_settings, cars,customers,boxeslist, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null, success,ErrorAlert }) {
   queryParams = queryParams || {};
 
     useEffect(() => {
@@ -170,6 +170,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
       setEditData({
             id: car.id,
             user_id: car.user_id,
+            box_id: car.box_id,
             chassis: car.chassis,
             title: car.title,
             keys: car.keys,
@@ -289,6 +290,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                       <th className="px-3 py-3">ID</th>
                       <th className="px-3 py-3">اسم العميل</th>
                       <th className="px-3 py-3">رقم الشاسيه</th>
+                      <th className="px-3 py-3">اضافه بواسطه</th>
+                      <th className="px-3 py-3">تحديث بواسطه</th>
                       <th className="px-3 py-3">الإجراءات</th>
                     </tr>
                   </thead>
@@ -314,6 +317,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                         />
                       </th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -326,6 +331,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                           <td className="px-3 py-2">{car.id}</td>
                           <td className="px-3 py-2 text-nowrap">{car.customer_name}</td>
                           <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.created_by}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.updated_by}</td>
                           <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-car") && (
                               <button
@@ -383,7 +390,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                             {/* Customer */}
 
-                            <div className="grid items-center justify-center grid-cols-9">
+                            <div className="grid items-center justify-center grid-cols-9 gap-3">
                                     <div className="flex col-span-2 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="user_id" value={"العميل"} />
                                         <ComboboxMakes
@@ -392,8 +399,27 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر العميل"
                                             emptyMessage="لا يوجد عملاء"
                                             />
-                                        <InputError message={createErrors.user_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                     </div>
+                                {!auth.user.roles.includes("Accountant") && boxeslist && boxeslist.length > 0 && (
+                                    <div className="flex col-span-2 gap-5">
+                                        <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="box_id" value={"الصندوق"} />
+                                        <SelectInput
+                                            id="box_id"
+                                            name="box_id"
+                                            onChange={(e) => setCreateData("box_id", e.target.value)}
+                                        >
+                                            <option value="">اختر</option>
+                                            {boxeslist.map((box) => (
+                                            <option value={box.id} key={box.id}>
+                                                {box.name}
+                                            </option>
+                                            ))}
+                                        </SelectInput>
+
+                                        <InputError message={'*'} className="mt-2 text-xl" />
+                                    </div>
+                                )}
                               </div>
 
                             {/* Chassis lot bookingNo */}
@@ -410,7 +436,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setCreateData("chassis", e.target.value)}
                                         />
-                                        <InputError message={createErrors.chassis} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
+                                        {/* <InputError message={createErrors.chassis} className="mt-2" /> */}
                                     </div>
                                   <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="lot" className="mt-2 text-xl text-nowrap" value={"lot/Sotok"} />
@@ -422,7 +449,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setCreateData("lot", e.target.value)}
                                         />
-                                        <InputError message={createErrors.lot} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                   </div>
                                    <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="bookingNo" className="mt-2 text-xl text-nowrap" value={"bookingNo"} />
@@ -434,7 +461,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setCreateData("bookingNo", e.target.value)}
                                         />
-                                        <InputError message={createErrors.bookingNo} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                   </div>
                               </div>
 
@@ -458,7 +485,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setCreateData("color", e.target.value)}
                                         />
-                                        <InputError message={createErrors.color} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                         <div className="flex col-span-2 gap-5">
                                         <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="year" value="السنه" />
@@ -471,7 +498,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setCreateData('year',e.target.value)}
                                         />
-                                            <InputError message={createErrors.year} className="mt-2" />
+                                            <InputError message={'*'} className="mt-2 text-xl"  />
                                   </div>
                                   <div>
                                         <div className="flex gap-5">
@@ -482,7 +509,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="w-6 h-6 rounded mt-0.5"
                                             onChange={(e) => setCreateData('keys', e.target.checked ? 1 : 0)}
                                         />
-                                            <InputError message={createErrors.keys} className="mt-2" />
+                                            <InputError message={'*'} className="mt-1 text-xl"  />
                                         </div>
                                     </div>
                                     <div>
@@ -494,7 +521,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="w-6 h-6 rounded mt-0.5"
                                             onChange={(e) => setCreateData('title', e.target.checked ? 1 : 0)}
                                         />
-                                            <InputError message={createErrors.title} className="mt-2" />
+                                            <InputError message={'*'} className="mt-1 text-xl"  />
                                         </div>
                                     </div>
                               </div>
@@ -516,7 +543,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر الماز"
                                             emptyMessage="لا يوجد مزادات"
                                             />
-                                        <InputError message={createErrors.vendor_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                     <div className="flex col-span-3 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="destination_id" value={"(Destination) الوجه"} />
@@ -527,7 +554,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر الوجه"
                                             emptyMessage="لا يوجد وحهات"
                                             />
-                                        <InputError message={createErrors.destination_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                     <div className="flex col-span-3 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="line_id" value={"(Shipping line) الخط الملاحي"} />
@@ -538,7 +565,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر الخط الملاحي"
                                             emptyMessage="لا يوجد خطوط ملاحيه"
                                             />
-                                        <InputError message={createErrors.line_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                             </div>
@@ -558,7 +585,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر المرفق"
                                             emptyMessage="لا يوجد مرافق"
                                             />
-                                        <InputError message={createErrors.facility_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                     <div className="flex col-span-3 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="terminal_id" value={"(Terminal) محطة الشحن"} />
@@ -569,7 +596,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر محطة الشحن"
                                             emptyMessage="لا يوجد محطات شحن"
                                             />
-                                        <InputError message={createErrors.terminal_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
 
@@ -591,7 +618,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر المركه"
                                             emptyMessage="لا يوجد مركات"
                                             />
-                                        <InputError message={createErrors.make_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                     </div>
 
                                     <div className="flex col-span-3 gap-5">
@@ -603,7 +630,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر المرفق"
                                             emptyMessage="لا يوجد مرافق"
                                             />
-                                        <InputError message={createErrors.model_id} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                     </div>
 
                               </div>
@@ -628,7 +655,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setCreateData("date_won", e.target.value)}
                                         />
-                                        <InputError message={createErrors.date_won} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                   <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="estimate_arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول المقدر"} />
@@ -641,7 +668,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setCreateData("estimate_arrival_date", e.target.value)}
                                         />
-                                        <InputError message={createErrors.estimate_arrival_date} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                   </div>
                                    <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول"} />
@@ -654,7 +681,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setCreateData("arrival_date", e.target.value)}
                                         />
-                                        <InputError message={createErrors.arrival_date} className="mt-2" />
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                   </div>
                                 </div>
 
@@ -665,17 +692,17 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                               <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
 
                                     <div className="flex col-span-2 gap-5">
-                                        <InputLabel htmlFor="won_pirce" className="mt-2 text-xl text-nowrap" value={"(Won Price) سعر الشراء "} />
+                                        <InputLabel htmlFor="won_price" className="mt-2 text-xl text-nowrap" value={"(Won Price) سعر الشراء "} />
                                         <TextInput
-                                            id="won_pirce"
+                                            id="won_price"
                                             type="number"
-                                            name="won_pirce"
-                                            value={createData.won_pirce}
+                                            name="won_price"
+                                            value={createData.won_price}
                                             className="block w-full mt-1"
 
-                                            onChange={(e) => setCreateData("won_pirce", e.target.value)}
+                                            onChange={(e) => setCreateData("won_price", e.target.value)}
                                         />
-                                        <InputError message={createErrors.won_pirce} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                                     <div className="flex col-span-2 gap-5">
@@ -689,7 +716,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setCreateData("shipping_cost", e.target.value)}
                                         />
-                                        <InputError message={createErrors.shipping_cost} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
 
                                     <div className="flex col-span-2 gap-5">
@@ -708,7 +735,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             </option>
                                             ))}
                                         </SelectInput>
-                                        <InputError message={createErrors.ship_status} />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
 
 
@@ -764,7 +791,13 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                     ))}
                                 </div>
 
-
+                            <div>
+                                <ul className="mt-2 text-red-600 list-disc list-inside">
+                                    {Object.keys(createErrors).map((key) => (
+                                        <li key={key}>{createErrors[key]}</li>
+                                    ))}
+                                </ul>
+                            </div>
 
 
 
@@ -811,10 +844,9 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             <div className="p-6">
                           <form onSubmit={handleEditCar}>
 
-
                               {/* Customer */}
 
-                            <div className="grid items-center justify-center grid-cols-9">
+                            <div className="grid items-center justify-center grid-cols-9 gap-3">
                                     <div className="flex col-span-2 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="user_id" value={"العميل"} />
                                         <ComboboxMakes
@@ -824,8 +856,28 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر العميل"
                                             emptyMessage="لا يوجد عملاء"
                                             />
-                                        <InputError message={editErrors.user_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
+                                  </div>
+                                {!auth.user.roles.includes("Accountant") && boxeslist && boxeslist.length > 0 && (
+                                    <div className="flex col-span-2 gap-5">
+                                        <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="box_id" value={"الصندوق"} />
+                                        <SelectInput
+                                            id="box_id"
+                                              name="box_id"
+                                              value={editData.box_id}
+                                            onChange={(e) => setEditData("box_id", e.target.value)}
+                                        >
+                                            <option value="">اختر</option>
+                                            {boxeslist.map((box) => (
+                                            <option value={box.id} key={box.id}>
+                                                {box.name}
+                                            </option>
+                                            ))}
+                                        </SelectInput>
+
+                                        <InputError message={editErrors.box_id} className="mt-2" />
                                     </div>
+                                )}
                               </div>
 
                             {/* Chassis lot bookingNo */}
@@ -843,7 +895,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setEditData("chassis", e.target.value)}
                                         />
-                                        <InputError message={editErrors.chassis} className="mt-2" />
+                                        {/* <InputError message={editErrors.chassis} className="mt-2" /> */}
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                     </div>
                                   <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="edit_lot" className="mt-2 text-xl text-nowrap" value={"lot/Sotok"} />
@@ -857,7 +910,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setEditData("lot", e.target.value)}
                                         />
-                                        <InputError message={editErrors.lot} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                   </div>
                                    <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="edit_bookingNo" className="mt-2 text-xl text-nowrap" value={"bookingNo"} />
@@ -871,7 +924,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setEditData("bookingNo", e.target.value)}
                                         />
-                                        <InputError message={editErrors.bookingNo} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                   </div>
                               </div>
 
@@ -896,7 +949,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setEditData("color", e.target.value)}
                                         />
-                                        <InputError message={editErrors.color} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
                                         <div className="flex col-span-2 gap-5">
                                         <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="edit_year" value="السنه" />
@@ -910,7 +963,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setEditData('year',e.target.value)}
                                         />
-                                            <InputError message={editErrors.year} className="mt-2" />
+                                            <InputError  message={'*'} className="mt-2 text-xl" />
                                   </div>
                                   <div>
                                         <div className="flex gap-5">
@@ -923,7 +976,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="w-6 h-6 rounded mt-0.5"
                                             onChange={(e) => setEditData('keys', e.target.checked ? 1 : 0)}
                                         />
-                                            <InputError message={editErrors.keys} className="mt-2" />
+                                            <InputError  message={'*'} className="mt-1 text-xl " />
                                         </div>
                                     </div>
                                     <div>
@@ -936,7 +989,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="w-6 h-6 rounded mt-0.5"
                                             onChange={(e) => setEditData('title', e.target.checked ? 1 : 0)}
                                         />
-                                            <InputError message={editErrors.title} className="mt-2" />
+                                            <InputError  message={'*'} className="mt-1 text-xl" />
                                         </div>
                                     </div>
                               </div>
@@ -960,7 +1013,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر الماز"
                                             emptyMessage="لا يوجد مزادات"
                                             />
-                                        <InputError message={editErrors.vendor_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
                                     <div className="flex col-span-3 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_destination_id" value={"(Destination) الوجه"} />
@@ -973,7 +1026,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر الوجه"
                                             emptyMessage="لا يوجد وحهات"
                                             />
-                                        <InputError message={editErrors.destination_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
                                     <div className="flex col-span-3 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_line_id" value={"(Shipping line) الخط الملاحي"} />
@@ -986,7 +1039,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر الخط الملاحي"
                                             emptyMessage="لا يوجد خطوط ملاحيه"
                                             />
-                                        <InputError message={editErrors.line_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                             </div>
@@ -1008,7 +1061,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر المرفق"
                                             emptyMessage="لا يوجد مرافق"
                                             />
-                                        <InputError message={editErrors.facility_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                     <div className="flex col-span-3 gap-5">
                                         <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_terminal_id" value={"(Terminal) محطة الشحن"} />
@@ -1021,7 +1074,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر محطة الشحن"
                                             emptyMessage="لا يوجد محطات شحن"
                                             />
-                                        <InputError message={editErrors.terminal_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
 
 
@@ -1045,7 +1098,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر المركه"
                                             emptyMessage="لا يوجد مركات"
                                             />
-                                        <InputError message={editErrors.make_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                     </div>
 
                                     <div className="flex col-span-3 gap-5">
@@ -1059,7 +1112,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             placeholder="اختر المرفق"
                                             emptyMessage="لا يوجد مرافق"
                                             />
-                                        <InputError message={editErrors.model_id} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                               </div>
@@ -1085,7 +1138,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setEditData("date_won", e.target.value)}
                                         />
-                                        <InputError message={editErrors.date_won} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                   <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="edit_estimate_arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول المقدر"} />
@@ -1099,7 +1152,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setEditData("estimate_arrival_date", e.target.value)}
                                         />
-                                        <InputError message={editErrors.estimate_arrival_date} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                   </div>
                                    <div className="flex col-span-2 gap-5">
                                         <InputLabel htmlFor="edit_arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول"} />
@@ -1113,7 +1166,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                             onChange={(e) => setEditData("arrival_date", e.target.value)}
                                         />
-                                        <InputError message={editErrors.arrival_date} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl" />
                                   </div>
                                 </div>
 
@@ -1124,17 +1177,17 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                               <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
 
                                     <div className="flex col-span-2 gap-5">
-                                        <InputLabel htmlFor="edit_won_pirce" className="mt-2 text-xl text-nowrap" value={"(Won Price) سعر الشراء "} />
+                                        <InputLabel htmlFor="edit_won_price" className="mt-2 text-xl text-nowrap" value={"(Won Price) سعر الشراء "} />
                                         <TextInput
-                                            id="edit_won_pirce"
+                                            id="edit_won_price"
                                             type="number"
-                                            name="won_pirce"
-
+                                            name="won_price"
+                                            value={editData.won_price}
                                             className="block w-full mt-1"
 
-                                            onChange={(e) => setEditData("won_pirce", e.target.value)}
+                                            onChange={(e) => setEditData("won_price", e.target.value)}
                                         />
-                                        <InputError message={editErrors.won_pirce} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                                     <div className="flex col-span-2 gap-5">
@@ -1144,10 +1197,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             type="number"
                                             name="shipping_cost"
                                             className="block w-full mt-1"
-
+                                            value={editData.shipping_cost}
                                             onChange={(e) => setEditData("shipping_cost", e.target.value)}
                                         />
-                                        <InputError message={editErrors.shipping_cost} className="mt-2" />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                                     <div className="flex col-span-2 gap-5">
@@ -1166,7 +1219,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             </option>
                                             ))}
                                         </SelectInput>
-                                        <InputError message={editErrors.ship_status} />
+                                        <InputError message={'*'} className="mt-2 text-xl"  />
                                     </div>
 
                               </div>
@@ -1201,7 +1254,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                     name="images"
                                     multiple
                                     className="block w-full mt-1"
-                                    onChange={handleEditImageSelect}  // Handle multiple files
+                                    onChange={handleEditImageSelect}
                                 />
                                 <InputError message={editErrors.images} className="mt-2" />
                             </div>
@@ -1237,6 +1290,13 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                 ))}
                             </div>
 
+                            <div>
+                                <ul className="mt-2 text-red-600 list-disc list-inside">
+                                    {Object.keys(editErrors).map((key) => (
+                                        <li key={key}>{editErrors[key]}</li>
+                                    ))}
+                                </ul>
+                            </div>
                         <div className="flex justify-end gap-2">
                         <button
                             type="button"

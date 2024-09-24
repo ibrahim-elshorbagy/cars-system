@@ -144,7 +144,7 @@ export default function Show({ auth, site_settings, car }) {
                                     View Carfax Report
                                 </a>
                             ) : (
-                                <p>No Carfax report available</p>
+                                <p> لا يوجد</p>
                     )}
                     </td>
                     </tr>

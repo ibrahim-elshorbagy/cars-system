@@ -169,7 +169,22 @@ useEffect(() => {
     //---------------------------------------------------------
 
   return (
-    <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
+      <AuthenticatedLayout user={auth.user} site_settings={site_settings}
+            header={
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+            تحويلات الصناديق
+          </h2>
+          {auth.user.permissions.includes("create-box-transfer") && (
+            <button
+              onClick={toggleCreateModal}
+              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+            >
+              تحويلات الصناديق
+            </button>
+          )}
+        </div>
+      }>
       <Head title={site_settings.websiteName + " - " + "تحويلات الصناديق"} />
 
       <div className="py-12">
@@ -186,17 +201,7 @@ useEffect(() => {
           )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
-              <div className="flex justify-between">
-                <h2 className="text-xl font-semibold">تحويلات الصناديق</h2>
-                              {auth.user.permissions.includes("create-box-transfer") && (
-                            <button
-                            onClick={toggleCreateModal}
-                            className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
-                            >
-                            تحويل
-                            </button>
-                )}
-              </div>
+
 
               <div className="mt-6">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
@@ -205,6 +210,9 @@ useEffect(() => {
                       <th className="px-3 py-3">من الصندوق</th>
                       <th className="px-3 py-3">إلى الصندوق</th>
                       <th className="px-3 py-3">القيمة</th>
+                      <th className="px-3 py-3">اضافه بواسطه</th>
+                      <th className="px-3 py-3">تحديث بواسطه</th>
+
                       <th className="px-3 py-3">الإجراءات</th>
                     </tr>
                   </thead>
@@ -215,6 +223,8 @@ useEffect(() => {
                           <td className="px-3 py-3 text-nowrap">{transfer.from_box.name}</td>
                           <td className="px-3 py-3 text-nowrap">{transfer.to_box.name}</td>
                           <td className="px-3 py-3 text-nowrap">{transfer.amount}</td>
+                          <td className="px-3 py-3 text-nowrap">{transfer.created_by.name}</td>
+                          <td className="px-3 py-3 text-nowrap">{transfer.updated_by ? transfer.updated_by.name : '' }</td>
 
                             <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-box-transfer") && (
@@ -304,7 +314,7 @@ useEffect(() => {
                                 </option>
                                 ))}
                             </SelectInput>
-                            <InputError message={createErrors.to_box_id} />
+                            <InputError  message={createErrors.to_box_id} />
                             </div>
                         </div>
 
@@ -319,7 +329,7 @@ useEffect(() => {
                       value={createData.amount}
                       onChange={(e) => setCreateData("amount", e.target.value)}
                     />
-                    <InputError message={createErrors.amount} />
+                    <InputError className="mt-2" message={createErrors.amount} />
                   </div>
 
 
@@ -360,7 +370,7 @@ useEffect(() => {
                         ) : (
                         boxes.map((box) => (
                             <option value={box.id} key={box.id}>
-                            {box.name}
+                            {box.name} - {box.balance}
                             </option>
                         ))
                         )}
@@ -397,7 +407,7 @@ useEffect(() => {
                       value={editData.amount}
                       onChange={(e) => setEditData("amount", e.target.value)}
                     />
-                    <InputError message={editErrors.amount} />
+                    <InputError className="mt-2" message={editErrors.amount} />
                   </div>
 
                 <div className="flex justify-end gap-3 mt-4">

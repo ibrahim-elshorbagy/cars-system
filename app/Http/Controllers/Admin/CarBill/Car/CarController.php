@@ -5,8 +5,14 @@ namespace App\Http\Controllers\Admin\CarBill\Car;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Car\CarStore;
 use App\Http\Requests\Admin\car\CarUpdate;
-use App\Http\Resources\Admin\CarBill\Car\CarResource;
 use App\Http\Resources\Admin\CarBill\Car\ShowCarResource;
+
+
+use App\Models\Admin\Bill\Bill;
+use App\Models\Admin\Box\Box;
+use Illuminate\Support\Facades\Auth;
+
+
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Admin\Car\Car;
@@ -28,7 +34,7 @@ class CarController extends Controller
     public function index()
     {
 
-        $query = Car::with('user')->orderBy("id", "desc");
+        $query = Car::with('user','bill')->orderBy("id", "desc");
 
         if (request("chassis")) {
             $query->where("chassis", "like", "%" . request("chassis") . "%");
@@ -51,6 +57,8 @@ class CarController extends Controller
         $models = Modell::all();
         $shipStatus =ShipStatus::all();
         $customers = User::role('customer')->select('id','name')->get();
+        $boxeslist = Box::all();
+
 
         return inertia("Admin/CarBill/Car/Index", [
 
@@ -59,6 +67,9 @@ class CarController extends Controller
             'success' => session('success'),
             'danger' => session('danger'),
 
+            'customers'=>$customers,
+            'boxeslist' => $boxeslist,
+
             'vendors'   =>$vendors,
             'destinations'=>$destinations,
             'lines'=>$lines,
@@ -66,7 +77,6 @@ class CarController extends Controller
             'terminals'=>$terminals,
             'makes'=>$makes,
             'models'=>$models,
-            'customers'=>$customers,
 
             'shipStatus'=>$shipStatus,
 
@@ -82,10 +92,28 @@ class CarController extends Controller
     }
 
     public function store(CarStore $request){
+
         DB::beginTransaction();
+        $data = $request->validated();
         try {
             // Save the Car
-            $car = Car::create($request->validated());
+            $data['created_by']=Auth::user()->id;
+            $car = Car::create($data);
+
+            if (Auth::user()->hasRole('Accountant')) {
+
+                $data['box_id'] = Auth::user()->accountant->box_id;
+
+            }
+
+            Bill::create([
+                'car_id'=>$car->id,
+                'box_id'=>$data['box_id'],
+                'user_id'=>$data['user_id'],
+                'won_price'=>$data['won_price'],
+                'shipping_cost'=>$data['shipping_cost'],
+                'created_by'=>Auth::user()->id
+            ]);
 
             // Handle Carfax report upload
             if ($request->hasFile('carfax_report')) {
@@ -115,7 +143,8 @@ class CarController extends Controller
             return redirect()->route('car.index')->with('success', 'تم اضافة السياره بنجاح');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['ErrorAlert' => 'حدث خطأ غير متوقع: ' . $e->getMessage()]);
+
+            return back()->with('ErrorAlert' , $e->getMessage());
         }
 
     }
@@ -124,8 +153,18 @@ class CarController extends Controller
     {
         DB::beginTransaction();
         $data =$request->validated();
+        $data['updated_by']=Auth::user()->id;
+        $bill = $car->bill;
         try {
 
+            $bill->update([
+                'box_id'=>$data['box_id'],
+                'user_id'=>$data['user_id'],
+                'won_price'=>$data['won_price'],
+                'shipping_cost'=>$data['shipping_cost'],
+                'updated_by'=>Auth::user()->id
+
+            ]);
 
             // 1. Handle Carfax report upload
             if ($request->hasFile('carfax_report')) {
@@ -148,7 +187,6 @@ class CarController extends Controller
                 // If old_images_url is present, keep those, otherwise delete from the server
                 if ($request->filled('old_images_url')) {
                     $oldImagesUrl = $request->input('old_images_url');
-                    // dd($oldImagesUrl);
                     // Find images that are in the database but not in the old_images_url array (i.e., deleted by the user)
                     $imagesToDelete = array_diff($existingImages, $oldImagesUrl);
                     // Delete these images from the storage and the database
@@ -198,7 +236,8 @@ class CarController extends Controller
         } catch (\Exception $e) {
             // Rollback the transaction in case of error
             DB::rollBack();
-            return back()->withErrors(['ErrorAlert' => 'حدث خطأ غير متوقع: ' . $e->getMessage()]);
+
+            return back()->with('ErrorAlert' , $e->getMessage());
         }
     }
 

@@ -23,6 +23,7 @@ class CarUpdate extends FormRequest
     {
         return [
             'user_id' => 'required|numeric',
+
             'chassis' => 'required|string',
             'lot' => 'required|string',
             'bookingNo' => 'required|string',
@@ -40,13 +41,17 @@ class CarUpdate extends FormRequest
             'date_won' => 'required|date',
             'estimate_arrival_date' => 'required|date',
             'arrival_date' => 'required|date',
-            'won_price' => 'nullable|numeric|min:0',
-            'shipping_cost' => 'nullable|numeric|min:0',
-            'ship_status' => 'required|string',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,gif',  // Validation for new images
             'old_images_url' => 'nullable|array', // Validate the old images as an array
             'old_images_url.*' => 'string', // Each old image URL must be a string
             'carfax_report' => $this->carfax_report_is_file() ? 'nullable|mimes:pdf' : 'nullable|string',
+
+            'box_id'=>'nullable|exists:boxes,id',
+            'shipping_cost' => 'required|numeric|min:0',
+            'won_price' => 'required|numeric|min:0',
+            'ship_status' => 'required|string',
+
+
         ];
     }
     protected function carfax_report_is_file()

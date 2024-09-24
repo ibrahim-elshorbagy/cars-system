@@ -14,16 +14,17 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('car_id')->constrained('cars');
-            $table->decimal('amount', 10, 2)->nullable();
-            $table->string('type')->nullable(); //ship cost or won price
+            $table->foreignId('user_id')->constrained('users');
+
+            $table->decimal('shipping_cost', 10, 2)->nullable();
+            $table->decimal('won_price', 10, 2)->nullable();
+
             $table->foreignId('box_id')->constrained('boxes');
 
-            // Created and updated by
-            // $table->foreignId('created_by')->constrained('users');
-            // $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
 
             $table->timestamps();
-
         });
     }
 

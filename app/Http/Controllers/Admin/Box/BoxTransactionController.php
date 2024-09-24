@@ -48,6 +48,6 @@ class BoxTransactionController extends Controller
 
 
 
-    
+
 
 }

@@ -8,8 +8,9 @@ import { SiSpringsecurity } from "react-icons/si";
 import { FaUser, FaGavel, FaMapMarkerAlt, FaShip, FaTruck, FaBuilding, FaCar, FaCogs } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { TbArrowsTransferUp } from "react-icons/tb";
-import { PiToolboxThin } from "react-icons/pi";
 import { TbReportMoney } from "react-icons/tb";
+import { RiBillFill } from "react-icons/ri";
+import { PiBagSimpleFill } from "react-icons/pi";
 
 const MySidebar = ({ user, direction,site_settings }) => {
 
@@ -118,6 +119,12 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     permissions: ["read-car"],
                 },
                 {
+                    text: "تسديد الذمم",
+                    href: "bill-payment.index",
+                    icon: <RiBillFill  />,
+                    permissions: ["read-bill"],
+                },
+                {
                     text: "ارصده العملاء",
                     href: "customer-credit.index",
                     icon: <TbReportMoney  />,
@@ -126,7 +133,7 @@ const MySidebar = ({ user, direction,site_settings }) => {
                 {
                     text: "موجودات الصندوق",
                     href: "box.index.transaction",
-                    icon: <PiToolboxThin  />,
+                    icon: <PiBagSimpleFill  />,
                     permissions: ["read-box-transaction"],
                 },
                 {

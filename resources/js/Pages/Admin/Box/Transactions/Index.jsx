@@ -103,6 +103,8 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
                     <th>الخارج</th>
                     <th>الرصيد</th>
                     <th>الوصف</th>
+                    <th>تم بواسطه</th>
+                    <th>تحديث بواسطه</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -114,6 +116,8 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
                         <td className="px-3 py-2">{transaction.outcome}</td>
                         <td className="px-3 py-2">{transaction.balance}</td>
                         <td className="px-3 py-2">{transaction.description}</td>
+                        <td className="px-3 py-2">{transaction.created_by}</td>
+                        <td className="px-3 py-2">{transaction.updated_by}</td>
                       </tr>
                     ))
                   ) : (

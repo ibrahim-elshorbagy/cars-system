@@ -5,7 +5,12 @@ namespace App\Models\Admin\Bill;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BillPayment extends Model
+class PaymentBill extends Model
 {
     use HasFactory;
+            protected $guarded = ['id'];
+
+    public function bill(){
+        return $this->belongsTo(Bill::class);
+    }
 }

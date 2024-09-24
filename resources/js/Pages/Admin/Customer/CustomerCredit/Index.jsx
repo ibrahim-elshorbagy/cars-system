@@ -131,7 +131,7 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
         onSuccess: (page) => {
               setVisibleSuccess(page.props.success);
         setOperationPerformed(true);
-              
+
         },
       });
     }
@@ -204,7 +204,12 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                       <th className="px-3 py-3">اسم العميل</th>
                       <th className="px-3 py-3">القيمة المضافه</th>
                       <th className="px-3 py-3">القيمة المستخدمه</th>
+                      <th>الرصيد</th>
                       <th className="px-3 py-3">الوصف</th>
+                      <th className="px-3 py-3">الصندوق</th>
+                      <th className="px-3 py-3">اضافه بواسطه</th>
+                      <th className="px-3 py-3">تحديث بواسطه</th>
+
                       <th className="px-3 py-3">الاجراءات</th>
                     </tr>
                   </thead>
@@ -224,6 +229,10 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -237,9 +246,13 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                           <td className="px-3 py-2 text-nowrap">{record.customer_name}</td>
                           <td className="px-3 py-2 text-nowrap">{record.added_credit}</td>
                           <td className="px-3 py-2 text-nowrap">{record.used_credit}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.balance}</td>
                           <td className="px-3 py-2 text-nowrap">{record.description}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.box_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.created_by}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.updated_by}</td>
                           <td className="px-3 py-2 text-nowrap">
-                            {auth.user.permissions.includes("update-customer-credit") && (
+                            {auth.user.permissions.includes("update-customer-credit") && !record.cant &&(
                               <button
                                 onClick={() => toggleEditModal(record)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -247,7 +260,7 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-customer-credit") && (
+                            {auth.user.permissions.includes("delete-customer-credit") &&  !record.cant && (
                               <button
                                 onClick={() => deleteRecord(record)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"

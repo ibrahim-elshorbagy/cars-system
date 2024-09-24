@@ -21,7 +21,7 @@ class CarStore extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules =  [
             'user_id' => 'required|numeric',
             'chassis' => 'required|string',
             'lot' => 'required|string',
@@ -40,11 +40,20 @@ class CarStore extends FormRequest
             'date_won' => 'required|date',
             'estimate_arrival_date' => 'required|date',
             'arrival_date' => 'required|date',
-            'won_pirce' => 'required|numeric|min:0',
-            'shipping_cost' => 'required|numeric|min:0',
             'ship_status' => 'required|string',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,gif',
             'carfax_report' => 'nullable|mimes:pdf',
+
+            'won_price' => 'required|numeric|min:0',
+            'shipping_cost' => 'required|numeric|min:0',
+
         ];
+
+        if (!auth()->user()->hasRole('Accountant')) {
+            $rules['box_id'] = 'required|exists:boxes,id';
+        }
+        
+        return $rules;
+
     }
 }

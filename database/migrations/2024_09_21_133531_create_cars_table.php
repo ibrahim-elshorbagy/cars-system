@@ -37,9 +37,8 @@ return new class extends Migration
                 $table->date('estimate_arrival_date')->nullable();
                 $table->date('arrival_date')->nullable();
 
-                // // Created and updated by
-                // $table->foreignId('created_by')->nullable()->constrained('users');
-                // $table->foreignId('updated_by')->nullable()->constrained('users');
+                $table->foreignId('created_by')->constrained('users');
+                $table->foreignId('updated_by')->nullable()->constrained('users');
 
                 $table->timestamps();
 

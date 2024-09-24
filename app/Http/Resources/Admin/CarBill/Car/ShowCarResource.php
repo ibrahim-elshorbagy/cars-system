@@ -15,6 +15,7 @@ class ShowCarResource extends JsonResource
         return [
             'id' => $this->id ,
             'user_id' => $this->user_id ?? null,
+            'box_id' => $this->bill->box_id ?? null,
             'title'=>$this->title ?? null,
             'keys'=>$this->keys ?? null,
             'lot'=>$this->lot ?? null,
@@ -41,12 +42,15 @@ class ShowCarResource extends JsonResource
             'carfax_report' => $this->carfax_report ?? null,
             'images' => $this->carImages->pluck('image_url') ?? [],
             'ship_status' => $this->ship_status ?? null,
-            'won_price' => $this->won_pirce ?? null,
-            'shipping_cost' => $this->shipping_cost ?? null,
+            'won_price' => $this->bill->won_price ?? null,
+            'shipping_cost' => $this->bill->shipping_cost ?? null,
             'estimate_arrival_date' => $this->estimate_arrival_date ?? null,
             'arrival_date' => $this->arrival_date ?? null,
             'date_won' => $this->date_won ?? null,
-            'carfax_report_url'=> Storage::url($this->carfax_report)  ?? null,
+            'carfax_report_url' => $this->carfax_report ? Storage::url($this->carfax_report) : null,
+
+            'created_by' => $this->createdBy->name ?? null,
+            'updated_by' => $this->updatedBy->name ?? null,
         ];
     }
 }

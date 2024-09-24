@@ -36,7 +36,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'model',
 
             'car',
-            
+            'billPayment',
+
             // ------------------------------ End Admin CRUD ------------------------------
 
 
@@ -56,7 +57,6 @@ class RolesAndPermissionsSeeder extends Seeder
             //Only System Admin
             //permisions
             'view-admin-dashboard',
-            'for-SystemAdmin-manage-users',
             'for-SystemAdmin-manage-roles-permissions',
 
             //Reports
@@ -68,7 +68,9 @@ class RolesAndPermissionsSeeder extends Seeder
             //customer
             'for-customer-view-dashboard',
 
-
+            //bills
+            'read-bill',
+            'customers-bills', //customers bills  report
 
         ];
 

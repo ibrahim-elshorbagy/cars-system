@@ -18,6 +18,10 @@ return new class extends Migration
             $table->decimal('outcome', 10, 2)->default(0.00);
             $table->text('description')->nullable();
             $table->timestamps();
+
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+
         });
     }
 

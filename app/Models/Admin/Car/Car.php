@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin\Car;
 
+use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Transportation\Destination;
 use App\Models\Admin\Transportation\Facility;
 use App\Models\Admin\Transportation\Line;
@@ -61,5 +62,16 @@ class Car extends Model
     public function carImages()
     {
         return $this->hasMany(CarImage::class);
+    }
+
+    public function bill(){
+        return $this->hasOne(Bill::class);
+    }
+
+    public function createdBy(){
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function updatedBy(){
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

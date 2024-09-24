@@ -3,6 +3,7 @@
 
 // use App\Http\Controllers\Product\ModelController;
 
+use App\Http\Controllers\Admin\CarBill\Bill\BillController;
 use App\Http\Controllers\Admin\CarBill\Car\CarController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,14 +24,42 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     Route::group(['middleware' => ['permission:update-car']], function () {
-        Route::put('/car/update/{car}', [CarController::class, 'update'])->name('car.update');
+        Route::put('/car/update/{car}', [CarController::class, 'update'])->name('car.update');  //create car + bill
     });
 
     Route::group(['middleware' => ['permission:delete-car']], function () {
-        Route::delete('/car/delete/{car}', [CarController::class, 'destroy'])->name('car.destroy');
+        Route::delete('/car/delete/{car}', [CarController::class, 'destroy'])->name('car.destroy'); //destroy car + No bill destory
     });
 
 });
 
-//--------------------------------------------------------------------------------------------- Cars
 
+//--------------------------------------------------------------------------------------------- Bill Payments
+
+Route::group(['prefix' => 'admin/bills'], function () {
+
+    Route::group(['middleware' => ['permission:read-bill']], function () {
+
+        Route::get('/bill-Payments', [BillController::class, 'index'])->name('bill-payment.index');
+
+    });
+
+    Route::group(['middleware' => ['permission:create-billPayment']], function () {
+        Route::post('/bill-Payment', [BillController::class, 'store'])->name('bill-payment.store');
+    });
+
+    Route::group(['middleware' => ['permission:update-billPayment']], function () {
+        Route::put('/bill-Payment/update/{payment}', [BillController::class, 'update'])->name('bill-payment.update');
+    });
+
+    Route::group(['middleware' => ['permission:delete-billPayment']], function () {
+        Route::delete('/bill-Payment/delete/{payment}', [BillController::class, 'destroy'])->name('bill-payment.destroy');
+    });
+
+
+    Route::group(['middleware' => ['permission:customers-bills']], function () {
+
+        Route::delete('/report/customers-bills/', [BillController::class, 'destroy'])->name('customers-bills.index');
+
+    });
+});

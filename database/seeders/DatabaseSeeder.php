@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Admin\Box\Box;
 use App\Models\Admin\Transportation\ShipStatus;
 use App\Models\User;
+use CarSeeder;
 use Database\Seeders\Admin\SiteSetting\SettingSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

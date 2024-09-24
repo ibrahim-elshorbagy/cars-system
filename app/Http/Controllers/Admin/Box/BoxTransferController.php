@@ -56,7 +56,7 @@ class BoxTransferController extends Controller
         });
 
         // Get the list of transfers with pagination
-        $transfers = $query->with(['fromBox', 'toBox'])->orderBy('created_at', 'desc')->paginate(10);
+        $transfers = $query->with(['fromBox', 'toBox','createdBy:id,name', 'updatedBy:id,name'])->orderBy('created_at', 'desc')->paginate(10);
 
         // Return the view with transfers and boxes for selection
         return inertia("Admin/Box/Transfers/Index", [
@@ -80,7 +80,21 @@ class BoxTransferController extends Controller
         $data = $request->validate([
             'from_box_id' => ['required', 'exists:boxes,id'],
             'to_box_id' => ['required', 'exists:boxes,id', 'different:from_box_id'],
-            'amount' => ['required', 'numeric', 'min:1'],
+            'amount' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Get the current balance of the from_box
+                    $fromBoxBalance = BoxTransaction::where('box_id', $request->from_box_id)
+                        ->sum(DB::raw('income - outcome'));
+
+                    // Check if the balance is sufficient
+                    if ($fromBoxBalance < $value) {
+                        $fail('رصيد الصندوق غير كافٍ لإجراء التحويل.');
+                    }
+                }
+            ],
         ]);
 
         // If the user has the Accountant role, restrict the from_box to their assigned box
@@ -93,15 +107,6 @@ class BoxTransferController extends Controller
             }
         }
 
-        // Get the current balance of the from_box
-        $fromBoxBalance = BoxTransaction::where('box_id', $data['from_box_id'])
-            ->sum(DB::raw('income - outcome'));
-
-        // Check if the balance is sufficient
-        if ($fromBoxBalance < $data['amount']) {
-            return back()->with('danger', 'رصيد الصندوق غير كافٍ لإجراء التحويل.');
-        }
-
         // Start a database transaction
         DB::beginTransaction();
 
@@ -112,6 +117,7 @@ class BoxTransferController extends Controller
                 'box_id' => $data['from_box_id'],
                 'outcome' => $data['amount'],
                 'description' => ' تم تحويل مبلغ ' . $data['amount'] . ' إلى ' . $toBox,
+                'created_by' => Auth::id(),
             ]);
 
             // Create the income transaction for the to_box
@@ -120,6 +126,8 @@ class BoxTransferController extends Controller
                 'box_id' => $data['to_box_id'],
                 'income' => $data['amount'],
                 'description' => ' تم استلام مبلغ ' . $data['amount'] . ' من ' . $fromBox,
+                'created_by' => Auth::id(),
+
             ]);
 
             // Save the transfer record
@@ -127,6 +135,8 @@ class BoxTransferController extends Controller
                 'from_box_id' => $data['from_box_id'],
                 'to_box_id' => $data['to_box_id'],
                 'amount' => $data['amount'],
+                'created_by' => Auth::id(),
+
             ]);
 
             // Commit the transaction
@@ -139,7 +149,7 @@ class BoxTransferController extends Controller
             // Rollback the transaction in case of an error
             DB::rollBack();
 
-            // Return an error message with the exception details
+
             return back()->with('danger', 'حدث خطأ أثناء تحويل المبلغ: ' . $e->getMessage());
         }
     }
@@ -158,7 +168,30 @@ class BoxTransferController extends Controller
         $data = $request->validate([
             'from_box_id' => ['required', 'exists:boxes,id'],
             'to_box_id' => ['required', 'exists:boxes,id', 'different:from_box_id'],
-            'amount' => ['required', 'numeric', 'min:1'],
+            'amount' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) use ($request, $record) {
+                    // The current transaction (BoxTransfer) is stored in $record
+
+                    // Exclude the current transfer amount from the balance calculation
+                    $existingAmount = $record->amount;
+
+                    // Get the current balance of the from_box, excluding the current transfer if applicable
+                    $fromBoxBalance = BoxTransaction::where('box_id', $request->from_box_id)
+                        ->where('id', '!=', $record->id) // Exclude the current transaction
+                        ->sum(DB::raw('income - outcome'));
+
+                    // Add back the existing transfer amount, since we are editing this transaction
+                    $fromBoxBalance += $existingAmount;
+
+                    // Check if the balance is sufficient
+                    if ($fromBoxBalance < $value) {
+                        $fail('رصيد الصندوق غير كافٍ لإجراء التحويل.');
+                    }
+                }
+            ],
         ]);
 
         // If the user has the Accountant role, restrict the from_box to their assigned box
@@ -171,39 +204,17 @@ class BoxTransferController extends Controller
             }
         }
 
-
-         // Get the current balance of the from_box
-        $fromBoxBalance = BoxTransaction::where('box_id', $data['from_box_id'])
-            ->sum(DB::raw('income - outcome'));
-
-        // Check if the balance is sufficient
-        if ($fromBoxBalance < $data['amount']) {
-            return back()->with('danger', 'رصيد الصندوق غير كافٍ لإجراء التحويل.');
-        }
-
         // Begin the transaction to ensure atomicity
         DB::beginTransaction();
 
         try {
-            // Step 1: Reverse the old transfer
-            $fromBoxOld = Box::find($record->from_box_id)->name;
-            $toBoxOld = Box::find($record->to_box_id)->name;
 
-            // Reverse the outcome from the original from_box (refund the original from_box)
-            BoxTransaction::create([
-                'box_id' => $record->from_box_id,
-                'income' => $record->amount,
-                'description' => 'تم ارجاع مبلغ ' . $record->amount . ' إلى ' . $fromBoxOld . ' نتيجه تعديل التحويل',
-            ]);
+            //the order must be the finall setp first as we order the transactions in the reverse order (Transactions Descending)
+            //so the history order the oldest sent the money to the new box //the older up
+            //the newer is retun the money back  //and newer down
 
-            // Reverse the income from the original to_box (remove the amount from the original to_box)
-            BoxTransaction::create([
-                'box_id' => $record->to_box_id,
-                'outcome' => $record->amount,
-                'description' => 'تم ازاله مبلغ ' . $record->amount . ' من ' . $toBoxOld . ' نتيجه تعديل التحويل',
-            ]);
 
-            // Step 2: Perform the new transfer
+            // Step 1: Perform the new transfer
             $fromBoxNew = Box::find($data['from_box_id'])->name;
             $toBoxNew = Box::find($data['to_box_id'])->name;
 
@@ -212,6 +223,8 @@ class BoxTransferController extends Controller
                 'box_id' => $data['from_box_id'],
                 'outcome' => $data['amount'],
                 'description' => 'تم تحويل مبلغ ' . $data['amount'] . ' إلى ' . $toBoxNew,
+                'created_by' => Auth::id(),
+
             ]);
 
             // Add the new amount to the new to_box
@@ -219,13 +232,39 @@ class BoxTransferController extends Controller
                 'box_id' => $data['to_box_id'],
                 'income' => $data['amount'],
                 'description' => 'تم استلام مبلغ ' . $data['amount'] . ' من ' . $fromBoxNew,
+                'created_by' => Auth::id(),
+
             ]);
+
+            // Step 2: Reverse the old transfer
+            $fromBoxOld = Box::find($record->from_box_id)->name;
+            $toBoxOld = Box::find($record->to_box_id)->name;
+
+            // Reverse the outcome from the original from_box (refund the original from_box)
+            BoxTransaction::create([
+                'box_id' => $record->from_box_id,
+                'income' => $record->amount,
+                'description' => 'تم ارجاع مبلغ ' . $record->amount . ' إلى ' . $fromBoxOld . ' نتيجه تعديل التحويل',
+                'created_by' => Auth::id(),
+
+            ]);
+
+            // Reverse the income from the original to_box (remove the amount from the original to_box)
+            BoxTransaction::create([
+                'box_id' => $record->to_box_id,
+                'outcome' => $record->amount,
+                'description' => 'تم ازاله مبلغ ' . $record->amount . ' من ' . $toBoxOld . ' نتيجه تعديل التحويل',
+                'created_by' => Auth::id(),
+
+            ]);
+
 
             // Step 3: Update the transfer record with new details
             $record->update([
                 'from_box_id' => $data['from_box_id'],
                 'to_box_id' => $data['to_box_id'],
                 'amount' => $data['amount'],
+                'updated_by' => Auth::id(),
             ]);
 
             // Commit the transaction if everything is successful
@@ -238,7 +277,7 @@ class BoxTransferController extends Controller
             // Rollback the transaction in case of any failure
             DB::rollBack();
 
-            // Return an error message with the exception details
+
             return back()->with('danger', 'حدث خطأ أثناء تعديل عملية التحويل: ' . $e->getMessage());
         }
     }
@@ -283,7 +322,7 @@ class BoxTransferController extends Controller
             // Rollback the transaction in case of any failure
             DB::rollBack();
 
-            // Return an error message with the exception details
+
             return back()->with('danger', 'حدث خطأ أثناء حذف عملية تحويل: ' . $e->getMessage());
         }
     }

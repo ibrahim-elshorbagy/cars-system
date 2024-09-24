@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Admin\Bill\Bill;
+use App\Models\Admin\Bill\PaymentBill;
+use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Users\Accountant\Accountant;
-use App\Models\Warehouse\StockReleaseOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,6 +60,21 @@ class User extends Authenticatable
     {
         return $this->hasOne(Accountant::class, 'user_id');
     }
+
+    public function credits(){
+
+        return $this->hasMany(CustomerCredit::class, 'user_id');
+    }
+
+    public function bills(){
+
+        return $this->hasMany(Bill::class, 'user_id');
+    }
+
+    // public function payments()
+    // {
+    //     return $this->hasManyThrough(PaymentBill::class, Bill::class);
+    // }
 
     public static function boot()
     {

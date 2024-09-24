@@ -40,12 +40,16 @@ class CustomerCreditController extends Controller
 
     public function store(Request $request) {
         // Validate the request
-        $data = $request->validate([
+        $rules = [
             'user_id' => ['required'],
             'added_credit' => ['required', 'numeric', 'min:1'],
-            'box_id' => ['nullable', 'numeric'],
-        ]);
+        ];
 
+        if (!Auth::user()->hasRole('Accountant')) {
+            $rules['box_id'] = 'required|exists:boxes,id';
+        }
+
+        $data = $request->validate($rules);
         // Prepare the description field
         $data['description'] = "تم اضافه المبلغ " . $data['added_credit'];
 
@@ -59,6 +63,7 @@ class CustomerCreditController extends Controller
 
         try {
             // Create the CustomerCredit record
+            $data['created_by']=Auth::user()->id;
             CustomerCredit::create($data);
 
             // Fetch customer name
@@ -69,6 +74,7 @@ class CustomerCreditController extends Controller
                 'box_id' => $data['box_id'],
                 'income' => $data['added_credit'],
                 'description' => 'تم اضافه رصيد ' . $data['added_credit'] . ' الي العميل ' . $customer_name,
+                'created_by' => Auth::user()->id,
             ]);
 
             // Commit the transaction after successful operations
@@ -78,10 +84,10 @@ class CustomerCreditController extends Controller
             return back()->with('success', "تم اضافة الرصيد بنجاح");
 
         } catch (\Exception $e) {
-            // Rollback the transaction if any error occurs
+
             DB::rollBack();
 
-            // Return an error message with the exception details
+
             return back()->with('danger', 'حدث خطأ أثناء إضافة الرصيد: ' . $e->getMessage());
         }
     }
@@ -93,11 +99,16 @@ class CustomerCreditController extends Controller
     public function update(Request $request, CustomerCredit $record)
     {
         // Validate the request
-        $data = $request->validate([
+        $rules = [
             'user_id' => ['required'],
-            'added_credit' => ['required', 'numeric'],
-            'box_id' => ['nullable', 'numeric'],
-        ]);
+            'added_credit' => ['required', 'numeric', 'min:1'],
+        ];
+
+        if (!Auth::user()->hasRole('Accountant')) {
+            $rules['box_id'] = 'required|exists:boxes,id';
+        }
+
+        $data = $request->validate($rules);
 
         // If the user has the Accountant role, set their specific box_id
         if (Auth::user()->hasRole('Accountant')) {
@@ -109,6 +120,9 @@ class CustomerCreditController extends Controller
             }
         }
 
+            if ($record->used_credit > 0) {
+                return back()->with('danger', ' لا يمكن تعديل خصم رصيد');
+            }
         // Start a transaction
         DB::beginTransaction();
 
@@ -123,12 +137,17 @@ class CustomerCreditController extends Controller
             BoxTransaction::create([
                 'box_id' => $data['box_id'],
                 'income' => $data['added_credit'],
-                'description' => ' تم اضافة الرصيد ' . $data['added_credit'] . ' إلى العميل ' . $to_customer_name . " نتيجة عملية تعديل رصيد "
+                'description' => ' تم اضافة الرصيد ' . $data['added_credit'] . ' إلى العميل ' . $to_customer_name . " نتيجة عملية تعديل رصيد ",
+                'created_by' => Auth::user()->id,
             ]);
 
             // Update the description and the record itself
             $data['description'] = " تم اضافة المبلغ " . $data['added_credit'];
+            $data['updated_by']=Auth::user()->id;
             $record->update($data);
+
+
+
 
             // Get the name of the customer from whom the credit is being removed (from the old record)
             $from_customer_name = User::find($oldRecord->user_id)->name;
@@ -137,9 +156,10 @@ class CustomerCreditController extends Controller
             BoxTransaction::create([
                 'box_id' => $oldRecord->box_id,
                 'outcome' => $oldRecord->added_credit,
-                'description' => 'تم ازالة الرصيد ' . $oldRecord->added_credit . ' من العميل ' . $from_customer_name . " نتيجة عملية تعديل رصيد "
-            ]);
+                'description' => 'تم خصم الرصيد ' . $oldRecord->added_credit . ' من العميل ' . $from_customer_name . " نتيجة عملية تعديل رصيد ",
+                'created_by' => Auth::user()->id,
 
+            ]);
             // Commit the transaction if everything is successful
             DB::commit();
 
@@ -150,17 +170,25 @@ class CustomerCreditController extends Controller
             // Rollback the transaction in case of any failure
             DB::rollBack();
 
-            // Return an error message with the exception details
+
             return back()->with('danger', 'حدث خطأ أثناء تحديث الرصيد: ' . $e->getMessage());
         }
     }
 
 
 
+
+
+
+
     public function destroy(CustomerCredit $record)
     {
+        if ($record->used_credit > 0) {
+                return back()->with('danger', ' لا يمكن حذف خصم رصيد');
+            }
 
           DB::beginTransaction();
+
 
         try {
         $from_customer_name = User::find($record->user_id)->name;
@@ -168,7 +196,7 @@ class CustomerCreditController extends Controller
         BoxTransaction::create([  //first outcome for the box and  user
             'box_id' => $record->box_id,
             'outcome'=> $record->added_credit,
-            'description'=> ' تم ازالة الرصيد ' . $record->added_credit . ' من الصندوق نتيجه عمليه حذف رصيد من ' . $from_customer_name
+            'description'=> ' تم خصم الرصيد ' . $record->added_credit . ' من الصندوق نتيجه عمليه حذف رصيد من ' . $from_customer_name
         ]);
         $record->delete();
 
@@ -180,7 +208,7 @@ class CustomerCreditController extends Controller
             // Rollback the transaction in case of any failure
             DB::rollBack();
 
-            // Return an error message with the exception details
+
             return back()->with('danger', ' حدث خطأ أثناء حذف رصيد عميل : ' . $e->getMessage());
         }
     }
