@@ -11,6 +11,7 @@ import { TbArrowsTransferUp } from "react-icons/tb";
 import { TbReportMoney } from "react-icons/tb";
 import { RiBillFill } from "react-icons/ri";
 import { PiBagSimpleFill } from "react-icons/pi";
+import { TbReceiptTax } from "react-icons/tb";
 
 const MySidebar = ({ user, direction,site_settings }) => {
 
@@ -104,7 +105,7 @@ const MySidebar = ({ user, direction,site_settings }) => {
         icon: <MdDashboard />,
         },
             { // customer
-            title: "العملاء",
+            title: " الشحن (Shipping)" ,
             links: [
                 {
                     text: "العملاء",
@@ -118,6 +119,12 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     icon: <FaCar />,
                     permissions: ["read-car"],
                 },
+            ],
+            icon: <MdDashboard />,
+        },
+            { // customer
+            title: "المحاسبة (Accounting)",
+            links: [
                 {
                     text: "تسديد الذمم",
                     href: "bill-payment.index",
@@ -142,10 +149,15 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     icon: <TbArrowsTransferUp  />,
                     permissions: ["read-box-transfer"],
                 },
+                {
+                    text: "تقرير ذمم العملاء",
+                    href: "customers-bills.index",
+                    icon: <TbReceiptTax  />,
+                    permissions: ["customers-bills"],
+                },
             ],
             icon: <MdDashboard />,
         },
-
         { // customer
             title: "لوحة التحكم",
             links: [

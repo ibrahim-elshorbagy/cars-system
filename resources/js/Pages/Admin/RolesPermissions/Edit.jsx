@@ -725,18 +725,18 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                     {/* Payment Permissions */}
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">تقرير ذمم العملاء</th>
+                        <th className="px-6 py-3 " colSpan="3">الذمم</th>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td className="px-6 py-4">read-bill</td>
+                        <td className="px-6 py-4">customers-bills</td>
                         <td className="px-6 py-4">
                           <input
                             type="checkbox"
-                            checked={data.permissions.includes("read-bill")}
-                            onChange={() => handleCheckboxChange("read-bill")}
+                            checked={data.permissions.includes("customers-bills")}
+                            onChange={() => handleCheckboxChange("customers-bills")}
                           />
                         </td>
-                        <td className="px-6 py-4">مشاهده حركات الذمم</td>
+                        <td className="px-6 py-4">تقرير ذمم العملاء</td>
                         </tr>
                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">read-bill</td>
@@ -888,7 +888,6 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                   </table>
                 </div>
               </div>
-    {JSON.stringify(auth.user.permissions)}
               <div className="mt-6">
                 <button
                   type="submit"

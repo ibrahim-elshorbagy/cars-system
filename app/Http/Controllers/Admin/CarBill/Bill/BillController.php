@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Bill\StorePaymentRequest;
 use App\Http\Requests\Admin\Bill\UpdatePaymentRequest;
 use App\Http\Resources\Admin\CarBill\Bill\PaymentsResource;
+use App\Http\Resources\Admin\CarBill\Bill\Reports\CustomersBillsResource;
 use App\Http\Resources\Admin\carBill\Bill\UserPaymentsResource;
 use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Bill\Payment;
@@ -221,5 +222,29 @@ class BillController extends Controller
 
             return back()->with('danger', 'حدث خطأ أثناء حذف عملية تسديد ذمم: ' . $e->getMessage());
         }
+    }
+
+
+
+    public function CustomersBills(){
+
+            $query = User::role('customer');
+
+            if (request("name")) {
+                $query->where("name", "like", "%" . request("name") . "%");
+            }
+            if (request("email")) {
+                $query->where("email", "like", "%" . request("email") . "%");
+            }
+
+            $customers = $query->with('credits','bills')->paginate(25)->onEachSide(1);
+
+            return inertia("Admin/CarBill/Bill/Reports/CustomersBills", [
+                "users" => CustomersBillsResource::collection($customers),
+                'queryParams' => request()->query() ?: null,
+
+            ]);
+
+
     }
 }

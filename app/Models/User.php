@@ -71,10 +71,6 @@ class User extends Authenticatable
         return $this->hasMany(Bill::class, 'user_id');
     }
 
-    // public function payments()
-    // {
-    //     return $this->hasManyThrough(PaymentBill::class, Bill::class);
-    // }
 
     public static function boot()
     {

@@ -59,7 +59,7 @@ Route::group(['prefix' => 'admin/bills'], function () {
 
     Route::group(['middleware' => ['permission:customers-bills']], function () {
 
-        Route::delete('/report/customers-bills/', [BillController::class, 'destroy'])->name('customers-bills.index');
+        Route::get('/report/customers-bills/', [BillController::class, 'CustomersBills'])->name('customers-bills.index');
 
     });
 });
