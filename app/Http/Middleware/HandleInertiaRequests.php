@@ -32,6 +32,7 @@ class HandleInertiaRequests extends Middleware
     {
         $websiteName = Setting::where('name', 'site_name')->value('value');
         $websiteLogo = Setting::where('name', 'company_logo')->value('value');
+        $site_cover = Setting::where('name', 'site_cover')->value('value');
         return [
             ...parent::share($request),
             'auth' => [
@@ -56,6 +57,7 @@ class HandleInertiaRequests extends Middleware
             'site_settings' => [
                 'websiteName' => $websiteName ,
                 'websiteLogo' => $websiteLogo ,
+                'site_cover' => $site_cover ,
             ],
 
 

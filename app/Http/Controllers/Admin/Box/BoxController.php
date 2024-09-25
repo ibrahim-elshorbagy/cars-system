@@ -64,7 +64,7 @@ class BoxController extends Controller
                 return back()->with('danger', 'لا يمكن حذف الصندوق لأنه مرتبط بمعاملات.');
             }
 
-            if ($box->transfers()->count() > 0) {
+             if ($box->fromTransfers()->count() > 0 || $box->toTransfers()->count() > 0) {
                 return back()->with('danger', 'لا يمكن حذف الصندوق لأنه مرتبط بتحويلات.');
             }
         $box->delete();

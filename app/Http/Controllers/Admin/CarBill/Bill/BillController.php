@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\Bill\StorePaymentRequest;
 use App\Http\Requests\Admin\Bill\UpdatePaymentRequest;
 use App\Http\Resources\Admin\CarBill\Bill\PaymentsResource;
 use App\Http\Resources\Admin\CarBill\Bill\Reports\CustomersBillsResource;
-use App\Http\Resources\Admin\carBill\Bill\UserPaymentsResource;
+use App\Http\Resources\Admin\CarBill\Bill\UserPaymentsResource;
 use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Bill\Payment;
 use App\Models\Admin\Bill\PaymentBill;

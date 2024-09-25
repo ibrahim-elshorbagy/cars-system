@@ -307,12 +307,14 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة مستخدم جديد</h2>
+              <h2 className="text-lg font-semibold">إضافة عميل جديد</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleCreateUser}>
+            <form onSubmit={handleCreateUser}>
+                        <div className="mb-4 text-lg">معلومات الدخول</div>
+
                 <div className="mb-4">
-                  <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
+                  <InputLabel htmlFor="user_name" value={"اسم العميل"} />
                   <TextInput
                     id="user_name"
                     type="text"
@@ -337,6 +339,21 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   />
                   <InputError message={createErrors.email} className="mt-2" />
                 </div>
+
+                 <div className="mb-4">
+                  <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
+                  <TextInput
+                    id="user_password"
+                    type="password"
+                    name="password"
+                    value={createData.password}
+                    className="block w-full mt-1"
+                    onChange={(e) => setCreateData("password", e.target.value)}
+                  />
+                  <InputError message={createErrors.password} className="mt-2" />
+                              </div>
+                        <div className="mb-4 text-lg">معلومات اضافيه</div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
                       <InputLabel htmlFor="phone" value={"الهاتف"} />
@@ -367,18 +384,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
-                  <TextInput
-                    id="user_password"
-                    type="password"
-                    name="password"
-                    value={createData.password}
-                    className="block w-full mt-1"
-                    onChange={(e) => setCreateData("password", e.target.value)}
-                  />
-                  <InputError message={createErrors.password} className="mt-2" />
-                </div>
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
@@ -405,12 +411,14 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل المستخدم</h2>
+              <h2 className="text-lg font-semibold">تعديل عميل</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleEditUser}>
+                          <form onSubmit={handleEditUser}>
+                        <div className="mb-4 text-lg">معلومات الدخول</div>
+
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
+                  <InputLabel htmlFor="edit_user_name" value={"اسم العميل"} />
                   <TextInput
                     id="edit_user_name"
                     type="text"
@@ -434,7 +442,23 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     onChange={(e) => setEditData("email", e.target.value)}
                   />
                   <InputError message={editErrors.email} className="mt-2" />
+                </div>
+
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
+                  <TextInput
+                    id="edit_user_password"
+                    type="password"
+                    name="password"
+                    value={editData.password}
+                    className="block w-full mt-1"
+                    placeholder="اكتب في حالة اردت تغيرها"
+                    onChange={(e) => setEditData("password", e.target.value)}
+                  />
+                  <InputError message={editErrors.password} className="mt-2" />
                               </div>
+                        <div className="mb-4 text-lg">معلومات اضافيه</div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
                       <InputLabel htmlFor="edit_phone" value={"الهاتف"} />
@@ -465,19 +489,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={createErrors.whatsapp} className="mt-2" />
                   </div>
                 </div>
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
-                  <TextInput
-                    id="edit_user_password"
-                    type="password"
-                    name="password"
-                    value={editData.password}
-                    className="block w-full mt-1"
-                    placeholder="اكتب في حالة اردت تغيرها"
-                    onChange={(e) => setEditData("password", e.target.value)}
-                  />
-                  <InputError message={editErrors.password} className="mt-2" />
-                </div>
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"

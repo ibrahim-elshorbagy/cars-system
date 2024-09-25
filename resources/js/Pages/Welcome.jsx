@@ -11,10 +11,11 @@ export default function Welcome({ auth,site_settings }) {
         <>
             <GuestLayout site_settings={site_settings}>
                 <Head title={site_settings.websiteName + " - " +"مرحباً"} />
-                <div className="flex flex-col items-center justify-center min-h-screen text-white bg-gradient-to-r bg-indigoBlue">
-                    <h1 className="text-5xl font-bold">
-                        مرحباً
-                    </h1>
+                <div className="flex flex-col items-center min-h-screen text-white ">
+                    <div className="mt-10">
+                        <img className="rounded-xl" src={site_settings.site_cover} alt="" />
+                    </div>
+
                     <div className="flex gap-2 mt-8 ">
                         {auth.user ? (
                             <Link

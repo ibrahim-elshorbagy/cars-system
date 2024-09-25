@@ -174,7 +174,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                             {/* Main CRUD Permissions for المزادات (Vendors) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات المزادات</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول المزادات (Vendors)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-vendor</td>
@@ -233,7 +233,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                         {/* Main CRUD Permissions for الوجهات (Destinations) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات الوجهات</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول الوجهات (Destinations)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-destination</td>
@@ -289,7 +289,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                         {/* Main CRUD Permissions for خطوط الملاحه (Lines) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات خطوط الملاحه</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول خطوط الملاحه (Lines)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-line</td>
@@ -347,7 +347,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                         {/* Main CRUD Permissions for محطات الشحن (Terminals) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات محطات الشحن</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول محطات الشحن (Terminals)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-terminal</td>
@@ -403,7 +403,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                         {/* Main CRUD Permissions for ماركه (Make) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات ماركه</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول ماركه (Make)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-make</td>
@@ -457,7 +457,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                         {/* Main CRUD Permissions for المودل (Model) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات المودل</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول الموديل (Model)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-model</td>
@@ -510,7 +510,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                             {/* Main CRUD Permissions for المرافق (Facilities) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات المرافق</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول المرافق (Facilities)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-facility</td>
@@ -566,7 +566,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                      {/* Car Permissions */}
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اضافة سياراه</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات سيارات</th>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-car</td>
@@ -619,7 +619,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
                      {/* Customer Permissions */}
                       <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اضافة عميل</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات العملاء</th>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-customer</td>
@@ -843,8 +843,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                         <td className="px-6 py-4">
                           <input
                             type="checkbox"
+                            disabled={true}
                             checked={data.permissions.includes("read-my-cars")}
-                            onChange={() => handleCheckboxChange("read-my-cars")}
                           />
                         </td>
                         <td className="px-6 py-4">الوصول للسياره الخاصه به</td>
@@ -852,10 +852,10 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">read-my-credits</td>
                         <td className="px-6 py-4">
-                          <input
+                        <input
+                            disabled={true}
                             type="checkbox"
                             checked={data.permissions.includes("read-my-credits")}
-                            onChange={() => handleCheckboxChange("read-my-credits")}
                           />
                         </td>
                         <td className="px-6 py-4">الوصول لحركاته الماليه </td>
@@ -863,10 +863,10 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">read-my-bills</td>
                         <td className="px-6 py-4">
-                          <input
+                            <input
+                            disabled={true}
                             type="checkbox"
                             checked={data.permissions.includes("read-my-bills")}
-                            onChange={() => handleCheckboxChange("read-my-bills")}
                           />
                         </td>
                         <td className="px-6 py-4">الوصول الي الذمم الخاصه به </td>

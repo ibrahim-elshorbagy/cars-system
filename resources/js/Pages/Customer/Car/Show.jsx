@@ -18,6 +18,7 @@ export default function Show({ auth, site_settings, car }) {
     setIsModalOpen(false);
     setSelectedImage(null);
   };
+
   return (
     <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
       <Head title={site_settings.websiteName + " - " + "معلومات السياره"} />
@@ -37,118 +38,117 @@ export default function Show({ auth, site_settings, car }) {
              </div>
               <div className="mt-6">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-100">
-                  <tbody>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Chassis</th>
-                      <td className="px-3 py-3">{car.chassis}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Customer Name</th>
-                      <td className="px-3 py-3">{car.customer_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Keys</th>
-                            <td className="px-3 py-3">
-                                <Input
-                                type="checkbox"
-                                disabled
-                                checked={car.keys == 1}
-                                id="keys"
-                                className="w-6 h-6 rounded mt-0.5"
-                                />
-                            </td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Title</th>
-                            <td className="px-3 py-3">
+                    <tbody>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.chassis}</th>
+                        <td className="px-3 py-3">Chassis</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.customer_name}</th>
+                        <td className="px-3 py-3">Customer Name</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">
                             <Input
-                                type="checkbox"
-                                disabled
-                                checked={car.title == 1}
-                                id="keys"
-                                className="w-6 h-6 rounded mt-0.5"
-                                />
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Make</th>
-                      <td className="px-3 py-3">{car.make_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">lot/Sotok</th>
-                      <td className="px-3 py-3">{car.lot}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">bookingNo</th>
-                      <td className="px-3 py-3">{car.bookingNo}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">color</th>
-                      <td className="px-3 py-3">{car.color}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">year</th>
-                      <td className="px-3 py-3">{car.year}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Model</th>
-                      <td className="px-3 py-3">{car.model_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Vendor</th>
-                      <td className="px-3 py-3">{car.vendor_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Facility</th>
-                      <td className="px-3 py-3">{car.facility_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Shipping Line</th>
-                      <td className="px-3 py-3">{car.line_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Terminal</th>
-                      <td className="px-3 py-3">{car.terminal_name}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Status</th>
-                      <td className="px-3 py-3">{car.ship_status}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Won Price</th>
-                      <td className="px-3 py-3">{car.won_price}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Shipping Cost</th>
-                      <td className="px-3 py-3">{car.shipping_cost}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Date Won</th>
-                      <td className="px-3 py-3">{car.date_won}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Estimated Arrival Date</th>
-                      <td className="px-3 py-3">{car.estimate_arrival_date}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Arrival Date</th>
-                      <td className="px-3 py-3">{car.arrival_date}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <th className="px-3 py-3 ">Carfax Report</th>
-                      <td className="px-3 py-3"> {car.carfax_report_url ? (
-                                <a
-                                    href={car.carfax_report_url}
-                                    className="text-blue-500 hover:underline"
-                                >
-                                    View Carfax Report
-                                </a>
+                            type="checkbox"
+                            disabled
+                            checked={car.keys == 1}
+                            id="keys"
+                            className="w-6 h-6 rounded mt-0.5"
+                            />
+                        </th>
+                        <td className="px-3 py-3">Keys</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">
+                            <Input
+                            type="checkbox"
+                            disabled
+                            checked={car.title == 1}
+                            id="keys"
+                            className="w-6 h-6 rounded mt-0.5"
+                            />
+                        </th>
+                        <td className="px-3 py-3">Title</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.make_name}</th>
+                        <td className="px-3 py-3">Make</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.lot}</th>
+                        <td className="px-3 py-3">Lot/Sotok</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.bookingNo}</th>
+                        <td className="px-3 py-3">Booking No</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.color}</th>
+                        <td className="px-3 py-3">Color</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.year}</th>
+                        <td className="px-3 py-3">Year</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.model_name}</th>
+                        <td className="px-3 py-3">Model</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.vendor_name}</th>
+                        <td className="px-3 py-3">Vendor</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.facility_name}</th>
+                        <td className="px-3 py-3">Facility</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.line_name}</th>
+                        <td className="px-3 py-3">Shipping Line</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.terminal_name}</th>
+                        <td className="px-3 py-3">Terminal</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.ship_status}</th>
+                        <td className="px-3 py-3">Status</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.won_price}</th>
+                        <td className="px-3 py-3">Won Price</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.shipping_cost}</th>
+                        <td className="px-3 py-3">Shipping Cost</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.date_won}</th>
+                        <td className="px-3 py-3">Date Won</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.estimate_arrival_date}</th>
+                        <td className="px-3 py-3">Estimated Arrival Date</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.arrival_date}</th>
+                        <td className="px-3 py-3">Arrival Date</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">
+                            {car.carfax_report_url ? (
+                            <a href={car.carfax_report_url} className="text-blue-500 hover:underline">
+                                View Carfax Report
+                            </a>
                             ) : (
-                                <p> لا يوجد</p>
-                    )}
-                    </td>
-                    </tr>
-                  </tbody>
+                            <p> لا يوجد</p>
+                            )}
+                        </th>
+                        <td className="px-3 py-3">Carfax Report</td>
+                        </tr>
+                    </tbody>
+
                 </table>
 
                 {/* Images below the table */}

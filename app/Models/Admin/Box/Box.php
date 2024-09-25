@@ -13,8 +13,15 @@ class Box extends Model
     public function transactions(){
         return $this->hasMany(BoxTransaction::class);
     }
-    public function transfers(){
-        return $this->hasMany(BoxTransfer::class);
+    public function fromTransfers()
+    {
+        return $this->hasMany(BoxTransfer::class, 'from_box_id');
+    }
+
+    // Relationship for transfers where the box is the 'to' box
+    public function toTransfers()
+    {
+        return $this->hasMany(BoxTransfer::class, 'to_box_id');
     }
 
 }

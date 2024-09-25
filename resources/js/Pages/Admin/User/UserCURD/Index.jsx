@@ -309,20 +309,51 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateUser}>
-                <div className="mb-4">
-                  <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
-                  <TextInput
-                    id="user_name"
-                    type="text"
-                    name="name"
-                    value={createData.name}
-                    className="block w-full mt-1"
-                    isFocused={true}
-                    onChange={(e) => setCreateData("name", e.target.value)}
-                  />
-                  <InputError message={createErrors.name} className="mt-2" />
+                        <div>
+                                <div className="mb-4 text-lg">معلومات الدخول</div>
+                                <div className="mb-4">
+                            <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
+                            <TextInput
+                                id="user_name"
+                                type="text"
+                                name="name"
+                                value={createData.name}
+                                className="block w-full mt-1"
+                                isFocused={true}
+                                onChange={(e) => setCreateData("name", e.target.value)}
+                            />
+                            <InputError message={createErrors.name} className="mt-2" />
+                            </div>
+                            <div className="mb-4">
+                            <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
+                            <TextInput
+                                id="user_email"
+                                type="email"
+                                name="email"
+                                value={createData.email}
+                                className="block w-full mt-1"
+                                onChange={(e) => setCreateData("email", e.target.value)}
+                            />
+                            <InputError message={createErrors.email} className="mt-2" />
+                            </div>
+                            <div className="mb-4">
+                            <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
+                            <TextInput
+                                id="user_password"
+                                type="password"
+                                name="password"
+                                value={createData.password}
+                                className="block w-full mt-1"
+                                onChange={(e) => setCreateData("password", e.target.value)}
+                            />
+                            <InputError message={createErrors.password} className="mt-2" />
+                            </div>
                     </div>
+                                  <div className="mb-4 text-lg">معلومات اضافيه</div>
+
                     <div className="mb-4">
+                        <InputLabel htmlFor="role" value={"الصلاحيات"} />
+
                         <SelectInput
                         name="role"
                         id="role"
@@ -364,18 +395,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     </div>
                     )}
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
-                  <TextInput
-                    id="user_email"
-                    type="email"
-                    name="email"
-                    value={createData.email}
-                    className="block w-full mt-1"
-                    onChange={(e) => setCreateData("email", e.target.value)}
-                  />
-                  <InputError message={createErrors.email} className="mt-2" />
-                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
                       <InputLabel htmlFor="phone" value={"الهاتف"} />
@@ -407,18 +427,6 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
-                  <TextInput
-                    id="user_password"
-                    type="password"
-                    name="password"
-                    value={createData.password}
-                    className="block w-full mt-1"
-                    onChange={(e) => setCreateData("password", e.target.value)}
-                  />
-                  <InputError message={createErrors.password} className="mt-2" />
-                </div>
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
@@ -448,7 +456,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
               <h2 className="text-lg font-semibold">تعديل المستخدم</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleEditUser}>
+                          <form onSubmit={handleEditUser}>
+                                <div className="mb-4 text-lg">معلومات الدخول</div>
+
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
                   <TextInput
@@ -460,9 +470,40 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     isFocused={true}
                     onChange={(e) => setEditData("name", e.target.value)}
                   />
-                  <InputError message={editErrors.name} className="mt-2" />
+                        <InputError message={editErrors.name} className="mt-2" />
+                    </div>
+                  <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
+                  <TextInput
+                    id="edit_user_email"
+                    type="email"
+                    name="email"
+                    value={editData.email}
+                    className="block w-full mt-1"
+                    onChange={(e) => setEditData("email", e.target.value)}
+                  />
+                  <InputError message={editErrors.email} className="mt-2" />
+
+                 </div>
+
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
+                  <TextInput
+                    id="edit_user_password"
+                    type="password"
+                    name="password"
+                    value={editData.password}
+                    className="block w-full mt-1"
+                    placeholder="اكتب في حالة اردت تغيرها"
+                    onChange={(e) => setEditData("password", e.target.value)}
+                  />
+                  <InputError message={editErrors.password} className="mt-2" />
                               </div>
-                    <div className="mb-4">
+                                <div className="mb-4 text-lg">معلومات اضافيه</div>
+
+                              <div className="mb-4">
+                        <InputLabel htmlFor="edit_user_role" value={"الصلاحيات"} />
+
                         <SelectInput
                         name="role"
                         id="edit_user_role"
@@ -504,18 +545,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     </div>
                     )}
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
-                  <TextInput
-                    id="edit_user_email"
-                    type="email"
-                    name="email"
-                    value={editData.email}
-                    className="block w-full mt-1"
-                    onChange={(e) => setEditData("email", e.target.value)}
-                  />
-                  <InputError message={editErrors.email} className="mt-2" />
-                              </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
                       <InputLabel htmlFor="edit_phone" value={"الهاتف"} />
@@ -546,19 +576,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={createErrors.whatsapp} className="mt-2" />
                   </div>
                 </div>
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
-                  <TextInput
-                    id="edit_user_password"
-                    type="password"
-                    name="password"
-                    value={editData.password}
-                    className="block w-full mt-1"
-                    placeholder="اكتب في حالة اردت تغيرها"
-                    onChange={(e) => setEditData("password", e.target.value)}
-                  />
-                  <InputError message={editErrors.password} className="mt-2" />
-                </div>
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"

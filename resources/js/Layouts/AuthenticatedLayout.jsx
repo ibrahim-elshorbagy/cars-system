@@ -67,7 +67,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                         href={route("admin.dashboard")}
                                         active={route().current("admin.dashboard")}
                                     >
-                                        لوحة التحكم
+                                        { site_settings.websiteName}
                                     </NavLink>
                                 )}
                                 {user.permissions.includes("for-customer-view-dashboard") && (
@@ -75,7 +75,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                         href={route("customer.dashboard")}
                                         active={route().current("customer.dashboard")}
                                     >
-                                        لوحة التحكم
+                                        { site_settings.websiteName}
                                     </NavLink>
                                 )}
                             </div>

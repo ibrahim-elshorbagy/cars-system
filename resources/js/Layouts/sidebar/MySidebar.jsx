@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Sidebar, Menu, SubMenu } from "react-pro-sidebar";
-import { MdDashboard, MdChevronLeft, MdChevronRight,MdOutlineCategory,MdInventory } from "react-icons/md";
+import { Sidebar, Menu, SubMenu, MenuItem } from "react-pro-sidebar";
+import { MdDashboard, MdChevronLeft, MdChevronRight, MdOutlineCategory, MdInventory } from "react-icons/md";
 import SideNavLink from "@/Components/SideNavLink";
 import { Link } from "@inertiajs/react";
 
@@ -13,20 +13,134 @@ import { RiBillFill } from "react-icons/ri";
 import { PiBagSimpleFill } from "react-icons/pi";
 import { TbReceiptTax } from "react-icons/tb";
 
-const MySidebar = ({ user, direction,site_settings }) => {
-
+const MySidebar = ({ user, direction, site_settings }) => {
     const [collapsed, setCollapsed] = useState(false);
 
-    const sections = [
-        { // admin
-            title: "لوحة التحكم",
+    const menuItems = [
+        {
+            type: "link",
+            text: " الرئيسية (Dashboard)  ",
+            href: "admin.dashboard",
+            icon: <MdDashboard />,
+            permissions: ["view-admin-dashboard"],
+        },
+
+        {
+            type: "section",
+            title: "البيانات",
+            icon: <MdDashboard />,
             links: [
                 {
-                    text: "لوحة التحكم",
-                    href: "admin.dashboard",
-                    icon: <MdDashboard />,
-                    permissions: ["view-admin-dashboard"],
+                    text: "الاعدادات",
+                    href: "admin.settings.index",
+                    icon: <IoMdSettings />,
+                    permissions: ["for-SystemAdmin-manage-site-settings"],
                 },
+                {
+                    text: "المزادات (Vendors)",
+                    href: "vendor.index",
+                    icon: <FaGavel />,
+                    permissions: ["read-vendor"],
+                },
+                {
+                    text: "الوجهات (Destinations)",
+                    href: "destination.index",
+                    icon: <FaMapMarkerAlt />,
+                    permissions: ["read-destination"],
+                },
+                {
+                    text: "خطوط الملاحه (Lines)",
+                    href: "line.index",
+                    icon: <FaShip />,
+                    permissions: ["read-line"],
+                },
+                {
+                    text: "محطات الشحن (Terminals)",
+                    href: "terminal.index",
+                    icon: <FaTruck />,
+                    permissions: ["read-terminal"],
+                },
+                {
+                    text: "المرافق (Facilities)",
+                    href: "facility.index",
+                    icon: <FaBuilding />,
+                    permissions: ["read-facility"],
+                },
+                {
+                    text: "المركات (Makes)",
+                    href: "make.index",
+                    icon: <FaCar />,
+                    permissions: ["read-make"],
+                },
+                {
+                    text: "الموديلات (Models)",
+                    href: "model.index",
+                    icon: <FaCogs />,
+                    permissions: ["read-model"],
+                },
+            ],
+        },
+        {
+            type: "section",
+            title: " الشحن (Shipping)",
+            icon: <MdDashboard />,
+            links: [
+                {
+                    text: "العملاء",
+                    href: "customer.index",
+                    icon: <MdDashboard />,
+                    permissions: ["read-customer"],
+                },
+                {
+                    text: "السيارات",
+                    href: "car.index",
+                    icon: <FaCar />,
+                    permissions: ["read-car"],
+                },
+            ],
+        },
+        {
+            type: "section",
+            title: "المحاسبة (Accounting)",
+            icon: <MdDashboard />,
+            links: [
+                {
+                    text: "المقبوضات",
+                    href: "bill-payment.index",
+                    icon: <RiBillFill />,
+                    permissions: ["read-bill"],
+                },
+                {
+                    text: "ارصده العملاء",
+                    href: "customer-credit.index",
+                    icon: <TbReportMoney />,
+                    permissions: ["read-customer-credit"],
+                },
+                {
+                    text: "موجودات الصندوق",
+                    href: "box.index.transaction",
+                    icon: <PiBagSimpleFill />,
+                    permissions: ["read-box-transaction"],
+                },
+                {
+                    text: "تحويلات",
+                    href: "box-transfer.index",
+                    icon: <TbArrowsTransferUp />,
+                    permissions: ["read-box-transfer"],
+                },
+                {
+                    text: "تقرير ذمم العملاء",
+                    href: "customers-bills.index",
+                    icon: <TbReceiptTax />,
+                    permissions: ["customers-bills"],
+                },
+            ],
+        },
+                {
+            type: "section",
+            title: "لوحة التحكم",
+            icon: <MdDashboard />,
+            links: [
                 {
                     text: "الصندايق",
                     href: "box.index",
@@ -46,127 +160,17 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     permissions: ["for-SystemAdmin-manage-roles-permissions"],
                 },
             ],
-            icon: <MdDashboard />,
-        },
-        { // admin
-        title: "البيانات",
-            links: [
-            {
-                text: "الاعدادات",
-                href: "admin.settings.index",
-                icon: <IoMdSettings />,  // vendor icon for vendors
-                permissions: ["for-SystemAdmin-manage-site-settings"],
-            },
-            {
-                text: "المزادات (Vendors)",
-                href: "vendor.index",
-                icon: <FaGavel />,  // vendor icon for vendors
-                permissions: ["read-vendor"],
-            },
-            {
-                text: "الوجهات (Destinations)",
-                href: "destination.index",
-                icon: <FaMapMarkerAlt />,  // Map marker icon for destinations
-                permissions: ["read-destination"],
-            },
-            {
-                text: "خطوط الملاحه (Lines)",
-                href: "line.index",
-                icon: <FaShip />,  // Ship icon for lines
-                permissions: ["read-line"],
-            },
-            {
-                text: "محطات الشحن (Terminals)",
-                href: "terminal.index",
-                icon: <FaTruck />,  // Truck icon for terminals
-                permissions: ["read-terminal"],
-            },
-            {
-                text: "المرافق (Facilities)",
-                href: "facility.index",
-                icon: <FaBuilding />,  // Building icon for facilities
-                permissions: ["read-facility"],
-            },
-            {
-                text: "المركات (Makes)",
-                href: "make.index",
-                icon: <FaCar />,  // Car icon for makes
-                permissions: ["read-make"],
-            },
-            {
-                text: "الموديلات (Models)",
-                href: "model.index",
-                icon: <FaCogs />,  // Cogs icon for models
-                permissions: ["read-model"],
-            },
-
-            ],
-
-        icon: <MdDashboard />,
-        },
-            {
-            title: " الشحن (Shipping)" ,
-            links: [
-                {
-                    text: "العملاء",
-                    href: "customer.index",
-                    icon: <MdDashboard />,
-                    permissions: ["read-customer"],
-                },
-                {
-                    text: "السيارات",
-                    href: "car.index",
-                    icon: <FaCar />,
-                    permissions: ["read-car"],
-                },
-            ],
-            icon: <MdDashboard />,
-        },
-            {
-            title: "المحاسبة (Accounting)",
-            links: [
-                {
-                    text: "المقبوضات",
-                    href: "bill-payment.index",
-                    icon: <RiBillFill  />,
-                    permissions: ["read-bill"],
-                },
-                {
-                    text: "ارصده العملاء",
-                    href: "customer-credit.index",
-                    icon: <TbReportMoney  />,
-                    permissions: ["read-customer-credit"],
-                },
-                {
-                    text: "موجودات الصندوق",
-                    href: "box.index.transaction",
-                    icon: <PiBagSimpleFill  />,
-                    permissions: ["read-box-transaction"],
-                },
-                {
-                    text: "تحويلات",
-                    href: "box-transfer.index",
-                    icon: <TbArrowsTransferUp  />,
-                    permissions: ["read-box-transfer"],
-                },
-                {
-                    text: "تقرير ذمم العملاء",
-                    href: "customers-bills.index",
-                    icon: <TbReceiptTax  />,
-                    permissions: ["customers-bills"],
-                },
-            ],
-            icon: <MdDashboard />,
         },
 
 
 
 
-
-
-
-        { // customer
+        //for customer
+        {
+            type: "section",
             title: "لوحة التحكم",
+            icon: <MdDashboard />,
+            permissions: ['for-customer-view-dashboard'],
             links: [
                 {
                     text: "لوحة التحكم",
@@ -193,8 +197,6 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     permissions: ["read-my-bills"],
                 },
             ],
-            icon: <MdDashboard />,
-            permissions:['for-customer-view-dashboard']
         },
 
 
@@ -203,19 +205,30 @@ const MySidebar = ({ user, direction,site_settings }) => {
 
     ];
 
-    const filteredSections = sections
-        .filter((section) =>
-            !section.permissions || section.permissions.every((permission) => user.permissions.includes(permission))
-        )
-        .map((section) => ({
-            ...section,
-            links: section.links.filter((link) =>
-                link.permissions.some((permission) =>
-                    user.permissions.includes(permission)
-                )
-            ),
-        }))
-        .filter((section) => section.links.length > 0);
+    const filteredMenuItems = menuItems
+        .filter((item) => {
+            if (item.type === "link") {
+                return item.permissions.some((permission) => user.permissions.includes(permission));
+            } else if (item.type === "section") {
+                const filteredLinks = item.links.filter((link) =>
+                    link.permissions.some((permission) => user.permissions.includes(permission))
+                );
+                return filteredLinks.length > 0 && (!item.permissions || item.permissions.every((permission) => user.permissions.includes(permission)));
+            }
+            return false;
+        })
+        .map((item) => {
+            if (item.type === "section") {
+                return {
+                    ...item,
+                    links: item.links.filter((link) =>
+                        link.permissions.some((permission) => user.permissions.includes(permission))
+                    ),
+                };
+            }
+            return item;
+        });
+
     return (
         <div>
             <Sidebar
@@ -233,12 +246,7 @@ const MySidebar = ({ user, direction,site_settings }) => {
                             collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
                         }`}
                     >
-                         <img
-                            src="/images/logo.PNG"
-                            alt="Logo"
-                            className="w-8 h-8"
-                        />
-                        <span className="pt-1">{ site_settings.websiteName}</span>
+                        <span className="pt-1">{site_settings.websiteName}</span>
                     </h1>
                     <button
                         onClick={() => setCollapsed(!collapsed)}
@@ -246,53 +254,57 @@ const MySidebar = ({ user, direction,site_settings }) => {
                             collapsed ? "rotate-180" : ""
                         }`}
                     >
-
-                        <MdChevronRight
-                            size={24}
-                            className="text-white "
-                        />
-
+                        <MdChevronRight size={24} className="text-white " />
                     </button>
                 </div>
                 <div className="px-6 pt-2">
                     <hr className="border-gray-300 dark:border-gray-900" />
                 </div>
-                <Menu
-                    iconShape="square"
-                    className="pt-2 text-white dark:text-white"
-                >
-                    {filteredSections.map((section, index) => (
-                        <SubMenu
-                            key={`${index}-${section.title}`}
-                            icon={section.icon}
-                            label={section.title}
-                            className="py-2 my-2 dark:hover:text-white hover:text-burntOrange"
-                        >
-                            {section.links.map((link, idx) => (
-                                <SideNavLink
-                                    key={`${idx}-${link.href}`}
-                                    href={route(link.href)}
-                                    active={route().current(link.href)}
-                                    className="flex items-center justify-between px-4 py-2"
+                <Menu iconShape="square" className="pt-2 text-white dark:text-white">
+                    {filteredMenuItems.map((item, index) => {
+                        if (item.type === "link") {
+                            return (
+                                <MenuItem
+                                    key={`link-${index}`}
+                                    icon={item.icon}
+                                    component={<Link href={route(item.href)} />}
+                                    className="py-2 my-2 dark:hover:text-white hover:text-burntOrange"
                                 >
-                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
-                                        {link.icon}{link.text}
-                                    </div>
-                                </SideNavLink>
-                            ))}
-                        </SubMenu>
-                    ))}
+                                    {item.text}
+                                </MenuItem>
+                            );
+                        } else if (item.type === "section") {
+                            return (
+                                <SubMenu
+                                    key={`section-${index}`}
+                                    icon={item.icon}
+                                    label={item.title}
+                                    className="py-2 my-2 dark:hover:text-white hover:text-burntOrange"
+                                >
+                                    {item.links.map((link, idx) => (
+                                        <SideNavLink
+                                            key={`${idx}-${link.href}`}
+                                            href={route(link.href)}
+                                            active={route().current(link.href)}
+                                            className="flex items-center justify-between px-4 py-2"
+                                        >
+                                            <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
+                                                {link.icon}
+                                                {link.text}
+                                            </div>
+                                        </SideNavLink>
+                                    ))}
+                                </SubMenu>
+                            );
+                        }
+                    })}
                 </Menu>
                 <div className="px-6 pb-8">
                     <hr className="border-gray-300 dark:border-gray-900" />
                 </div>
                 <Link href={route("profile.edit")}>
                     <div className="flex items-center p-6 pt-2 mx-auto overflow-hidden ">
-                        <div
-                            className={`flex items-center ${
-                                collapsed ? "" : "gap-3"
-                            }`}
-                        >
+                        <div className={`flex items-center ${collapsed ? "" : "gap-3"}`}>
                             <img
                                 className="rounded-full w-9 h-9"
                                 src={user.profile_photo_url}

@@ -84,8 +84,8 @@ class RolesAndPermissionsSeeder extends Seeder
         //----------------------------------------------------------------------------------------------------------------
 
         // Define roles
-        $SystemAdminRole = Role::firstOrCreate(['name' => 'SystemAdmin']);
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $SystemAdminRole = Role::firstOrCreate(['name' => 'admin']);
+        $userRole = Role::firstOrCreate(['name' => 'user']);
         $customerRole = Role::firstOrCreate(['name' => 'customer']);
         $AccountantRole = Role::firstOrCreate(['name' => 'Accountant']);
 
@@ -109,27 +109,6 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
 
-
-        //----------------------------------------------------------------------------------------------------------------
-
-
-
-        // Manually assign specific permissions to the 'admin' role
-
-        $adminPermissions = [
-
-            'view-admin-dashboard',
-
-            // Main CRUD permissions
-            'create-box',
-            'read-box',
-            'update-box',
-            "delete-box",
-
-
-
-        ];
-        $adminRole->syncPermissions($adminPermissions);
 
 
         //----------------------------------------------------------------------------------------------------------------
@@ -162,7 +141,17 @@ class RolesAndPermissionsSeeder extends Seeder
         $customerRole->syncPermissions($customerPermissions);
 
 
+        //----------------------------------------------------------------------------------------------------------------
 
+        // Manually assign specific permissions to the 'customer' role
+
+
+        $userPermissions = [
+
+            "view-admin-dashboard",
+
+        ];
+        $userRole->syncPermissions($userPermissions);
 
 
     }

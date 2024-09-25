@@ -109,6 +109,13 @@ export default function SettingsPage({ auth, site_settings,settings, success }) 
                                     width="100"
                                 />
                             </section>
+                            <section className="mb-6">
+                                <h3 className="text-lg font-semibold">Welcome Cover</h3>
+                                <img
+                                    src={`${settings.find(setting => setting.name === 'site_cover')?.value}`}
+                                    alt="Company Logo"
+                                />
+                            </section>
                         </div>
                     </div>
                 </div>
@@ -144,6 +151,17 @@ export default function SettingsPage({ auth, site_settings,settings, success }) 
                                         onChange={(e) => setData('image',e.target.files[0])}
                                     />
                                     <InputError message={errors.company_logo} className="mt-2" />
+                                </div>
+
+                                <div className="mb-4">
+                                    <InputLabel htmlFor="site_cover" value="Welcome Cover" />
+                                    <Input
+                                        type="file"
+                                        id={`site_cover`}
+                                        className="block w-full mt-1"
+                                        onChange={(e) => setData('site_cover',e.target.files[0])}
+                                    />
+                                    <InputError message={errors.site_cover} className="mt-2" />
                                 </div>
 
                                 <div className="mb-4">

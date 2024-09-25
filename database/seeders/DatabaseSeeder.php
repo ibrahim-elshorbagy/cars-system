@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             'password' =>Hash::make('a'),
         ]);
 
-        $user->assignRole('SystemAdmin');
+        $user->assignRole('admin');
 
         $user = User::factory()->create([
             'name' => 'ibrahim ',

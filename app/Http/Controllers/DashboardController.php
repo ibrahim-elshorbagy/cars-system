@@ -11,32 +11,27 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
 
-    public function markAsRead($id,$order)
-    {
-        $user = Auth::user();
+    // public function markAsRead($id,$order)
+    // {
+    //     $user = Auth::user();
 
-        $notification= $user->notifications()->where('id', $id)->first();
+    //     $notification= $user->notifications()->where('id', $id)->first();
 
-        $notification->markAsRead();
+    //     $notification->markAsRead();
 
-        return to_route('admin.show.order',$order);
-    }
+    //     return to_route('admin.show.order',$order);
+    // }
 
 
 
     public function AdminDashboard()
     {
-        // Counting Admin and System Admin users
-        $adminsAndSystemAdminsCount = User::role(['admin', 'SystemAdmin'])->count();
 
-        // Counting Customers
-        $customersCount = User::role('customer')->count();
 
 
         // Passing data to the frontend
         return inertia('Admin/Dashboard', [
-            'adminsAndSystemAdminsCount' => $adminsAndSystemAdminsCount,
-            'customersCount' => $customersCount,
+
         ]);
     }
 
@@ -47,8 +42,6 @@ class DashboardController extends Controller
 
     public function CustomerDashboard()
     {
-        $userId = auth()->id();
-
 
         return inertia('Customer/Dashboard',[]);
     }

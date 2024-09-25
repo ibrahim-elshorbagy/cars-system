@@ -13,6 +13,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingBox, setEditingBox] = useState(null);
+  const [operationPerformed, setOperationPerformed] = useState(false);
 
   const toggleCreateModal = () => {
     setIsCreateModalOpen(!isCreateModalOpen);
@@ -105,7 +106,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
         setVisibleSuccess(page.props.success);
               setVisibleDanger(page.props.danger);
         setOperationPerformed(true);
-              
+
       }
     });
   };

@@ -27,52 +27,71 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        // Validate the image field (optional)
+        // Validate the image fields (both logo and cover are optional)
         $validated = $request->validate([
             'site_name' => 'required|string',
             'support_email' => 'required|email',
             'support_phone' => 'required|string',
             'image' => 'nullable|image',
+            'site_cover' => 'nullable|image',
         ]);
 
-        // Check if a new image was uploaded
+        // Handling logo (company_logo)
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             // Fetch the current logo from the database
             $currentLogo = Setting::where('name', 'company_logo')->value('value');
 
             // If there is an existing logo, delete it from storage
             if ($currentLogo) {
-                // Get the storage path from the URL
                 $currentLogoPath = str_replace('/storage/', '', $currentLogo);
-
-                // Check if the file exists and delete it
                 if (Storage::disk('public')->exists($currentLogoPath)) {
                     Storage::disk('public')->delete($currentLogoPath);
                 }
             }
 
-            // Process the new image
-            $image = $request->file('image');
-
-            // Define the path and store the image
+            // Store the new logo
+            $logo = $request->file('image');
             $path = 'settings/logo';
-            $imageName = $image->getClientOriginalName();
-            $imagePath = $image->storeAs($path, $imageName, 'public');
-
-            // Store the image URL for further use
-            $imageUrl = Storage::url($imagePath);
+            $logoName = $logo->getClientOriginalName();
+            $logoPath = $logo->storeAs($path, $logoName, 'public');
+            $logoUrl = Storage::url($logoPath);
 
             // Update the logo setting in the database
-            Setting::where('name', 'company_logo')->update(['value' => $imageUrl]);
+            Setting::where('name', 'company_logo')->update(['value' => $logoUrl]);
         }
 
-        // Process other settings
+        // Handling site cover (site_cover)
+        if ($request->hasFile('site_cover') && $request->file('site_cover')->isValid()) {
+            // Fetch the current site cover from the database
+            $currentCover = Setting::where('name', 'site_cover')->value('value');
+
+            // If there is an existing cover, delete it from storage
+            if ($currentCover) {
+                $currentCoverPath = str_replace('/storage/', '', $currentCover);
+                if (Storage::disk('public')->exists($currentCoverPath)) {
+                    Storage::disk('public')->delete($currentCoverPath);
+                }
+            }
+
+            // Store the new site cover
+            $cover = $request->file('site_cover');
+            $coverPath = 'settings/cover';
+            $coverName = $cover->getClientOriginalName();
+            $coverFullPath = $cover->storeAs($coverPath, $coverName, 'public');
+            $coverUrl = Storage::url($coverFullPath);
+
+            // Update the site cover setting in the database
+            Setting::where('name', 'site_cover')->update(['value' => $coverUrl]);
+        }
+
+        // Update other settings
         Setting::where('name', 'site_name')->update(['value' => $validated['site_name']]);
         Setting::where('name', 'support_email')->update(['value' => $validated['support_email']]);
         Setting::where('name', 'support_phone')->update(['value' => $validated['support_phone']]);
 
         return back()->with('success', 'تم التعديل بنجاح!');
     }
+
 
 
 

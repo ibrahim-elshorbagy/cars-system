@@ -21,13 +21,16 @@ export default function Guest({ children ,site_settings }) {
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
-                            <div className="flex items-center shrink-0">
+                            <div className="flex items-center gap-2 ">
                                 <Link href="/">
                                                 <img
                                                     src={site_settings.websiteLogo}
                                                     alt="Logo"
                                                     className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200"/>
                                 </Link>
+                                <div className="ml-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                    {site_settings.websiteName}
+                                </div>
                             </div>
                         </div>
 

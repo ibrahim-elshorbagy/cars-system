@@ -29,8 +29,9 @@ export default function Login({ status, canResetPassword ,site_settings}) {
 
     return (
         <GuestLayout centerContent box_width="max-w-xl" site_settings={site_settings}>
-            <Head title={site_settings.websiteName + " - " +"تسجيل الدخول"} />
-            <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
+            <Head title={site_settings.websiteName + " - " + "تسجيل الدخول"} />
+            {/* bg-indigoBlue */}
+            <div className="flex items-center justify-center flex-1 dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     {status && (
                         <div className="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
@@ -40,7 +41,7 @@ export default function Login({ status, canResetPassword ,site_settings}) {
 
                     <form onSubmit={submit}>
                         <div>
-                            <InputLabel htmlFor="email" value={"البريد الاكتروني"} />
+                            <InputLabel htmlFor="email" value={"البريد الالكتروني"} />
                             <TextInput
                                 id="email"
                                 type="email"
@@ -62,7 +63,7 @@ export default function Login({ status, canResetPassword ,site_settings}) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password"
-                                value={"كلمة االسر"}
+                                value={"كلمة السر"}
                             />
                             <TextInput
                                 id="password"
