@@ -52,7 +52,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                 {user.permissions.includes("for-customer-view-dashboard") && (
                                     <Link href={route("customer.dashboard")}>
                                                 <img
-                                                    src={site_settings.company_logo}
+                                                    src={site_settings.websiteLogo}
                                                     alt="Logo"
                                                     className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200"
 

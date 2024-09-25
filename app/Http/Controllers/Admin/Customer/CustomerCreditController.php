@@ -130,11 +130,12 @@ class CustomerCreditController extends Controller
 
         try {
             // Create the CustomerCredit record
-            $data['description'] = "تم خصم المبلغ " . $data['used_credit']. " من العميل نتيجه عمليه رصيد عكسيه ";
+            $user_name = User::find($data['user_id'])->name;
+
+            $data['description'] = "تم خصم المبلغ " . $data['used_credit']. " من " . $user_name . " نتيجه عمليه رصيد عكسيه ";
             $data['created_by']=Auth::user()->id;
             CustomerCredit::create($data);
 
-            $user_name = User::find($data['user_id'])->name;
             BoxTransaction::create([
                 'box_id' => $data['box_id'],
                 'outcome' => $data['used_credit'],

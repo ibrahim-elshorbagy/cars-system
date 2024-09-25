@@ -270,7 +270,7 @@ const handleCustomerSelect = (customer) => {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            تسديد الذمم
+            المقبوضات
           </h2>
           {auth.user.permissions.includes("create-billPayment") && (
             <button
@@ -283,7 +283,7 @@ const handleCustomerSelect = (customer) => {
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " + "تسديد الذمم"} />
+      <Head title={site_settings.websiteName + " - " + "المقبوضات"} />
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
           {visibleSuccess && (
@@ -305,7 +305,7 @@ const handleCustomerSelect = (customer) => {
                     <tr className="text-nowrap">
                       <th className="px-3 py-3">Id</th>
                       <th className="px-3 py-3">اسم العميل</th>
-                      <th className="px-3 py-3">القيمة االكليه</th>
+                      <th className="px-3 py-3">القيمة الكليه</th>
                       {/* <th className="px-3 py-3">صندوق</th> */}
                       <th className="px-3 py-3">اضافه بواسطه</th>
                       <th className="px-3 py-3">تحديث بواسطه</th>

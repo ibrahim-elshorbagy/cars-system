@@ -29,7 +29,7 @@ export default function Show({ auth, site_settings, car }) {
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold">معلومات السياره</h2>
                                               <Link
-                    href={route("car.index")}
+                    href={route("customer-my-cars.index")}
                     className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                 >
                 الرجوع

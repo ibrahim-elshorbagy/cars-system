@@ -266,7 +266,9 @@ const {
                       <th className="px-3 py-3">الوصف</th>
                       <th className="px-3 py-3">الصندوق</th>
                       <th className="px-3 py-3">اضافه بواسطه</th>
+                      <th className="px-3 py-3">وقت الانشاء</th>
                       <th className="px-3 py-3">تحديث بواسطه</th>
+                      <th className="px-3 py-3">وقت التحديث</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -281,6 +283,8 @@ const {
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
@@ -305,7 +309,9 @@ const {
                           <td className="px-3 py-2 text-nowrap">{record.description}</td>
                           <td className="px-3 py-2 text-nowrap">{record.box_name}</td>
                           <td className="px-3 py-2 text-nowrap">{record.created_by}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.created_at}</td>
                           <td className="px-3 py-2 text-nowrap">{record.updated_by}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.updated_at}</td>
                           {/* <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-customer-credit") && !record.cant &&(
                               <button
@@ -329,7 +335,7 @@ const {
                     ) : (
                       <tr>
                         <td colSpan="4" className="px-3 py-2 text-center">
-                          لا يوجد موديلات
+                          لا يوجد ارصده
                         </td>
                       </tr>
                     )}

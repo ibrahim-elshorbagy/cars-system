@@ -62,3 +62,4 @@ require __DIR__.'/transportation.php';
 require __DIR__.'/carbill.php';
 require __DIR__.'/box.php';
 require __DIR__.'/customer.php';
+require __DIR__.'/customerDashboard.php';

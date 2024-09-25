@@ -67,6 +67,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
             //customer
             'for-customer-view-dashboard',
+            'read-my-cars',
+            'read-my-credits',
+            'read-my-bills',
 
             //bills
             'read-bill',
@@ -150,6 +153,10 @@ class RolesAndPermissionsSeeder extends Seeder
         $customerPermissions = [
 
             "for-customer-view-dashboard",
+            'read-my-cars',
+            'read-my-credits',
+            'read-my-bills',
+
 
         ];
         $customerRole->syncPermissions($customerPermissions);

@@ -34,10 +34,10 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     permissions: ["view-admin-dashboard"],
                 },
                 {
-                    text: "كل المستخدمين",
+                    text: " المستخدمين",
                     href: "user.index",
                     icon: <FaUser />,
-                    permissions: ["for-SystemAdmin-manage-users"],
+                    permissions: ["read-user"],
                 },
                 {
                     text: "الصلاحيات ",
@@ -104,7 +104,7 @@ const MySidebar = ({ user, direction,site_settings }) => {
 
         icon: <MdDashboard />,
         },
-            { // customer
+            {
             title: " الشحن (Shipping)" ,
             links: [
                 {
@@ -122,11 +122,11 @@ const MySidebar = ({ user, direction,site_settings }) => {
             ],
             icon: <MdDashboard />,
         },
-            { // customer
+            {
             title: "المحاسبة (Accounting)",
             links: [
                 {
-                    text: "تسديد الذمم",
+                    text: "المقبوضات",
                     href: "bill-payment.index",
                     icon: <RiBillFill  />,
                     permissions: ["read-bill"],
@@ -158,6 +158,13 @@ const MySidebar = ({ user, direction,site_settings }) => {
             ],
             icon: <MdDashboard />,
         },
+
+
+
+
+
+
+
         { // customer
             title: "لوحة التحكم",
             links: [
@@ -167,10 +174,31 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     icon: <MdDashboard />,
                     permissions: ["for-customer-view-dashboard"],
                 },
+                {
+                    text: "سياراتي",
+                    href: "customer-my-cars.index",
+                    icon: <FaCar />,
+                    permissions: ["read-my-cars"],
+                },
+                {
+                    text: "المحاسبة",
+                    href: "customer-my-credits.index",
+                    icon: <PiBagSimpleFill />,
+                    permissions: ["read-my-credits"],
+                },
+                {
+                    text: "الذمم",
+                    href: "customer-my-bills.index",
+                    icon: <TbReceiptTax />,
+                    permissions: ["read-my-bills"],
+                },
             ],
             icon: <MdDashboard />,
             permissions:['for-customer-view-dashboard']
         },
+
+
+
 
 
     ];

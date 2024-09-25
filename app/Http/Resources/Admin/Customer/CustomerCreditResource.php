@@ -39,7 +39,7 @@ class CustomerCreditResource extends JsonResource
             'created_by' => $this->createdBy->name ?? null,
             'updated_by' => $this->updatedBy->name ?? null,
 
-            'cant' => $this->used_credit > $this->added_credit ? true : false,
+            // 'cant' => $this->used_credit > $this->added_credit ? true : false,
 
         ];
     }

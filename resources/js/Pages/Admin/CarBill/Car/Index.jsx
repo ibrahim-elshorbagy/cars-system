@@ -363,7 +363,7 @@ export default function Index({ auth,site_settings, cars,customers,boxeslist, ma
                     ) : (
                       <tr>
                         <td colSpan="4" className="px-3 py-2 text-center">
-                          لا يوجد سيارهات
+                          لا يوجد سيارات
                         </td>
                       </tr>
                     )}

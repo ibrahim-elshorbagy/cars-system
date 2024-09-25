@@ -10,16 +10,19 @@ import Input from "@/Components/ui/input";
 export default function SettingsPage({ auth, site_settings,settings, success }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [visibleSuccess, setVisibleSuccess] = useState(success);
+    const [operationPerformed, setOperationPerformed] = useState(false);
 
     useEffect(() => {
         if (success && operationPerformed) {
             setVisibleSuccess(success);
             const timer = setTimeout(() => {
                 setVisibleSuccess(null);
+                setOperationPerformed(false);
+
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [success]);
+    }, [success,operationPerformed]);
 
     // Prepare form for edit
     const { data, setData, post, errors, reset } = useForm({
@@ -50,6 +53,8 @@ export default function SettingsPage({ auth, site_settings,settings, success }) 
             onSuccess: () => {
                 reset();
                 toggleEditModal();
+                setOperationPerformed(true);
+
             },
             preserveScroll: true,
         });

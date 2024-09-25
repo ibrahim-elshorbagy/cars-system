@@ -98,26 +98,29 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
               <table className="w-full text-left text-gray-500 rtl:text-right dark:text-gray-400">
                 <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th>التاريخ</th>
                     <th>الداخل</th>
                     <th>الخارج</th>
                     <th>الرصيد</th>
                     <th>الوصف</th>
                     <th>تم بواسطه</th>
+                    <th>تاريخ الانشاء</th>
                     <th>تحديث بواسطه</th>
+                    <th>تاريخ التحديث</th>
                   </tr>
                 </thead>
                 <tbody>
                   {box.data.transactions.data.length > 0 ? (
                     box.data.transactions.data.map((transaction) => (
                       <tr className="border-b" key={transaction.id}>
-                        <td className="px-3 py-2 text-nowrap">{transaction.created_at}</td>
                         <td className="px-3 py-2">{transaction.income}</td>
                         <td className="px-3 py-2">{transaction.outcome}</td>
                         <td className="px-3 py-2">{transaction.balance}</td>
                         <td className="px-3 py-2">{transaction.description}</td>
-                        <td className="px-3 py-2">{transaction.created_by}</td>
-                        <td className="px-3 py-2">{transaction.updated_by}</td>
+                        <td >{transaction.created_by}</td>
+                        <td >{transaction.created_at}</td>
+
+                        <td >{transaction.updated_by}</td>
+                        <td >{transaction.updated_at}</td>
                       </tr>
                     ))
                   ) : (
