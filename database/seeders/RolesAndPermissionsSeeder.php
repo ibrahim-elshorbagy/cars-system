@@ -139,7 +139,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
 
         $AccountantPermissions = [
-
+            'view-admin-dashboard',
         ];
         $AccountantRole->syncPermissions($AccountantPermissions);
 

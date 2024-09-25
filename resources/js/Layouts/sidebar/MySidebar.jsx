@@ -31,7 +31,7 @@ const MySidebar = ({ user, direction,site_settings }) => {
                     text: "الصندايق",
                     href: "box.index",
                     icon: <MdDashboard />,
-                    permissions: ["view-admin-dashboard"],
+                    permissions: ["read-box"],
                 },
                 {
                     text: " المستخدمين",

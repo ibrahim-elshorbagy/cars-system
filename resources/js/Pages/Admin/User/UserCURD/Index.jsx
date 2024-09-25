@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth,site_settings, users, queryParams = null, success ,roles}) {
+export default function Index({ auth,site_settings, users, queryParams = null, success ,roles,boxes,danger}) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -15,9 +15,14 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
 
+    const [selectedRole, setSelectedRole] = useState(""); // For create modal
+    const [editSelectedRole, setEditSelectedRole] = useState(""); // For edit modal
+
   // Toggle Create Modal
   const toggleCreateModal = () => {
-    setIsCreateModalOpen(!isCreateModalOpen);
+      setIsCreateModalOpen(!isCreateModalOpen);
+      setSelectedRole("");
+      createReset();
   };
 
   // Toggle Edit Modal
@@ -25,7 +30,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         if (user) {
             setEditingUser(user);
             const roleId = Array.isArray(user.role_id) ? user.role_id[0] : user.role_id;
-
+            setEditSelectedRole(roleId);
         setEditData({
             name: user.name,
             email: user.email,
@@ -37,9 +42,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         });
         } else {
         setEditingUser(null);
-        editReset();
+            setEditSelectedRole("");
         }
         setIsEditModalOpen(!isEditModalOpen);
+
     };
 
   // Search functionality
@@ -72,6 +78,19 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         return () => clearTimeout(timer);
     }
     }, [success, operationPerformed]);
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+
+  useEffect(() => {
+    if (danger) {
+      setVisibleDanger(danger);
+      const timer = setTimeout(() => {
+        setVisibleDanger(null);
+        setOperationPerformed(false);
+
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [danger,operationPerformed]);
 
 
   const deleteUser = (user) => {
@@ -81,8 +100,8 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     router.delete(route("user.destroy", user.id), {
       onSuccess: (page) => {
             setVisibleSuccess(page.props.success);
-        setOperationPerformed(true);
-            
+            setOperationPerformed(true);
+
       },
     });
   };
@@ -175,6 +194,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
           {visibleSuccess && (
             <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
               {visibleSuccess}
+            </div>
+          )}                    {visibleDanger && (
+            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+              {visibleDanger}
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
@@ -298,27 +321,49 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     onChange={(e) => setCreateData("name", e.target.value)}
                   />
                   <InputError message={createErrors.name} className="mt-2" />
-                </div>
-                 <div className="mb-4">
-                <InputLabel htmlFor="role" value={"الدور"} />
+                    </div>
+                    <div className="mb-4">
+                        <SelectInput
+                        name="role"
+                        id="role"
+                        className="block w-full mt-1"
+                        value={createData.role}
+                        onChange={(e) => {
+                            setCreateData("role", e.target.value);
+                            setSelectedRole(e.target.value); // Track role change
+                        }}
+                        >
+                        <option value="">اختر</option>
+                        {roles.map((role) => (
+                            <option value={role.id} key={role.id}>
+                            {role.name}
+                            </option>
+                        ))}
+                        </SelectInput>
+                        <InputError message={createErrors.role} className="mt-2" />
+                    </div>
+                    {/* Conditionally render the box selection if role is Accountant */}
+                    {selectedRole == 4 && (
+                    <div className="mb-4">
+                        <InputLabel htmlFor="box_id" value={"اختر الصندوق"} />
+                        <SelectInput
+                        name="box_id"
+                        id="box_id"
+                        className="block w-full mt-1"
+                        value={createData.box_id}
+                        onChange={(e) => setCreateData("box_id", e.target.value)}
+                        >
+                        <option value="">اختر الصندوق</option>
+                        {boxes.map((box) => (
+                            <option value={box.id} key={box.id}>
+                            {box.name}
+                            </option>
+                        ))}
+                        </SelectInput>
+                        <InputError message={createErrors.box_id} className="mt-2" />
+                    </div>
+                    )}
 
-                <SelectInput
-                  name="role"
-                  id="role"
-                  className="block w-full mt-1"
-                  value={createData.role}
-                  onChange={(e) => setCreateData("role", e.target.value)}
-                >
-                  <option value="">اختر</option>
-                  {roles.map((role) => (
-                    <option value={role.id} key={role.id}>
-                      {role.name}
-                    </option>
-                  ))}
-                </SelectInput>
-
-                <InputError message={createErrors.role} className="mt-2" />
-              </div>
                 <div className="mb-4">
                   <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
                   <TextInput
@@ -416,25 +461,49 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     onChange={(e) => setEditData("name", e.target.value)}
                   />
                   <InputError message={editErrors.name} className="mt-2" />
-                </div>
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_role" value={"الدور"} />
-                  <SelectInput
-                    name="role"
-                    id="edit_user_role"
-                    className="block w-full mt-1"
-                    value={editData.role}
-                    onChange={(e) => setEditData("role", e.target.value)}
-                  >
-                    <option value="">اختر</option>
-                    {roles.map((role) => (
-                      <option value={role.id} key={role.id}>
-                        {role.name}
-                      </option>
-                    ))}
-                  </SelectInput>
-                  <InputError message={editErrors.role} className="mt-2" />
-                </div>
+                              </div>
+                    <div className="mb-4">
+                        <SelectInput
+                        name="role"
+                        id="edit_user_role"
+                        className="block w-full mt-1"
+                        value={editData.role}
+                        onChange={(e) => {
+                            setEditData("role", e.target.value);
+                            setEditSelectedRole(e.target.value); // Track role change
+                        }}
+                        >
+                        <option value="">اختر</option>
+                        {roles.map((role) => (
+                            <option value={role.id} key={role.id}>
+                            {role.name}
+                            </option>
+                        ))}
+                        </SelectInput>
+                        <InputError message={editErrors.role} className="mt-2" />
+                    </div>
+                    {/* Conditionally render the box selection if role is Accountant */}
+                    {editSelectedRole == 4 && (
+                    <div className="mb-4">
+                        <InputLabel htmlFor="edit_box_id" value={"اختر الصندوق"} />
+                        <SelectInput
+                        name="box_id"
+                        id="edit_box_id"
+                        className="block w-full mt-1"
+                        value={editData.box_id}
+                        onChange={(e) => setEditData("box_id", e.target.value)}
+                        >
+                        <option value="">اختر الصندوق</option>
+                        {boxes.map((box) => (
+                            <option value={box.id} key={box.id}>
+                            {box.name}
+                            </option>
+                        ))}
+                        </SelectInput>
+                        <InputError message={editErrors.box_id} className="mt-2" />
+                    </div>
+                    )}
+
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
                   <TextInput

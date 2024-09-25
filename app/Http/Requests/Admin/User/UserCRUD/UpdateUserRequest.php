@@ -38,6 +38,7 @@ class UpdateUserRequest extends FormRequest
                 Password::min(8)->letters(),
             ],
             "role" => ["required", "integer"],
+            'box_id'=>["nullable","exists:boxes,id"],
         ];
     }
 }

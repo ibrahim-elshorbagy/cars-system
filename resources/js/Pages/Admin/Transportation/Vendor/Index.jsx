@@ -86,7 +86,7 @@ export default function Index({ auth,site_settings, vendors, queryParams = null,
     router.delete(route("vendor.destroy", vendor.id), {
       onSuccess: (page) => {
             setVisibleSuccess(page.props.success);
-        setOperationPerformed(true);
+            setOperationPerformed(true);
 
       },
     });

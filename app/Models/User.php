@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Bill\PaymentBill;
+use App\Models\Admin\Box\BoxTransaction;
+use App\Models\Admin\Box\BoxTransfer;
 use App\Models\Admin\Car\Car;
 use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Users\Accountant\Accountant;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\AuthfMustVerifyEmail;
 
 class User extends Authenticatable
 {
@@ -77,11 +79,45 @@ class User extends Authenticatable
         return $this->hasMany(PaymentBill::class, 'user_id');
     }
 
-    public function cars(){
-
-        return $this->hasMany(Car::class, 'user_id');
+    public function createdBoxTransactions()
+    {
+        return $this->hasMany(BoxTransaction::class, 'created_by');
     }
-    
+
+    public function updatedBoxTransactions()
+    {
+        return $this->hasMany(BoxTransaction::class, 'updated_by');
+    }
+
+    public function createdCars()
+    {
+        return $this->hasMany(Car::class, 'created_by');
+    }
+
+    public function updatedCars()
+    {
+        return $this->hasMany(Car::class, 'updated_by');
+    }
+
+    public function createdCustomerCredits()
+    {
+        return $this->hasMany(CustomerCredit::class, 'created_by');
+    }
+
+    public function updatedCustomerCredits()
+    {
+        return $this->hasMany(CustomerCredit::class, 'updated_by');
+    }
+
+    public function createdBoxTransfers()
+    {
+        return $this->hasMany(BoxTransfer::class, 'created_by');
+    }
+
+    public function updatedBoxTransfers()
+    {
+        return $this->hasMany(BoxTransfer::class, 'updated_by');
+    }
     public static function boot()
     {
         parent::boot();

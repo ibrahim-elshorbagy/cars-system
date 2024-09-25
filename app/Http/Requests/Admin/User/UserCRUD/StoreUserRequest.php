@@ -33,6 +33,7 @@ class StoreUserRequest extends FormRequest
                 Password::min(8)->letters(),
             ],
             "role" => ["required"],
+            "box_id"=>["nullable","exists:boxes,id"],
         ];
     }
 }
