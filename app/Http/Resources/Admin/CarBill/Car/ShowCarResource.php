@@ -51,6 +51,9 @@ class ShowCarResource extends JsonResource
 
             'created_by' => $this->createdBy->name ?? null,
             'updated_by' => $this->updatedBy->name ?? null,
+
+            'cant' => $this->bill && $this->bill->paymentBills()->exists() ? true : false,
+
         ];
     }
 }

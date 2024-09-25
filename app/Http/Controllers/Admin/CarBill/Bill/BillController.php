@@ -204,7 +204,7 @@ class BillController extends Controller
 
             $customer_name =User::find($payment->user_id)->name;
             CustomerCredit::create([
-                'user_id'=> $payment->customer_id,
+                'user_id'=> $payment->user_id,
                 'box_id' => $payment->box_id,
                 'added_credit' => $payment->total_amount,
                 'description' => ' تم ارجاع ' . $payment->total_amount . ' إلى ' . $customer_name . " نتيجه عمليه حذف عملية تسديد  ",

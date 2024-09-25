@@ -243,9 +243,19 @@ class CarController extends Controller
 
     public function destroy(Car $car)
     {
+        // Check if the car has any payments associated with its bills
+        $hasPayments = $car->bill->paymentBills()->exists();
+
+        if ($hasPayments) {
+            return back()->with('danger', 'لا يمكن حذف السيارة لأنها تحتوي على مدفوعات.');
+        }
+
+        // If no payments are found, first delete associated bills
+        $car->bill()->delete();
 
         // Define the folder path where the specific car's images are stored
         $imageFolderPath = '/cars/'. $car->user_id . '/' . $car->id;
+
         // Check if the folder exists, then delete the entire folder for that car
         if (Storage::disk('public')->exists($imageFolderPath)) {
             Storage::disk('public')->deleteDirectory($imageFolderPath);
@@ -254,9 +264,11 @@ class CarController extends Controller
         // Delete associated car images
         $car->carImages()->delete();
 
+        // Finally, delete the car
         $car->delete();
 
-        return back()->with('success', ' تم حذف السيارة بنجاح ');
+        return back()->with('success', 'تم حذف السيارة بنجاح.');
     }
+
 
 }

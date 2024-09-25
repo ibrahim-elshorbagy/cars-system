@@ -39,7 +39,7 @@ export default function Index({ auth, site_settings, transfers, boxes, queryPara
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [danger]);
+  }, [danger, operationPerformed]);
 
   // Form data for creating and editing transfers
   const { data: createData, setData: setCreateData, post: createPost, errors: createErrors, reset: createReset } = useForm({

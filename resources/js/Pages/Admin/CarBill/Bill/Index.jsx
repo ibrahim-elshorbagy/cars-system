@@ -721,7 +721,7 @@ const handleCustomerSelect = (customer) => {
                         onClick={toggleShowModal}
                         className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
                     >
-                        إلغاء
+                        غلق
                     </button>
                 </div>
             </div>

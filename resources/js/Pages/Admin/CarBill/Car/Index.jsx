@@ -7,6 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { Button } from "@/components/ui/button";
 import SelectInput from "@/Components/SelectInput";
+import { FiLock } from 'react-icons/fi';
 
 import { ChevronsUpDown, Check } from "lucide-react";
 import {
@@ -24,7 +25,7 @@ import {
 } from "@/components/ui/popover";
 import Input from "@/Components/ui/input";
 
-export default function Index({ auth,site_settings, cars,customers,boxeslist, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null, success,ErrorAlert }) {
+export default function Index({ auth,site_settings, cars,customers,boxeslist, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null, success,ErrorAlert,danger }) {
   queryParams = queryParams || {};
 
     useEffect(() => {
@@ -71,15 +72,26 @@ export default function Index({ auth,site_settings, cars,customers,boxeslist, ma
     }
   };
 //------------------------------------------------------- Handel delete
+  const [visibleDanger, setVisibleDanger] = useState(danger);
+  useEffect(() => {
+    if (danger) {
+      setVisibleDanger(danger);
+      const timer = setTimeout(() => {
+        setVisibleDanger(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [danger]);
+
+
 
   const deleteCar = (car) => {
     if (window.confirm("هل انت متأكد من حذف السياره ؟ ")) {
       router.delete(route("car.destroy", car.id), {
         onSuccess: (page) => {
-              setVisibleSuccess(page.props.success);
-                setOperationPerformed(true);
-
-        },
+            setOperationPerformed(true);
+            setVisibleSuccess(page.props.success);
+            setVisibleDanger(page.props.danger);        },
       });
     }
   };
@@ -281,6 +293,11 @@ export default function Index({ auth,site_settings, cars,customers,boxeslist, ma
               {visibleSuccess}
             </div>
                   )}
+                                      {visibleDanger && (
+            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+              {visibleDanger}
+            </div>
+          )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
@@ -292,7 +309,7 @@ export default function Index({ auth,site_settings, cars,customers,boxeslist, ma
                       <th className="px-3 py-3">رقم الشاسيه</th>
                       <th className="px-3 py-3">اضافه بواسطه</th>
                       <th className="px-3 py-3">تحديث بواسطه</th>
-                      <th className="px-3 py-3">الإجراءات</th>
+                      <th className="px-3 py-3 text-center">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -333,7 +350,7 @@ export default function Index({ auth,site_settings, cars,customers,boxeslist, ma
                           <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
                           <td className="px-3 py-2 text-nowrap">{car.created_by}</td>
                           <td className="px-3 py-2 text-nowrap">{car.updated_by}</td>
-                          <td className="px-3 py-2 text-nowrap">
+                          <td className="flex justify-center gap-2 px-3 py-2 text-center">
                             {auth.user.permissions.includes("update-car") && (
                               <button
                                 onClick={() => toggleEditModal(car)}
@@ -342,14 +359,23 @@ export default function Index({ auth,site_settings, cars,customers,boxeslist, ma
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-car") && (
-                              <button
-                                onClick={() => deleteCar(car)}
-                                className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
-                              >
-                                حذف
-                              </button>
+
+                                {auth.user.permissions.includes("delete-car") && (
+                                    car.cant ? (
+                                        <div className="flex items-center">
+                                        <FiLock className="text-red-600" /> {/* Lock icon */}
+                                        <span className="ml-2 text-red-600 dark:text-red-500"></span> {/* Display "Locked" */}
+                                        </div>
+                                    ) : (
+                                        <button
+                                        onClick={() => deleteCar(car)}
+                                        className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
+                                        >
+                                        حذف
+                                        </button>
+                                    )
                                 )}
+
                             <Link
                                 href={route("car.show", car.id)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
