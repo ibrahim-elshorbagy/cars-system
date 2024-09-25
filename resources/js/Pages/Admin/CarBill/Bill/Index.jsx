@@ -31,6 +31,9 @@ export default function Index({ auth, site_settings, customers, payments, succes
 
     const [operationPerformed, setOperationPerformed] = useState(false);
 
+    const [isShowModalOpen, setIsShowModalOpen] = useState(false);
+    const [showPayment, setShowPayment] = useState(null);
+
     const customerList = customers?.data || customers;
 
   useEffect(() => {
@@ -225,7 +228,6 @@ const handleCustomerSelect = (customer) => {
             setEditData({
                 customer_id: customer.customer_id,
                 payments: allBills,
-                // total_used: payment.total_amount,
                 box_id: payment.box_id,
                 total_used: Number(payment.total_amount),
                 _method: "PUT",
@@ -260,9 +262,56 @@ const handleCustomerSelect = (customer) => {
             setVisibleDanger(page.props.danger);
       }
     });
-      };
+    };
+
+// --------------------------- handel open Show modal ----------------
+
+    const toggleShowModal = (payment = null) => {
+        if (payment) {
+        const customer = customerList.find((c) => c.customer_id === payment.customer_id);
 
 
+        if (customer) {
+            setSelectedCustomer(customer);
+
+            const allBills = customer.bills.map((bill) => {
+                const paymentBill = payment.paid_bills.find(paid_bill => paid_bill.bill_id === bill.bill_id);
+
+                return {
+                    payment_bill_id: paymentBill ? paymentBill.payment_bill_id : null,
+
+                    bill_id: bill.bill_id,
+                    car_chassis: bill.car_chassis,
+
+                    won_price: bill.won_price,
+                    won_price_paid_amount:bill.won_price_paid_amount,
+                    remain_won_price: bill.remain_won_price,
+                    won_price_payment: paymentBill ? paymentBill.won_price_paid_on_bill : 0,
+
+                    shipping_cost:bill.shipping_cost,
+                    remain_shipping_cost: bill.remain_shipping_cost,
+                    shipping_cost_paid_amount: bill.shipping_cost_paid_amount,
+                    shipping_cost_payment: paymentBill ? paymentBill.shipping_cost_paid_on_bill : 0,
+
+                };
+            });
+
+            setSelectedCustomer((prevState) => ({
+                ...prevState,
+                total_used: payment.total_amount,
+            }));
+
+            setShowPayment(allBills);
+        }else {
+        setShowPayment(null);
+     }
+
+    }
+
+    // Toggle the modal visibility
+    setIsShowModalOpen(!isShowModalOpen);
+
+};
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -345,7 +394,13 @@ const handleCustomerSelect = (customer) => {
                               >
                                 حذف
                               </button>
-                            )}
+                                  )}
+                                <button
+                                    onClick={() => toggleShowModal(payment)}
+                                className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
+                              >
+                                مشاهده
+                              </button>
                           </td>
                         </tr>
                       ))
@@ -609,7 +664,71 @@ const handleCustomerSelect = (customer) => {
             </div>
           </div>
         </div>
-      )}
+          )}
+      {isShowModalOpen && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="relative w-11/12 max-h-screen overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold dark:text-white">تعديل تسديد</h2>
+            </div>
+                    <div className="p-6">
+
+                        <div className="flex gap-5 m-6 text-xl">
+                            <span > رصيد العميل : {selectedCustomer.customer_balance} </span>
+                            <span > رصيد مستخدم : {selectedCustomer.total_used || 0} </span>
+                        </div>
+
+                {showPayment && (
+                    <>
+                        <table className="w-full text-center">
+                            <thead>
+                            <tr>
+                                <th className="py-2">رقم الهيكل</th>
+                                <th className="py-2">Won Price</th>
+                                <th className="py-2">Won Price Paid</th>
+                                <th className="py-2">Won Price Remain</th>
+                                <th className="py-2 border-l-2" >Pay</th>
+                                <th className="py-2">Shipping Cost</th>
+                                <th className="py-2">Shipping Cost Paid</th>
+                                <th className="py-2">Shipping Cost Remain</th>
+                                <th className="py-2">Pay</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {showPayment.map((bill, index) => (
+                                    <tr key={bill.car_chassis}>
+                                        <td className="py-4 border-t border-b">{bill.car_chassis}</td>
+                                        <td className="py-4 border-t border-b">{bill.won_price}</td>
+                                        <td className="py-4 border-t border-b">{bill.won_price_paid_amount}</td>
+                                        <td className="py-4 border-t border-b">{bill.remain_won_price}</td>
+
+                                        <td className="py-4 border-t border-b border-l-2">{bill.won_price_payment}</td>
+
+                                        <td className="py-4 border-t border-b">{bill.shipping_cost}</td>
+                                        <td className="py-4 border-t border-b">{bill.shipping_cost_paid_amount}</td>
+                                        <td className="py-4 border-t border-b">{bill.remain_shipping_cost}</td>
+                                        <td className="py-4 border-t border-b">{bill.shipping_cost_payment}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </>
+                )}
+                <div className="flex justify-end gap-2 mt-6">
+                    <button
+                        type="button"
+                        onClick={toggleShowModal}
+                        className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
+                    >
+                        إلغاء
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+          )}
+
     </AuthenticatedLayout>
   );
 }
