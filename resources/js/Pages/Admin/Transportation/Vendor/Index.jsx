@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 
-export default function Index({ auth,site_settings, vendors, queryParams = null, success }) {
+export default function Index({ auth,site_settings, vendors, queryParams = null, success,danger }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -66,6 +66,18 @@ export default function Index({ auth,site_settings, vendors, queryParams = null,
     }
     }, [success, operationPerformed]);
 
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+
+  useEffect(() => {
+    if (danger) {
+      setVisibleDanger(danger);
+      const timer = setTimeout(() => {
+        setVisibleDanger(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [danger]);
+
 
   const deleteVendor = (vendor) => {
     if (!window.confirm("هل انت متأكد من حذف المزاد ؟ ")) {
@@ -75,7 +87,7 @@ export default function Index({ auth,site_settings, vendors, queryParams = null,
       onSuccess: (page) => {
             setVisibleSuccess(page.props.success);
         setOperationPerformed(true);
-            
+
       },
     });
   };
@@ -162,6 +174,10 @@ export default function Index({ auth,site_settings, vendors, queryParams = null,
           {visibleSuccess && (
             <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
               {visibleSuccess}
+            </div>
+          )}                    {visibleDanger && (
+            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+              {visibleDanger}
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">

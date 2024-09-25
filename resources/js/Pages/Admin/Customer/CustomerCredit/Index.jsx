@@ -49,7 +49,6 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
     }
     }, [success, operationPerformed]);
 
-      const [visibleDanger, setVisibleDanger] = useState(danger);
 
   useEffect(() => {
     if (success && operationPerformed) {
@@ -60,6 +59,8 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
       return () => clearTimeout(timer);
     }
   }, [success]);
+    
+    const [visibleDanger, setVisibleDanger] = useState(danger);
 
   useEffect(() => {
     if (danger) {

@@ -59,6 +59,10 @@ class VendorController extends Controller
     public function destroy(Vendor $vendor)
     {
 
+        if ($vendor->cars()->count() > 0) {
+        return back()->with('danger', 'لا يمكن حذف المزاد لأنها مرتبطة بسيارات');
+        }
+        
         $vendor->delete();
         return back()->with('success', "تم حذف المزاد بنجاح");
 

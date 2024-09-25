@@ -59,6 +59,9 @@ class TerminalController extends Controller
     public function destroy(Terminal $terminal)
     {
 
+                if ($terminal->cars()->count() > 0) {
+        return back()->with('danger', 'لا يمكن حذف المحطه لأنها مرتبطة بسيارات');
+        }
         $terminal->delete();
         return back()->with('success', "تم حذف المحطه بنجاح");
 

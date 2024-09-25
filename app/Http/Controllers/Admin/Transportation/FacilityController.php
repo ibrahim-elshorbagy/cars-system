@@ -57,6 +57,9 @@ class FacilityController extends Controller
 
     public function destroy(Facility $facility)
     {
+                if ($facility->cars()->count() > 0) {
+        return back()->with('danger', 'لا يمكن حذف المرفق لأنها مرتبطة بسيارات');
+        }
 
         $facility->delete();
         return back()->with('success', "تم حذف المرفق بنجاح");

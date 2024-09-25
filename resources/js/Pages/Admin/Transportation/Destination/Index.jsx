@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, destinations,site_settings ,queryParams = null, success }) {
+export default function Index({ auth, destinations,site_settings ,queryParams = null, success,danger }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -68,6 +68,19 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
     }
     }, [success, operationPerformed]);
 
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+
+  useEffect(() => {
+    if (danger) {
+      setVisibleDanger(danger);
+      const timer = setTimeout(() => {
+        setVisibleDanger(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [danger]);
+
+
   const deleteDestination = (destination) => {
     if (!window.confirm("هل انت متأكد من حذف الوجه ؟ ")) {
       return;
@@ -76,7 +89,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
       onSuccess: (page) => {
             setVisibleSuccess(page.props.success);
         setOperationPerformed(true);
-            
+
       },
     });
   };
@@ -162,6 +175,10 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
           {visibleSuccess && (
             <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
               {visibleSuccess}
+            </div>
+          )}                    {visibleDanger && (
+            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+              {visibleDanger}
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">

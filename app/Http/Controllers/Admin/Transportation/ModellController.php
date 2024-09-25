@@ -43,7 +43,7 @@ class ModellController extends Controller
         Modell::create($data);
 
 
-        return back()->with('success', "تم انشاء ماركه بنجاح");
+        return back()->with('success', "تم انشاء موديل بنجاح");
 
     }
 
@@ -59,15 +59,18 @@ class ModellController extends Controller
 
         $model->update($data);
 
-        return back()->with('success', "تم تحديث الماركه بنجاح");
+        return back()->with('success', "تم تحديث الموديل بنجاح");
     }
 
 
     public function destroy(Modell $model)
     {
 
+        if ($model->cars()->count() > 0) {
+        return back()->with('danger', 'لا يمكن حذف الموديل لأنها مرتبطة بسيارات');
+        }
         $model->delete();
-        return back()->with('success', "تم حذف الماركه بنجاح");
+        return back()->with('success', "تم حذف الموديل بنجاح");
 
     }
 

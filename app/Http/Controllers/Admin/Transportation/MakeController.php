@@ -58,7 +58,13 @@ class MakeController extends Controller
 
     public function destroy(Make $make)
     {
+        if ($make->cars()->count() > 0) {
+            return back()->with('danger', 'لا يمكن حذف الماركه لأنها مرتبطة بسيارات');
+        }
 
+        if ($make->models()->count() > 0) {
+            return back()->with('danger', 'لا يمكن حذف الماركه لأنها مرتبطة بموديلات');
+        }
         $make->delete();
         return back()->with('success', "تم حذف الماركه بنجاح");
 

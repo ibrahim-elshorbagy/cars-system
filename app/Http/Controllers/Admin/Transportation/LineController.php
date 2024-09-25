@@ -61,6 +61,9 @@ class LineController extends Controller
 
     public function destroy(Line $line)
     {
+                if ($line->cars()->count() > 0) {
+        return back()->with('danger', 'لا يمكن حذف الخط الملاحي لأنها مرتبطة بسيارات');
+        }
 
         $line->delete();
         return back()->with('success', "تم حذف الخط الملاحي بنجاح");

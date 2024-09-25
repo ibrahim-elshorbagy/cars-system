@@ -59,6 +59,9 @@ class DestinationController extends Controller
     public function destroy(Destination $destination)
     {
 
+        if ($destination->cars()->count() > 0) {
+        return back()->with('danger', 'لا يمكن حذف الوجه لأنها مرتبطة بسيارات');
+        }
         $destination->delete();
         return back()->with('success', "تم حذف الوجه بنجاح");
 
