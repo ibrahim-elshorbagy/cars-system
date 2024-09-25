@@ -44,13 +44,17 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/customer-credit', [CustomerCreditController::class, 'index'])->name('customer-credit.index');
     });
 
-    Route::group(['middleware' => ['permission:update-customer-credit']], function () {
-        Route::put('/customer-credit/{record}', [CustomerCreditController::class, 'update'])->name('customer-credit.update');
+    Route::group(['middleware' => ['permission:reverse-customer-credit']], function () {
+        Route::post('/reverse-customer-credit', [CustomerCreditController::class, 'reverse'])->name('reverse-customer-credit.store');
     });
 
-    Route::group(['middleware' => ['permission:delete-customer-credit']], function () {
-        Route::delete('/customer-credit/{record}', [CustomerCreditController::class, 'destroy'])->name('customer-credit.destroy');
-    });
+    // Route::group(['middleware' => ['permission:update-customer-credit']], function () {
+    //     Route::put('/customer-credit/{record}', [CustomerCreditController::class, 'update'])->name('customer-credit.update');
+    // });
+
+    // Route::group(['middleware' => ['permission:delete-customer-credit']], function () {
+    //     Route::delete('/customer-credit/{record}', [CustomerCreditController::class, 'destroy'])->name('customer-credit.destroy');
+    // });
 
 
 });

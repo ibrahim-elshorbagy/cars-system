@@ -71,7 +71,7 @@ class RolesAndPermissionsSeeder extends Seeder
             //bills
             'read-bill',
             'customers-bills', //customers bills  report
-
+            'reverse-customer-credit',
         ];
 
         // Create additional permissions

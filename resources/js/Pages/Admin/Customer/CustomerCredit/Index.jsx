@@ -27,10 +27,16 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
   queryParams = queryParams || {};
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isReverseModalOpen, setIsReverseModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
   const [visibleSuccess, setVisibleSuccess] = useState(success);
-  const [operationPerformed, setOperationPerformed] = useState(false);
+    const [operationPerformed, setOperationPerformed] = useState(false);
+
+
+
+
+// ---------------------------------------------------------------------------- Page + search
 
     useEffect(() => {
     if (success && operationPerformed) {
@@ -64,49 +70,7 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
       return () => clearTimeout(timer);
     }
   }, [danger]);
-  const {
-    data: createData,
-    setData: setCreateData,
-    post: createPost,
-    errors: createErrors,
-    reset: createReset,
-  } = useForm({
 
-  });
-
-  const {
-    data: editData,
-    setData: setEditData,
-    post: editPost,
-    errors: editErrors,
-    reset: editReset,
-  } = useForm({
-
-    _method: "PUT",
-  });
-
-  const toggleCreateModal = () => {
-    setIsCreateModalOpen(!isCreateModalOpen);
-    if (!isCreateModalOpen) {
-      createReset();
-    }
-  };
-
-  const toggleEditModal = (record = null) => {
-    if (record) {
-        setEditingRecord(record);
-      setEditData({
-        user_id: record.customer_id,
-        added_credit: record.added_credit,
-        box_id: record.box_id,
-        _method: "PUT",
-      });
-    } else {
-      setEditingRecord(null);
-      editReset();
-    }
-    setIsEditModalOpen(!isEditModalOpen);
-  };
 
   const searchFieldChanged = (name, value) => {
     if (value) {
@@ -125,17 +89,56 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
     }
   };
 
-  const deleteRecord = (record) => {
-    if (window.confirm("هل انت متأكد من حذف رصيد العميل ؟ ")) {
-      router.delete(route("customer-credit.destroy", record.id), {
-        onSuccess: (page) => {
-              setVisibleSuccess(page.props.success);
-        setOperationPerformed(true);
+// ---------------------------------------------------------------------------- Reverse
 
-        },
-      });
+
+
+  const toggleReverseModal = () => {
+    setIsReverseModalOpen(!isReverseModalOpen);
+    if (!isReverseModalOpen) {
+      ReverseReset();
     }
   };
+
+const {
+    data: ReverseData,
+    setData: setReverseData,
+    post: ReversePost,
+    errors: ReverseErrors,
+    reset: ReverseReset,
+  } = useForm({
+
+  });
+
+  const handleReverseRecord = (e) => {
+    e.preventDefault();
+    ReversePost(route("reverse-customer-credit.store"), {
+      onSuccess: () => {
+        ReverseReset();
+            toggleReverseModal();
+        setOperationPerformed(true);
+
+      },
+    });
+  };
+
+// ---------------------------------------------------------------------------- Creation
+  const toggleCreateModal = () => {
+    setIsCreateModalOpen(!isCreateModalOpen);
+    if (!isCreateModalOpen) {
+      createReset();
+    }
+  };
+
+  const {
+    data: createData,
+    setData: setCreateData,
+    post: createPost,
+    errors: createErrors,
+    reset: createReset,
+  } = useForm({
+
+  });
 
   const handleCreateRecord = (e) => {
     e.preventDefault();
@@ -148,6 +151,36 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
       },
     });
   };
+    // ---------------------------------------------------------------------------- Edit stop won't use it
+
+  const {
+    data: editData,
+    setData: setEditData,
+    post: editPost,
+    errors: editErrors,
+    reset: editReset,
+  } = useForm({
+
+    _method: "PUT",
+  });
+
+
+  const toggleEditModal = (record = null) => {
+    if (record) {
+        setEditingRecord(record);
+      setEditData({
+        user_id: record.customer_id,
+        added_credit: record.added_credit,
+        box_id: record.box_id,
+        _method: "PUT",
+      });
+    } else {
+      setEditingRecord(null);
+      editReset();
+    }
+    setIsEditModalOpen(!isEditModalOpen);
+  };
+
 
   const handleEditRecord = (e) => {
     e.preventDefault();
@@ -160,6 +193,21 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
       },
     });
   };
+// ---------------------------------------------------------------------------- Delete won't use it
+
+  const deleteRecord = (record) => {
+    if (window.confirm("هل انت متأكد من حذف رصيد العميل ؟ ")) {
+      router.delete(route("customer-credit.destroy", record.id), {
+        onSuccess: (page) => {
+              setVisibleSuccess(page.props.success);
+        setOperationPerformed(true);
+
+        },
+      });
+    }
+  };
+
+// ----------------------------------------------------------------------------
 
   return (
     <AuthenticatedLayout
@@ -169,15 +217,25 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             ارصده العملاء
-          </h2>
-          {auth.user.permissions.includes("create-customer-credit") && (
-            <button
-              onClick={toggleCreateModal}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
-            >
-              إضافة رصيد
-            </button>
-          )}
+              </h2>
+              <div className="flex gap-3">
+                {auth.user.permissions.includes("create-customer-credit") && (
+                    <button
+                    onClick={toggleCreateModal}
+                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                    >
+                    إضافة رصيد
+                    </button>
+                    )}
+                    {auth.user.permissions.includes("reverse-customer-credit") && (
+                    <button
+                    onClick={toggleReverseModal}
+                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                    >
+                    رصيد عكسي
+                    </button>
+                        )}
+            </div>
         </div>
       }
     >
@@ -209,8 +267,6 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                       <th className="px-3 py-3">الصندوق</th>
                       <th className="px-3 py-3">اضافه بواسطه</th>
                       <th className="px-3 py-3">تحديث بواسطه</th>
-
-                      <th className="px-3 py-3">الاجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -225,7 +281,6 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
@@ -251,7 +306,7 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                           <td className="px-3 py-2 text-nowrap">{record.box_name}</td>
                           <td className="px-3 py-2 text-nowrap">{record.created_by}</td>
                           <td className="px-3 py-2 text-nowrap">{record.updated_by}</td>
-                          <td className="px-3 py-2 text-nowrap">
+                          {/* <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-customer-credit") && !record.cant &&(
                               <button
                                 onClick={() => toggleEditModal(record)}
@@ -268,7 +323,7 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
                                 حذف
                               </button>
                             )}
-                          </td>
+                          </td> */}
                         </tr>
                       ))
                     ) : (
@@ -357,8 +412,84 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
         </div>
       )}
 
-      {/* Modal for editing a record */}
-      {isEditModalOpen && (
+
+                {/* Modal for Reveerse */}
+      {isReverseModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold dark:text-white">رصيد عكسي</h2>
+            </div>
+            <div className="p-6">
+              <form onSubmit={handleReverseRecord}>
+
+                        <div className="grid grid-cols-3 gap-4">
+                            <div>
+                                <InputLabel className="mb-1.5" htmlFor="user_id" value={"العميل"} />
+                                <ComboboxMakes
+                                    items={customers}
+                                    onItemSelect={(item) => setReverseData("user_id", item.id)}
+                                    placeholder="اختر العميل"
+                                    emptyMessage="لا يوجد عملاء"
+                                    isFocused={true}
+
+                                />
+                                <InputError message={ReverseErrors.user_id} className="mt-2" />
+                            </div>
+                            <div className="mb-4">
+                                <InputLabel htmlFor="used_credit" value={"القيمة"} />
+                                <TextInput
+                                id="used_credit"
+                                type="number"
+                                name="name"
+                                value={ReverseData.used_credit || ""}
+                                className="block w-full mt-1"
+                                onChange={(e) => setReverseData("used_credit", e.target.value)}
+                                />
+                                <InputError message={ReverseErrors.used_credit} className="mt-2" />
+                                </div>
+                                {!auth.user.roles.includes("Accountant") && boxes && boxes.length > 0 && (
+                                <div>
+                                    <InputLabel className="mb-1.5" htmlFor="box_id" value={"الصندوق"} />
+                                    <ComboboxMakes
+                                    items={boxes}
+                                    onItemSelect={(item) => item && setReverseData("box_id", item.id)}
+                                    placeholder="اختر الصندوق"
+                                    emptyMessage="لا يوجد صناديق"
+                                    />
+                                    <InputError message={ReverseErrors.box_id} className="mt-2" />
+                                </div>
+                                )}
+                              </div>
+                                <ul className="mt-2 text-red-600 list-disc list-inside">
+                                    {Object.keys(ReverseErrors).map((key) => (
+                                        <li key={key}>{ReverseErrors[key]}</li>
+                                    ))}
+                                </ul>
+
+
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={toggleReverseModal}
+                    className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
+                  >
+                    إلغاء
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                  >
+                    حفظ
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal for editing a record we Won't use it */}
+      {/* {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
@@ -426,7 +557,9 @@ export default function Index({ auth,site_settings, records, customers,boxes, qu
             </div>
           </div>
         </div>
-      )}
+      )} */}
+
+
     </AuthenticatedLayout>
   );
 }

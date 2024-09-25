@@ -225,7 +225,7 @@ const handleCustomerSelect = (customer) => {
             setEditData({
                 customer_id: customer.customer_id,
                 payments: allBills,
-                total_used: payment.total_amount,
+                // total_used: payment.total_amount,
                 box_id: payment.box_id,
                 total_used: Number(payment.total_amount),
                 _method: "PUT",
@@ -306,7 +306,7 @@ const handleCustomerSelect = (customer) => {
                       <th className="px-3 py-3">Id</th>
                       <th className="px-3 py-3">اسم العميل</th>
                       <th className="px-3 py-3">القيمة االكليه</th>
-                      <th className="px-3 py-3">صندوق</th>
+                      {/* <th className="px-3 py-3">صندوق</th> */}
                       <th className="px-3 py-3">اضافه بواسطه</th>
                       <th className="px-3 py-3">تحديث بواسطه</th>
                       <th className="px-3 py-3">تاريخ الانشاء</th>
@@ -324,7 +324,7 @@ const handleCustomerSelect = (customer) => {
                           <td className="px-3 py-2">{payment.id}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.customer_name}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.total_amount}</td>
-                          <td className="px-3 py-2 text-nowrap">{payment.box_name}</td>
+                          {/* <td className="px-3 py-2 text-nowrap">{payment.box_name}</td> */}
                           <td className="px-3 py-2 text-nowrap">{payment.created_by}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.updated_by}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.created_at}</td>
@@ -351,7 +351,7 @@ const handleCustomerSelect = (customer) => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="4" className="px-3 py-2 text-center">
+                        <td colSpan="8" className="px-3 py-2 text-center">
                           لا يوجد تسديدات
                         </td>
                       </tr>

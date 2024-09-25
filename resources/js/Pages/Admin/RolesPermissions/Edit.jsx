@@ -695,6 +695,21 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                         </td>
                         <td className="px-6 py-4">سجل الرصيد</td>
                       </tr>
+
+
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">reverse-customer-credit</td>
+                        <td className="px-6 py-4">
+                          <input
+                            type="checkbox"
+                            checked={data.permissions.includes("reverse-customer-credit")}
+                            onChange={() => handleCheckboxChange("reverse-customer-credit")}
+                          />
+                        </td>
+                        <td className="px-6 py-4">عملية رصيد عكسيه</td>
+                        </tr>
+
+                                          {/*
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">update-customer-credit</td>
                         <td className="px-6 py-4">
@@ -716,7 +731,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                           />
                         </td>
                         <td className="px-6 py-4">حذف رصيد</td>
-                      </tr>
+                      </tr> *
+                      /}
 
 
 

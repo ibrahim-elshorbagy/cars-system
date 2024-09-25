@@ -93,10 +93,74 @@ class CustomerCreditController extends Controller
     }
 
 
+    public function reverse(Request $request) {
+        // Validate the request
+        $rules = [
+            'user_id' => ['required'],
+            'used_credit' => ['required', 'numeric', 'min:1'],
+        ];
+
+        if (!Auth::user()->hasRole('Accountant')) {
+            $rules['box_id'] = 'required|exists:boxes,id';
+        }
+
+        $data = $request->validate($rules);
+        // Prepare the description field
+
+        // If the user has the Accountant role, set their specific box_id
+        if (Auth::user()->hasRole('Accountant')) {
+            $data['box_id'] = Auth::user()->accountant->box_id;
+        }
+
+        // Fetch the box transactions to check the available balance
+        $box = BoxTransaction::where('box_id', $data['box_id'])
+            ->selectRaw('SUM(income) - SUM(outcome) as balance')
+            ->first();
+            $boxBalance = $box->balance ?? 0;
+
+        // Check if the box has enough balance for the requested used_credit
+        if ($boxBalance < $data['used_credit']) {
+            return back()->withErrors([
+                'box_balance' => 'الصندوق لا يحتوي على أموال كافية لتنفيذ العملية.'
+            ]);
+        }
+
+        // Begin the database transaction
+        DB::beginTransaction();
+
+        try {
+            // Create the CustomerCredit record
+            $data['description'] = "تم خصم المبلغ " . $data['used_credit']. " من العميل نتيجه عمليه رصيد عكسيه ";
+            $data['created_by']=Auth::user()->id;
+            CustomerCredit::create($data);
+
+            $user_name = User::find($data['user_id'])->name;
+            BoxTransaction::create([
+                'box_id' => $data['box_id'],
+                'outcome' => $data['used_credit'],
+                'description' => 'تم خصم ' . $data['used_credit'] . ' من ' . $user_name . ' نتيجه عمليه رصيد عكسيه ',
+                'created_by' => Auth::id(),
+
+            ]);
+
+            // Commit the transaction after successful operations
+            DB::commit();
+
+            // Return success message
+            return back()->with('success', "تم خصم الرصيد بنجاح");
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+
+            return back()->with('danger', 'حدث خطأ أثناء خصم الرصيد: ' . $e->getMessage());
+        }
+    }
 
 
 
-    public function update(Request $request, CustomerCredit $record)
+    public function update(Request $request, CustomerCredit $record)//we won't use it
     {
         // Validate the request
         $rules = [
@@ -181,7 +245,7 @@ class CustomerCreditController extends Controller
 
 
 
-    public function destroy(CustomerCredit $record)
+    public function destroy(CustomerCredit $record) //we won't use it
     {
         if ($record->used_credit > 0) {
                 return back()->with('danger', ' لا يمكن حذف خصم رصيد');

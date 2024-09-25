@@ -1,6 +1,5 @@
 import { Link, Head } from "@inertiajs/react";
 import GuestLayout from "@/Layouts/GuestLayout";
-import { useTranslation } from "react-i18next";
 
 
 
@@ -11,10 +10,10 @@ export default function Welcome({ auth,site_settings }) {
     return (
         <>
             <GuestLayout site_settings={site_settings}>
-                <Head title={site_settings.websiteName + " - " +"مرحبا"} />
+                <Head title={site_settings.websiteName + " - " +"مرحباً"} />
                 <div className="flex flex-col items-center justify-center min-h-screen text-white bg-gradient-to-r bg-indigoBlue">
                     <h1 className="text-5xl font-bold">
-                        {"مرحبا"}
+                        مرحباً
                     </h1>
                     <div className="flex gap-2 mt-8 ">
                         {auth.user ? (
