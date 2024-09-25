@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Bill\PaymentBill;
+use App\Models\Admin\Car\Car;
 use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Users\Accountant\Accountant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -71,7 +72,16 @@ class User extends Authenticatable
         return $this->hasMany(Bill::class, 'user_id');
     }
 
+    public function paymentBills(){
 
+        return $this->hasMany(PaymentBill::class, 'user_id');
+    }
+
+    public function cars(){
+
+        return $this->hasMany(Car::class, 'user_id');
+    }
+    
     public static function boot()
     {
         parent::boot();

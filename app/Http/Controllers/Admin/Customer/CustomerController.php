@@ -98,13 +98,20 @@ Full opertions For Customers (add,delete ,update)
      */
     public function destroy(User $customer)
     {
-        $name = $customer->name;
-        // if ($customer->customer->products->count() > 0) {  has cars
-        // $locale = session('app_locale', 'en');
+        // Check if the customer has associated cars
+        if ($customer->cars()->count() > 0) {
+            return back()->with('danger', 'لا يمكن حذف العميل لأنه مرتبط بسيارات.');
+        }
 
+        // Check if the customer has associated payment bills
+        if ($customer->paymentBills()->count() > 0) {
+            return back()->with('danger', 'لا يمكن حذف العميل لأنه مرتبط بمدفوعات.');
+        }
 
-        // return back()->with('danger', "لايمكن حذف العميل لديه سيارات");
-        // }
+        if ($customer->credits()->count() > 0) {
+            return back()->with('danger', 'لا يمكن حذف العميل لأنه مرتبط بأرصدة.');
+        }
+
         $customer->delete();
 
 
