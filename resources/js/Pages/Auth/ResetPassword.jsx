@@ -6,32 +6,11 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import i18n from "@/i18nConfig";
 
-const resources = {
-    en: {
-        translation: {
-            "Reset Password": "Reset Password",
-            Email: "Email",
-            Password: "Password",
-            "Confirm Password": "Confirm Password",
-        },
-    },
-    ar: {
-        translation: {
-            "Reset Password": "إعادة تعيين كلمة المرور",
-            Email: "البريد الإلكتروني",
-            Password: "كلمة المرور",
-            "Confirm Password": "تأكيد كلمة المرور",
-        },
-    },
-};
 
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function ResetPassword({ token, email }) {
-    const { t } = useTranslation();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
@@ -52,12 +31,12 @@ export default function ResetPassword({ token, email }) {
 
     return (
         <GuestLayout centerContent>
-            <Head title={t("Reset Password")} />
+            <Head title={"Reset Password"} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     <form onSubmit={submit}>
                         <div>
-                            <InputLabel htmlFor="email" value={t("Email")} />
+                            <InputLabel htmlFor="email" value={"Email"} />
                             <TextInput
                                 id="email"
                                 type="email"
@@ -78,7 +57,7 @@ export default function ResetPassword({ token, email }) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password"
-                                value={t("Password")}
+                                value={"Password"}
                             />
                             <TextInput
                                 id="password"
@@ -101,7 +80,7 @@ export default function ResetPassword({ token, email }) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password_confirmation"
-                                value={t("Confirm Password")}
+                                value={"Confirm Password"}
                             />
                             <TextInput
                                 type="password"
@@ -128,7 +107,7 @@ export default function ResetPassword({ token, email }) {
                                 className="ms-4"
                                 disabled={processing}
                             >
-                                {t("Reset Password")}
+                                Reset Password
                             </PrimaryButton>
                         </div>
                     </form>

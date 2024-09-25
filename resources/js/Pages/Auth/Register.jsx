@@ -6,36 +6,10 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import i18n from "@/i18nConfig";
 
-const resources = {
-    en: {
-        translation: {
-            Register: "Register",
-            Name: "Name",
-            Email: "Email",
-            Password: "Password",
-            "Confirm Password": "Confirm Password",
-            "Already registered?": "Already registered?",
-        },
-    },
-    ar: {
-        translation: {
-            Register: "تسجيل",
-            Name: "الاسم",
-            Email: "البريد الإلكتروني",
-            Password: "كلمة المرور",
-            "Confirm Password": "تأكيد كلمة المرور",
-            "Already registered?": "مسجل بالفعل؟",
-        },
-    },
-};
-
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function Register() {
-    const { t } = useTranslation();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         email: "",
@@ -56,12 +30,12 @@ export default function Register() {
 
     return (
         <GuestLayout centerContent box_width="max-w-xl">
-            <Head title={t("Register")} />
+            <Head title="Register" />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     <form onSubmit={submit}>
                         <div>
-                            <InputLabel htmlFor="name" value={t("Name")} />
+                            <InputLabel htmlFor="name" value={"Name"} />
                             <TextInput
                                 id="name"
                                 name="name"
@@ -81,7 +55,7 @@ export default function Register() {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="email" value={t("Email")} />
+                            <InputLabel htmlFor="email" value={"Email"} />
                             <TextInput
                                 id="email"
                                 type="email"
@@ -103,7 +77,7 @@ export default function Register() {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password"
-                                value={t("Password")}
+                                value={"Password"}
                             />
                             <TextInput
                                 id="password"
@@ -126,7 +100,7 @@ export default function Register() {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password_confirmation"
-                                value={t("Confirm Password")}
+                                value={"Confirm Password"}
                             />
                             <TextInput
                                 id="password_confirmation"
@@ -154,14 +128,14 @@ export default function Register() {
                                 href={route("login")}
                                 className="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                             >
-                                {t("Already registered?")}
+                                {"Already registered?"}
                             </Link>
 
                             <PrimaryButton
                                 className="ml-4"
                                 disabled={processing}
                             >
-                                {t("Register")}
+                                {"Register"}
                             </PrimaryButton>
                         </div>
                     </form>

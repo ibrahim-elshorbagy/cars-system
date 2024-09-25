@@ -4,34 +4,10 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import i18n from "@/i18nConfig";
 
-const resources = {
-    en: {
-        translation: {
-            "Forgot Password": "Forgot Password",
-            "Forgot your password?": "Forgot your password?",
-            "No problem":
-                "No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
-            "Email Password Reset Link": "Email Password Reset Link",
-        },
-    },
-    ar: {
-        translation: {
-            "Forgot Password": "نسيت كلمة المرور",
-            "Forgot your password?": "هل نسيت كلمة المرور؟",
-            "No problem":
-                "لا مشكلة. فقط أخبرنا بعنوان بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور الذي سيسمح لك باختيار كلمة مرور جديدة.",
-            "Email Password Reset Link": "إرسال رابط إعادة تعيين كلمة المرور",
-        },
-    },
-};
-
-i18n.addResources("en", "translation", resources.en.translation);
-i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function ForgotPassword({ status }) {
-    const { t } = useTranslation();
+
     const { data, setData, post, processing, errors } = useForm({
         email: "",
     });
@@ -43,11 +19,11 @@ export default function ForgotPassword({ status }) {
 
     return (
         <GuestLayout centerContent box_width="max-w-xl">
-            <Head title={t("Forgot Password")} />
+            <Head title={"Forgot Password"} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                        {t("Forgot your password?")} {t("No problem")}
+                        Forgot your password?
                     </div>
 
                     {status && (
@@ -72,7 +48,7 @@ export default function ForgotPassword({ status }) {
                                 className="ms-4"
                                 disabled={processing}
                             >
-                                {t("Email Password Reset Link")}
+                                Email Password Reset Link
                             </PrimaryButton>
                         </div>
                     </form>
