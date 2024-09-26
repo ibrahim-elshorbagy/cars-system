@@ -26,6 +26,7 @@ class CarStore extends FormRequest
             'chassis' => 'required|string',
             'lot' => 'required|string',
             'bookingNo' => 'required|string',
+            'container_number' => 'required|string',
             'color' => 'required|string',
             'year' => 'required|integer',
             'keys' => 'nullable',
@@ -49,10 +50,8 @@ class CarStore extends FormRequest
 
         ];
 
-        if (!auth()->user()->hasRole('Accountant')) {
-            $rules['box_id'] = 'required|exists:boxes,id';
-        }
-        
+
+
         return $rules;
 
     }

@@ -18,7 +18,7 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'phone'=>['nullable','regex:/^[0-9]+$/','max:255',Rule::unique('customers')->where(function ($query) {return $query->where('user_id', $this->user()->id);})->ignore($this->route('customer')->id ?? null)],
+            'phone'=>['nullable',' regex:/^\+[1-9]\d{1,14}$/','max:255',Rule::unique('customers')->where(function ($query) {return $query->where('user_id', $this->user()->id);})->ignore($this->route('customer')->id ?? null)],
             'address'=>["nullable",'string'],
         ];
     }

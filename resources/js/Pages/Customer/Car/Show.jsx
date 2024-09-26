@@ -2,7 +2,14 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import  { useState } from "react";
 import { Head,Link } from "@inertiajs/react";
-import Input from "@/Components/ui/input";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/Components/ui/tabs"
+import { GrDocumentPdf } from "react-icons/gr";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 export default function Show({ auth, site_settings, car }) {
 
@@ -20,7 +27,15 @@ export default function Show({ auth, site_settings, car }) {
   };
 
   return (
-    <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
+      <AuthenticatedLayout user={auth.user} site_settings={site_settings}
+       header={
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+            معلومات السياره
+          </h2>
+        </div>
+      }
+      >
       <Head title={site_settings.websiteName + " - " + "معلومات السياره"} />
 
       <div className="py-12">
@@ -37,51 +52,49 @@ export default function Show({ auth, site_settings, car }) {
                 </Link>
              </div>
               <div className="mt-6">
-                <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-100">
+                <Tabs defaultValue="general" className="w-full">
+                <TabsList>
+                    <TabsTrigger value="general">General</TabsTrigger>
+                    <TabsTrigger value="shipping">Shipping</TabsTrigger>
+                    <TabsTrigger value="photos">Photos</TabsTrigger>
+                </TabsList>
+
+                {/* General Tab */}
+                <TabsContent value="general">
+                    <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-100">
                     <tbody>
-                        <tr className="border-b">
-                        <th className="px-3 py-3">{car.chassis}</th>
-                        <td className="px-3 py-3">Chassis</td>
-                        </tr>
                         <tr className="border-b">
                         <th className="px-3 py-3">{car.customer_name}</th>
                         <td className="px-3 py-3">Customer Name</td>
                         </tr>
                         <tr className="border-b">
+                        <th className="px-3 py-3">{car.chassis}</th>
+                        <td className="px-3 py-3">Chassis</td>
+                        </tr>
+                        <tr className="border-b">
                         <th className="px-3 py-3">
-                            <Input
-                            type="checkbox"
-                            disabled
-                            checked={car.keys == 1}
-                            id="keys"
-                            className="w-6 h-6 rounded mt-0.5"
-                            />
+                        {car.keys == 1 ? (
+                            <FaCheck className="w-6 h-6 text-green-500" /> // Display green check icon if true
+                        ) : (
+                            <FaTimes className="w-6 h-6 text-red-500" />   // Display red cross icon if false
+                        )}
                         </th>
                         <td className="px-3 py-3">Keys</td>
                         </tr>
                         <tr className="border-b">
                         <th className="px-3 py-3">
-                            <Input
-                            type="checkbox"
-                            disabled
-                            checked={car.title == 1}
-                            id="keys"
-                            className="w-6 h-6 rounded mt-0.5"
-                            />
+                        {car.title == 1 ? (
+                            <FaCheck className="w-6 h-6 text-green-500" /> // Display green check icon if true
+                        ) : (
+                            <FaTimes className="w-6 h-6 text-red-500" />   // Display red cross icon if false
+                        )}
                         </th>
                         <td className="px-3 py-3">Title</td>
+
                         </tr>
                         <tr className="border-b">
                         <th className="px-3 py-3">{car.make_name}</th>
                         <td className="px-3 py-3">Make</td>
-                        </tr>
-                        <tr className="border-b">
-                        <th className="px-3 py-3">{car.lot}</th>
-                        <td className="px-3 py-3">Lot/Sotok</td>
-                        </tr>
-                        <tr className="border-b">
-                        <th className="px-3 py-3">{car.bookingNo}</th>
-                        <td className="px-3 py-3">Booking No</td>
                         </tr>
                         <tr className="border-b">
                         <th className="px-3 py-3">{car.color}</th>
@@ -94,6 +107,38 @@ export default function Show({ auth, site_settings, car }) {
                         <tr className="border-b">
                         <th className="px-3 py-3">{car.model_name}</th>
                         <td className="px-3 py-3">Model</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">
+                            {car.carfax_report_url ? (
+                            <a href={car.carfax_report_url} className="text-blue-500 hover:underline">
+                                View Carfax Report
+                            </a>
+                            ) : (
+                            <p>لا يوجد</p>
+                            )}
+                        </th>
+                        <td className="flex items-center gap-2 px-3 py-3"><GrDocumentPdf /> Carfax Report</td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </TabsContent>
+
+                {/* Shipping Tab */}
+                <TabsContent value="shipping">
+                    <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-100">
+                    <tbody>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.lot}</th>
+                        <td className="px-3 py-3">Lot/Sotok</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.bookingNo}</th>
+                        <td className="px-3 py-3">Booking No</td>
+                        </tr>
+                        <tr className="border-b">
+                        <th className="px-3 py-3">{car.container_number}</th>
+                        <td className="px-3 py-3">Container Number</td>
                         </tr>
                         <tr className="border-b">
                         <th className="px-3 py-3">{car.vendor_name}</th>
@@ -135,43 +180,36 @@ export default function Show({ auth, site_settings, car }) {
                         <th className="px-3 py-3">{car.arrival_date}</th>
                         <td className="px-3 py-3">Arrival Date</td>
                         </tr>
-                        <tr className="border-b">
-                        <th className="px-3 py-3">
-                            {car.carfax_report_url ? (
-                            <a href={car.carfax_report_url} className="text-blue-500 hover:underline">
-                                View Carfax Report
-                            </a>
-                            ) : (
-                            <p> لا يوجد</p>
-                            )}
-                        </th>
-                        <td className="px-3 py-3">Carfax Report</td>
-                        </tr>
                     </tbody>
+                    </table>
+                </TabsContent>
 
-                </table>
+                {/* Photos Tab */}
+                <TabsContent value="photos">
 
-                {/* Images below the table */}
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold">Car Images</h3>
-                  <div className="flex flex-wrap gap-4">
-                        {car.images.map((image, index) => (
-                        <div
-                            key={index}
-                            className="w-32 h-32 cursor-pointer"
-                            onClick={() => openModal(image)}
-                        >
-                            <img
-                            className="object-cover w-full h-full rounded-lg"
-                            src={image}
-                            alt={`Car Image ${index + 1}`}
-                            />
-                        </div>
-                        ))}
+    {/* Images below the table */}
+    <div className="mt-6">
+        <div className="flex flex-wrap gap-4">
+            {car.images.map((image, index) => (
+            <div
+                key={index}
+                className="w-64 h-64 cursor-pointer"
+                onClick={() => openModal(image)}
+            >
+                <img
+                className="object-cover w-full h-full rounded-lg"
+                src={image}
+                alt={`Car Image ${index + 1}`}
+                />
+            </div>
+            ))}
+      </div>
+    </div>
+  </TabsContent>
+</Tabs>
 
 
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>

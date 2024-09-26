@@ -100,15 +100,8 @@ class CarController extends Controller
             $data['created_by']=Auth::user()->id;
             $car = Car::create($data);
 
-            if (Auth::user()->hasRole('Accountant')) {
-
-                $data['box_id'] = Auth::user()->accountant->box_id;
-
-            }
-
             Bill::create([
                 'car_id'=>$car->id,
-                'box_id'=>$data['box_id'],
                 'user_id'=>$data['user_id'],
                 'won_price'=>$data['won_price'],
                 'shipping_cost'=>$data['shipping_cost'],
@@ -158,7 +151,6 @@ class CarController extends Controller
         try {
 
             $bill->update([
-                'box_id'=>$data['box_id'],
                 'user_id'=>$data['user_id'],
                 'won_price'=>$data['won_price'],
                 'shipping_cost'=>$data['shipping_cost'],

@@ -261,7 +261,20 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           <th className="px-3 py-2 text-nowrap">{user.name}</th>
                           <td className="px-3 py-2">{user.email}</td>
                           <td className="px-3 py-2">{user.phone}</td>
-                          <td className="px-3 py-2">{user.whatsapp}</td>
+                            <td className="px-3 py-2">
+                            {user.whatsapp ? (
+                                <a
+                                href={`https://wa.me/${user.whatsapp}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-500 hover:underline"
+                                >
+                                {user.whatsapp}
+                                </a>
+                            ) : (
+                                "No WhatsApp"
+                            )}
+                            </td>
                           <td className="px-3 py-2">{user.role}</td>
                           <td className="px-3 py-2 text-nowrap">
                             {user.created_at}
@@ -307,11 +320,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة عميل جديد</h2>
+              <h2 className="text-lg font-semibold text-gray-700 dark:text-white">إضافة عميل جديد</h2>
             </div>
             <div className="p-6">
             <form onSubmit={handleCreateUser}>
-                        <div className="mb-4 text-lg">معلومات الدخول</div>
+                        <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
 
                 <div className="mb-4">
                   <InputLabel htmlFor="user_name" value={"اسم العميل"} />
@@ -352,7 +365,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   />
                   <InputError message={createErrors.password} className="mt-2" />
                               </div>
-                        <div className="mb-4 text-lg">معلومات اضافيه</div>
+                        <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
@@ -411,11 +424,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل عميل</h2>
+              <h2 className="text-lg font-semibold text-gray-700 dark:text-white">تعديل عميل</h2>
             </div>
             <div className="p-6">
                           <form onSubmit={handleEditUser}>
-                        <div className="mb-4 text-lg">معلومات الدخول</div>
+                        <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
 
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_name" value={"اسم العميل"} />
@@ -457,7 +470,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   />
                   <InputError message={editErrors.password} className="mt-2" />
                               </div>
-                        <div className="mb-4 text-lg">معلومات اضافيه</div>
+                        <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
@@ -472,7 +485,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
                           onChange={(e) => setEditData("phone", e.target.value)}
                       />
-                      <InputError message={createErrors.phone} className="mt-2" />
+                      <InputError message={editErrors.phone} className="mt-2" />
                   </div>
                  <div className="mb-4">
                   <InputLabel htmlFor="edit_whatsapp" value={"whatsapp"} />
@@ -486,7 +499,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
                       onChange={(e) => setEditData("whatsapp", e.target.value)}
                   />
-                  <InputError message={createErrors.whatsapp} className="mt-2" />
+                  <InputError message={editErrors.whatsapp} className="mt-2" />
                   </div>
                 </div>
 

@@ -310,7 +310,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             <div className="p-6">
               <form onSubmit={handleCreateUser}>
                         <div>
-                                <div className="mb-4 text-lg">معلومات الدخول</div>
+                                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
                                 <div className="mb-4">
                             <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
                             <TextInput
@@ -349,7 +349,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             <InputError message={createErrors.password} className="mt-2" />
                             </div>
                     </div>
-                                  <div className="mb-4 text-lg">معلومات اضافيه</div>
+                                  <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
 
                     <div className="mb-4">
                         <InputLabel htmlFor="role" value={"الصلاحيات"} />
@@ -457,7 +457,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             </div>
             <div className="p-6">
                           <form onSubmit={handleEditUser}>
-                                <div className="mb-4 text-lg">معلومات الدخول</div>
+                                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
 
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
@@ -499,7 +499,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   />
                   <InputError message={editErrors.password} className="mt-2" />
                               </div>
-                                <div className="mb-4 text-lg">معلومات اضافيه</div>
+                                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
 
                               <div className="mb-4">
                         <InputLabel htmlFor="edit_user_role" value={"الصلاحيات"} />
@@ -559,7 +559,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           isFocused={true}
                           onChange={(e) => setEditData("phone", e.target.value)}
                       />
-                      <InputError message={createErrors.phone} className="mt-2" />
+                      <InputError message={editErrors.phone} className="mt-2" />
                   </div>
                  <div className="mb-4">
                   <InputLabel htmlFor="edit_whatsapp" value={"whatsapp"} />
@@ -573,7 +573,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       isFocused={true}
                       onChange={(e) => setEditData("whatsapp", e.target.value)}
                   />
-                  <InputError message={createErrors.whatsapp} className="mt-2" />
+                  <InputError message={editErrors.whatsapp} className="mt-2" />
                   </div>
                 </div>
 

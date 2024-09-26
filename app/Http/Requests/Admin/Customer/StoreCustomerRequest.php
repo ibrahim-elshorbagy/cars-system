@@ -29,8 +29,8 @@ class StoreCustomerRequest extends FormRequest
                 "required",
                 Password::min(8)->letters(),
             ],
-            'phone'=>['nullable','string'],
-            'whatsapp'=>["nullable",'string'],
+            'phone'=>['nullable','string', 'regex:/^\+[1-9]\d{1,14}$/'],
+            'whatsapp'=>["nullable",'string', 'regex:/^\+[1-9]\d{1,14}$/'],
         ];
     }
 }

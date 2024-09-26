@@ -16,6 +16,7 @@ return new class extends Migration
                 $table->boolean('keys')->nullable();
                 $table->boolean('title')->nullable();
                 $table->string('bookingNo')->nullable();
+                $table->string('container_number')->nullable();
                 $table->string('lot')->nullable();
                 $table->string('color')->nullable();
                 $table->string('year')->nullable();
@@ -31,7 +32,7 @@ return new class extends Migration
                 $table->foreignId('make_id')->nullable()->constrained('makes');
                 $table->foreignId('model_id')->nullable()->constrained('models');
 
-                $table->string('carfax_report')->nullable(); // PDF report
+                $table->string('carfax_report')->nullable();
                 $table->string('ship_status')->nullable();
                 $table->date('date_won')->nullable();
                 $table->date('estimate_arrival_date')->nullable();

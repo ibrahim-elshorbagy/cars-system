@@ -20,6 +20,7 @@ class ShowCarResource extends JsonResource
             'keys'=>$this->keys ?? null,
             'lot'=>$this->lot ?? null,
             'bookingNo'=>$this->bookingNo ?? null,
+            'container_number'=>$this->container_number ?? null,
             'color'=>$this->color ?? null,
             'year'=>$this->year ?? null,
             'chassis' => $this->chassis ?? null,

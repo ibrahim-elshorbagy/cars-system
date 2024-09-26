@@ -27,6 +27,7 @@ class CarUpdate extends FormRequest
             'chassis' => 'required|string',
             'lot' => 'required|string',
             'bookingNo' => 'required|string',
+            'container_number' => 'required|string',
             'color' => 'required|string',
             'year' => 'required|integer',
             'keys' => 'nullable|boolean',

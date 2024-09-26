@@ -19,8 +19,6 @@ return new class extends Migration
             $table->decimal('shipping_cost', 10, 2)->nullable();
             $table->decimal('won_price', 10, 2)->nullable();
 
-            $table->foreignId('box_id')->constrained('boxes');
-
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
 
