@@ -32,7 +32,7 @@ export default function Login({ status, canResetPassword ,site_settings}) {
             <Head title={site_settings.websiteName + " - " + "تسجيل الدخول"} />
             {/* bg-indigoBlue */}
             <div className="flex items-center justify-center flex-1 dark:bg-gray-900">
-                <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+                <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 ">
                     {status && (
                         <div className="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
                             {status}

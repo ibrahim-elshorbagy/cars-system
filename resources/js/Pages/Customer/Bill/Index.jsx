@@ -44,14 +44,14 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
     >
       <Head title={site_settings.websiteName + " - " +"الذمم"} />
 
-      <div className="py-12">
-        <div className="mx-auto sm:px-6 lg:px-8">
-          <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+      <div className="">
+        <div className="mx-auto ">
+          <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
                       <div className="p-6 text-gray-900 dark:text-gray-100">
                           <div>
-                            <div className="py-12">
-                            <div className="mx-auto sm:px-6 lg:px-8">
-                                <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+                            <div className="">
+                            <div className="mx-auto ">
+                                <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
                                 <div className="flex items-center justify-between p-6 text-gray-900 dark:text-gray-100">
                                     {/* Customer Balance */}
                                     <div className="flex items-center gap-2">

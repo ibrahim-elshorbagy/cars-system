@@ -9,14 +9,14 @@ const Edit = ({ auth,site_settings, mustVerifyEmail, status }) => {
     return (
         <>
             <Head title={site_settings.websiteName + " - " +"Profile"} />
-            <div className="py-12">
-                <div className="mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+            <div className="">
+                <div className="mx-auto space-y-6 max-w-7xl ">
+                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 ">
                         <UpdateProfileImage
                             className="max-w-xl"
                         />
                     </div>
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 ">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
@@ -24,10 +24,10 @@ const Edit = ({ auth,site_settings, mustVerifyEmail, status }) => {
                         />
                     </div>
 
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 ">
                         <UpdatePasswordForm className="max-w-xl" />
                     </div>
-                    {/* <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    {/* <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 ">
                         <DeleteUserForm className="max-w-xl" />
                     </div> */}
                 </div>

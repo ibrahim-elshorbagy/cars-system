@@ -171,8 +171,8 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
     >
       <Head title={site_settings.websiteName + " - " +"المرافق (Facilities)"} />
 
-      <div className="py-12">
-        <div className="mx-auto sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto ">
           {visibleSuccess && (
             <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
               {visibleSuccess}
@@ -183,7 +183,7 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
             </div>
           )}
 
-          <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">

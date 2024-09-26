@@ -18,7 +18,7 @@ export default function VerifyEmail({ status }) {
         <GuestLayout centerContent box_width="max-w-xl">
             <Head title={"Email Verification"} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
-                <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+                <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 ">
                     <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                         Thanks for signing up!
                     </div>

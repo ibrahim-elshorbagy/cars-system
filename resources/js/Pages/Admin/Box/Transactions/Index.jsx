@@ -57,11 +57,11 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
     >
       <Head title={`${site_settings.websiteName} - موجودات الصندوق`} />
 
-      <div className="py-12">
-        <div className="mx-auto sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto bg-white shadow-sm dark:bg-gray-800">
           {/* Show box selection only for non-Accountant users */}
           {!auth.user.roles.includes("Accountant") && (
-            <div className="grid grid-cols-4 m-6">
+            <div className="grid grid-cols-4 p-6">
               <div>
                 <InputLabel htmlFor="box_name" value={"اسم الصندوق"} />
                 <SelectInput
@@ -83,7 +83,7 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
           )}
 
           {/* Display selected box and its transactions */}
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
             <div className="p-6 text-gray-900">
               <div className="flex justify-between p-4 mb-2 bg-blue-100">
                 <div>

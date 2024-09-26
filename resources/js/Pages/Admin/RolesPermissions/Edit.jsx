@@ -21,9 +21,9 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
   return (
     <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
-      <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+      <div className="">
+        <div className="mx-auto max-w-7xl ">
+          <div className="p-6 overflow-hidden bg-white shadow-sm  dark:bg-gray-800">
             <h2 className="text-xl font-semibold dark:text-gray-200">
               صلاحيات : {role.name}
             </h2>

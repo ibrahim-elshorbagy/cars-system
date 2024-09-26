@@ -9,15 +9,15 @@ export default function Index({ auth, roles,site_settings, success }) {
     <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
 
-      <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto max-w-7xl ">
           {success && (
             <div className="p-4 mb-4 text-white bg-green-500 rounded">
               {success}
             </div>
           )}
 
-          <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
             <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
               الصلاحيات
             </h2>
@@ -53,6 +53,7 @@ export default function Index({ auth, roles,site_settings, success }) {
                     </tbody>
                 </table>
             </div>
+
           </div>
         </div>
       </div>
