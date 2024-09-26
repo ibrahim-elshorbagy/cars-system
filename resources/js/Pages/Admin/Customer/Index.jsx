@@ -351,33 +351,35 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             </div>
             <div className="p-6">
             <form onSubmit={handleCreateUser}>
-                        <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
+                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div className="mb-4">
+                        <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
+                        <TextInput
+                            id="user_name"
+                            type="text"
+                            name="user_name"
+                            value={createData.user_name}
+                            className="block w-full mt-1"
+                            isFocused={true}
+                            onChange={(e) => setCreateData("user_name", e.target.value)}
+                        />
+                        <InputError message={createErrors.user_name} className="mt-2" />
+                        </div>
+                        <div className="mb-4">
+                        <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
+                        <TextInput
+                            id="user_email"
+                            type="email"
+                            name="email"
+                            value={createData.email}
+                            className="block w-full mt-1"
+                            onChange={(e) => setCreateData("email", e.target.value)}
+                        />
+                        <InputError message={createErrors.email} className="mt-2" />
+                        </div>
+                    </div>
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
-                  <TextInput
-                    id="user_name"
-                    type="text"
-                    name="user_name"
-                    value={createData.user_name}
-                    className="block w-full mt-1"
-                    isFocused={true}
-                    onChange={(e) => setCreateData("user_name", e.target.value)}
-                  />
-                  <InputError message={createErrors.user_name} className="mt-2" />
-                </div>
-                <div className="mb-4">
-                  <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
-                  <TextInput
-                    id="user_email"
-                    type="email"
-                    name="email"
-                    value={createData.email}
-                    className="block w-full mt-1"
-                    onChange={(e) => setCreateData("email", e.target.value)}
-                  />
-                  <InputError message={createErrors.email} className="mt-2" />
-                </div>
 
                  <div className="mb-4">
                   <InputLabel htmlFor="user_password" value={"كلمة المرور"} />
@@ -392,34 +394,41 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={createErrors.password} className="mt-2" />
                               </div>
                         <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
-                    <div className="mb-4">
-                    <InputLabel htmlFor="name" value={"شخص الاتصال"} />
-                    <TextInput
-                        id="name"
-                        type="text"
-                        name="name"
-                        value={createData.name}
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 
-                        className="block w-full mt-1"
-                        isFocused={true}
-                        onChange={(e) => setCreateData("name", e.target.value)}
-                    />
-                    <InputError message={createErrors.name} className="mt-2" />
-                              </div>
-                    <div className="mb-4">
-                    <InputLabel htmlFor="name" value={"اسم الشركه"} />
-                    <TextInput
-                        id="customer_company"
-                        type="text"
-                        name="customer_company"
-                                        value={createData.customer_company}
 
-                        className="block w-full mt-1"
-                        isFocused={true}
-                        onChange={(e) => setCreateData("customer_company", e.target.value)}
-                    />
-                    <InputError message={createErrors.customer_company} className="mt-2" />
-                    </div>
+                              <div className="mb-4">
+                        <InputLabel htmlFor="name" value={"شخص الاتصال"} />
+                        <TextInput
+                            id="name"
+                            type="text"
+                            name="name"
+                            value={createData.name}
+
+                            className="block w-full mt-1"
+                            isFocused={true}
+                            onChange={(e) => setCreateData("name", e.target.value)}
+                        />
+                        <InputError message={createErrors.name} className="mt-2" />
+                                </div>
+
+
+                        <div className="mb-4">
+                        <InputLabel htmlFor="name" value={"اسم الشركه"} />
+                        <TextInput
+                            id="customer_company"
+                            type="text"
+                            name="customer_company"
+                                            value={createData.customer_company}
+
+                            className="block w-full mt-1"
+                            isFocused={true}
+                            onChange={(e) => setCreateData("customer_company", e.target.value)}
+                        />
+                        <InputError message={createErrors.customer_company} className="mt-2" />
+                                </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">
                       <InputLabel htmlFor="phone" value={"الهاتف"} />
@@ -482,34 +491,35 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             <div className="p-6">
                           <form onSubmit={handleEditUser}>
                         <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
-                  <TextInput
-                    id="edit_user_name"
-                    type="text"
-                    name="user_name"
-                    value={editData.user_name}
-                    className="block w-full mt-1"
-                    isFocused={true}
-                    onChange={(e) => setEditData("user_name", e.target.value)}
-                  />
-                  <InputError message={editErrors.user_name} className="mt-2" />
-                </div>
+                        <div className="mb-4">
+                        <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
+                        <TextInput
+                            id="edit_user_name"
+                            type="text"
+                            name="user_name"
+                            value={editData.user_name}
+                            className="block w-full mt-1"
+                            isFocused={true}
+                            onChange={(e) => setEditData("user_name", e.target.value)}
+                        />
+                        <InputError message={editErrors.user_name} className="mt-2" />
+                        </div>
 
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
-                  <TextInput
-                    id="edit_user_email"
-                    type="email"
-                    name="email"
-                    value={editData.email}
-                    className="block w-full mt-1"
-                    onChange={(e) => setEditData("email", e.target.value)}
-                  />
-                  <InputError message={editErrors.email} className="mt-2" />
-                </div>
-
+                        <div className="mb-4">
+                        <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
+                        <TextInput
+                            id="edit_user_email"
+                            type="email"
+                            name="email"
+                            value={editData.email}
+                            className="block w-full mt-1"
+                            onChange={(e) => setEditData("email", e.target.value)}
+                        />
+                        <InputError message={editErrors.email} className="mt-2" />
+                        </div>
+                    </div>
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
                   <TextInput
@@ -524,32 +534,37 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={editErrors.password} className="mt-2" />
                               </div>
                         <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_name" value={"شخص الاتصال"} />
-                  <TextInput
-                    id="edit_name"
-                    type="text"
-                    name="name"
-                    value={editData.name}
-                    className="block w-full mt-1"
-                    isFocused={true}
-                    onChange={(e) => setEditData("name", e.target.value)}
-                  />
-                  <InputError message={editErrors.name} className="mt-2" />
-                              </div>
-                <div className="mb-4">
-                  <InputLabel htmlFor="edit_customer_company" value={"اسم الشركه "} />
-                  <TextInput
-                    id="edit_customer_company"
-                    type="text"
-                    name="customer_company"
-                    value={editData.customer_company}
-                    className="block w-full mt-1"
-                    isFocused={true}
-                    onChange={(e) => setEditData("customer_company", e.target.value)}
-                  />
-                  <InputError message={editErrors.customer_company} className="mt-2" />
-                              </div>
+
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                              <div className="mb-4">
+                    <InputLabel htmlFor="edit_name" value={"شخص الاتصال"} />
+                    <TextInput
+                        id="edit_name"
+                        type="text"
+                        name="name"
+                        value={editData.name}
+                        className="block w-full mt-1"
+                        isFocused={true}
+                        onChange={(e) => setEditData("name", e.target.value)}
+                    />
+                    <InputError message={editErrors.name} className="mt-2" />
+                                </div>
+                    <div className="mb-4">
+                    <InputLabel htmlFor="edit_customer_company" value={"اسم الشركه "} />
+                    <TextInput
+                        id="edit_customer_company"
+                        type="text"
+                        name="customer_company"
+                        value={editData.customer_company}
+                        className="block w-full mt-1"
+                        isFocused={true}
+                        onChange={(e) => setEditData("customer_company", e.target.value)}
+                    />
+                    <InputError message={editErrors.customer_company} className="mt-2" />
+                                </div>
+
+                </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="mb-4">

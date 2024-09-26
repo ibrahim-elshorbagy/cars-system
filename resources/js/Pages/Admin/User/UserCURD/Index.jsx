@@ -45,7 +45,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             email: user.email,
             phone: user.phone,
             whatsapp: user.whatsapp,
-
+            box_id: user.box_id,
             role: roleId,
             _method: "PUT",
         });
@@ -333,7 +333,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             <div className="p-6">
               <form onSubmit={handleCreateUser}>
                         <div>
-                                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
+                                  <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
                                 <div className="mb-4">
                             <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
                             <TextInput
@@ -356,7 +358,8 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                 value={createData.email}
                                 className="block w-full mt-1"
                                 onChange={(e) => setCreateData("email", e.target.value)}
-                            />
+                                          />
+                        </div>
                             <InputError message={createErrors.email} className="mt-2" />
                             </div>
                             <div className="mb-4">
@@ -372,7 +375,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             <InputError message={createErrors.password} className="mt-2" />
                             </div>
                     </div>
-                    <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
+
+                              <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
                         <div className="mb-4">
                             <InputLabel htmlFor="name" value={"الاسم الكامل"} />
                             <TextInput
@@ -407,7 +413,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                         ))}
                         </SelectInput>
                         <InputError message={createErrors.role} className="mt-2" />
+                              </div>
                     </div>
+
+
                     {/* Conditionally render the box selection if role is Accountant */}
                     {selectedRole == 4 && (
                     <div className="mb-4">
@@ -493,6 +502,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             <div className="p-6">
                           <form onSubmit={handleEditUser}>
                                 <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
@@ -520,7 +530,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={editErrors.email} className="mt-2" />
 
                  </div>
-
+          </div>
                 <div className="mb-4">
                   <InputLabel htmlFor="edit_user_password" value={"كلمة المرور"} />
                   <TextInput
@@ -535,7 +545,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={editErrors.password} className="mt-2" />
                               </div>
                                 <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
-                        <div className="mb-4">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+
+                              <div className="mb-4">
                         <InputLabel htmlFor="edit_user_name" value={"الاسام الكامل"} />
                         <TextInput
                             id="edit_user_name"
@@ -569,8 +582,12 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                         ))}
                         </SelectInput>
                         <InputError message={editErrors.role} className="mt-2" />
+                                  </div>
+
                     </div>
-                    {/* Conditionally render the box selection if role is Accountant */}
+
+
+                              {/* Conditionally render the box selection if role is Accountant */}
                     {editSelectedRole == 4 && (
                     <div className="mb-4">
                         <InputLabel htmlFor="edit_box_id" value={"اختر الصندوق"} />

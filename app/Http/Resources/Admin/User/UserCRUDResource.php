@@ -21,6 +21,7 @@ class UserCRUDResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "user_name" => $this->user_name,
+            'box_id'=>$this->accountant->box_id ?? null,
             "email" => $this->email,
             "role"=> $this->roles->pluck('name'),
             "role_id"=> $this->roles->pluck('id'),
