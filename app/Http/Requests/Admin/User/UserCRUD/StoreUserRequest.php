@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin\User\UserCRUD;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -34,7 +35,13 @@ class StoreUserRequest extends FormRequest
                 Password::min(8)->letters(),
             ],
             "role" => ["required"],
-            "box_id"=>["nullable","exists:boxes,id"],
+            'box_id' => [
+            Rule::requiredIf(function () {
+                return $this->input('role') == 4;
+            }),
+            'exists:boxes,id'
+        ],
+
         ];
     }
 }

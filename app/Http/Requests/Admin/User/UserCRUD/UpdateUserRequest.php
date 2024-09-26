@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
+
 class UpdateUserRequest extends FormRequest
 {
     /**
@@ -40,7 +41,12 @@ class UpdateUserRequest extends FormRequest
                 Password::min(8)->letters(),
             ],
             "role" => ["required", "integer"],
-            'box_id'=>["nullable","exists:boxes,id"],
+            'box_id' => [
+            Rule::requiredIf(function () {
+                return $this->input('role') == 4; // Ensure box_id is required if role is 4 (Accountant)
+            }),
+            'exists:boxes,id', // Ensure the box exists in the database
+        ],
         ];
     }
 }
