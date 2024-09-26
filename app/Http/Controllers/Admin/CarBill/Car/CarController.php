@@ -103,8 +103,8 @@ class CarController extends Controller
             Bill::create([
                 'car_id'=>$car->id,
                 'user_id'=>$data['user_id'],
-                'won_price'=>$data['won_price'],
-                'shipping_cost'=>$data['shipping_cost'],
+                'won_price'=>$data['won_price'] ?? 0,
+                'shipping_cost'=>$data['shipping_cost'] ?? 0,
                 'created_by'=>Auth::user()->id
             ]);
 
@@ -133,7 +133,7 @@ class CarController extends Controller
 
             DB::commit();
 
-            return redirect()->route('car.index')->with('success', 'تم اضافة السياره بنجاح');
+            return redirect()->route('car.index')->with('success', 'تم اضافة السيارة بنجاح');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -224,7 +224,7 @@ class CarController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return back()->with('success', 'تم تحديث السياره بنجاح');
+            return back()->with('success', 'تم تحديث السيارة بنجاح');
         } catch (\Exception $e) {
             // Rollback the transaction in case of error
             DB::rollBack();

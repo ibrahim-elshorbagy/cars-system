@@ -39,7 +39,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
     useEffect(() => {
      if (ErrorAlert) {
-         alert(ErrorAlert); // Display the error message in an alert
+         alert(ErrorAlert);
      }
     }, [ErrorAlert]);
 
@@ -95,7 +95,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
 
   const deleteCar = (car) => {
-    if (window.confirm("هل انت متأكد من حذف السياره ؟ ")) {
+    if (window.confirm("هل انت متأكد من حذف السيارة ؟ ")) {
       router.delete(route("car.destroy", car.id), {
         onSuccess: (page) => {
             setOperationPerformed(true);
@@ -157,7 +157,27 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         setCreateData("images", newImageFiles); // Update form data
     };
 
+// ------------------------------------------------------------------------------------------------------------ handel select make filter models
+        const [selectedMakeId, setSelectedMakeId] = useState(null);
+        const [filteredModels, setFilteredModels] = useState([]);
 
+        useEffect(() => {
+            if (selectedMakeId) {
+                const filtered = models.filter(model => model.make_id === selectedMakeId);
+                setFilteredModels(filtered);
+            } else {
+                setFilteredModels([]);
+            }
+        }, [selectedMakeId, models]);
+
+        const handleMakeSelect = (item) => {
+            setSelectedMakeId(item.id);
+            setCreateData("make_id", item.id);
+            // Reset model selection when make changes
+            setCreateData("model_id", null);
+        };
+
+// ------------------------------------------------------------------------------------------------------------
   const handleCreateCar = (e) => {
     e.preventDefault();
     createPost(route("car.store"), {
@@ -261,6 +281,32 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         setEditData("images", newImageFiles);  // Update form data
     };
 
+//------------------------------------------------------------------------------------------------------------------
+
+
+  const [selectedEditMakeId, setSelectedEditMakeId] = useState(editData.make_id || null);
+  const [filteredEditModels, setFilteredEditModels] = useState([]);
+
+  useEffect(() => {
+    if (selectedEditMakeId) {
+      const filtered = models.filter(model => model.make_id === selectedEditMakeId);
+      setFilteredEditModels(filtered);
+    } else {
+      setFilteredEditModels(models);
+    }
+  }, [selectedEditMakeId, models]);
+
+  const handleEditMakeSelect = (item) => {
+    setSelectedEditMakeId(item.id);
+    setEditData("make_id", item.id);
+    // Reset model selection when make changes, unless it's the initial load
+    if (item.id !== editData.make_id) {
+      setEditData("model_id", null);
+    }
+  };
+
+
+
 
   const handleEditCar = (e) => {
     e.preventDefault();
@@ -288,7 +334,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
               onClick={toggleCreateModal}
               className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
             >
-              إضافة سياره
+              إضافة سيارة
             </button>
           )}
         </div>
@@ -414,18 +460,18 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
       {/* Modal for adding a new car */}
       {isCreateModalOpen && (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
             <form onSubmit={handleCreateCar} className="relative w-10/12 overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
                 <Tabs defaultValue="general" >
                     <TabsList className="sticky top-0 z-10 flex p-4 bg-white border-b justify-content dark:bg-gray-800">
                         <div>
                         <TabsTrigger bsTrigger value="general">General</TabsTrigger>
-                        <TabsTrigger value="shipping">shipping</TabsTrigger>
+                        <TabsTrigger value="shipping">Shipping</TabsTrigger>
                         <TabsTrigger value="photos">Photos</TabsTrigger>
                         </div>
 
-                        <h2 className="text-2xl font-semibold dark:text-white">إضافة سياره</h2>
+                        <h2 className="text-2xl font-semibold dark:text-white">إضافة سيارة</h2>
 
                     </TabsList>
 
@@ -434,9 +480,43 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                         <div className="p-6 ">
                             {/*  Customer Chassis bookingNo */}
-                            <div className="grid items-center justify-center grid-cols-6 gap-5 my-10 ">
-                                <div className="flex col-span-2 gap-5">
-                                    <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="user_id" value={"العميل"} />
+                            <div className="grid items-center justify-center gap-5 my-10 md:grid-cols-2 sm:grid-cols-1 ">
+
+
+                                         <div>
+                                            <InputLabel className="text-xl text-nowrap" htmlFor="make_id" value="Make" />
+                                            <div className="flex gap-5 mt-2">
+                                            <ComboboxMakes
+                                                items={makes}
+                                                onItemSelect={handleMakeSelect}
+                                                placeholder="اختر الماركه"
+                                                emptyMessage="لا يوجد مركات"
+                                            />
+                                            <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <InputLabel className="text-xl text-nowrap" htmlFor="model_id" value="Model" />
+                                            <div className="flex gap-5 mt-2">
+                                            <ComboboxMakes
+                                                items={filteredModels}
+                                                onItemSelect={(item) => setCreateData("model_id", item.id)}
+                                                placeholder="اختر الموديل"
+                                                emptyMessage="لا يوجد موديلات"
+                                                disabled={!selectedMakeId}
+                                            />
+                                            <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+                                <div >
+                                    <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
+                                    <div className="flex gap-5 mt-2">
                                     <ComboboxMakes
                                         items={customers}
                                         onItemSelect={(item) => setCreateData("user_id", item.id)}
@@ -444,31 +524,29 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                         emptyMessage="لا يوجد عملاء"
                                         />
                                     <InputError message={'*'} className="mt-2 text-xl" />
+                                    </div>
                                 </div>
 
-                                <div className="flex col-span-2 gap-5">
-                                    <InputLabel htmlFor="chassis" className="mt-2 text-xl text-nowrap" value={"رقم الشاسي"} />
-                                    <TextInput
-                                        id="chassis"
-                                        type="text"
-                                        name="chassis"
-                                        value={createData.chassis}
-                                        className="block w-full mt-1"
-                                        onChange={(e) => setCreateData("chassis", e.target.value)}
-                                    />
-                                    <InputError  message={'*'} className="mt-2 text-xl"  />
-                                    {/* <InputError message={createErrors.chassis} className="mt-2" /> */}
+                                <div >
+                                    <InputLabel htmlFor="chassis" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                    <div className="flex gap-5 mt-2">
+
+                                        <TextInput
+                                            id="chassis"
+                                            type="text"
+                                            name="chassis"
+                                            value={createData.chassis}
+                                            className="block w-full mt-1"
+                                            onChange={(e) => setCreateData("chassis", e.target.value)}
+                                        />
+                                        <InputError  message={'*'} className="mt-2 text-xl"  />
+                                    </div>
                                 </div>
-                            </div>
 
 
-
-                            {/* Color Year Keys Title  */}
-                            <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-
-                                    <div className="flex col-span-2 gap-5">
-                                      <InputLabel htmlFor="color" className="mt-2 text-xl text-nowrap" value={"لون السياره"} />
-
+                                <div >
+                                    <InputLabel htmlFor="color" className="mt-2 text-xl text-nowrap" value={"Color"} />
+                                    <div className="flex gap-5 mt-2">
                                         <TextInput
                                             id="color"
                                             type="text"
@@ -477,96 +555,81 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             className="block w-full mt-1"
                                             onChange={(e) => setCreateData("color", e.target.value)}
                                         />
-                                        <InputError message={'*'} className="mt-2 text-xl"  />
+                                        <InputError message={'*'} className="mt-2 text-xl" />
                                     </div>
-                                        <div className="flex col-span-2 gap-5">
-                                        <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="year" value="السنه" />
-                                        <TextInput
-                                            type="number"
-                                            id={`year`}
-                                            name="year"
-                                            value={createData.year}
+                                </div>
 
+
+                                    <div >
+                                        <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="year" value="Year" />
+                                        <div className="flex gap-5 mt-2">
+                                            <TextInput
+                                                type="number"
+                                                id={`year`}
+                                                name="year"
+                                                value={createData.year}
+
+                                                className="block w-full mt-1"
+                                                onChange={(e) => setCreateData('year',e.target.value)}
+                                            />
+                                            <InputError message={'*'} className="mt-2 text-xl" />
+
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-5 mt-3 w-fit">
+                                        <InputLabel htmlFor="carfax_report" className="mt-2 text-xl text-nowrap" value={"Carfax Report"} />
+                                        <Input
+                                            id="date_won"
+                                            type="file"
+                                            name="carfax_report"
                                             className="block w-full mt-1"
-                                            onChange={(e) => setCreateData('year',e.target.value)}
+
+                                            onChange={handleCarfaxReportChange}
                                         />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
-                                  </div>
-                                  <div>
-                                        <div className="flex gap-5">
-                                        <InputLabel className="text-xl" htmlFor="keys" value="keys" />
-                                        <Input
-                                            type="checkbox"
-                                            id={`keys`}
-                                            className="w-6 h-6 rounded mt-0.5"
-                                            onChange={(e) => setCreateData('keys', e.target.checked ? 1 : 0)}
-                                        />
-                                            <InputError message={'*'} className="mt-1 text-xl"  />
+                                        <InputError message={createErrors.carfax_report} className="mt-2" />
+                                    </div>
+
+                                    <div className="flex gap-5">
+                                        <div>
+                                            <div className="flex items-center gap-5">
+                                                <InputLabel className="text-xl" htmlFor="keys" value="keys" />
+                                                <div className="flex gap-5 ">
+                                                        <Input
+                                                            type="checkbox"
+                                                            id={`keys`}
+                                                            className="w-6 h-6 rounded mt-0.5"
+                                                            onChange={(e) => setCreateData('keys', e.target.checked ? 1 : 0)}
+                                                        />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div className="flex items-center gap-5">
+                                                <InputLabel className="text-xl" htmlFor="title" value="Title" />
+                                                <div className="flex gap-5 ">
+
+                                                    <Input
+                                                        type="checkbox"
+                                                        id={`title`}
+                                                        className="w-6 h-6 rounded mt-0.5"
+                                                        onChange={(e) => setCreateData('title', e.target.checked ? 1 : 0)}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div className="flex gap-5">
-                                        <InputLabel className="text-xl" htmlFor="title" value="Title" />
-                                        <Input
-                                            type="checkbox"
-                                            id={`title`}
-                                            className="w-6 h-6 rounded mt-0.5"
-                                            onChange={(e) => setCreateData('title', e.target.checked ? 1 : 0)}
-                                        />
-                                            <InputError message={'*'} className="mt-1 text-xl"  />
-                                        </div>
-                                    </div>
-                              </div>
 
 
 
 
-                              {/* Makes + Model */}
-
-                            <div className="grid items-center justify-center grid-cols-9 gap-5 mb-10 ">
-                                    <div className="flex col-span-3 gap-5">
-                                        <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="make_id" value={"(Make) المركه"} />
-
-                                        <ComboboxMakes
-                                            items={makes}
-                                            onItemSelect={(item) => setCreateData("make_id", item.id)}
-                                            placeholder="اختر المركه"
-                                            emptyMessage="لا يوجد مركات"
-                                            />
-                                        <InputError message={'*'} className="mt-2 text-xl" />
-                                    </div>
-
-                                    <div className="flex col-span-3 gap-5">
-                                        <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="model_id" value={"(Model) الموديل"} />
-
-                                        <ComboboxMakes
-                                            items={models}
-                                            onItemSelect={(item) => setCreateData("model_id", item.id)}
-                                            placeholder="اختر المرفق"
-                                            emptyMessage="لا يوجد مرافق"
-                                            />
-                                        <InputError message={'*'} className="mt-2 text-xl" />
-                                    </div>
-
-                              </div>
-
-
-
-                            {/* PDF Upload */}
-
-                            <div className="flex col-span-2 gap-5 w-fit">
-                                <InputLabel htmlFor="carfax_report" className="mt-2 text-xl text-nowrap" value={"Carfax Report"} />
-                                <Input
-                                    id="date_won"
-                                    type="file"
-                                    name="carfax_report"
-                                    className="block w-full mt-1"
-
-                                    onChange={handleCarfaxReportChange}
-                                />
-                                <InputError message={createErrors.carfax_report} className="mt-2" />
                             </div>
 
+
+
+                        </div>
 
 
                             <div>
@@ -580,15 +643,21 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
 
 
-                        </div>
 
-                        <div className="flex justify-end m-5">
+                        <div className="flex justify-end gap-3 m-5">
                                 <button
                                     type="button"
                                     onClick={toggleCreateModal}
                                     className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
                                 >
                                     إلغاء
+                                </button>
+
+                                    <button
+                                    type="submit"
+                                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                                >
+                                    حفظ
                                 </button>
                         </div>
                     </div>
@@ -600,22 +669,21 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                 <div className="p-6">
                                 {/* Vendor + Destination + Shipping Line */}
 
-                                    <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-                                        <div className="flex col-span-2 gap-5">
-                                                    <InputLabel htmlFor="lot" className="mt-2 text-xl text-nowrap" value={"lot/Sotok"} />
-                                                    <TextInput
-                                                        id="lot"
-                                                        type="text"
-                                                        name="lot"
-                                                        value={createData.lot}
-                                                        className="block w-full mt-1"
-                                                        onChange={(e) => setCreateData("lot", e.target.value)}
-                                                    />
-                                                    <InputError message={'*'} className="mt-2 text-xl" />
-                                        </div>
+                                    <div className="grid items-center justify-center gap-5 mb-10 sm:grid-cols-1 md:grid-cols-2 ">
+                                        <div >
+                                        <InputLabel htmlFor="lot" className="my-2 text-xl text-nowrap" value={"Lot / Stok"} />
+                                        <TextInput
+                                            id="lot"
+                                            type="text"
+                                            name="lot"
+                                            value={createData.lot}
+                                            className="block w-full mt-1"
+                                            onChange={(e) => setCreateData("lot", e.target.value)}
+                                        />
 
-                                        <div className="flex col-span-2 gap-5">
-                                                <InputLabel htmlFor="bookingNo" className="mt-2 text-xl text-nowrap" value={"bookingNo"} />
+                                        </div>
+                                        <div >
+                                                <InputLabel htmlFor="bookingNo" className="my-2 text-xl text-nowrap" value={"BookingNo"} />
                                                 <TextInput
                                                     id="bookingNo"
                                                     type="text"
@@ -624,10 +692,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                     className="block w-full mt-1"
                                                     onChange={(e) => setCreateData("bookingNo", e.target.value)}
                                                 />
-                                                <InputError message={'*'} className="mt-2 text-xl"  />
+
                                         </div>
-                                        <div className="flex col-span-2 gap-5">
-                                                <InputLabel htmlFor="container_number" className="mt-2 text-xl text-nowrap" value={"Container Number"} />
+                                        <div >
+                                                <InputLabel htmlFor="container_number" className="my-2 text-xl text-nowrap" value={"Container Number"} />
                                                 <TextInput
                                                     id="container_number"
                                                     type="text"
@@ -636,13 +704,11 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                     className="block w-full mt-1"
                                                     onChange={(e) => setCreateData("container_number", e.target.value)}
                                                 />
-                                                <InputError message={'*'} className="mt-2 text-xl"  />
-                                        </div>
-                                    </div>
 
-                                <div className="grid items-center justify-center grid-cols-9 gap-5 mb-10 ">
-                                        <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="vendor_id" value={"(Vendor) المزاد"} />
+                                        </div>
+
+                                        <div >
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="vendor_id" value={"Vendor"} />
 
                                             <ComboboxMakes
                                                 items={vendors}
@@ -650,21 +716,21 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 placeholder="اختر الماز"
                                                 emptyMessage="لا يوجد مزادات"
                                                 />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
+
                                         </div>
-                                        <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="destination_id" value={"(Destination) الوجه"} />
+                                        <div >
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="destination_id" value={"Destination"} />
 
                                             <ComboboxMakes
                                                 items={destinations}
                                                 onItemSelect={(item) => setCreateData("destination_id", item.id)}
-                                                placeholder="اختر الوجه"
+                                                placeholder="اختر الوجهة"
                                                 emptyMessage="لا يوجد وحهات"
                                                 />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
+
                                         </div>
-                                        <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="line_id" value={"(Shipping line) الخط الملاحي"} />
+                                        <div >
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="line_id" value={"Shipping line"} />
 
                                             <ComboboxMakes
                                                 items={lines}
@@ -672,19 +738,11 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 placeholder="اختر الخط الملاحي"
                                                 emptyMessage="لا يوجد خطوط ملاحيه"
                                                 />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
+
                                         </div>
-                                </div>
 
-
-
-
-
-                                    {/* Facility + Terminal */}
-
-                                <div className="grid items-center justify-center grid-cols-9 gap-5 mb-10 ">
-                                    <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="facility_id" value={"(Facility) المرفق"} />
+                                        <div>
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="facility_id" value={"Facility"} />
 
                                             <ComboboxMakes
                                                 items={facilities}
@@ -692,10 +750,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 placeholder="اختر المرفق"
                                                 emptyMessage="لا يوجد مرافق"
                                                 />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
+
                                         </div>
-                                        <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="terminal_id" value={"(Terminal) محطة الشحن"} />
+                                        <div >
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="terminal_id" value={"Terminal"} />
 
                                             <ComboboxMakes
                                                 items={terminals}
@@ -703,97 +761,51 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 placeholder="اختر محطة الشحن"
                                                 emptyMessage="لا يوجد محطات شحن"
                                                 />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
+
                                         </div>
 
 
-                                    </div>
+                                        <div >
+                                                <InputLabel htmlFor="date_won" className="mt-2 text-xl text-nowrap" value={"Date Won"} />
+                                                <TextInput
+                                                    id="date_won"
+                                                    type="date"
+                                                    name="date_won"
+                                                    value={createData.date_won}
+                                                    className="block w-full mt-1"
 
+                                                    onChange={(e) => setCreateData("date_won", e.target.value)}
+                                                />
 
+                                            </div>
+                                        <div >
+                                                <InputLabel htmlFor="estimate_arrival_date" className="mt-2 text-xl text-nowrap" value={"Estimate Arrival Date"} />
+                                                <TextInput
+                                                    id="estimate_arrival_date"
+                                                    type="date"
+                                                    name="estimate_arrival_date"
+                                                    value={createData.estimate_arrival_date}
+                                                    className="block w-full mt-1"
 
+                                                    onChange={(e) => setCreateData("estimate_arrival_date", e.target.value)}
+                                                />
 
-
-
-                                    {/* Dates */}
-
-                                    <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-                                        <div className="flex col-span-2 gap-5">
-                                            <InputLabel htmlFor="date_won" className="mt-2 text-xl text-nowrap" value={"تاريخ الشراء "} />
-                                            <TextInput
-                                                id="date_won"
-                                                type="date"
-                                                name="date_won"
-                                                value={createData.date_won}
-                                                className="block w-full mt-1"
-
-                                                onChange={(e) => setCreateData("date_won", e.target.value)}
-                                            />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
                                         </div>
-                                    <div className="flex col-span-2 gap-5">
-                                            <InputLabel htmlFor="estimate_arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول المقدر"} />
-                                            <TextInput
-                                                id="estimate_arrival_date"
-                                                type="date"
-                                                name="estimate_arrival_date"
-                                                value={createData.estimate_arrival_date}
-                                                className="block w-full mt-1"
+                                        <div >
+                                                <InputLabel htmlFor="arrival_date" className="mt-2 text-xl text-nowrap" value={"Arrival Date"} />
+                                                <TextInput
+                                                    id="arrival_date"
+                                                    type="date"
+                                                    name="arrival_date"
+                                                    value={createData.arrival_date}
+                                                    className="block w-full mt-1"
 
-                                                onChange={(e) => setCreateData("estimate_arrival_date", e.target.value)}
-                                            />
-                                            <InputError message={'*'} className="mt-2 text-xl"  />
-                                    </div>
-                                    <div className="flex col-span-2 gap-5">
-                                            <InputLabel htmlFor="arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول"} />
-                                            <TextInput
-                                                id="arrival_date"
-                                                type="date"
-                                                name="arrival_date"
-                                                value={createData.arrival_date}
-                                                className="block w-full mt-1"
-
-                                                onChange={(e) => setCreateData("arrival_date", e.target.value)}
-                                            />
-                                            <InputError message={'*'} className="mt-2 text-xl" />
-                                    </div>
-                                    </div>
-
-
-                                {/* Won Price  --  Shipping Cost */}
-
-
-                                <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-
-                                        <div className="flex col-span-2 gap-5">
-                                            <InputLabel htmlFor="won_price" className="mt-2 text-xl text-nowrap" value={"(Won Price) سعر الشراء "} />
-                                            <TextInput
-                                                id="won_price"
-                                                type="number"
-                                                name="won_price"
-                                                value={createData.won_price}
-                                                className="block w-full mt-1"
-
-                                                onChange={(e) => setCreateData("won_price", e.target.value)}
-                                            />
-                                            <InputError  message={'*'} className="mt-2 text-xl"  />
+                                                    onChange={(e) => setCreateData("arrival_date", e.target.value)}
+                                                />
                                         </div>
 
-                                        <div className="flex col-span-2 gap-5">
-                                            <InputLabel htmlFor="shipping_cost" className="mt-2 text-xl text-nowrap" value={"(Shipping Cost) سعر النقل"} />
-                                            <TextInput
-                                                id="shipping_cost"
-                                                type="number"
-                                                name="shipping_cost"
-                                                value={createData.shipping_cost}
-                                                className="block w-full mt-1"
-
-                                                onChange={(e) => setCreateData("shipping_cost", e.target.value)}
-                                            />
-                                            <InputError  message={'*'} className="mt-2 text-xl" />
-                                        </div>
-
-                                        <div className="flex col-span-2 gap-5">
-                                            <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="ship_status" value={" (ship Status) حالة الشحن"} />
+                                        <div>
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="ship_status" value={"Shipping Status"} />
                                             <SelectInput
                                                 id="ship_status"
                                                 name="ship_status"
@@ -808,11 +820,40 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 </option>
                                                 ))}
                                             </SelectInput>
-                                            <InputError  message={'*'} className="mt-2 text-xl" />
+                                        </div>
+
+                                        <div >
+                                            <InputLabel htmlFor="won_price" className="my-2 text-xl text-nowrap" value={"Won Price"} />
+                                            <TextInput
+                                                id="won_price"
+                                                type="number"
+                                                name="won_price"
+                                                value={createData.won_price}
+                                                className="block w-full mt-1"
+
+                                                onChange={(e) => setCreateData("won_price", e.target.value)}
+                                            />
+                                        </div>
+
+                                        <div >
+                                            <InputLabel htmlFor="shipping_cost" className="my-2 text-xl text-nowrap" value={"Shipping Cost"} />
+                                            <TextInput
+                                                id="shipping_cost"
+                                                type="number"
+                                                name="shipping_cost"
+                                                value={createData.shipping_cost}
+                                                className="block w-full mt-1"
+
+                                                onChange={(e) => setCreateData("shipping_cost", e.target.value)}
+                                            />
                                         </div>
 
 
+
                                     </div>
+
+
+
 
                                     <div>
                                         <ul className="mt-2 text-red-600 list-disc list-inside">
@@ -828,13 +869,19 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
 
 
-                                <div className="flex justify-end m-5">
+                                <div className="flex justify-end gap-3 m-5">
                                     <button
                                         type="button"
                                         onClick={toggleCreateModal}
                                         className="px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700"
                                     >
                                         إلغاء
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                                    >
+                                        حفظ
                                     </button>
                                   </div>
 
@@ -846,7 +893,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                             <div className="p-6">
 
                                     <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-                                        <div className="flex col-span-2 gap-5">
+                                        <div >
                                             <InputLabel htmlFor="images" className="mt-2 text-xl text-nowrap" value={"images"} />
                                             <Input
                                                 id="images"
@@ -910,7 +957,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                 </Tabs>
             </form>
 
-          </div>
+        </div>
 
 
       )}
@@ -943,7 +990,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                     </div>
 
-                    <h2 className="text-2xl font-semibold dark:text-white">إضافة سياره</h2>
+                    <h2 className="text-2xl font-semibold dark:text-white">إضافة سيارة</h2>
 
                 </TabsList>
 
@@ -953,11 +1000,44 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                 <div className="p-6 ">
 
 
-                                {/*  Customer Chassis  */}
+                                    <div className="grid items-center justify-center gap-5 my-10 sm:grid-cols-2 md:grid-cols-2 ">
 
-                                <div className="grid items-center justify-center grid-cols-6 gap-5 my-10 ">
-                                        <div className="flex col-span-2 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="user_id" value={"العميل"} />
+                                                <div>
+                                                <InputLabel className="text-xl text-nowrap" htmlFor="edit_make_id" value="Make" />
+                                                <div className="flex gap-5 mt-2">
+                                                <ComboboxMakes
+                                                    items={makes}
+                                                    onItemSelect={handleEditMakeSelect}
+                                                    selectedMakeId={selectedEditMakeId}
+                                                    placeholder="اختر الماركه"
+                                                    emptyMessage="لا يوجد مركات"
+                                                />
+                                                <InputError message={'*'} className="mt-2 text-xl" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <InputLabel className="text-xl text-nowrap" htmlFor="edit_model_id" value="Model" />
+                                                <div className="flex gap-5 mt-2">
+                                                <ComboboxMakes
+                                                    items={filteredEditModels}
+                                                    onItemSelect={(item) => setEditData("model_id", item.id)}
+                                                    selectedMakeId={editData.model_id}
+                                                    placeholder="اختر الموديل"
+                                                    emptyMessage="لا يوجد موديلات"
+                                                    disabled={!selectedEditMakeId}
+                                                />
+                                                <InputError message={'*'} className="mt-2 text-xl" />
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        <div >
+                                              <InputLabel className="text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
+                                            <div className="flex gap-5 mt-2">
+
                                             <ComboboxMakes
                                                 items={customers}
                                                 onItemSelect={(item) => setEditData("user_id", item.id)}
@@ -965,145 +1045,63 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 placeholder="اختر العميل"
                                                 emptyMessage="لا يوجد عملاء"
                                                 />
-                                            <InputError  message={'*'} className="mt-2 text-xl"  />
-                                    </div>
-
-                                        <div className="flex col-span-2 gap-5">
-                                            <InputLabel htmlFor="edit_chassis" className="mt-2 text-xl text-nowrap" value={"رقم الشاسي"} />
-                                            <TextInput
-                                                id="edit_chassis"
-                                                type="text"
-                                                name="chassis"
-                                                value={editData.chassis}
-                                                className="block w-full mt-1"
-
-                                                onChange={(e) => setEditData("chassis", e.target.value)}
-                                            />
-                                            {/* <InputError message={editErrors.chassis} className="mt-2" /> */}
-                                            <InputError message={'*'} className="mt-2 text-xl" />
+                                                  <InputError message={'*'} className="mt-2 text-xl" />
+                                                </div>
                                         </div>
 
-                                </div>
+                                        <div >
+                                            <InputLabel htmlFor="edit_chassis" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                            <div className="flex gap-5 mt-2">
 
+                                                <TextInput
+                                                    id="edit_chassis"
+                                                    type="text"
+                                                    name="chassis"
+                                                    value={editData.chassis}
+                                                    className="block w-full mt-1"
 
-
-
-
-                                    {/* Color Year Keys Title  */}
-
-
-                                <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-
-                                        <div className="flex col-span-2 gap-5">
-                                        <InputLabel htmlFor="edit_color" className="mt-2 text-xl text-nowrap" value={"لون السياره"} />
-
-                                            <TextInput
-                                                id="edit_color"
-                                                type="text"
-                                                name="color"
-                                                value={editData.color}
-
-                                                className="block w-full mt-1"
-                                                onChange={(e) => setEditData("color", e.target.value)}
-                                            />
-                                            <InputError  message={'*'} className="mt-2 text-xl" />
-                                        </div>
-                                            <div className="flex col-span-2 gap-5">
-                                            <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="edit_year" value="السنه" />
-                                            <TextInput
-                                                type="number"
-                                                id={`edit_year`}
-                                                name="year"
-                                                value={editData.year}
-
-
-                                                className="block w-full mt-1"
-                                                onChange={(e) => setEditData('year',e.target.value)}
-                                            />
-                                                <InputError  message={'*'} className="mt-2 text-xl" />
-                                    </div>
-                                    <div>
-                                            <div className="flex gap-5">
-                                            <InputLabel className="text-xl" htmlFor="edit_keys" value="مفاتيح" />
-                                            <Input
-                                                type="checkbox"
-                                                id={`edit_keys`}
-                                                checked={editData.keys == 1}
-
-                                                className="w-6 h-6 rounded mt-0.5"
-                                                onChange={(e) => setEditData('keys', e.target.checked ? 1 : 0)}
-                                            />
-                                                <InputError  message={'*'} className="mt-1 text-xl " />
+                                                    onChange={(e) => setEditData("chassis", e.target.value)}
+                                                />
+                                                <InputError message={'*'} className="mt-2 text-xl" />
                                             </div>
                                         </div>
-                                        <div>
-                                            <div className="flex gap-5">
-                                            <InputLabel className="text-xl" htmlFor="edit_title" value="title" />
-                                            <Input
-                                                type="checkbox"
-                                                id={`edit_title`}
-                                                checked={editData.title == 1}
-                                                className="w-6 h-6 rounded mt-0.5"
-                                                onChange={(e) => setEditData('title', e.target.checked ? 1 : 0)}
-                                            />
-                                                <InputError  message={'*'} className="mt-1 text-xl" />
+
+                                    <div >
+                                        <InputLabel htmlFor="edit_color" className="mt-2 text-xl text-nowrap" value={"Color"} />
+                                            <div className="flex gap-5 mt-2">
+                                                <TextInput
+                                                    id="edit_color"
+                                                    type="text"
+                                                    name="color"
+                                                    value={editData.color}
+
+                                                    className="block w-full mt-1"
+                                                    onChange={(e) => setEditData("color", e.target.value)}
+                                                />
+                                                <InputError message={'*'} className="mt-2 text-xl" />
                                             </div>
-                                        </div>
-                                </div>
+                                      </div>
+
+                                        <div >
+                                        <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="edit_year" value="Year" />
+                                            <div className="flex gap-5 mt-2">
+
+                                                <TextInput
+                                                    type="number"
+                                                    id={`edit_year`}
+                                                    name="year"
+                                                    value={editData.year}
 
 
-
-
-
-
-
-
-
-                                {/* Makes + Model */}
-
-                                <div className="grid items-center justify-center grid-cols-9 gap-5 mb-10 ">
-                                        <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_make_id" value={"(Make) المركه"} />
-
-                                            <ComboboxMakes
-                                                items={makes}
-                                                onItemSelect={(item) => setEditData("make_id", item.id)}
-                                                selectedMakeId={editData.make_id}
-
-                                                placeholder="اختر المركه"
-                                                emptyMessage="لا يوجد مركات"
+                                                    className="block w-full mt-1"
+                                                    onChange={(e) => setEditData('year',e.target.value)}
                                                 />
-                                            <InputError  message={'*'} className="mt-2 text-xl" />
-                                        </div>
-
-                                        <div className="flex col-span-3 gap-5">
-                                            <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_model_id" value={"(Model) الموديل"} />
-
-                                            <ComboboxMakes
-                                                items={models}
-                                            onItemSelect={(item) => setEditData("model_id", item.id)}
-                                                selectedMakeId={editData.model_id}
-
-                                                placeholder="اختر المرفق"
-                                                emptyMessage="لا يوجد مرافق"
-                                                />
-                                            <InputError  message={'*'} className="mt-2 text-xl"  />
-                                        </div>
-
-                                </div>
+                                                <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
+                                    </div>
 
 
-
-
-
-
-                                    {/* Upload */}
-
-
-
-
-
-                                <div className="flex col-span-2 gap-5 w-fit">
+                                <div className="flex gap-5 w-fit">
                                     <InputLabel htmlFor="edit_carfax_report" className="mt-2 text-xl text-nowrap" value={"Carfax Report"} />
                                     <Input
                                         id="edit_carfax_report"
@@ -1112,8 +1110,37 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                         className="block w-full mt-1"
                                         onChange={(e) => setEditData("carfax_report", e.target.files[0])}  // Store the file directly
                                     />
-                                    <InputError message={editErrors.carfax_report} className="mt-2" />
                                 </div>
+
+                                <div className="flex items-center gap-5">
+                                    <div className="flex gap-5">
+                                    <InputLabel className="text-xl" htmlFor="edit_keys" value="Keys" />
+                                    <Input
+                                        type="checkbox"
+                                        id={`edit_keys`}
+                                        checked={editData.keys == 1}
+
+                                        className="w-6 h-6 rounded mt-0.5"
+                                        onChange={(e) => setEditData('keys', e.target.checked ? 1 : 0)}
+                                    />
+                                    </div>
+                                    <div className="flex gap-5">
+                                    <InputLabel className="text-xl" htmlFor="edit_title" value="Title" />
+                                    <Input
+                                        type="checkbox"
+                                        id={`edit_title`}
+                                        checked={editData.title == 1}
+                                        className="w-6 h-6 rounded mt-0.5"
+                                        onChange={(e) => setEditData('title', e.target.checked ? 1 : 0)}
+                                    />
+                                    </div>
+                                </div>
+
+
+                                </div>
+
+
+
 
 
                                 <div>
@@ -1154,10 +1181,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                 <div className="p-6">
 
-                                        <div className="grid items-center justify-center grid-cols-6 gap-5 my-10 ">
+                                        <div className="grid items-center justify-center grid-cols-1 gap-5 my-10 md:grid-cols-2 ">
 
-                                                <div className="flex col-span-2 gap-5">
-                                                        <InputLabel htmlFor="edit_lot" className="mt-2 text-xl text-nowrap" value={"lot/Sotok"} />
+                                                <div >
+                                                        <InputLabel htmlFor="edit_lot" className="my-2 text-xl text-nowrap" value={"Lot / Stok"} />
                                                         <TextInput
                                                             id="edit_lot"
                                                             type="text"
@@ -1168,10 +1195,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                                             onChange={(e) => setEditData("lot", e.target.value)}
                                                         />
-                                                        <InputError  message={'*'} className="mt-2 text-xl" />
+
                                                 </div>
-                                                <div className="flex col-span-2 gap-5">
-                                                        <InputLabel htmlFor="edit_bookingNo" className="mt-2 text-xl text-nowrap" value={"bookingNo"} />
+                                                <div >
+                                                        <InputLabel htmlFor="edit_bookingNo" className="my-2 text-xl text-nowrap" value={"bookingNo"} />
                                                         <TextInput
                                                             id="edit_bookingNo"
                                                             type="text"
@@ -1182,10 +1209,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                                             onChange={(e) => setEditData("bookingNo", e.target.value)}
                                                         />
-                                                        <InputError  message={'*'} className="mt-2 text-xl" />
+
                                                 </div>
-                                                <div className="flex col-span-2 gap-5">
-                                                        <InputLabel htmlFor="edit_container_number" className="mt-2 text-xl text-nowrap" value={"Container Number"} />
+                                                <div >
+                                                        <InputLabel htmlFor="edit_container_number" className="my-2 text-xl text-nowrap" value={"Container Number"} />
                                                         <TextInput
                                                             id="edit_container_number"
                                                             type="text"
@@ -1196,18 +1223,11 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                                             onChange={(e) => setEditData("container_number", e.target.value)}
                                                         />
-                                                        <InputError  message={'*'} className="mt-2 text-xl" />
-                                                </div>
 
                                                 </div>
 
-
-
-                                        {/* Vendor + Destination + Shipping Line */}
-
-                                        <div className="grid items-center justify-center grid-cols-9 gap-5 mb-10 ">
-                                                <div className="flex col-span-3 gap-5">
-                                                    <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_vendor_id" value={"(Vendor) المزاد"} />
+                                                <div >
+                                                    <InputLabel className="text-xl text-nowrap" htmlFor="edit_vendor_id" value={"Vendor"} />
 
                                                     <ComboboxMakes
                                                         items={vendors}
@@ -1217,23 +1237,23 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                         placeholder="اختر الماز"
                                                         emptyMessage="لا يوجد مزادات"
                                                         />
-                                                    <InputError  message={'*'} className="mt-2 text-xl" />
+
                                                 </div>
-                                                <div className="flex col-span-3 gap-5">
-                                                    <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_destination_id" value={"(Destination) الوجه"} />
+                                                <div >
+                                                    <InputLabel className="text-xl text-nowrap" htmlFor="edit_destination_id" value={"Destination"} />
 
                                                     <ComboboxMakes
                                                         items={destinations}
                                                     onItemSelect={(item) => setEditData("destination_id", item.id)}
                                                         selectedMakeId={editData.destination_id}
 
-                                                        placeholder="اختر الوجه"
+                                                        placeholder="اختر الوجهة"
                                                         emptyMessage="لا يوجد وحهات"
                                                         />
-                                                    <InputError  message={'*'} className="mt-2 text-xl" />
+
                                                 </div>
-                                                <div className="flex col-span-3 gap-5">
-                                                    <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_line_id" value={"(Shipping line) الخط الملاحي"} />
+                                                <div >
+                                                    <InputLabel className="text-xl text-nowrap" htmlFor="edit_line_id" value={"Shipping line"} />
 
                                                     <ComboboxMakes
                                                         items={lines}
@@ -1243,19 +1263,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                         placeholder="اختر الخط الملاحي"
                                                         emptyMessage="لا يوجد خطوط ملاحيه"
                                                         />
-                                                    <InputError  message={'*'} className="mt-2 text-xl"  />
                                                 </div>
 
-                                        </div>
-
-
-
-                                        {/* Facility + Terminal */}
-
-
-                                        <div className="grid items-center justify-center grid-cols-9 gap-5 mb-10 ">
-                                            <div className="flex col-span-3 gap-5">
-                                                    <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_facility_id" value={"(Facility) المرفق"} />
+                                            <div >
+                                                    <InputLabel className="text-xl text-nowrap" htmlFor="edit_facility_id" value={"Facility"} />
 
                                                     <ComboboxMakes
                                                         items={facilities}
@@ -1265,10 +1276,9 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                         placeholder="اختر المرفق"
                                                         emptyMessage="لا يوجد مرافق"
                                                         />
-                                                    <InputError  message={'*'} className="mt-2 text-xl"  />
                                                 </div>
-                                                <div className="flex col-span-3 gap-5">
-                                                    <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="edit_terminal_id" value={"(Terminal) محطة الشحن"} />
+                                                <div >
+                                                    <InputLabel className="text-xl text-nowrap" htmlFor="edit_terminal_id" value={"Terminal"} />
 
                                                     <ComboboxMakes
                                                         items={terminals}
@@ -1278,20 +1288,11 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                         placeholder="اختر محطة الشحن"
                                                         emptyMessage="لا يوجد محطات شحن"
                                                         />
-                                                    <InputError  message={'*'} className="mt-2 text-xl" />
+
                                                 </div>
 
-
-                                        </div>
-
-
-
-                                        {/* Dates */}
-
-
-                                        <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-                                                <div className="flex col-span-2 gap-5">
-                                                    <InputLabel htmlFor="edit_date_won" className="mt-2 text-xl text-nowrap" value={"تاريخ الشراء "} />
+                                                <div >
+                                                    <InputLabel htmlFor="edit_date_won" className="my-2 text-xl text-nowrap" value={"Date Won "} />
                                                     <TextInput
                                                         id="edit_date_won"
                                                         type="date"
@@ -1302,10 +1303,9 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                                         onChange={(e) => setEditData("date_won", e.target.value)}
                                                     />
-                                                    <InputError  message={'*'} className="mt-2 text-xl"  />
                                                 </div>
-                                            <div className="flex col-span-2 gap-5">
-                                                    <InputLabel htmlFor="edit_estimate_arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول المقدر"} />
+                                            <div >
+                                                    <InputLabel htmlFor="edit_estimate_arrival_date" className="my-2 text-xl text-nowrap" value={"Estimate Arrival Date"} />
                                                     <TextInput
                                                         id="edit_estimate_arrival_date"
                                                         type="date"
@@ -1316,10 +1316,9 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                                         onChange={(e) => setEditData("estimate_arrival_date", e.target.value)}
                                                     />
-                                                    <InputError  message={'*'} className="mt-2 text-xl"  />
                                             </div>
-                                            <div className="flex col-span-2 gap-5">
-                                                    <InputLabel htmlFor="edit_arrival_date" className="mt-2 text-xl text-nowrap" value={"تاريخ الوصول"} />
+                                            <div >
+                                                    <InputLabel htmlFor="edit_arrival_date" className="my-2 text-xl text-nowrap" value={"Arrival Date"} />
                                                     <TextInput
                                                         id="edit_arrival_date"
                                                         type="date"
@@ -1330,45 +1329,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                                                         onChange={(e) => setEditData("arrival_date", e.target.value)}
                                                     />
-                                                    <InputError  message={'*'} className="mt-2 text-xl" />
-                                            </div>
-                                        </div>
 
-
-                                        {/* Won Price  --  Shipping Cost */}
-
-
-                                        <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-
-                                                <div className="flex col-span-2 gap-5">
-                                                    <InputLabel htmlFor="edit_won_price" className="mt-2 text-xl text-nowrap" value={"(Won Price) سعر الشراء "} />
-                                                    <TextInput
-                                                        id="edit_won_price"
-                                                        type="number"
-                                                        name="won_price"
-                                                        value={editData.won_price}
-                                                        className="block w-full mt-1"
-
-                                                        onChange={(e) => setEditData("won_price", e.target.value)}
-                                                    />
-                                                    <InputError  message={'*'} className="mt-2 text-xl"  />
-                                                </div>
-
-                                                <div className="flex col-span-2 gap-5">
-                                                    <InputLabel htmlFor="edit_shipping_cost" className="mt-2 text-xl text-nowrap" value={"(Shipping Cost) سعر النقل"} />
-                                                    <TextInput
-                                                        id="edit_shipping_cost"
-                                                        type="number"
-                                                        name="shipping_cost"
-                                                        className="block w-full mt-1"
-                                                        value={editData.shipping_cost}
-                                                        onChange={(e) => setEditData("shipping_cost", e.target.value)}
-                                                    />
-                                                    <InputError  message={'*'} className="mt-2 text-xl"  />
-                                                </div>
-
-                                                <div className="flex col-span-2 gap-5">
-                                                    <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="ship_status" value={" (ship Status) حالة الشحن"} />
+                                          </div>
+                                              <div >
+                                                    <InputLabel className="my-2 text-xl text-nowrap" htmlFor="ship_status" value={"Shipping Status"} />
                                                     <SelectInput
                                                         id="ship_status"
                                                         name="ship_status"
@@ -1383,10 +1347,42 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                         </option>
                                                         ))}
                                                     </SelectInput>
-                                                    <InputError message={'*'} className="mt-2 text-xl"  />
                                                 </div>
 
+
+
+                                                <div >
+                                                    <InputLabel htmlFor="edit_won_price" className="my-2 text-xl text-nowrap" value={"Won Price "} />
+                                                    <TextInput
+                                                        id="edit_won_price"
+                                                        type="number"
+                                                        name="won_price"
+                                                        value={editData.won_price}
+                                                        className="block w-full mt-1"
+
+                                                        onChange={(e) => setEditData("won_price", e.target.value)}
+                                                    />
                                                 </div>
+
+                                                <div >
+                                                    <InputLabel htmlFor="edit_shipping_cost" className="my-2 text-xl text-nowrap" value={"Shipping Cost"} />
+                                                    <TextInput
+                                                        id="edit_shipping_cost"
+                                                        type="number"
+                                                        name="shipping_cost"
+                                                        className="block w-full mt-1"
+                                                        value={editData.shipping_cost}
+                                                        onChange={(e) => setEditData("shipping_cost", e.target.value)}
+                                                    />
+                                                </div>
+
+
+
+
+
+
+
+                                            </div>
 
                                         <div>
                                             <ul className="mt-2 text-red-600 list-disc list-inside">
@@ -1427,7 +1423,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                   <div className="p-6">
                                         <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
 
-                                            <div className="flex col-span-2 gap-5">
+                                            <div >
                                                 <InputLabel htmlFor="edit_images" className="mt-2 text-xl text-nowrap" value={"images"} />
                                                 <Input
                                                     id="edit_images"

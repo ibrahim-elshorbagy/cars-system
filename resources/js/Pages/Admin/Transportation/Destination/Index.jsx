@@ -82,7 +82,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
 
 
   const deleteDestination = (destination) => {
-    if (!window.confirm("هل انت متأكد من حذف الوجه ؟ ")) {
+    if (!window.confirm("هل انت متأكد من حذف الوجهة ؟ ")) {
       return;
     }
     router.delete(route("destination.destroy", destination.id), {
@@ -155,7 +155,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            الوجهات (Destinations)
+            الوجهةات (Destinations)
           </h2>
           {auth.user.permissions.includes("create-destination") && (
             <button
@@ -168,7 +168,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"الوجهات (Destinations)"} />
+      <Head title={site_settings.websiteName + " - " +"الوجهةات (Destinations)"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -267,7 +267,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
             <div className="p-6">
               <form onSubmit={handleCreateDestination}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="destination_name" value={"اسم الوجه "} />
+                  <InputLabel htmlFor="destination_name" value={"اسم الوجهة "} />
                   <TextInput
                     id="destination_name"
                     type="text"
@@ -305,12 +305,12 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل الوجه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الوجهة</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditDestination}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_destination_name" value={"اسم الوجه"} />
+                  <InputLabel htmlFor="edit_destination_name" value={"اسم الوجهة"} />
                   <TextInput
                     id="edit_destination_name"
                     type="text"

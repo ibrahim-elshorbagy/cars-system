@@ -18,7 +18,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     }, [whatsapp_redirect]);
 
 
-    
+
   // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -359,8 +359,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     id="user_name"
                     type="text"
                     name="user_name"
-                                      value={createData.user_name}
-
+                    value={createData.user_name}
                     className="block w-full mt-1"
                     isFocused={true}
                     onChange={(e) => setCreateData("user_name", e.target.value)}
@@ -394,12 +393,12 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                               </div>
                         <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
                     <div className="mb-4">
-                    <InputLabel htmlFor="name" value={"اسم المستخدم"} />
+                    <InputLabel htmlFor="name" value={"شخص الاتصال"} />
                     <TextInput
                         id="name"
                         type="text"
                         name="name"
-                                        value={createData.name}
+                        value={createData.name}
 
                         className="block w-full mt-1"
                         isFocused={true}
@@ -526,7 +525,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                               </div>
                         <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_name" value={"الاسم "} />
+                  <InputLabel htmlFor="edit_name" value={"شخص الاتصال"} />
                   <TextInput
                     id="edit_name"
                     type="text"

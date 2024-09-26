@@ -27,61 +27,6 @@ const MySidebar = ({ user, direction, site_settings }) => {
 
         {
             type: "section",
-            title: "البيانات",
-            icon: <MdDashboard />,
-            links: [
-                {
-                    text: "الاعدادات",
-                    href: "admin.settings.index",
-                    icon: <IoMdSettings />,
-                    permissions: ["for-SystemAdmin-manage-site-settings"],
-                },
-                {
-                    text: "المزادات (Vendors)",
-                    href: "vendor.index",
-                    icon: <FaGavel />,
-                    permissions: ["read-vendor"],
-                },
-                {
-                    text: "الوجهات (Destinations)",
-                    href: "destination.index",
-                    icon: <FaMapMarkerAlt />,
-                    permissions: ["read-destination"],
-                },
-                {
-                    text: "خطوط الملاحه (Lines)",
-                    href: "line.index",
-                    icon: <FaShip />,
-                    permissions: ["read-line"],
-                },
-                {
-                    text: "محطات الشحن (Terminals)",
-                    href: "terminal.index",
-                    icon: <FaTruck />,
-                    permissions: ["read-terminal"],
-                },
-                {
-                    text: "المرافق (Facilities)",
-                    href: "facility.index",
-                    icon: <FaBuilding />,
-                    permissions: ["read-facility"],
-                },
-                {
-                    text: "المركات (Makes)",
-                    href: "make.index",
-                    icon: <FaCar />,
-                    permissions: ["read-make"],
-                },
-                {
-                    text: "الموديلات (Models)",
-                    href: "model.index",
-                    icon: <FaCogs />,
-                    permissions: ["read-model"],
-                },
-            ],
-        },
-        {
-            type: "section",
             title: " الشحن (Shipping)",
             icon: <MdDashboard />,
             links: [
@@ -105,13 +50,13 @@ const MySidebar = ({ user, direction, site_settings }) => {
             icon: <MdDashboard />,
             links: [
                 {
-                    text: "المقبوضات",
+                    text: "تسديد ذمم",
                     href: "bill-payment.index",
                     icon: <RiBillFill />,
                     permissions: ["read-bill"],
                 },
                 {
-                    text: "ارصده العملاء",
+                    text: "ارصدة العملاء",
                     href: "customer-credit.index",
                     icon: <TbReportMoney />,
                     permissions: ["read-customer-credit"],
@@ -123,7 +68,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                     permissions: ["read-box-transaction"],
                 },
                 {
-                    text: "تحويلات",
+                    text: "التحويلات",
                     href: "box-transfer.index",
                     icon: <TbArrowsTransferUp />,
                     permissions: ["read-box-transfer"],
@@ -136,13 +81,69 @@ const MySidebar = ({ user, direction, site_settings }) => {
                 },
             ],
         },
+        {
+            type: "section",
+            title: "البيانات",
+            icon: <MdDashboard />,
+            links: [
+
+                {
+                    text: "المزادات (Vendors)",
+                    href: "vendor.index",
+                    icon: <FaGavel />,
+                    permissions: ["read-vendor"],
+                },
+                {
+                    text: "الوجهةات (Destinations)",
+                    href: "destination.index",
+                    icon: <FaMapMarkerAlt />,
+                    permissions: ["read-destination"],
+                },
+                {
+                    text: "خطوط الملاحة (Lines)",
+                    href: "line.index",
+                    icon: <FaShip />,
+                    permissions: ["read-line"],
+                },
+                {
+                    text: "المحطات (Terminals)",
+                    href: "terminal.index",
+                    icon: <FaTruck />,
+                    permissions: ["read-terminal"],
+                },
+                {
+                    text: "المرافق (Facilities)",
+                    href: "facility.index",
+                    icon: <FaBuilding />,
+                    permissions: ["read-facility"],
+                },
+                {
+                    text: "الماركات (Makes)",
+                    href: "make.index",
+                    icon: <FaCar />,
+                    permissions: ["read-make"],
+                },
+                {
+                    text: "الموديلات (Models)",
+                    href: "model.index",
+                    icon: <FaCogs />,
+                    permissions: ["read-model"],
+                },
+            ],
+        },
                 {
             type: "section",
             title: "لوحة التحكم",
             icon: <MdDashboard />,
-            links: [
+                    links: [
                 {
-                    text: "الصندايق",
+                    text: "الاعدادات",
+                    href: "admin.settings.index",
+                    icon: <IoMdSettings />,
+                    permissions: ["for-SystemAdmin-manage-site-settings"],
+                },
+                {
+                    text: "الصناديق",
                     href: "box.index",
                     icon: <MdDashboard />,
                     permissions: ["read-box"],

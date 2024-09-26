@@ -38,7 +38,7 @@ class DestinationController extends Controller
         $destination= Destination::create($data);
 
 
-        return back()->with('success', "تم انشاء الوجه بنجاح");
+        return back()->with('success', "تم انشاء الوجهة بنجاح");
 
     }
 
@@ -52,7 +52,7 @@ class DestinationController extends Controller
 
         $destination->update($data);
 
-        return back()->with('success', "تم تحديث الوجه بنجاح");
+        return back()->with('success', "تم تحديث الوجهة بنجاح");
     }
 
 
@@ -60,10 +60,10 @@ class DestinationController extends Controller
     {
 
         if ($destination->cars()->count() > 0) {
-        return back()->with('danger', 'لا يمكن حذف الوجه لأنها مرتبطة بسيارات');
+        return back()->with('danger', 'لا يمكن حذف الوجهة لأنها مرتبطة بسيارات');
         }
         $destination->delete();
-        return back()->with('success', "تم حذف الوجه بنجاح");
+        return back()->with('success', "تم حذف الوجهة بنجاح");
 
     }
 }

@@ -31,19 +31,19 @@ export default function Show({ auth, site_settings, car }) {
        header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            معلومات السياره
+            معلومات السيارة
           </h2>
         </div>
       }
       >
-      <Head title={site_settings.websiteName + " - " + "معلومات السياره"} />
+      <Head title={site_settings.websiteName + " - " + "معلومات السيارة"} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">معلومات السياره</h2>
+                <h2 className="text-xl font-semibold">معلومات السيارة</h2>
                                               <Link
                     href={route("customer-my-cars.index")}
                     className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline"

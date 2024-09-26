@@ -319,7 +319,7 @@ const handleCustomerSelect = (customer) => {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            المقبوضات
+            تسديد ذمم
           </h2>
           {auth.user.permissions.includes("create-billPayment") && (
             <button
@@ -332,7 +332,7 @@ const handleCustomerSelect = (customer) => {
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " + "المقبوضات"} />
+      <Head title={site_settings.websiteName + " - " + "تسديد ذمم"} />
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
           {visibleSuccess && (

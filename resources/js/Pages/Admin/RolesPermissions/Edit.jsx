@@ -231,9 +231,9 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
 
 
-                        {/* Main CRUD Permissions for الوجهات (Destinations) */}
+                        {/* Main CRUD Permissions for الوجهةات (Destinations) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات جداول الوجهات (Destinations)</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول الوجهةات (Destinations)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-destination</td>
@@ -255,7 +255,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("read-destination")}
                             />
                         </td>
-                        <td className="px-6 py-4">عرض الوجهات</td>
+                        <td className="px-6 py-4">عرض الوجهةات</td>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">update-destination</td>
@@ -521,7 +521,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("create-facility")}
                             />
                         </td>
-                        <td className="px-6 py-4">انشاء منشأة</td>
+                        <td className="px-6 py-4">انشاء مرفق</td>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">read-facility</td>
@@ -543,7 +543,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("update-facility")}
                             />
                         </td>
-                        <td className="px-6 py-4">تحديث منشأة</td>
+                        <td className="px-6 py-4">تحديث مرفق</td>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">delete-facility</td>
@@ -554,7 +554,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("delete-facility")}
                             />
                         </td>
-                        <td className="px-6 py-4">حذف منشأة</td>
+                        <td className="px-6 py-4">حذف مرفق</td>
                         </tr>
 
 
@@ -599,7 +599,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("update-car")}
                           />
                         </td>
-                        <td className="px-6 py-4">تحديث سياره</td>
+                        <td className="px-6 py-4">تحديث سيارة</td>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">delete-car</td>
@@ -610,7 +610,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("delete-car")}
                           />
                         </td>
-                        <td className="px-6 py-4">حذف سياره</td>
+                        <td className="px-6 py-4">حذف سيارة</td>
                       </tr>
 
 
@@ -847,7 +847,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             checked={data.permissions.includes("read-my-cars")}
                           />
                         </td>
-                        <td className="px-6 py-4">الوصول للسياره الخاصه به</td>
+                        <td className="px-6 py-4">الوصول للسيارة الخاصه به</td>
                     </tr>
                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">read-my-credits</td>
