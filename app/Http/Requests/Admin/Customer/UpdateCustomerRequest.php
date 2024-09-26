@@ -26,6 +26,11 @@ class UpdateCustomerRequest extends FormRequest
           $customer = $this->route('customer');
         return [
             "name" => ["required", "string"],
+            "user_name" => [
+                "required",
+                "string",
+                Rule::unique('users')->ignore($customer),
+            ],
             "email" => [
                 "required",
                 "email",
@@ -37,6 +42,8 @@ class UpdateCustomerRequest extends FormRequest
             ],
             'phone'=>['nullable','string', 'regex:/^\+[1-9]\d{1,14}$/'],
             'whatsapp'=>["nullable",'string', 'regex:/^\+[1-9]\d{1,14}$/'],
+            'customer_company'=>["nullable",'string'],
+
         ];
     }
 }

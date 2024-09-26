@@ -24,6 +24,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             "name" => ["required", "string"],
+            "user_name" => ["required", "string", "unique:users,user_name"],
             "email" => ["required", "string", "email", "unique:users,email"],
             "phone" => ["nullable", "string", 'regex:/^\+[1-9]\d{1,14}$/'],
             "whatsapp" => ["nullable", "string", 'regex:/^\+[1-9]\d{1,14}$/'],

@@ -5,10 +5,12 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Admin\Bill\Bill;
+use App\Models\Admin\Bill\Payment;
 use App\Models\Admin\Bill\PaymentBill;
 use App\Models\Admin\Box\BoxTransaction;
 use App\Models\Admin\Box\BoxTransfer;
 use App\Models\Admin\Car\Car;
+use App\Models\Admin\Customer\Customer;
 use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Users\Accountant\Accountant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +30,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'user_name',
         'email',
         'password',
         'profile_photo_url',
@@ -73,10 +76,9 @@ class User extends Authenticatable
 
         return $this->hasMany(Bill::class, 'user_id');
     }
+    public function payments(){
 
-    public function paymentBills(){
-
-        return $this->hasMany(PaymentBill::class, 'user_id');
+        return $this->hasMany(Payment::class, 'user_id');
     }
 
     public function createdBoxTransactions()
@@ -89,6 +91,10 @@ class User extends Authenticatable
         return $this->hasMany(BoxTransaction::class, 'updated_by');
     }
 
+    public function cars(){
+
+        return $this->hasMany(Car::class, 'user_id');
+    }
     public function createdCars()
     {
         return $this->hasMany(Car::class, 'created_by');
@@ -118,11 +124,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(BoxTransfer::class, 'updated_by');
     }
+
+    public function customer(){
+
+        return $this->hasOne(Customer::class, 'user_id');
+    }
     public static function boot()
     {
         parent::boot();
 
     }
+
 
 
 }

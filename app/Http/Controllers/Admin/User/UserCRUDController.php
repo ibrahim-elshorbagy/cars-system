@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\User\UserCRUD\StoreUserRequest;
 use App\Http\Requests\Admin\User\UserCRUD\UpdateUserRequest;
 use App\Http\Resources\Admin\User\UserCRUDResource;
 use App\Models\Admin\Box\Box;
+use App\Models\Admin\SiteSetting\Setting;
 use App\Models\Admin\Users\Accountant\Accountant;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,7 +25,9 @@ class UserCRUDController extends Controller
         $query = User::whereDoesntHave('roles', function ($q) {$q->where('name', 'customer'); });
 
         $roles = Role::whereNotIn('name', ['customer'])->get();
-
+        if (request("user_name")) {
+            $query->where("user_name", "like", "%" . request("user_name") . "%");
+        }
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
@@ -44,6 +47,7 @@ class UserCRUDController extends Controller
             'boxes' => $boxes,
             'danger' => session('danger'),
             'success' => session('success'),
+            'whatsapp_redirect' => session('whatsapp_redirect'),
 
 
         ]);
@@ -72,7 +76,16 @@ class UserCRUDController extends Controller
                 'box_id' => $data['box_id']
             ]);
         }
-        return back()->with('success', "تم انشاء المستخدم بنجاح");
+        $site_name = Setting::where('name', 'site_name')->value('value');
+        $site_url = url('/'); // Get the live site URL
+
+
+        $whatsappNumber = $data['whatsapp'];
+        $message = "مرحباً، يمكنك الدخول لنظام \"{$site_name}\" عن طريق الرابط \"{$site_url}\" باستخدام معلومات الدخول التالية: اسم المستخدم \"{$user->user_name}\" وكلمة المرور \"{$request->password}\"، علماً بأن البريد الإلكتروني المعتمد هو \"{$user->email}\".";
+
+        // Redirect back with success message and redirect to WhatsApp with the message
+        return redirect()->back()->with('success', "تم انشاء المستخدم بنجاح")
+            ->with('whatsapp_redirect', 'https://wa.me/' . $whatsappNumber . '?text=' . urlencode($message));
 
     }
 
@@ -89,10 +102,19 @@ class UserCRUDController extends Controller
 
         $data = $request->validated();
         $password = $data['password'] ?? null;
+        // Handle WhatsApp message redirection only if password is updated
+        $whatsapp_redirect = null;
 
         // Hash the password if provided
         if ($password) {
             $data['password'] = bcrypt($password);
+
+            $site_name = Setting::where('name', 'site_name')->value('value');
+            $site_url = url('/');
+            $message = "مرحباً، يمكنك الدخول لنظام \"{$site_name}\" عن طريق الرابط \"{$site_url}\" باستخدام معلومات الدخول التالية: اسم المستخدم \"{$user->user_name}\" وكلمة المرور \"{$request->password}\"، علماً بأن البريد الإلكتروني المعتمد هو \"{$user->email}\".";
+
+            // Create the WhatsApp message redirect URL
+            $whatsapp_redirect = 'https://wa.me/' . $user->whatsapp . '?text=' . urlencode($message);
         } else {
             unset($data['password']);
         }
@@ -127,9 +149,16 @@ class UserCRUDController extends Controller
         // Update user details
         $user->update($data);
 
-        // Return the success message and redirect
+        // If password was updated, include the WhatsApp redirect in the response
+        if ($whatsapp_redirect) {
+            return back()->with('success', "تم تحديث المستخدم بنجاح")
+                ->with('whatsapp_redirect', $whatsapp_redirect);
+        }
+
+        // Return the success message and redirect without WhatsApp if only details were updated
         return back()->with('success', "تم تحديث المستخدم بنجاح");
     }
+
 
 
     /**

@@ -13,6 +13,7 @@ class Accountant extends Model
     public $incrementing = false;
     protected $primaryKey = 'user_id';
     public $timestamps = false;
+    protected $guarded = [''];
 
     public function user()
     {

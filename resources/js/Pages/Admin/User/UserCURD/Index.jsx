@@ -7,8 +7,16 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth,site_settings, users, queryParams = null, success ,roles,boxes,danger}) {
+export default function Index({ auth,site_settings, users, queryParams = null, success ,roles,boxes,danger,whatsapp_redirect}) {
   queryParams = queryParams || {};
+
+ // WhatsApp Redirect
+  useEffect(() => {
+        if (whatsapp_redirect) {
+        // Open the WhatsApp link in a new tab
+        window.open(whatsapp_redirect, "_blank");
+        }
+    }, [whatsapp_redirect]);
 
   // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -33,6 +41,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             setEditSelectedRole(roleId);
         setEditData({
             name: user.name,
+            user_name: user.user_name,
             email: user.email,
             phone: user.phone,
             whatsapp: user.whatsapp,
@@ -207,6 +216,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td>Id</td>
+                      <td>اسم المستخدم</td>
                       <td>الاسم</td>
                       <td>البريد الإلكتروني</td>
                       <td>الهاتف</td>
@@ -217,8 +227,20 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr className="text-nowrap">
+                                      <tr className="text-nowrap">
                       <th className="px-3 py-3"></th>
+
+                      <th className="px-3 py-3">
+                        <TextInput
+                          className="w-full"
+                          defaultValue={queryParams.user_name}
+                          placeholder={"اسم المستخدم"}
+                          onBlur={(e) =>
+                            searchFieldChanged("user_name", e.target.value)
+                          }
+                          onKeyPress={(e) => onKeyPress("user_name", e)}
+                        />
+                      </th>
                       <th className="px-3 py-3">
                         <TextInput
                           className="w-full"
@@ -256,6 +278,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           key={user.id}
                         >
                           <td className="px-3 py-2">{user.id}</td>
+                          <th className="px-3 py-2 text-nowrap">{user.user_name}</th>
                           <th className="px-3 py-2 text-nowrap">{user.name}</th>
                           <td className="px-3 py-2">{user.email}</td>
                           <td className="px-3 py-2">{user.phone}</td>
@@ -317,12 +340,12 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                 id="user_name"
                                 type="text"
                                 name="name"
-                                value={createData.name}
+                                value={createData.user_name}
                                 className="block w-full mt-1"
                                 isFocused={true}
-                                onChange={(e) => setCreateData("name", e.target.value)}
+                                onChange={(e) => setCreateData("user_name", e.target.value)}
                             />
-                            <InputError message={createErrors.name} className="mt-2" />
+                            <InputError message={createErrors.user_name} className="mt-2" />
                             </div>
                             <div className="mb-4">
                             <InputLabel htmlFor="user_email" value={"البريد الإلكتروني"} />
@@ -349,8 +372,20 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             <InputError message={createErrors.password} className="mt-2" />
                             </div>
                     </div>
-                                  <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
-
+                    <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
+                        <div className="mb-4">
+                            <InputLabel htmlFor="name" value={"الاسم الكامل"} />
+                            <TextInput
+                                id="name"
+                                type="text"
+                                name="name"
+                                value={createData.name}
+                                className="block w-full mt-1"
+                                isFocused={true}
+                                onChange={(e) => setCreateData("name", e.target.value)}
+                            />
+                            <InputError message={createErrors.name} className="mt-2" />
+                        </div>
                     <div className="mb-4">
                         <InputLabel htmlFor="role" value={"الصلاحيات"} />
 
@@ -465,12 +500,12 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     id="edit_user_name"
                     type="text"
                     name="name"
-                    value={editData.name}
+                    value={editData.user_name}
                     className="block w-full mt-1"
                     isFocused={true}
-                    onChange={(e) => setEditData("name", e.target.value)}
+                    onChange={(e) => setEditData("user_name", e.target.value)}
                   />
-                        <InputError message={editErrors.name} className="mt-2" />
+                        <InputError message={editErrors.user_name} className="mt-2" />
                     </div>
                   <div className="mb-4">
                   <InputLabel htmlFor="edit_user_email" value={"البريد الإلكتروني"} />
@@ -500,7 +535,19 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={editErrors.password} className="mt-2" />
                               </div>
                                 <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
-
+                        <div className="mb-4">
+                        <InputLabel htmlFor="edit_user_name" value={"الاسام الكامل"} />
+                        <TextInput
+                            id="edit_user_name"
+                            type="text"
+                            name="name"
+                            value={editData.name}
+                            className="block w-full mt-1"
+                            isFocused={true}
+                            onChange={(e) => setEditData("name", e.target.value)}
+                        />
+                                <InputError message={editErrors.name} className="mt-2" />
+                            </div>
                               <div className="mb-4">
                         <InputLabel htmlFor="edit_user_role" value={"الصلاحيات"} />
 

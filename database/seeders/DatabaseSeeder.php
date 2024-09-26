@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         //admin
         $user = User::factory()->create([
             'id'=>1,
+            'user_name' => 'a',
             'name' => 'System Admin',
             'email' => 'a@a.a',
             'password' =>Hash::make('a'),
@@ -42,11 +43,14 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('admin');
 
         $user = User::factory()->create([
+            'user_name' => 'ibrahim',
             'name' => 'ibrahim ',
             'email' => 'c@c.c',
             'password' =>Hash::make('c'),
         ]);
-
+        $user->customer()->create([
+            'customer_company' => 'شركه العالميه',
+        ]);
         $user->assignRole('customer');
 
         Box::create(

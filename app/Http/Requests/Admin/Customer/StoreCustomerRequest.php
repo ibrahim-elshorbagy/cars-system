@@ -25,12 +25,14 @@ class StoreCustomerRequest extends FormRequest
         return [
             "name" => ["required", "string"],
             "email" => ["required", "string", "email", "unique:users,email"],
+            "user_name" => ["required", "string", "unique:users,user_name"],
             "password" => [
                 "required",
                 Password::min(8)->letters(),
             ],
             'phone'=>['nullable','string', 'regex:/^\+[1-9]\d{1,14}$/'],
             'whatsapp'=>["nullable",'string', 'regex:/^\+[1-9]\d{1,14}$/'],
+            'customer_company'=>["nullable",'string'],
         ];
     }
 }

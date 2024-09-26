@@ -20,6 +20,7 @@ class UserCRUDResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
+            "user_name" => $this->user_name,
             "email" => $this->email,
             "role"=> $this->roles->pluck('name'),
             "role_id"=> $this->roles->pluck('id'),

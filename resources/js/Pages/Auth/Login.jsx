@@ -41,21 +41,21 @@ export default function Login({ status, canResetPassword ,site_settings}) {
 
                     <form onSubmit={submit}>
                         <div>
-                            <InputLabel htmlFor="email" value={"البريد الالكتروني"} />
+                            <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
                             <TextInput
-                                id="email"
-                                type="email"
-                                name="email"
-                                value={data.email}
+                                id="user_name"
+                                type="text"
+                                name="user_name"
+                                value={data.user_name}
                                 className="block w-full mt-1 text-gray-800 dark:text-gray-200 dark:bg-gray-700"
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
-                                    setData("email", e.target.value)
+                                    setData("user_name", e.target.value)
                                 }
                             />
                             <InputError
-                                message={errors.email}
+                                message={errors.user_name}
                                 className="mt-2"
                             />
                         </div>
