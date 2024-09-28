@@ -29,9 +29,8 @@ export default function Index({ auth, site_settings, record }) {
       <Head title={site_settings.websiteName + " - " + " سند قبض رصيد "} />
 
       {/* Main Container */}
-      <div className="w-full max-w-lg p-4 mx-auto mt-6 bg-white shadow-lg Customer_Credit_print sm:p-6 md:p-10 dark:bg-gray-900 dark:text-white">
+        <div className="p-4 mt-6 bg-white shadow-lg Customer_Credit_print sm:p-6 md:p-10 dark:bg-gray-900 dark:text-white">
 
-        <div className="text-dark ">
           {/* Header */}
           <div className="flex items-center justify-between pb-4 mb-8 border-b-2 border-gray-500">
             <div>
@@ -46,7 +45,6 @@ export default function Index({ auth, site_settings, record }) {
                 className="h-8 lg:h-20"
               />
             </div>
-
           </div>
 
           {/* Receipt Details */}
@@ -55,47 +53,43 @@ export default function Index({ auth, site_settings, record }) {
               <h2 className="text-xl font-bold sm:text-2xl lg:text-3xl">
                 {record.added_credit > 0 ? "سند قبض" : "سند صرف"}
               </h2>
-              <p className="text-sm sm:text-base lg:text-lg">No: {record.id}</p>
+              <p className="my-2 text-xl sm:text-2xl lg:text-2xl"> رقم : {record.id}</p>
+              <p className="my-2 text-xl sm:text-2xl lg:text-2xl"> تاريخ الانشاء : {record.created_at}</p>
             </div>
 
-            <p className="font-bold">وصل للسيد : {record.customer_name}</p>
-            <p>الشركه : {record.customer_company}</p>
+            <p className="mt-10 font-bold"> وصل للسيد : {record.customer_name}</p>
+            <p className="mt-3 "> الشركه : {record.customer_company}</p>
+
+            <p className="my-5 "> الوصف : {record.description}</p>
 
             {record.added_credit > 0 && (
-              <p>رصيد مضاف : {record.added_credit}</p>
+              <p className="my-5 "> رصيد مضاف : {record.added_credit} $</p>
             )}
 
             {record.used_credit > 0 && (
-              <p>رصيد مستخدم : {record.used_credit}</p>
+              <p className="my-5 "> رصيد مستخدم : {record.used_credit} $</p>
             )}
 
-            <p>الرصيد : {record.balance}</p>
-            <p>الوصف : {record.description}</p>
+            <p className="my-5 "> الرصيد : {record.balance} $</p>
           </div>
-
-          {/* Footer Details */}
-          <div className="grid grid-cols-2 gap-4 text-lg text-center sm:gap-8 lg:gap-12 sm:text-xl lg:text-2xl">
+            {/* Footer Details */}
+          <div className="text-lg sm:gap-8 lg:gap-12 sm:text-xl lg:text-2xl">
+            {/* <div>
+              <p className="font-bold">تاريخ الانشاء</p>
+              <p>{record.created_at}</p>
+            </div> */}
             <div>
-              <p className="font-bold">Manager</p>
-              <p>_________________</p>
-            </div>
-            <div>
-              <p className="font-bold">Accountant</p>
+              <p className="font-bold">المحاسب</p>
               <p>{auth.user.name}</p>
             </div>
           </div>
 
-          {/* Date and Signature Section */}
-          <div className="mt-8 text-lg text-center sm:mt-10 lg:mt-12 sm:text-xl lg:text-2xl">
-            <p className="font-bold">تاريخ الانشاء: {record.created_at}</p>
-            <div className="flex items-center justify-center mt-6 sm:mt-8 lg:mt-12">
-              <span className="w-1/4 border-t-2 border-gray-500"></span>
-              <p className="px-4 sm:px-6 lg:px-8">Signature</p>
-              <span className="w-1/4 border-t-2 border-gray-500"></span>
-            </div>
-          </div>
-        </div>
+
       </div>
     </AuthenticatedLayout>
   );
 }
+
+
+
+

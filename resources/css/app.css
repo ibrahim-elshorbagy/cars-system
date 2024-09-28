@@ -59,10 +59,17 @@ background-color: transparent !important;
     left: 0;
     width: 100%;
   }
-.Customer_Credit_print {
+  .Customer_Credit_print {
     position: absolute;
     top: 0;
-    left: 0%;
-    width: 100%;
+    left: 0;
+    width: 100%;  /* A4 width */
+    box-sizing: border-box;
+    box-shadow: none;
+  }
+
+  /* Additional styling to prevent content cutoff */
+  .Customer_Credit_print * {
+    box-sizing: border-box;
   }
 }

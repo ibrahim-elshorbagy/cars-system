@@ -116,7 +116,7 @@ class BoxTransferController extends Controller
             BoxTransaction::create([
                 'box_id' => $data['from_box_id'],
                 'outcome' => $data['amount'],
-                'description' => ' تم تحويل مبلغ ' . $data['amount'] . ' إلى ' . $toBox,
+                'description' => ' تم تحويل مبلغ ' . $data['amount'] . " $ ". ' إلى ' . $toBox,
                 'created_by' => Auth::id(),
             ]);
 
@@ -125,7 +125,7 @@ class BoxTransferController extends Controller
             BoxTransaction::create([
                 'box_id' => $data['to_box_id'],
                 'income' => $data['amount'],
-                'description' => ' تم استلام مبلغ ' . $data['amount'] . ' من ' . $fromBox,
+                'description' => ' تم استلام مبلغ ' . $data['amount'] . " $ " . ' من ' . $fromBox,
                 'created_by' => Auth::id(),
 
             ]);

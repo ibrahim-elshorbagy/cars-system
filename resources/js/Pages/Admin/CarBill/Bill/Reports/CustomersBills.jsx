@@ -65,6 +65,7 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                       <td className="p-3 text-xs text-nowrap md:text-base">عدد الذمم</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الذمم</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">المدفوع</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الاجراءات</td>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -98,6 +99,7 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                       <th ></th>
                       <th ></th>
                       <th ></th>
+                      <th ></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -118,6 +120,14 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.total_bills_count}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.total_dues}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.paid_amount}</td>
+                              <td className="p-3 text-xs text-nowrap md:text-base">
+                                <Link
+                                    href={route("customers-bills.details", user.id)}
+                                    className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
+                                >
+                                تفاصيل
+                                </Link>
+                              </td>
 
 
                         </tr>

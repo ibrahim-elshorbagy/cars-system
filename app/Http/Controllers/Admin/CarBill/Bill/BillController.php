@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Bill\StorePaymentRequest;
 use App\Http\Requests\Admin\Bill\UpdatePaymentRequest;
 use App\Http\Resources\Admin\CarBill\Bill\PaymentsResource;
+use App\Http\Resources\Admin\CarBill\Bill\Reports\BillsDetailsResource;
 use App\Http\Resources\Admin\CarBill\Bill\Reports\CustomersBillsResource;
 use App\Http\Resources\Admin\CarBill\Bill\UserPaymentsResource;
 use App\Models\Admin\Bill\Bill;
@@ -58,7 +59,7 @@ class BillController extends Controller
 
             $customer_company = User::find($data['customer_id'])->customer->customer_company;
 
-        $data['description'] = " تم خصم المبلغ " . $data['total_used'] . " من العميل " . $customer_company ." نتيجه عملية تسديد ذمم "; ;
+        $data['description'] = " تم خصم المبلغ " . $data['total_used'] . " $ " . " من العميل " . $customer_company ." نتيجه عملية تسديد ذمم "; ;
 
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
@@ -130,7 +131,7 @@ class BillController extends Controller
                 'user_id'=> $data['customer_id'],
                 'box_id' => $data['box_id'],
                 'used_credit' => $data['total_used'],
-                'description' => 'تم خصم الرصيد ' . $data['total_used'] . ' من العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
+                'description' => 'تم خصم الرصيد ' . $data['total_used'] . " $ ". ' من العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
 
             ]);
@@ -141,7 +142,7 @@ class BillController extends Controller
                 'user_id'=> $data['customer_id'],
                 'box_id' => $data['box_id'],
                 'added_credit' => $payment->total_amount,
-                'description' => ' تم اضافة الرصيد ' . $payment->total_amount . ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
+                'description' => ' تم اضافة الرصيد ' . $payment->total_amount . " $ ". ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -209,7 +210,7 @@ class BillController extends Controller
                 'user_id'=> $payment->user_id,
                 'box_id' => $payment->box_id,
                 'added_credit' => $payment->total_amount,
-                'description' => ' تم ارجاع ' . $payment->total_amount . ' الي العميل ' . $customer_company . " نتيجه عمليه حذف عملية تسديد  ",
+                'description' => ' تم ارجاع ' . $payment->total_amount. " $ " . ' الي العميل ' . $customer_company . " نتيجه عمليه حذف عملية تسديد  ",
             ]);
 
         $payment->delete();
@@ -247,6 +248,23 @@ class BillController extends Controller
 
             ]);
 
+
+    }
+
+
+
+    public function BillsDetails(User $user){
+
+            $bills = $user->load([
+                'cars' => function ($query) {
+                    $query->select('id', 'chassis', 'user_id');
+                },
+                'cars.bill.paymentBills.payment'
+            ]);
+
+            return inertia("Admin/CarBill/Bill/Reports/BillsDetails", [
+                "bills" => new BillsDetailsResource($bills),
+            ]);
 
     }
 }

@@ -41,7 +41,7 @@ class CustomerCreditController extends Controller
     public function show(CustomerCredit $record){
 
         $record->with('user');
-        
+
         return inertia("Admin/Customer/CustomerCredit/Show",
             [
                 'record'=>new CustomerCreditResource($record),
@@ -74,7 +74,7 @@ class CustomerCreditController extends Controller
 
             // Create the CustomerCredit record
             $data['created_by']=Auth::user()->id;
-            $data['description'] = "تم اضافه المبلغ " . $data['added_credit'];
+            $data['description'] = "تم اضافه المبلغ " . $data['added_credit'] . " $ ";
 
             CustomerCredit::create($data);
 
@@ -85,7 +85,7 @@ class CustomerCreditController extends Controller
             BoxTransaction::create([
                 'box_id' => $data['box_id'],
                 'income' => $data['added_credit'],
-                'description' => 'تم اضافه رصيد ' . $data['added_credit'] . ' الي العميل ' . $customer_company,
+                'description' => 'تم اضافه رصيد ' . $data['added_credit'] . " $ ". ' الي العميل ' . $customer_company,
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -144,14 +144,14 @@ class CustomerCreditController extends Controller
             // Create the CustomerCredit record
             $customer_company = User::find($data['user_id'])->customer->customer_company;
 
-            $data['description'] = "تم خصم المبلغ " . $data['used_credit']. " من " . $customer_company . " نتيجه عمليه رصيد عكسيه ";
+            $data['description'] = "تم خصم المبلغ " . $data['used_credit']. " $ ". " من " . $customer_company . " نتيجه عمليه رصيد عكسيه ";
             $data['created_by']=Auth::user()->id;
             CustomerCredit::create($data);
 
             BoxTransaction::create([
                 'box_id' => $data['box_id'],
                 'outcome' => $data['used_credit'],
-                'description' => 'تم خصم ' . $data['used_credit'] . ' من ' . $customer_company . ' نتيجه عمليه رصيد عكسيه ',
+                'description' => 'تم خصم ' . $data['used_credit']. " $ " . ' من ' . $customer_company . ' نتيجه عمليه رصيد عكسيه ',
                 'created_by' => Auth::id(),
 
             ]);

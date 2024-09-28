@@ -60,6 +60,7 @@ Route::group(['prefix' => 'admin/bills'], function () {
     Route::group(['middleware' => ['permission:customers-bills']], function () {
 
         Route::get('/report/customers-bills/', [BillController::class, 'CustomersBills'])->name('customers-bills.index');
+        Route::get('/report/customers-bills/{user}/Details', [BillController::class, 'BillsDetails'])->name('customers-bills.details');
 
     });
 });
