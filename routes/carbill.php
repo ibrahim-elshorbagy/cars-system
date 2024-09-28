@@ -6,9 +6,9 @@
 use App\Http\Controllers\Admin\CarBill\Bill\BillController;
 use App\Http\Controllers\Admin\CarBill\Car\CarController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
 //--------------------------------------------------------------------------------------------- Cars
 
@@ -64,3 +64,50 @@ Route::group(['prefix' => 'admin/bills'], function () {
 
     });
 });
+//--------------------------------------------------------------------------------------------- For  Cars to Get THe car info with VIN
+
+
+Route::post('/api/get-car-info', function (Request $request) {
+    $vin = $request->input('vin');
+
+    if (empty($vin)) {
+        return response()->json(['success' => false, 'message' => 'VIN is required.'], 400);
+    }
+    try {
+        $postData = [
+            'format' => 'json',
+            'data' => $vin,
+        ];
+
+        // Send the request to the VIN decoding API with SSL verification disabled
+        $response = Http::asForm()
+            ->withoutVerifying()  // Disable SSL verification temporarily
+            ->post('https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/', $postData);
+
+        if ($response->failed()) {
+
+            return response()->json(['success' => false, 'message' => 'Failed to retrieve data from VIN API.'], 500);
+        }
+
+        $data = $response->json();
+
+        if (!isset($data['Results']) || empty($data['Results'])) {
+            return response()->json(['success' => false, 'message' => 'No results found for the provided VIN.'], 404);
+        }
+
+        $fields = ["VIN", "ModelYear", "Make", "Model"];
+        $return = [];
+        $keys = array_flip($fields);
+        foreach ($data["Results"] as $dataset) {
+            $isolated = array_intersect_key($dataset, $keys);
+            $sorted = array_replace($keys, $isolated);
+            $return[] = $sorted;
+        }
+
+        return response()->json(['success' => true, 'response' => $return]);
+    } catch (\Exception $e) {
+
+        return response()->json(['success' => false, 'message' => 'Server error while processing VIN.'], 500);
+    }
+})->name('get-car-info');
+

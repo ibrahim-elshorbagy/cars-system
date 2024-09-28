@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Head,Link, router, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -115,6 +116,12 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         reset: createReset,
     } = useForm({
         images: [],
+        make_id: '',
+        model_id: '',
+        year: '',
+        color: '',
+        chassis: '',
+        vin: '',
     });
 
 
@@ -158,7 +165,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     };
 
 // ------------------------------------------------------------------------------------------------------------ handel select make filter models
-        const [selectedMakeId, setSelectedMakeId] = useState(null);
+        const [selectedMakeId, setSelectedMakeId] = useState('');
         const [filteredModels, setFilteredModels] = useState([]);
 
         useEffect(() => {
@@ -176,8 +183,41 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             // Reset model selection when make changes
             setCreateData("model_id", null);
         };
+// ------------------------------------------------------------------------------------------------------------ handel search for make and model and year with VIN
+  const [vin, setVin] = useState('');
+  // Handle VIN input blur event and make a request to Laravel API route
+    const handleVinBlur = () => {
+    if (!vin) return;
+    axios
+        .post(route('get-car-info'), { vin })
+        .then((response) => {
+        const vinData = response.data.response[0];
+        const { Make, Model, ModelYear, VIN } = vinData;
 
-// ------------------------------------------------------------------------------------------------------------
+        // Ensure all values are properly initialized
+        const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
+        const modelEntry = models.find(
+            (mod) => mod.name.toLowerCase() === Model.toLowerCase() && mod.make_id === makeEntry?.id
+        );
+
+        // Set createData state properly
+        setCreateData({
+            ...createData,
+            make_id: makeEntry ? makeEntry.id : '',
+            model_id: modelEntry ? modelEntry.id : '',
+            year: ModelYear || '',
+            chassis: VIN || '',
+        });
+        setSelectedMakeId(makeEntry?.id);
+        })
+        .catch((error) => {
+        console.error('Failed to retrieve VIN data', error);
+        });
+    };
+
+
+
+// ------------------------------------------------------------------------------------------------------------ hnadel submit of creation
   const handleCreateCar = (e) => {
     e.preventDefault();
     createPost(route("car.store"), {
@@ -240,6 +280,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             _method: "PUT",
       });
     setEditOldImages(car.images);
+    setEditVin(car.chassis || '');
     } else {
       setEditingCar(null);
       editReset();
@@ -305,7 +346,39 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     }
   };
 
+//------------------------------------------------------------------------------------------------------------------ Handel Vin selection on edit
+    const [editVin, setEditVin] = useState('');
 
+const handleEditVinBlur = () => {
+  if (!editVin) return;
+
+  axios
+    .post(route('get-car-info'), { vin: editVin })
+    .then((response) => {
+      const vinData = response.data.response[0];
+      const { Make, Model, ModelYear, VIN } = vinData;
+
+      // Ensure all values are properly initialized
+      const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
+      const modelEntry = models.find(
+        (mod) => mod.name.toLowerCase() === Model.toLowerCase() && mod.make_id === makeEntry?.id
+      );
+
+      // Set editData state properly
+      setEditData({
+        ...editData,
+        make_id: makeEntry ? makeEntry.id : '',
+        model_id: modelEntry ? modelEntry.id : '',
+        year: ModelYear || '',
+        chassis: VIN || '',
+      });
+      setSelectedEditMakeId(makeEntry?.id);
+    })
+    .catch((error) => {
+      console.error('Failed to retrieve VIN data for editing', error);
+    });
+};
+//------------------------------------------------------------------------------------------------------------------
 
 
   const handleEditCar = (e) => {
@@ -319,6 +392,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
       },
     });
   };
+//------------------------------------------------------------------------------------------------------------------
 
   return (
     <AuthenticatedLayout
@@ -494,6 +568,9 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 onItemSelect={handleMakeSelect}
                                                 placeholder="اختر الماركه"
                                                 emptyMessage="لا يوجد مركات"
+                                                selectedMakeId={createData.make_id}
+                                                value={createData.make_id || ''}
+
                                             />
                                             <InputError message={'*'} className="mt-2 text-xl" />
                                             </div>
@@ -507,6 +584,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 placeholder="اختر الموديل"
                                                 emptyMessage="لا يوجد موديلات"
                                                 disabled={!selectedMakeId}
+                                                selectedMakeId={createData.model_id}
+                                                value={createData.model_id || ''}
+
+
                                             />
                                             <InputError message={'*'} className="mt-2 text-xl" />
                                             </div>
@@ -523,6 +604,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                     <ComboboxMakes
                                         items={customers}
                                         onItemSelect={(item) => setCreateData("user_id", item.id)}
+
                                         placeholder="اختر العميل"
                                         emptyMessage="لا يوجد عملاء"
                                         />
@@ -531,22 +613,24 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                 </div>
 
                                 <div >
-                                    <InputLabel htmlFor="chassis" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                    <InputLabel htmlFor="vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
                                     <div className="flex gap-5 mt-2">
 
                                         <TextInput
-                                            id="chassis"
+                                            id="vin"
                                             type="text"
-                                            name="chassis"
-                                            value={createData.chassis}
+                                            name="vin"
                                             className="block w-full mt-1"
-                                            onChange={(e) => setCreateData("chassis", e.target.value)}
+                                            onChange={(e) => setVin(e.target.value ?? '')}
+                                            onBlur={handleVinBlur}
+                                            value={vin ?? ''}
+
+
+
                                         />
                                         <InputError  message={'*'} className="mt-2 text-xl"  />
                                     </div>
                                 </div>
-
-
                                 <div >
                                     <InputLabel htmlFor="color" className="mt-2 text-xl text-nowrap" value={"Color"} />
                                     <div className="flex gap-5 mt-2">
@@ -570,7 +654,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 type="number"
                                                 id={`year`}
                                                 name="year"
-                                                value={createData.year}
+                                                 value={createData.year ?? ''}
 
                                                 className="block w-full mt-1"
                                                 onChange={(e) => setCreateData('year',e.target.value)}
@@ -1050,22 +1134,22 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 </div>
                                         </div>
 
-                                        <div >
-                                            <InputLabel htmlFor="edit_chassis" className="mt-2 text-xl text-nowrap" value={"VIN"} />
-                                            <div className="flex gap-5 mt-2">
-
-                                                <TextInput
-                                                    id="edit_chassis"
-                                                    type="text"
-                                                    name="chassis"
-                                                    value={editData.chassis}
-                                                    className="block w-full mt-1"
-
-                                                    onChange={(e) => setEditData("chassis", e.target.value)}
-                                                />
-                                                <InputError message={'*'} className="mt-2 text-xl" />
-                                            </div>
+                                        <div>
+                                        <InputLabel htmlFor="edit_vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                        <div className="flex gap-5 mt-2">
+                                            <TextInput
+                                            id="edit_vin"
+                                            type="text"
+                                            name="edit_vin"
+                                            className="block w-full mt-1"
+                                            value={editVin ?? ''}
+                                            onChange={(e) => setEditVin(e.target.value ?? '')}
+                                            onBlur={handleEditVinBlur}
+                                            />
+                                            <InputError message={editErrors.vin} className="mt-2 text-xl" />
                                         </div>
+                                        </div>
+
 
                                     <div >
                                         <InputLabel htmlFor="edit_color" className="mt-2 text-xl text-nowrap" value={"Color"} />
@@ -1517,7 +1601,17 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 // Combobox for selecting makes
 function ComboboxMakes({ items, onItemSelect, placeholder, selectedMakeId, emptyMessage }) {
   const [open, setOpen] = useState(false);
-  const [selectedMake, setSelectedMake] = useState(selectedMakeId ? items.find((item) => item.id === selectedMakeId) : null);
+  const [selectedMake, setSelectedMake] = useState(null);
+
+  // Use useEffect to sync selectedMake with selectedMakeId prop changes
+  useEffect(() => {
+    if (selectedMakeId) {
+      const newSelectedMake = items.find((item) => item.id === selectedMakeId) || null;
+      setSelectedMake(newSelectedMake);
+    } else {
+      setSelectedMake(null); // Reset if no selectedMakeId
+    }
+  }, [selectedMakeId, items]); // Re-run if selectedMakeId or items change
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -1540,24 +1634,25 @@ function ComboboxMakes({ items, onItemSelect, placeholder, selectedMakeId, empty
               <CommandEmpty>{emptyMessage}</CommandEmpty>
             ) : (
               <CommandGroup>
-                {items && items.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    value={item.name}
-                    onSelect={() => {
-                      setSelectedMake(item);
-                      onItemSelect(item);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={`mr-2 h-4 w-4 ${
-                        selectedMake?.id === item.id ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                    {item.name}
-                  </CommandItem>
-                ))}
+                {items &&
+                  items.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={item.name}
+                      onSelect={() => {
+                        setSelectedMake(item);
+                        onItemSelect(item);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={`mr-2 h-4 w-4 ${
+                          selectedMake?.id === item.id ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                      {item.name}
+                    </CommandItem>
+                  ))}
               </CommandGroup>
             )}
           </CommandList>
@@ -1566,3 +1661,4 @@ function ComboboxMakes({ items, onItemSelect, placeholder, selectedMakeId, empty
     </Popover>
   );
 }
+
