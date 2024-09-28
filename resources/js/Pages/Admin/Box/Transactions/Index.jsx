@@ -61,7 +61,7 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
         <div className="mx-auto bg-white shadow-sm dark:bg-gray-800">
           {/* Show box selection only for non-Accountant users */}
           {!auth.user.roles.includes("Accountant") && (
-            <div className="grid grid-cols-4 p-6">
+            <div className="grid p-6 md:grid-cols-4">
               <div>
                 <InputLabel htmlFor="box_name" value={"اسم الصندوق"} />
                 <SelectInput
@@ -87,40 +87,46 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
             <div className="p-6 text-gray-900">
               <div className="flex justify-between p-4 mb-2 bg-blue-100">
                 <div>
-                  <h3 className="text-lg font-semibold">{box.data.name}</h3>
-                  <p className="text-blue-500">
-                    مجموع الداخل : {box.data.total_income}, مجموع الخارج : {box.data.total_outcome}, موجودات الصندوق : {box.data.total_balance}
-                  </p>
+                  <h3 className="text-base font-semibold md:text-lg">{box.data.name}</h3>
+                    <p className="text-sm text-blue-500 md:text-lg">
+                    <span className="block mb-1 md:inline md:mb-0"> مجموع الداخل : {box.data.total_income} , </span>
+                    <span className="block mb-1 md:inline md:mb-0"> مجموع الخارج : {box.data.total_outcome} , </span>
+                    <span className="block md:inline"> موجودات الصندوق : {box.data.total_balance} </span>
+                    </p>
                 </div>
               </div>
 
-              {/* Render transactions */}
+                          {/* Render transactions */}
+            <div className="overflow-auto">
               <table className="w-full text-left text-gray-500 rtl:text-right dark:text-gray-400">
                 <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th>الداخل</th>
-                    <th>الخارج</th>
-                    <th>الرصيد</th>
-                    <th>الوصف</th>
-                    <th>تم بواسطه</th>
-                    <th>تاريخ الانشاء</th>
-                    <th>تحديث بواسطه</th>
-                    <th>تاريخ التحديث</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">الداخل</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">الخارج</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">الرصيد</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">الوصف</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">تم بواسطه</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">تاريخ الانشاء</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">تاريخ التحديث</th>
                   </tr>
                 </thead>
                 <tbody>
                   {box.data.transactions.data.length > 0 ? (
-                    box.data.transactions.data.map((transaction) => (
-                      <tr className="border-b" key={transaction.id}>
-                        <td className="px-3 py-2">{transaction.income}</td>
-                        <td className="px-3 py-2">{transaction.outcome}</td>
-                        <td className="px-3 py-2">{transaction.balance}</td>
-                        <td className="px-3 py-2">{transaction.description}</td>
-                        <td >{transaction.created_by}</td>
-                        <td >{transaction.created_at}</td>
+                    box.data.transactions.data.map((transaction,index) => (
+                      <tr                             className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+                             key={transaction.id}>
+                        <td className="p-3 text-xs text-nowrap md:text-base">{transaction.income}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base">{transaction.outcome}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base">{transaction.balance}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base">{transaction.description}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base" >{transaction.created_by}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base" >{transaction.created_at}</td>
 
-                        <td >{transaction.updated_by}</td>
-                        <td >{transaction.updated_at}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base">{transaction.updated_by}</td>
+                        <td className="p-3 text-xs text-nowrap md:text-base">{transaction.updated_at}</td>
                       </tr>
                     ))
                   ) : (
@@ -132,7 +138,7 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
                   )}
                 </tbody>
               </table>
-
+            </div>
               {/* Pagination */}
               {box.data.transactions.links && (
                 <Pagination links={box.data.transactions.links} />

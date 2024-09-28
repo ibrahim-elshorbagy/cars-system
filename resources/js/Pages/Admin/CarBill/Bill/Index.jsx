@@ -352,15 +352,15 @@ const handleCustomerSelect = (customer) => {
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3">Id</th>
-                      <th className="px-3 py-3">الشركة</th>
-                      <th className="px-3 py-3">القيمة الكليه</th>
-                      {/* <th className="px-3 py-3">صندوق</th> */}
-                      <th className="px-3 py-3">اضافه بواسطه</th>
-                      <th className="px-3 py-3">تحديث بواسطه</th>
-                      <th className="px-3 py-3">تاريخ الانشاء</th>
-                      <th className="px-3 py-3">تاريخ التحديث</th>
-                      <th className="px-3 py-3">الإجراءات</th>
+                      <th className="p-3">Id</th>
+                      <th className="p-3">الشركة</th>
+                      <th className="p-3">القيمة الكليه</th>
+                      {/* <th className="p-3">صندوق</th> */}
+                      <th className="p-3">اضافه بواسطه</th>
+                      <th className="p-3">تحديث بواسطه</th>
+                      <th className="p-3">تاريخ الانشاء</th>
+                      <th className="p-3">تاريخ التحديث</th>
+                      <th className="p-3">الإجراءات</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -428,8 +428,8 @@ const handleCustomerSelect = (customer) => {
             </div>
             <div className="p-6">
                 <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-8 gap-6">
-                        <div className="flex col-span-2 gap-5 mt-1">
+                    <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-3">
+                        <div className="flex col-span-1 gap-5 mt-1">
                             <InputLabel className="mt-1 text-xl text-nowrap" value={"اختر العميل"} />
                             <ComboboxMakes
                                 items={customerList}
@@ -440,7 +440,7 @@ const handleCustomerSelect = (customer) => {
                         </div>
 
 
-                        <div className="col-span-2 mb-6">
+                        <div className="col-span-1 mb-6">
                             {!auth.user.roles.includes("Accountant") && boxeslist && boxeslist.length > 0 && (
                             <div className="flex col-span-2 gap-5">
                                 <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="box_id" value={"الصندوق"} />
@@ -472,15 +472,15 @@ const handleCustomerSelect = (customer) => {
                 <table className="w-full text-center">
                     <thead>
                     <tr>
-                        <th className="py-2">رقم الهيكل</th>
-                        <th className="py-2">Won Price</th>
-                        <th className="py-2">Won Price Paid</th>
-                        <th className="py-2">Won Price Remain</th>
-                        <th className="py-2 border-l-2" >Pay</th>
-                        <th className="py-2">Shipping Cost</th>
-                        <th className="py-2">Shipping Cost Paid</th>
-                        <th className="py-2">Shipping Cost Remain</th>
-                        <th className="py-2">Pay</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Won Price</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Won Price Paid</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Won Price Remain</th>
+                        <th className="p-2 text-xs border-l-2 text-nowrap md:text-base" >Pay</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost Paid</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost Remain</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Pay</th>
 
                     </tr>
                     </thead>
@@ -589,15 +589,15 @@ const handleCustomerSelect = (customer) => {
                   <table className="w-full text-center">
                     <thead>
                     <tr>
-                        <th className="py-2">رقم الهيكل</th>
-                        <th className="py-2">Won Price</th>
-                        <th className="py-2">Won Price Paid</th>
-                        <th className="py-2">Won Price Remain</th>
-                        <th className="py-2 border-l-2" >Pay</th>
-                        <th className="py-2">Shipping Cost</th>
-                        <th className="py-2">Shipping Cost Paid</th>
-                        <th className="py-2">Shipping Cost Remain</th>
-                        <th className="py-2">Pay</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Won Price</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Won Price Paid</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Won Price Remain</th>
+                        <th className="p-2 text-xs border-l-2 text-nowrap md:text-base" >Pay</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost Paid</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost Remain</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">Pay</th>
 
                     </tr>
                     </thead>

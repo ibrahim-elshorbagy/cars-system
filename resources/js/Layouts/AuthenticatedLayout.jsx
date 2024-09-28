@@ -1,36 +1,103 @@
-import { useState, useEffect } from "react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
+import { useState } from "react";
 import Dropdown from "@/Components/Dropdown";
-import SelectInput from "@/Components/SelectInput";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import MySidebar from "./sidebar/MySidebar";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 import { FaBars } from "react-icons/fa6";
+import { IoChevronDownOutline } from "react-icons/io5";
 
-import { FaBell } from "react-icons/fa"; // Notification bell icon
 import { router } from '@inertiajs/react';
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/Components/ui/accordion"
 
 export default function Authenticated({ user,site_settings,header, children }) {
 
-    const [notifications, setNotifications] = useState(user.notifications || []);
-
-    const handleNotificationClick = (id, e, order) => {
-        e.preventDefault();
-
-        router.post(route('notifications.markAsRead', [id, order]), {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                setNotifications((prevNotifications) =>
-                    prevNotifications.filter((notification) => notification.id !== id)
-                );
-            }
-        });
-    };
-
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     document.documentElement.dir = "rtl";
+
+        const menuItems = [
+            {
+                type: "link",
+                text: "الرئيسية (Dashboard)",
+                href: "admin.dashboard",
+                permissions: ["view-admin-dashboard"],
+            },
+            {
+                type: "section",
+                title: "الشحن (Shipping)",
+                permissions: ["read-customer", "read-car"],
+                links: [
+                    { text: "العملاء", href: "customer.index", permissions: ["read-customer"] },
+                    { text: "السيارات", href: "car.index", permissions: ["read-car"] },
+                ],
+            },
+            {
+                type: "section",
+                title: "المحاسبة (Accounting)",
+                permissions: ["read-customer-credit", "read-bill", "read-box-transaction", "read-box-transfer", "customers-bills"],
+                links: [
+                    { text: "ارصدة العملاء", href: "customer-credit.index", permissions: ["read-customer-credit"] },
+                    { text: "تسديد ذمم", href: "bill-payment.index", permissions: ["read-bill"] },
+                    { text: "موجودات الصندوق", href: "box.index.transaction", permissions: ["read-box-transaction"] },
+                    { text: "التحويلات", href: "box-transfer.index", permissions: ["read-box-transfer"] },
+                    { text: "تقرير ذمم العملاء", href: "customers-bills.index", permissions: ["customers-bills"] },
+                ],
+            },
+            {
+                type: "section",
+                title: "البيانات",
+                permissions: ["read-vendor", "read-destination", "read-line", "read-terminal", "read-facility", "read-make", "read-model"],
+                links: [
+                    { text: "المزادات (Vendors)", href: "vendor.index", permissions: ["read-vendor"] },
+                    { text: "الوجهات (Destinations)", href: "destination.index", permissions: ["read-destination"] },
+                    { text: "خطوط الملاحة (Lines)", href: "line.index", permissions: ["read-line"] },
+                    { text: "المحطات (Terminals)", href: "terminal.index", permissions: ["read-terminal"] },
+                    { text: "المرافق (Facilities)", href: "facility.index", permissions: ["read-facility"] },
+                    { text: "الماركات (Makes)", href: "make.index", permissions: ["read-make"] },
+                    { text: "الموديلات (Models)", href: "model.index", permissions: ["read-model"] },
+                ],
+            },
+            {
+                type: "section",
+                title: "لوحة التحكم",
+                permissions: ["for-SystemAdmin-manage-site-settings", "read-box", "read-user", "for-SystemAdmin-manage-roles-permissions"],
+                links: [
+                    { text: "الاعدادات", href: "admin.settings.index", permissions: ["for-SystemAdmin-manage-site-settings"] },
+                    { text: "الصناديق", href: "box.index", permissions: ["read-box"] },
+                    { text: "المستخدمين", href: "user.index", permissions: ["read-user"] },
+                    { text: "الصلاحيات", href: "admin.roles-permissions.index", permissions: ["for-SystemAdmin-manage-roles-permissions"] },
+                ],
+            },
+            {
+                type: "section",
+                title: "لوحة التحكم",
+                permissions: ["for-customer-view-dashboard"],
+                links: [
+                    { text: "لوحة التحكم", href: "customer.dashboard", permissions: ["for-customer-view-dashboard"] },
+                    { text: "سياراتي", href: "customer-my-cars.index", permissions: ["read-my-cars"] },
+                    { text: "المحاسبة", href: "customer-my-credits.index", permissions: ["read-my-credits"] },
+                    { text: "الذمم", href: "customer-my-bills.index", permissions: ["read-my-bills"] },
+                ],
+            },
+        ];
+
+
+
+    const hasSectionPermission = (sectionPermissions) => {
+            return sectionPermissions.some(permission => user.permissions.includes(permission));
+        };
+
+
+
+
+
 
 
     return (
@@ -81,43 +148,8 @@ export default function Authenticated({ user,site_settings,header, children }) {
                             </div>
                         </div>
 
-                        {/* Notifications for Desktop */}
                         <div className="hidden sm:flex sm:items-center sm:ml-6">
                             <ThemeToggleButton />
-
-
-                            {/* Notification Bell for Desktop */}
-                            {/* {(user.roles == "admin" || user.roles == "SystemAdmin") && (
-                                <div className="relative ml-3">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <button className="relative inline-flex items-center p-2 text-sm font-medium text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-full dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
-                                                <FaBell className="w-5 h-5" />
-                                                {notifications.length > 0 && (
-                                                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                                                        {notifications.length}
-                                                    </span>
-                                                )}
-                                            </button>
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content>
-                                            {notifications.length > 0 ? (
-                                                notifications.map((notification) => (
-                                                    <Dropdown.Link
-                                                        key={notification.id}
-                                                        onClick={(e) => handleNotificationClick(notification.id, e, notification.data.order_id)} // Pass both notification.id and the event
-                                                        as="button"
-                                                    >
-                                                        {t(notification.data.message)} {notification.data.customer_name}
-                                                    </Dropdown.Link>
-                                                ))
-                                            ) : (
-                                                <div className="p-2 text-gray-500">{t("No new notifications")}</div>
-                                            )}
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
-                            )} */}
 
                             {/* Profile and Log Out Links */}
                             <div className="relative ml-3">
@@ -129,18 +161,8 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                                 className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                                             >
                                                 {user.name}
-                                                <svg
-                                                    className="ml-2 -mr-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
+                                               <IoChevronDownOutline />
+
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
@@ -163,20 +185,6 @@ export default function Authenticated({ user,site_settings,header, children }) {
                             </div>
                         </div>
 
-                        {/* Notification Bell for Mobile */}
-                        {/* <div className="flex items-center -mr-2 sm:hidden">
-                            <button
-                                onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
-                                className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
-                            >
-                                <FaBell className="w-6 h-6" />
-                                {notifications.length > 0 && (
-                                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                                        {notifications.length}
-                                    </span>
-                                )}
-                            </button>
-                        </div> */}
                         <div className="flex items-center ml-5 sm:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
@@ -191,24 +199,38 @@ export default function Authenticated({ user,site_settings,header, children }) {
 
                 {/* Mobile Dropdown */}
                 <div className={(showingNavigationDropdown ? "block" : "hidden") + " sm:hidden"}>
-                    <div className="pt-2 pb-3 space-y-1">
-                        {user.permissions.includes("view-admin-dashboard") && (
-                            <ResponsiveNavLink
-                                href={route("admin.dashboard")}
-                                active={route().current("admin.dashboard")}
-                            >
-                                لوحة التحكم
-                            </ResponsiveNavLink>
-                        )}
-                        {user.permissions.includes("for-customer-view-dashboard") && (
-                            <ResponsiveNavLink
-                                href={route("customer.dashboard")}
-                                active={route().current("customer.dashboard")}
-                            >
-                                لوحة التحكم
-                            </ResponsiveNavLink>
-                        )}
-                    </div>
+                    <Accordion type="single" collapsible>
+                        {menuItems.map((item, index) => {
+                            // Render individual links based on permissions
+                            if (item.type === "link" && hasSectionPermission(item.permissions)) {
+                                return (
+                                    <ResponsiveNavLink key={index} href={route(item.href)} active={route().current(item.href)}>
+                                        {item.text}
+                                    </ResponsiveNavLink>
+                                );
+                            }
+
+                            // Render sections only if the user has any permission for the section or its links
+                            if (item.type === "section" && hasSectionPermission(item.permissions)) {
+                                return (
+                                    <AccordionItem className='px-3 text-gray-700 dark:text-gray-200' key={index} value={`item-${index}`}>
+                                        <AccordionTrigger>{item.title}</AccordionTrigger>
+                                        <AccordionContent>
+                                            {item.links.map((link, linkIndex) => (
+                                                hasSectionPermission(link.permissions) && (
+                                                    <ResponsiveNavLink key={linkIndex} href={route(link.href)} active={route().current(link.href)}>
+                                                        {link.text}
+                                                    </ResponsiveNavLink>
+                                                )
+                                            ))}
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                );
+                            }
+
+                            return null;
+                        })}
+                    </Accordion>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div className="px-4">
@@ -219,37 +241,37 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                 {user.email}
                             </div>
                         </div>
-
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("profile.edit")}>
-                                االبروفيل
+                                البروفيل
                             </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route("logout")}
-                                as="button"
-                            >
-                                تسجيل الخروح
+                            <ResponsiveNavLink method="post" href={route("logout")} as="button">
+                                تسجيل الخروج
                             </ResponsiveNavLink>
                         </div>
-
                         <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                             <div className="px-4">
                                 <div className="grid justify-between grid-cols-3">
                                     <ThemeToggleButton />
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
+
             </nav>
 
-            <div className="flex flex-1 pt-16 bg-white">
-                <MySidebar user={user} site_settings={site_settings}  />
-                <div className="flex flex-col flex-1 min-h-screen">
+            <div className="pt-16 bg-white sm:flex-1 sm:flex">
+
+                <div className="hidden sm:flex">
+                    <MySidebar user={user} site_settings={site_settings} />
+                </div>
+                <div className="flex-1 overflow-x-hidden bg-white dark:bg-gray-800">
                     {header && (
-                        <header className="bg-indigoBlue dark:bg-gray-800">
+                        <header className="bg-indigoBlue dark:bg-gray-900">
                             <div className="px-4 py-6 mx-auto text-red-50 sm:px-6 lg:px-14">
                                 {header}
                             </div>
@@ -260,4 +282,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
             </div>
         </div>
     );
+
+
+
 }

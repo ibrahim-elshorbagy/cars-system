@@ -155,20 +155,20 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            الوجهةات (Destinations)
+            الوجهات (Destinations)
           </h2>
           {auth.user.permissions.includes("create-destination") && (
             <button
               onClick={toggleCreateModal}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+              className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
             >
-              إضافة وجه
+              إضافة وجهة
             </button>
           )}
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"الوجهةات (Destinations)"} />
+      <Head title={site_settings.websiteName + " - " +"الوجهات (Destinations)"} />
 
       <div className="">
         <div className="mx-auto ">
@@ -190,13 +190,13 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
                       <td>Id</td>
                       <td>الاسم</td>
 
-                      <th className="px-3 py-3">الإجراءات</th>
+                      <th className="p-3">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -208,14 +208,16 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
                         />
                                           </th>
 
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {destinations && destinations.data.length > 0 ? (
-                      destinations.data.map((destination) => (
+                      destinations.data.map((destination,index) => (
                         <tr
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={destination.id}
                         >
                           <td className="px-3 py-2">{destination.id}</td>
@@ -260,9 +262,9 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
       {/* Modal for adding a new destination */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة وجه جديده</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة وجهة جديده</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateDestination}>
@@ -303,7 +305,7 @@ export default function Index({ auth, destinations,site_settings ,queryParams = 
       {/* Modal for editing a destination */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold dark:text-white">تعديل الوجهة</h2>
             </div>

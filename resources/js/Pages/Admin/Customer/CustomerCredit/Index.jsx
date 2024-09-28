@@ -216,14 +216,14 @@ const {
           site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
             ارصده العملاء
               </h2>
               <div className="flex gap-3">
                 {auth.user.permissions.includes("create-customer-credit") && (
                     <button
                     onClick={toggleCreateModal}
-                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                    className="p-1.5 text-sm text-white transition-all rounded shadow md:text-lg md:py-1 md:px-3 bg-burntOrange hover:bg-burntOrangeHover"
                     >
                     إضافة رصيد
                     </button>
@@ -231,7 +231,7 @@ const {
                     {auth.user.permissions.includes("reverse-customer-credit") && (
                     <button
                     onClick={toggleReverseModal}
-                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                    className="text-sm p-1.5 text-white transition-all rounded shadow md:text-lg md:py-1 md:px-3 bg-burntOrange hover:bg-burntOrangeHover"
                     >
                     رصيد عكسي
                     </button>
@@ -259,23 +259,23 @@ const {
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3">ID</th>
-                      <th className="px-3 py-3">الشركة</th>
-                      <th className="px-3 py-3">القيمة المضافه</th>
-                      <th className="px-3 py-3">القيمة المستخدمه</th>
-                      <th className="px-3 py-3">الرصيد</th>
-                      <th className="px-3 py-3">الوصف</th>
-                      <th className="px-3 py-3">الصندوق</th>
-                      <th className="px-3 py-3">اضافه بواسطه</th>
-                      <th className="px-3 py-3">وقت الانشاء</th>
-                      <th className="px-3 py-3">تحديث بواسطه</th>
-                      <th className="px-3 py-3">وقت التحديث</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">ID</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الشركة</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة المضافه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة المستخدمه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الرصيد</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الوصف</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الصندوق</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">اضافه بواسطه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">وقت الانشاء</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">وقت التحديث</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -284,35 +284,37 @@ const {
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {records && records.data.length > 0 ? (
-                      records.data.map((record) => (
+                      records.data.map((record,index) => (
                         <tr
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={record.id}
                         >
                           <td className="px-3 py-2">{record.id}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.customer_company}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.added_credit}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.used_credit}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.balance}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.description}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.box_name}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.created_by}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.created_at}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.updated_by}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.updated_at}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.customer_company}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.added_credit}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.used_credit}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.balance}</td>
+                          <td className="px-3 py-2 text-xs md:text-base min-w-80">{record.description}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.box_name}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.created_by}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.created_at}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.updated_by}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.updated_at}</td>
                           {/* <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-customer-credit") && !record.cant &&(
                               <button
@@ -352,14 +354,14 @@ const {
       {/* Modal for adding a new record */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg md:w-10/12 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold dark:text-white">إضافة رصيد</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateRecord}>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-3">
                             <div>
                                 <InputLabel className="mb-1.5" htmlFor="user_id" value={"العميل"} />
                                 <ComboboxMakes
@@ -423,14 +425,14 @@ const {
                 {/* Modal for Reveerse */}
       {isReverseModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg md:w-10/12 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold dark:text-white">رصيد عكسي</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleReverseRecord}>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-3">
                             <div>
                                 <InputLabel className="mb-1.5" htmlFor="user_id" value={"العميل"} />
                                 <ComboboxMakes
@@ -498,7 +500,7 @@ const {
       {/* Modal for editing a record we Won't use it */}
       {/* {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold dark:text-white">تعديل الرصيد</h2>
             </div>

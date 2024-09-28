@@ -13,9 +13,9 @@ const Dashboard = ({ auth,site_settings }) => {
             <div className="">
                 <div className="px-1 mx-auto sm:px-6 lg:px-6">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
-                        <div className="gap-4 p-6 text-gray-900 dark:text-gray-100">
+                        {/* <div className="gap-4 p-6 text-gray-900 dark:text-gray-100">
 
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

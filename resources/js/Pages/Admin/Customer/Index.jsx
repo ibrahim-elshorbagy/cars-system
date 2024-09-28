@@ -219,22 +219,22 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <td>Id</td>
-                      <td>اسم المستخدم</td>
-                      <td>الاسم</td>
-                      <td>البريد الإلكتروني</td>
-                      <td>اسم الشركه</td>
-                      <td>الهاتف</td>
-                      <td>whatsapp</td>
-                      <td>الدور</td>
-                      <td>تاريخ الإنشاء</td>
-                      <th className="px-3 py-3">الإجراءات</th>
+                      <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">اسم المستخدم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الاسم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">اسم الشركه</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الدور</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">تاريخ الإنشاء</td>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                        <th className="px-3 py-3"></th>
-                        <th className="px-3 py-3">
+                        <th className="p-3"></th>
+                        <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.user_name}
@@ -245,7 +245,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("user_name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -256,7 +256,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.email}
@@ -267,19 +267,22 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("email", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {users && users.data.length > 0 ? (
-                      users.data.map((user) => (
+                      users.data.map((user,index) => (
                         <tr
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                      className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+
                           key={user.id}
                         >
                           <td className="px-3 py-2">{user.id}</td>
@@ -345,7 +348,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       {/* Modal for adding a new user */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold text-gray-700 dark:text-white">إضافة عميل جديد</h2>
             </div>
@@ -484,7 +487,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       {/* Modal for editing a user */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold text-gray-700 dark:text-white">تعديل عميل</h2>
             </div>

@@ -39,7 +39,7 @@ Route::group(['prefix' => 'admin/transportation'], function () {
     });
 
 //---------------------------------------------------------------------------------------------
-    // Routes for Destinations (الوجهةات)
+    // Routes for Destinations (الوجهات)
 
     Route::group(['middleware' => ['permission:create-destination']], function () {
         Route::post('/destination', [DestinationController::class, 'store'])->name('destination.store');

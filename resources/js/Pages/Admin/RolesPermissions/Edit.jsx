@@ -23,7 +23,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
       <div className="">
         <div className="mx-auto max-w-7xl ">
-          <div className="p-6 overflow-hidden bg-white shadow-sm  dark:bg-gray-800">
+          <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800">
             <h2 className="text-xl font-semibold dark:text-gray-200">
               صلاحيات : {role.name}
             </h2>
@@ -231,9 +231,9 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
 
 
-                        {/* Main CRUD Permissions for الوجهةات (Destinations) */}
+                        {/* Main CRUD Permissions for  (Destinations) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
-                        <th className="px-6 py-3 " colSpan="3">اذونات جداول الوجهةات (Destinations)</th>
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول الوجهات (Destinations)</th>
                         </tr>
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-destination</td>

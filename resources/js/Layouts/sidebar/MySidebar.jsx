@@ -94,7 +94,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                     permissions: ["read-vendor"],
                 },
                 {
-                    text: "الوجهةات (Destinations)",
+                    text: "الوجهات (Destinations)",
                     href: "destination.index",
                     icon: <FaMapMarkerAlt />,
                     permissions: ["read-destination"],
@@ -166,7 +166,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
 
 
 
-        //for customer
+        //only for customer view
         {
             type: "section",
             title: "لوحة التحكم",
@@ -231,13 +231,13 @@ const MySidebar = ({ user, direction, site_settings }) => {
         });
 
     return (
-        <div>
+        <div className=" bg-indigoBlue dark:bg-gray-900 sm:flex">
             <Sidebar
                 rtl={true}
                 collapsed={collapsed}
                 width="270px"
                 collapsedWidth="80px"
-                className="h-full transition-all duration-300 bg-indigoBlue dark:bg-gray-800"
+                className="transition-all duration-300 border-0 "
                 transitionDuration={300}
                 backgroundColor="white dark:bg-gray-800"
             >

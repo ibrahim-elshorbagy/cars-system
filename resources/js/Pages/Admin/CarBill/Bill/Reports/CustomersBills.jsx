@@ -56,21 +56,21 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <td>Id</td>
-                      <td>الاسم</td>
-                      <td>البريد الإلكتروني</td>
-                      <td>الهاتف</td>
-                      <td>whatsapp</td>
-                      <td>الرصيد</td>
-                      <td>عدد الذمم</td>
-                      <td>الذمم</td>
-                      <td>المدفوع</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الاسم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الرصيد</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">عدد الذمم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الذمم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">المدفوع</td>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -81,7 +81,7 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.email}
@@ -91,38 +91,40 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                           }
                           onKeyPress={(e) => onKeyPress("email", e)}
                         />
-                      </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                                          </th>
+                      <th ></th>
+                      <th ></th>
+                      <th ></th>
+                      <th ></th>
+                      <th ></th>
+                      <th ></th>
                     </tr>
                   </thead>
                   <tbody>
                     {users && users.data.length > 0 ? (
-                      users.data.map((user) => (
+                      users.data.map((user,index) => (
                         <tr
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={user.id}
                         >
-                          <td className="px-3 py-2">{user.id}</td>
-                          <th className="px-3 py-2 text-nowrap">{user.name}</th>
-                          <td className="px-3 py-2">{user.email}</td>
-                          <td className="px-3 py-2">{user.phone}</td>
-                          <td className="px-3 py-2">{user.whatsapp}</td>
-                          <td className="px-3 py-2">{user.balance}</td>
-                          <td className="px-3 py-2">{user.total_bills_count}</td>
-                          <td className="px-3 py-2">{user.total_dues}</td>
-                          <td className="px-3 py-2">{user.paid_amount}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.id}</td>
+                          <th className="p-3 text-xs text-nowrap md:text-base">{user.name}</th>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.email}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.phone}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.whatsapp}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.balance}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.total_bills_count}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.total_dues}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.paid_amount}</td>
 
 
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="px-3 py-2 text-center">
+                        <td colSpan="5" className="p-3 text-center">
                           لا يوجد عملاء
                         </td>
                       </tr>

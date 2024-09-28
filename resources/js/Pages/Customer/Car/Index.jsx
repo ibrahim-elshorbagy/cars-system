@@ -52,17 +52,17 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      {/* <th className="px-3 py-3">ID</th> */}
-                      <th className="px-3 py-3">رقم الشاسيه</th>
-                      <th className="px-3 py-3">تكلفة الشحن</th>
-                      <th className="px-3 py-3">سعر الشراء</th>
-                      <th className="px-3 py-3">حالة االشحن</th>
-                      <th className="px-3 py-3">الإجراءات</th>
+                      {/* <th className="p-3">ID</th> */}
+                      <th className="p-3 text-xs text-nowrap md:text-base">رقم الشاسيه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">سعر الشراء</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">حالة االشحن</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                        <th className="px-3 py-3">
+                        <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.chassis}
@@ -71,26 +71,28 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                           onKeyPress={(e) => onKeyPress("chassis", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {cars && cars.data.length > 0 ? (
-                      cars.data.map((car) => (
+                      cars.data.map((car,index) => (
                         <tr
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={car.id}
                         >
                           {/* <td className="px-3 py-2">{car.id}</td> */}
-                          <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.shipping_cost}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.won_price}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.ship_status}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.chassis}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.shipping_cost}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.won_price}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.ship_status}</td>
 
-                          <td className="px-3 py-2 text-nowrap">
+                          <td className="p-3 text-xs text-nowrap md:text-base">
                             <Link
                                 href={route("customer-my-car.show", car.id)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"

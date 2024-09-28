@@ -223,14 +223,14 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       <td>whatsapp</td>
                       <td>الدور</td>
                       <td>تاريخ الإنشاء</td>
-                      <th className="px-3 py-3">الإجراءات</th>
+                      <th className="p-3">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                       <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
 
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.user_name}
@@ -241,7 +241,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("user_name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -252,7 +252,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.email}
@@ -263,11 +263,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("email", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -326,7 +326,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       {/* Modal for adding a new user */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="sm:w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">إضافة مستخدم جديد</h2>
             </div>
@@ -495,7 +495,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       {/* Modal for editing a user */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="sm:w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">تعديل المستخدم</h2>
             </div>

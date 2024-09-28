@@ -172,7 +172,7 @@ useEffect(() => {
       <AuthenticatedLayout user={auth.user} site_settings={site_settings}
             header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
             تحويلات الصناديق
           </h2>
           {auth.user.permissions.includes("create-box-transfer") && (
@@ -203,28 +203,32 @@ useEffect(() => {
             <div className="p-6 text-gray-900 dark:text-gray-100">
 
 
-              <div className="mt-6">
+              <div className="mt-6 overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr >
-                      <th className="px-3 py-3">من الصندوق</th>
-                      <th className="px-3 py-3">إلى الصندوق</th>
-                      <th className="px-3 py-3">القيمة</th>
-                      <th className="px-3 py-3">اضافه بواسطه</th>
-                      <th className="px-3 py-3">تحديث بواسطه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">من الصندوق</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">إلى الصندوق</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">اضافه بواسطه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th>
 
-                      <th className="px-3 py-3">الإجراءات</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
                     </tr>
                   </thead>
                   <tbody>
                     {transfers && transfers.data.length > 0 ? (
-                      transfers.data.map((transfer) => (
-                        <tr className="border-b" key={transfer.id}>
-                          <td className="px-3 py-3 text-nowrap">{transfer.from_box.name}</td>
-                          <td className="px-3 py-3 text-nowrap">{transfer.to_box.name}</td>
-                          <td className="px-3 py-3 text-nowrap">{transfer.amount}</td>
-                          <td className="px-3 py-3 text-nowrap">{transfer.created_by.name}</td>
-                          <td className="px-3 py-3 text-nowrap">{transfer.updated_by ? transfer.updated_by.name : '' }</td>
+                      transfers.data.map((transfer,index) => (
+                          <tr
+                              className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+                             key={transfer.id}>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{transfer.from_box.name}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{transfer.to_box.name}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{transfer.amount}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{transfer.created_by.name}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{transfer.updated_by ? transfer.updated_by.name : '' }</td>
 
                             <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-box-transfer") && (
@@ -263,16 +267,15 @@ useEffect(() => {
       {/* Create Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+          <div className="bg-white rounded-lg shadow-lg md:w-10/12 dark:bg-gray-800">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">إضافة تحويل</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateTransfer}>
-                    <div >
-                        <div>
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                             {/* From Box Dropdown */}
-                            <div>
+                            <div className="col-span-1">
                             <InputLabel className="mb-3" htmlFor="from_box_id" value={"من الصندوق"} />
                             <SelectInput
                                 id="from_box_id"
@@ -298,7 +301,7 @@ useEffect(() => {
                             </div>
 
                             {/* To Box Dropdown */}
-                            <div className="my-4">
+                            <div className="col-span-1 ">
                             <InputLabel className="mb-3" htmlFor="to_box_id" value={"إلى الصندوق"} />
                             <SelectInput
                                 id="to_box_id"
@@ -315,23 +318,20 @@ useEffect(() => {
                                 ))}
                             </SelectInput>
                             <InputError  message={createErrors.to_box_id} />
+                                      </div>
+
+
+                            <div className="col-span-1">
+                                <InputLabel  className="mb-3" htmlFor="amount" value={"القيمة"} />
+                                <TextInput
+                                id="amount"
+                                type="number"
+                                className="block w-full mt-1"
+                                value={createData.amount}
+                                onChange={(e) => setCreateData("amount", e.target.value)}
+                                />
+                                <InputError className="mt-2" message={createErrors.amount} />
                             </div>
-                        </div>
-
-
-
-                  <div>
-                    <InputLabel htmlFor="amount" value={"القيمة"} />
-                    <TextInput
-                      id="amount"
-                      type="number"
-                      className="block w-full mt-1"
-                      value={createData.amount}
-                      onChange={(e) => setCreateData("amount", e.target.value)}
-                    />
-                    <InputError className="mt-2" message={createErrors.amount} />
-                  </div>
-
 
                 </div>
 
@@ -348,13 +348,13 @@ useEffect(() => {
       {/* Edit Modal */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-1/2 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+          <div className="bg-white rounded-lg shadow-lg md:w-10/12 dark:bg-gray-800">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold dark:text-white">تعديل التحويل</h2>
             </div>
             <div className="p-6">
                           <form onSubmit={handleEditTransfer}>
-
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                     <div>
                     <InputLabel className="mb-3" htmlFor="from_box_id" value={"من الصندوق"} />
                     <SelectInput
@@ -400,15 +400,19 @@ useEffect(() => {
 
 
                   <div>
-                    <InputLabel htmlFor="amount" value={"القيمة"} />
+                    <InputLabel className="mb-3" htmlFor="amount" value={"القيمة"} />
                     <TextInput
                       id="amount"
                       type="number"
                       value={editData.amount}
+                      className="block w-full mt-1"
                       onChange={(e) => setEditData("amount", e.target.value)}
                     />
                     <InputError className="mt-2" message={editErrors.amount} />
-                  </div>
+                              </div>
+
+                </div>
+
 
                 <div className="flex justify-end gap-3 mt-4">
                   <Button type="button" onClick={toggleEditModal} className="mr-2 bg-gray-500 hover:bg-gray-600">إلغاء</Button>

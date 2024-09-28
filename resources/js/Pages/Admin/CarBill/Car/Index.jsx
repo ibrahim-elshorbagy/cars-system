@@ -360,18 +360,18 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3">ID</th>
-                      <th className="px-3 py-3">اسم العميل</th>
-                      <th className="px-3 py-3">رقم الشاسيه</th>
-                      <th className="px-3 py-3">اضافه بواسطه</th>
-                      <th className="px-3 py-3">تحديث بواسطه</th>
-                      <th className="px-3 py-3 text-center">الإجراءات</th>
+                      <th className="p-3">ID</th>
+                      <th className="p-3">اسم العميل</th>
+                      <th className="p-3">رقم الشاسيه</th>
+                      <th className="p-3">اضافه بواسطه</th>
+                      <th className="p-3">تحديث بواسطه</th>
+                      <th className="p-3 text-center">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.customer_name}
@@ -380,7 +380,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                           onKeyPress={(e) => onKeyPress("customer_name", e)}
                         />
                         </th>
-                        <th className="px-3 py-3">
+                        <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.chassis}
@@ -389,16 +389,18 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                           onKeyPress={(e) => onKeyPress("chassis", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {cars && cars.data.length > 0 ? (
-                      cars.data.map((car) => (
+                      cars.data.map((car,index) => (
                         <tr
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                            className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={car.id}
                         >
                           <td className="px-3 py-2">{car.id}</td>
@@ -464,21 +466,22 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
             <form onSubmit={handleCreateCar} className="relative w-10/12 overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
                 <Tabs defaultValue="general" >
-                    <TabsList className="sticky top-0 z-10 flex p-4 bg-white border-b justify-content dark:bg-gray-800">
+                    <TabsList className="sticky top-0 z-10 flex gap-4 p-4 bg-white border-b justify-content dark:bg-gray-800">
+                        <h2 className="text-2xl font-semibold dark:text-white">إضافة سيارة</h2>
+
                         <div>
-                        <TabsTrigger bsTrigger value="general">General</TabsTrigger>
+                        <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="shipping">Shipping</TabsTrigger>
                         <TabsTrigger value="photos">Photos</TabsTrigger>
                         </div>
 
-                        <h2 className="text-2xl font-semibold dark:text-white">إضافة سيارة</h2>
 
                     </TabsList>
 
                     <TabsContent value="general">
                     <div className="flex flex-col justify-between h-[85vh] overflow-auto">
 
-                        <div className="p-6 ">
+                        <div className="p-3 sm:p-6 ">
                             {/*  Customer Chassis bookingNo */}
                             <div className="grid items-center justify-center gap-5 my-10 md:grid-cols-2 sm:grid-cols-1 ">
 
@@ -669,7 +672,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                 <div className="p-6">
                                 {/* Vendor + Destination + Shipping Line */}
 
-                                    <div className="grid items-center justify-center gap-5 mb-10 sm:grid-cols-1 md:grid-cols-2 ">
+                                    <div className="grid gap-5 mb-10 sm:grid-cols-1 md:grid-cols-2 ">
                                         <div >
                                         <InputLabel htmlFor="lot" className="my-2 text-xl text-nowrap" value={"Lot / Stok"} />
                                         <TextInput
@@ -892,8 +895,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                             <div className="p-6">
 
-                                    <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
-                                        <div >
+                                        <div className="md:w-1/2 lg:w-1/4">
                                             <InputLabel htmlFor="images" className="mt-2 text-xl text-nowrap" value={"images"} />
                                             <Input
                                                 id="images"
@@ -905,7 +907,6 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                             />
                                             <InputError message={createErrors.images} className="mt-2" />
                                         </div>
-                                    </div>
                                 {/* Images Preview and Deletion */}
                                     <div className="gap-4 mt-4 columns-5">
                                         {CreateImages.map((image, index) => (
@@ -984,7 +985,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         <Tabs defaultValue="general" >
                 <TabsList className="sticky top-0 z-10 flex p-4 bg-white border-b justify-content dark:bg-gray-800">
                     <div>
-                    <TabsTrigger bsTrigger value="general">General</TabsTrigger>
+                    <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="shipping">Shipping</TabsTrigger>
                     <TabsTrigger value="photos">Photos</TabsTrigger>
 
@@ -1421,9 +1422,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                     <div className="flex flex-col justify-between h-[85vh] overflow-auto">
 
                                   <div className="p-6">
-                                        <div className="grid items-center justify-center grid-cols-6 gap-5 mb-10 ">
 
-                                            <div >
+                                            <div className="mb-5 md:w-1/2 lg:w-1/4">
                                                 <InputLabel htmlFor="edit_images" className="mt-2 text-xl text-nowrap" value={"images"} />
                                                 <Input
                                                     id="edit_images"
@@ -1435,7 +1435,6 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                                                 />
                                                 <InputError message={editErrors.images} className="mt-2" />
                                             </div>
-                                        </div>
 
                                             {/* Preview Old Images */}
                                             <div className="gap-4 columns-5">
