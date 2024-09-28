@@ -49,17 +49,17 @@ const MySidebar = ({ user, direction, site_settings }) => {
             title: "المحاسبة (Accounting)",
             icon: <MdDashboard />,
             links: [
+                            {
+                    text: "ارصدة العملاء",
+                    href: "customer-credit.index",
+                    icon: <TbReportMoney />,
+                    permissions: ["read-customer-credit"],
+                },
                 {
                     text: "تسديد ذمم",
                     href: "bill-payment.index",
                     icon: <RiBillFill />,
                     permissions: ["read-bill"],
-                },
-                {
-                    text: "ارصدة العملاء",
-                    href: "customer-credit.index",
-                    icon: <TbReportMoney />,
-                    permissions: ["read-customer-credit"],
                 },
                 {
                     text: "موجودات الصندوق",

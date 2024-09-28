@@ -15,9 +15,10 @@ class CustomersBillsResource extends JsonResource
     public function toArray(Request $request): array
     {
         $addedCredit = $this->credits->sum('added_credit');
-        $usedCredit = $this->credits->sum('used_credit');
-        $balance = $addedCredit - $usedCredit;
+        $usedCredit = $this->credits->filter(function ($credit) { return !str_contains($credit->description, 'عكسيه');})->sum('used_credit');
+         //rather than calc paid amount for every bill we just calc the sum and igonre the one that is reverse
 
+        $balance = $addedCredit - $usedCredit;
         $totalBillsCount = $this->bills->count();
         $totalDues = $this->bills->sum(function ($bill) {
             return $bill->shipping_cost + $bill->won_price;

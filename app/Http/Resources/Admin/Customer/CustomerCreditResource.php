@@ -22,6 +22,7 @@ class CustomerCreditResource extends JsonResource
         [
             'id'=>$this->id,
             'customer_name'=>$this->user->name,
+            'customer_company'=>$this->user->customer->customer_company,
             'customer_id'=>$this->user->id,
 
             'added_credit'=>$this->added_credit,

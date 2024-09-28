@@ -260,10 +260,10 @@ const {
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <th className="px-3 py-3">ID</th>
-                      <th className="px-3 py-3">اسم العميل</th>
+                      <th className="px-3 py-3">الشركة</th>
                       <th className="px-3 py-3">القيمة المضافه</th>
                       <th className="px-3 py-3">القيمة المستخدمه</th>
-                      <th>الرصيد</th>
+                      <th className="px-3 py-3">الرصيد</th>
                       <th className="px-3 py-3">الوصف</th>
                       <th className="px-3 py-3">الصندوق</th>
                       <th className="px-3 py-3">اضافه بواسطه</th>
@@ -279,7 +279,7 @@ const {
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
-                          placeholder={"الاسم"}
+                          placeholder={"اسم الشركة"}
                           onBlur={(e) => searchFieldChanged("name", e.target.value)}
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
@@ -303,7 +303,7 @@ const {
                           key={record.id}
                         >
                           <td className="px-3 py-2">{record.id}</td>
-                          <td className="px-3 py-2 text-nowrap">{record.customer_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{record.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{record.added_credit}</td>
                           <td className="px-3 py-2 text-nowrap">{record.used_credit}</td>
                           <td className="px-3 py-2 text-nowrap">{record.balance}</td>

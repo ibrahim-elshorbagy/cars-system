@@ -56,7 +56,9 @@ class BillController extends Controller
 
         try {
 
-        $data['description'] = "تم خصم المبلغ " . $data['total_used'];
+            $customer_company = User::find($data['customer_id'])->customer->customer_company;
+
+        $data['description'] = " تم خصم المبلغ " . $data['total_used'] . " من العميل " . $customer_company ." نتيجه عملية تسديد ذمم "; ;
 
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
@@ -121,14 +123,14 @@ class BillController extends Controller
 
             // Get the name of the customer new credit is being Return And then take from him
 
-            $customer_name = User::find($data['customer_id'])->name;
+            $customer_company = User::find($data['customer_id'])->customer->customer_company;
 
             // Create a CustomerCredit used_credit he takes
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
                 'box_id' => $data['box_id'],
                 'used_credit' => $data['total_used'],
-                'description' => 'تم خصم الرصيد ' . $data['total_used'] . ' من العميل ' . $customer_name . " نتيجة عملية تعديل تسديد ذمم  ",
+                'description' => 'تم خصم الرصيد ' . $data['total_used'] . ' من العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
 
             ]);
@@ -139,7 +141,7 @@ class BillController extends Controller
                 'user_id'=> $data['customer_id'],
                 'box_id' => $data['box_id'],
                 'added_credit' => $payment->total_amount,
-                'description' => ' تم اضافة الرصيد ' . $payment->total_amount . ' إلى العميل ' . $customer_name . " نتيجة عملية تعديل تسديد ذمم  ",
+                'description' => ' تم اضافة الرصيد ' . $payment->total_amount . ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -202,12 +204,12 @@ class BillController extends Controller
 
         try {
 
-            $customer_name =User::find($payment->user_id)->name;
+            $customer_company =User::find($payment->user_id)->customer->customer_company;
             CustomerCredit::create([
                 'user_id'=> $payment->user_id,
                 'box_id' => $payment->box_id,
                 'added_credit' => $payment->total_amount,
-                'description' => ' تم ارجاع ' . $payment->total_amount . ' إلى ' . $customer_name . " نتيجه عمليه حذف عملية تسديد  ",
+                'description' => ' تم ارجاع ' . $payment->total_amount . ' الي العميل ' . $customer_company . " نتيجه عمليه حذف عملية تسديد  ",
             ]);
 
         $payment->delete();

@@ -353,7 +353,7 @@ const handleCustomerSelect = (customer) => {
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <th className="px-3 py-3">Id</th>
-                      <th className="px-3 py-3">اسم العميل</th>
+                      <th className="px-3 py-3">الشركة</th>
                       <th className="px-3 py-3">القيمة الكليه</th>
                       {/* <th className="px-3 py-3">صندوق</th> */}
                       <th className="px-3 py-3">اضافه بواسطه</th>
