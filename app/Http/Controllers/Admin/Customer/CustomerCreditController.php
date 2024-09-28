@@ -38,6 +38,17 @@ class CustomerCreditController extends Controller
 
     }
 
+    public function show(CustomerCredit $record){
+
+        $record->with('user');
+        
+        return inertia("Admin/Customer/CustomerCredit/Show",
+            [
+                'record'=>new CustomerCreditResource($record),
+            ]
+        );
+    }
+
     public function store(Request $request) {
         // Validate the request
         $rules = [

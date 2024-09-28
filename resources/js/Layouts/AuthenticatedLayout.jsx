@@ -101,7 +101,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
 
 
     return (
-        <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 rtl`}>
+        <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800 rtl`}>
             <nav className="fixed top-0 left-0 z-10 w-full bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                 <div className="mx-auto max-w-7xl">
                     <div className="flex justify-between h-16 px-6">
@@ -277,7 +277,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                             </div>
                         </header>
                     )}
-                    <main className="flex flex-col flex-1 bg-white dark:bg-gray-900">{children}</main>
+                    <main className="flex flex-col flex-1 bg-white dark:bg-gray-800">{children}</main>
                 </div>
             </div>
         </div>

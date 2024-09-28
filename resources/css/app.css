@@ -48,7 +48,7 @@ background-color: transparent !important;
   }
 
   /* Only show the .print class content */
-  .print, .print * {
+  .print, .print * ,.Customer_Credit_print,.Customer_Credit_print *{
     visibility: visible;
   }
 
@@ -57,6 +57,12 @@ background-color: transparent !important;
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+  }
+.Customer_Credit_print {
+    position: absolute;
+    top: 0;
+    left: 0%;
     width: 100%;
   }
 }

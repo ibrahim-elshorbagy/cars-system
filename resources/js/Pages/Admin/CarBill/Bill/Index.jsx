@@ -465,11 +465,11 @@ const handleCustomerSelect = (customer) => {
 
                 {selectedCustomer && (
                 <>
-                        <div className="flex gap-5 m-6 text-xl">
+                        <div className="flex gap-5 m-6 text-gray-700 md:text-xl dark:text-white">
                             <span > رصيد العميل : {selectedCustomer.customer_balance} </span>
                             <span > رصيد مستخدم : {selectedCustomer.total_used || 0} </span>
                         </div>
-                <table className="w-full text-center">
+                <table className="w-full text-center text-gray-700 dark:text-white">
                     <thead>
                     <tr>
                         <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
@@ -579,14 +579,14 @@ const handleCustomerSelect = (customer) => {
                             </div>
                             )}
                         </div>
-                        <div className="flex gap-5 m-6 text-xl">
+                        <div className="flex gap-5 m-6 text-gray-700 md:text-xl dark:text-white">
                             <span > رصيد العميل : {selectedCustomer.customer_balance} </span>
                             <span > رصيد مستخدم : {selectedCustomer.total_used || 0} </span>
                         </div>
               <form onSubmit={handleEditSubmit}>
                               {editingPayment && (
                                   <>
-                  <table className="w-full text-center">
+                  <table className="w-full text-center text-gray-700 dark:text-white">
                     <thead>
                     <tr>
                         <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
@@ -673,25 +673,25 @@ const handleCustomerSelect = (customer) => {
             </div>
                     <div className="p-6">
 
-                        <div className="flex gap-5 m-6 text-xl">
+                        <div className="flex gap-5 m-6 text-gray-700 md:text-xl dark:text-white">
                             <span > رصيد العميل : {selectedCustomer.customer_balance} </span>
                             <span > رصيد مستخدم : {selectedCustomer.total_used || 0} </span>
                         </div>
 
                 {showPayment && (
                     <>
-                        <table className="w-full text-center">
+                        <table className="w-full text-center text-gray-700 dark:text-white">
                             <thead>
                             <tr>
-                                <th className="py-2">رقم الهيكل</th>
-                                <th className="py-2">Won Price</th>
-                                <th className="py-2">Won Price Paid</th>
-                                <th className="py-2">Won Price Remain</th>
-                                <th className="py-2 border-l-2" >Pay</th>
-                                <th className="py-2">Shipping Cost</th>
-                                <th className="py-2">Shipping Cost Paid</th>
-                                <th className="py-2">Shipping Cost Remain</th>
-                                <th className="py-2">Pay</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Won Price</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Won Price Paid</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Won Price Remain</th>
+                                <th className="p-2 text-xs border-l-2 text-nowrap md:text-base" >Pay</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost Paid</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Shipping Cost Remain</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Pay</th>
 
                             </tr>
                             </thead>

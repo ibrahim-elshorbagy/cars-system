@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Head, router, useForm } from "@inertiajs/react";
+import { Head, router, useForm,Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
@@ -270,6 +270,7 @@ const {
                       <th className="p-3 text-xs text-nowrap md:text-base">وقت الانشاء</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">وقت التحديث</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">اجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -284,6 +285,7 @@ const {
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
+                      <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
@@ -315,6 +317,14 @@ const {
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.created_at}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.updated_by}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.updated_at}</td>
+                            <td className="px-3 py-2 text-xs text-nowrap md:text-base">
+                                <Link
+                                href={route("customer-credit.show", record.id)}
+                                className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
+                            >
+                            مشاهده
+                            </Link>
+                          </td>
                           {/* <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-customer-credit") && !record.cant &&(
                               <button

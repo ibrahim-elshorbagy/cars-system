@@ -42,6 +42,7 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::group(['middleware' => ['permission:read-customer-credit']], function () {
         Route::get('/customer-credit', [CustomerCreditController::class, 'index'])->name('customer-credit.index');
+        Route::get('/customer-credit/show/{record}', [CustomerCreditController::class, 'show'])->name('customer-credit.show');
     });
 
     Route::group(['middleware' => ['permission:reverse-customer-credit']], function () {
