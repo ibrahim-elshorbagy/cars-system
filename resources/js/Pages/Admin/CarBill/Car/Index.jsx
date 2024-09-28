@@ -168,14 +168,17 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         const [selectedMakeId, setSelectedMakeId] = useState('');
         const [filteredModels, setFilteredModels] = useState([]);
 
-        useEffect(() => {
+            useEffect(() => {
             if (selectedMakeId) {
-                const filtered = models.filter(model => model.make_id === selectedMakeId);
+                const filtered = models.filter((model) => {
+                return String(model.make_id) === String(selectedMakeId);
+                });
                 setFilteredModels(filtered);
             } else {
                 setFilteredModels([]);
             }
-        }, [selectedMakeId, models]);
+            }, [selectedMakeId, models]);
+
 
         const handleMakeSelect = (item) => {
             setSelectedMakeId(item.id);
@@ -183,6 +186,10 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             // Reset model selection when make changes
             setCreateData("model_id", null);
         };
+
+        useEffect(() => {
+        }, [filteredModels]);
+
 // ------------------------------------------------------------------------------------------------------------ handel search for make and model and year with VIN
   const [vin, setVin] = useState('');
   // Handle VIN input blur event and make a request to Laravel API route
@@ -325,26 +332,27 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 //------------------------------------------------------------------------------------------------------------------
 
 
-  const [selectedEditMakeId, setSelectedEditMakeId] = useState(editData.make_id || null);
-  const [filteredEditModels, setFilteredEditModels] = useState([]);
+    const [selectedEditMakeId, setSelectedEditMakeId] = useState(editData.make_id || null);
+    const [filteredEditModels, setFilteredEditModels] = useState([]);
 
-  useEffect(() => {
+    useEffect(() => {
     if (selectedEditMakeId) {
-      const filtered = models.filter(model => model.make_id === selectedEditMakeId);
-      setFilteredEditModels(filtered);
+        const filtered = models.filter(model => String(model.make_id) === String(selectedEditMakeId));
+        setFilteredEditModels(filtered);
     } else {
-      setFilteredEditModels(models);
+        setFilteredEditModels(models);
     }
-  }, [selectedEditMakeId, models]);
+    }, [selectedEditMakeId, models]);
 
-  const handleEditMakeSelect = (item) => {
+    const handleEditMakeSelect = (item) => {
     setSelectedEditMakeId(item.id);
     setEditData("make_id", item.id);
+
     // Reset model selection when make changes, unless it's the initial load
-    if (item.id !== editData.make_id) {
-      setEditData("model_id", null);
+    if (String(item.id) !== String(editData.make_id)) {
+        setEditData("model_id", null);
     }
-  };
+    };
 
 //------------------------------------------------------------------------------------------------------------------ Handel Vin selection on edit
     const [editVin, setEditVin] = useState('');
