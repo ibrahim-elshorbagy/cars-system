@@ -1161,7 +1161,7 @@ const handleEditVinBlur = () => {
                                             onChange={(e) => setEditVin(e.target.value ?? '')}
                                             onBlur={handleEditVinBlur}
                                             />
-                                            <InputError message={editErrors.vin} className="mt-2 text-xl" />
+                                            <InputError message={'*'} className="mt-2 text-xl" />
                                         </div>
                                         </div>
 

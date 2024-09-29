@@ -200,8 +200,8 @@ const handleCustomerSelect = (customer) => {
             // Merge customer bills with payment bills (if the bill was already paid)
 
             const allBills = customer.bills.map((bill) => {
-                const paymentBill = payment.paid_bills.find(paid_bill => paid_bill.bill_id === bill.bill_id); //the payment and it's paid bills  edit
-
+                // const paymentBill = payment.paid_bills.find(paid_bill => paid_bill.bill_id === bill.bill_id); //the payment and it's paid bills  edit
+                const paymentBill = payment.paid_bills.find(paid_bill => String(paid_bill.bill_id) === String(bill.bill_id));
 
 
                 return {
@@ -275,7 +275,7 @@ const handleCustomerSelect = (customer) => {
             setSelectedCustomer(customer);
 
             const allBills = customer.bills.map((bill) => {
-                const paymentBill = payment.paid_bills.find(paid_bill => paid_bill.bill_id === bill.bill_id);
+                const paymentBill = payment.paid_bills.find(paid_bill => String(paid_bill.bill_id) === String(bill.bill_id));
 
                 return {
                     payment_bill_id: paymentBill ? paymentBill.payment_bill_id : null,
