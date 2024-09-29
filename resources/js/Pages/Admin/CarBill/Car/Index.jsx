@@ -36,20 +36,25 @@ import {
 
 
 export default function Index({ auth,site_settings, cars,customers, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null, success,ErrorAlert,danger }) {
-  queryParams = queryParams || {};
+
+
+
+//------------------------------------------------------- Handel Search + msg
+
+    queryParams = queryParams || {};
 
     useEffect(() => {
-     if (ErrorAlert) {
-         alert(ErrorAlert);
-     }
+    if (ErrorAlert) {
+        alert(ErrorAlert);
+    }
     }, [ErrorAlert]);
 
-
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingCar, setEditingCar] = useState(null);
-  const [visibleSuccess, setVisibleSuccess] = useState(success);
-  const [operationPerformed, setOperationPerformed] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingCar, setEditingCar] = useState(null);
+    const [visibleSuccess, setVisibleSuccess] = useState(success);
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+    const [operationPerformed, setOperationPerformed] = useState(false);
 
     useEffect(() => {
     if (success && operationPerformed) {
@@ -62,6 +67,15 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     }
     }, [success, operationPerformed]);
 
+    useEffect(() => {
+        if (danger) {
+        setVisibleDanger(danger);
+        const timer = setTimeout(() => {
+            setVisibleDanger(null);
+        }, 3000);
+        return () => clearTimeout(timer);
+        }
+    }, [danger]);
 
 
 
@@ -81,19 +95,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
       searchFieldChanged(name, e.target.value);
     }
   };
+
 //------------------------------------------------------- Handel delete
-  const [visibleDanger, setVisibleDanger] = useState(danger);
-  useEffect(() => {
-    if (danger) {
-      setVisibleDanger(danger);
-      const timer = setTimeout(() => {
-        setVisibleDanger(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [danger]);
-
-
 
   const deleteCar = (car) => {
     if (window.confirm("هل انت متأكد من حذف السيارة ؟ ")) {
@@ -105,35 +108,28 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
       });
     }
   };
-    //------------------------------------------------------- Handel images + create submit
+
+//-------------------------------------------------------create submit
     const [CreateImages, setCreateImages] = useState([]); // For previewing images
+    const [vin, setVin] = useState('');
 
-    const {
-        data: createData,
-        setData: setCreateData,
-        post: createPost,
-        errors: createErrors,
-        reset: createReset,
-    } = useForm({
-        images: [],
-        make_id: '',
-        model_id: '',
-        year: '',
-        color: '',
-        chassis: '',
-        vin: '',
-    });
+    const { data: createData, setData: setCreateData, post: createPost, errors: createErrors, reset: createReset } =
+        useForm({ images: [], make_id: 0, model_id: '', year: '', color: '', chassis: '', vin: '', });
 
 
-        const toggleCreateModal = () => {
-            setCreateImages([]);
+    const toggleCreateModal = () => {
+
+        setCreateImages([]);
         setIsCreateModalOpen(!isCreateModalOpen);
+
         if (!isCreateModalOpen) {
-        createReset();
+            createReset();
+            setVin('');
         }
 
     };
 
+    //------------------------------------------------------- Handel updloing images + pdf
 
 
     // Handle Carfax Report upload
@@ -165,6 +161,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     };
 
 // ------------------------------------------------------------------------------------------------------------ handel select make filter models
+
         const [selectedMakeId, setSelectedMakeId] = useState('');
         const [filteredModels, setFilteredModels] = useState([]);
 
@@ -180,18 +177,18 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             }, [selectedMakeId, models]);
 
 
-        const handleMakeSelect = (item) => {
+    const handleMakeSelect = (item) => {
+
             setSelectedMakeId(item.id);
-            setCreateData("make_id", item.id);
-            // Reset model selection when make changes
-            setCreateData("model_id", null);
+            setCreateData({
+                    ...createData,
+                    make_id: item.id,
+                    model_id: ''
+                });
         };
 
-        useEffect(() => {
-        }, [filteredModels]);
-
 // ------------------------------------------------------------------------------------------------------------ handel search for make and model and year with VIN
-  const [vin, setVin] = useState('');
+
   // Handle VIN input blur event and make a request to Laravel API route
     const handleVinBlur = () => {
     if (!vin) return;
@@ -203,9 +200,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
         // Ensure all values are properly initialized
         const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
-        const modelEntry = models.find(
-            (mod) => mod.name.toLowerCase() === Model.toLowerCase() && mod.make_id === makeEntry?.id
-        );
+        const modelEntry = models.find((mod) => mod.name.toLowerCase() === Model.toLowerCase() && String(mod.make_id) === String(makeEntry?.id));
 
         // Set createData state properly
         setCreateData({
@@ -215,6 +210,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             year: ModelYear || '',
             chassis: VIN || '',
         });
+
         setSelectedMakeId(makeEntry?.id);
         })
         .catch((error) => {
@@ -230,64 +226,64 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     createPost(route("car.store"), {
       onSuccess: () => {
         createReset();
-            toggleCreateModal();
+        setVin('');
+        toggleCreateModal();
         setOperationPerformed(true);
 
       },
     });
   };
-//------------------------------------------------------- Handel images + Update submit
-    const {
-        data: editData,
-        setData: setEditData,
-        post: editPost,
-        errors: editErrors,
-        reset: editReset,
-    } = useForm({
+    //------------------------------------------------------- Handel Update submit
 
+    const {data: editData,setData: setEditData,post: editPost,errors: editErrors,reset: editReset,
+    } = useForm({
         _method: "PUT",
     });
 
     const [editOldImages, setEditOldImages] = useState([]);  // Store old image URLs
     const [editNewImages, setEditNewImages] = useState([]);  // Store newly added image files
+    const [editVin, setEditVin] = useState('');
 
     const toggleEditModal = (car = null) => {
         if (car) {
+            editReset();
             setEditNewImages([]);
-      setEditingCar(car);
-      setEditData({
-            id: car.id,
-            user_id: car.user_id,
-            box_id: car.box_id,
-            chassis: car.chassis,
-            title: car.title,
-            keys: car.keys,
-            lot: car.lot,
-            bookingNo:car.bookingNo,
-            container_number:car.container_number,
-            color:car.color,
-            year:car.year,
-            vendor_id: car.vendor_id,
-            destination_id: car.destination_id,
-            line_id: car.line_id,
-            terminal_id: car.terminal_id,
-            make_id: car.make_id,
-            model_id: car.model_id,
-            facility_id: car.facility_id,
-            carfax_report: car.carfax_report,
-            ship_status: car.ship_status,
-            won_price: car.won_price,
-            shipping_cost: car.shipping_cost,
-            estimate_arrival_date: car.estimate_arrival_date,
-            arrival_date: car.arrival_date,
-            date_won: car.date_won,
-            images: [],
-            old_images_url: car.images,
+            setEditingCar(car);
 
-            _method: "PUT",
-      });
-    setEditOldImages(car.images);
-    setEditVin(car.chassis || '');
+            setEditData({
+                    make_id: car.make_id,
+                    model_id: car.model_id,
+                    id: car.id,
+                    user_id: car.user_id,
+                    box_id: car.box_id,
+                    chassis: car.chassis,
+                    title: car.title,
+                    keys: car.keys,
+                    lot: car.lot,
+                    bookingNo:car.bookingNo,
+                    container_number:car.container_number,
+                    color:car.color,
+                    year:car.year,
+                    vendor_id: car.vendor_id,
+                    destination_id: car.destination_id,
+                    line_id: car.line_id,
+                    terminal_id: car.terminal_id,
+                    facility_id: car.facility_id,
+                    carfax_report: car.carfax_report,
+                    ship_status: car.ship_status,
+                    won_price: car.won_price,
+                    shipping_cost: car.shipping_cost,
+                    estimate_arrival_date: car.estimate_arrival_date,
+                    arrival_date: car.arrival_date,
+                    date_won: car.date_won,
+                    images: [],
+                    old_images_url: car.images,
+
+                    _method: "PUT", });
+
+                setEditOldImages(car.images);
+                setEditVin(car.chassis || '');
+                setSelectedEditMakeId(car.make_id);
     } else {
       setEditingCar(null);
       editReset();
@@ -298,6 +294,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
 
 
+//------------------------------------------------------- Handel update Upload images
 
 
     // Handle new image selection
@@ -329,7 +326,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         setEditData("images", newImageFiles);  // Update form data
     };
 
-//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------ handel select make filter models
 
 
     const [selectedEditMakeId, setSelectedEditMakeId] = useState(editData.make_id || null);
@@ -345,17 +342,22 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     }, [selectedEditMakeId, models]);
 
     const handleEditMakeSelect = (item) => {
-    setSelectedEditMakeId(item.id);
-    setEditData("make_id", item.id);
 
-    // Reset model selection when make changes, unless it's the initial load
-    if (String(item.id) !== String(editData.make_id)) {
-        setEditData("model_id", null);
-    }
+        setSelectedEditMakeId(item.id);
+        setEditData({
+                    ...editData,
+                    make_id: item.id,
+                    model_id: ''
+                });
+
+        // // Reset model selection when make changes, unless it's the initial load
+        // if (String(item.id) !== String(editData.make_id)) {
+        //     setEditData("model_id", null);
+        // }
     };
 
+
 //------------------------------------------------------------------------------------------------------------------ Handel Vin selection on edit
-    const [editVin, setEditVin] = useState('');
 
 const handleEditVinBlur = () => {
   if (!editVin) return;
@@ -363,14 +365,13 @@ const handleEditVinBlur = () => {
   axios
     .post(route('get-car-info'), { vin: editVin })
     .then((response) => {
-      const vinData = response.data.response[0];
-      const { Make, Model, ModelYear, VIN } = vinData;
+        const vinData = response.data.response[0];
+        const { Make, Model, ModelYear, VIN } = vinData;
 
-      // Ensure all values are properly initialized
-      const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
-      const modelEntry = models.find(
-        (mod) => mod.name.toLowerCase() === Model.toLowerCase() && mod.make_id === makeEntry?.id
-      );
+        // Ensure all values are properly initialized
+        const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
+        const modelEntry = models.find((mod) => mod.name.toLowerCase() === Model.toLowerCase() && String(mod.make_id) === String(makeEntry?.id));
+
 
       // Set editData state properly
       setEditData({
@@ -386,7 +387,7 @@ const handleEditVinBlur = () => {
       console.error('Failed to retrieve VIN data for editing', error);
     });
 };
-//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------ handle update submit
 
 
   const handleEditCar = (e) => {
@@ -612,7 +613,7 @@ const handleEditVinBlur = () => {
                                     <ComboboxMakes
                                         items={customers}
                                         onItemSelect={(item) => setCreateData("user_id", item.id)}
-
+                                        selectedMakeId={createData.user_id}
                                         placeholder="اختر العميل"
                                         emptyMessage="لا يوجد عملاء"
                                         />
@@ -632,8 +633,6 @@ const handleEditVinBlur = () => {
                                             onChange={(e) => setVin(e.target.value ?? '')}
                                             onBlur={handleVinBlur}
                                             value={vin ?? ''}
-
-
 
                                         />
                                         <InputError  message={'*'} className="mt-2 text-xl"  />
@@ -662,7 +661,7 @@ const handleEditVinBlur = () => {
                                                 type="number"
                                                 id={`year`}
                                                 name="year"
-                                                 value={createData.year ?? ''}
+                                                value={createData.year ?? ''}
 
                                                 className="block w-full mt-1"
                                                 onChange={(e) => setCreateData('year',e.target.value)}
@@ -727,7 +726,7 @@ const handleEditVinBlur = () => {
                         </div>
 
 
-                            <div>
+                            <div className="p-6">
                                 <ul className="mt-2 text-red-600 list-disc list-inside">
                                     {Object.keys(createErrors).map((key) => (
                                         <li key={key}>{createErrors[key]}</li>
@@ -819,6 +818,8 @@ const handleEditVinBlur = () => {
                                             <ComboboxMakes
                                                 items={destinations}
                                                 onItemSelect={(item) => setCreateData("destination_id", item.id)}
+                                                selectedMakeId={createData.destination_id}
+
                                                 placeholder="اختر الوجهة"
                                                 emptyMessage="لا يوجد وحهات"
                                                 />
@@ -830,6 +831,8 @@ const handleEditVinBlur = () => {
                                             <ComboboxMakes
                                                 items={lines}
                                                 onItemSelect={(item) => setCreateData("line_id", item.id)}
+                                                selectedMakeId={createData.line_id}
+
                                                 placeholder="اختر الخط الملاحي"
                                                 emptyMessage="لا يوجد خطوط ملاحيه"
                                                 />
@@ -842,6 +845,8 @@ const handleEditVinBlur = () => {
                                             <ComboboxMakes
                                                 items={facilities}
                                                 onItemSelect={(item) => setCreateData("facility_id", item.id)}
+                                                selectedMakeId={createData.facility_id}
+
                                                 placeholder="اختر المرفق"
                                                 emptyMessage="لا يوجد مرافق"
                                                 />
@@ -853,6 +858,8 @@ const handleEditVinBlur = () => {
                                             <ComboboxMakes
                                                 items={terminals}
                                                 onItemSelect={(item) => setCreateData("terminal_id", item.id)}
+                                                selectedMakeId={createData.terminal_id}
+
                                                 placeholder="اختر محطة الشحن"
                                                 emptyMessage="لا يوجد محطات شحن"
                                                 />
@@ -950,7 +957,7 @@ const handleEditVinBlur = () => {
 
 
 
-                                    <div>
+                                    <div className="p-6">
                                         <ul className="mt-2 text-red-600 list-disc list-inside">
                                             {Object.keys(createErrors).map((key) => (
                                                 <li key={key}>{createErrors[key]}</li>
@@ -1236,7 +1243,7 @@ const handleEditVinBlur = () => {
 
 
 
-                                <div>
+                                <div className="p-6">
                                     <ul className="mt-2 text-red-600 list-disc list-inside">
                                         {Object.keys(editErrors).map((key) => (
                                             <li key={key}>{editErrors[key]}</li>
@@ -1477,7 +1484,7 @@ const handleEditVinBlur = () => {
 
                                             </div>
 
-                                        <div>
+                                        <div className="p-6">
                                             <ul className="mt-2 text-red-600 list-disc list-inside">
                                                 {Object.keys(editErrors).map((key) => (
                                                     <li key={key}>{editErrors[key]}</li>
@@ -1558,7 +1565,7 @@ const handleEditVinBlur = () => {
                                                 ))}
                                             </div>
 
-                                            <div>
+                                            <div className="p-6">
                                                 <ul className="mt-2 text-red-600 list-disc list-inside">
                                                     {Object.keys(editErrors).map((key) => (
                                                         <li key={key}>{editErrors[key]}</li>

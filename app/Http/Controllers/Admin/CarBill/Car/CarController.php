@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\CarBill\Car;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Car\CarStore;
-use App\Http\Requests\Admin\car\CarUpdate;
+use App\Http\Requests\Admin\Car\CarUpdate;
 use App\Http\Resources\Admin\CarBill\Car\ShowCarResource;
 
 
