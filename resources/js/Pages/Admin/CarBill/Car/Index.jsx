@@ -444,7 +444,7 @@ const handleEditVinBlur = () => {
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <th className="p-3">ID</th>
-                      <th className="p-3">اسم العميل</th>
+                      <th className="p-3">اسم الشركه</th>
                       <th className="p-3">رقم الشاسيه</th>
                       <th className="p-3">اضافه بواسطه</th>
                       <th className="p-3">تحديث بواسطه</th>
@@ -457,10 +457,10 @@ const handleEditVinBlur = () => {
                       <th className="p-3">
                         <TextInput
                           className="w-full"
-                          defaultValue={queryParams.customer_name}
+                          defaultValue={queryParams.customer_company}
                           placeholder={"اسم العميل"}
-                          onBlur={(e) => searchFieldChanged("customer_name", e.target.value)}
-                          onKeyPress={(e) => onKeyPress("customer_name", e)}
+                          onBlur={(e) => searchFieldChanged("customer_company", e.target.value)}
+                          onKeyPress={(e) => onKeyPress("customer_company", e)}
                         />
                         </th>
                         <th className="p-3">
@@ -487,7 +487,7 @@ const handleEditVinBlur = () => {
                           key={car.id}
                         >
                           <td className="px-3 py-2">{car.id}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.customer_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
                           <td className="px-3 py-2 text-nowrap">{car.created_by}</td>
                           <td className="px-3 py-2 text-nowrap">{car.updated_by}</td>
@@ -726,7 +726,7 @@ const handleEditVinBlur = () => {
                         </div>
 
 
-                            {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-6">
+                            {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-3 md:p-6">
                                 <ul className="mt-2 text-red-600 list-disc list-inside">
                                     {Object.keys(createErrors).map((key) => (
                                         <li key={key}>{createErrors[key]}</li>
@@ -957,7 +957,7 @@ const handleEditVinBlur = () => {
 
 
 
-                                    {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-6">
+                                    {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-3 md:p-6">
                                         <ul className="mt-2 text-red-600 list-disc list-inside">
                                             {Object.keys(createErrors).map((key) => (
                                                 <li key={key}>{createErrors[key]}</li>
@@ -1025,7 +1025,7 @@ const handleEditVinBlur = () => {
                                         ))}
                                     </div>
 
-                                {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-6">
+                                {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-3 md:p-6">
                                     <ul className="mt-2 text-red-600 list-disc list-inside">
                                         {Object.keys(createErrors).map((key) => (
                                             <li key={key}>{createErrors[key]}</li>
@@ -1242,7 +1242,7 @@ const handleEditVinBlur = () => {
 
 
 
-                               {editErrors && Object.keys(editErrors).length > 0 && ( <div className="p-6">
+                               {editErrors && Object.keys(editErrors).length > 0 && ( <div className="p-3 md:p-6">
                                     <ul className="mt-2 text-red-600 list-disc list-inside">
                                         {Object.keys(editErrors).map((key) => (
                                             <li key={key}>{editErrors[key]}</li>
@@ -1564,7 +1564,7 @@ const handleEditVinBlur = () => {
                                                 ))}
                                             </div>
 
-                                            {editErrors && Object.keys(editErrors).length > 0 &&(<div className="p-6">
+                                            {editErrors && Object.keys(editErrors).length > 0 &&(<div className="p-3 md:p-6">
                                                 <ul className="mt-2 text-red-600 list-disc list-inside">
                                                     {Object.keys(editErrors).map((key) => (
                                                         <li key={key}>{editErrors[key]}</li>

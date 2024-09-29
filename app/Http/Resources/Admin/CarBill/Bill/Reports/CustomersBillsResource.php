@@ -27,6 +27,7 @@ class CustomersBillsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'customer_company' => $this->customer->customer_company,
             'email' => $this->email,
             'whatsapp'=>$this->whatsapp,
             'phone'=>$this->phone,

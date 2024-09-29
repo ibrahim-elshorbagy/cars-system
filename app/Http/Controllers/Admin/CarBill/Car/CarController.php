@@ -34,15 +34,16 @@ class CarController extends Controller
     public function index()
     {
 
-        $query = Car::with('user','bill')->orderBy("id", "desc");
+        $query = Car::with('user.customer','bill')->orderBy("id", "desc");
 
         if (request("chassis")) {
             $query->where("chassis", "like", "%" . request("chassis") . "%");
         }
 
-        if (request("customer_name")) {
-            $query->whereHas('user', function($q) {
-                $q->where("name", "like", "%" . request("customer_name") . "%");
+
+        if (request("customer_company")) {
+            $query->whereHas('user.customer', function($q) {
+                $q->where("customer_company", "like", "%" . request("customer_company") . "%");
             });
         }
         $cars = $query->paginate(25)->onEachSide(1);

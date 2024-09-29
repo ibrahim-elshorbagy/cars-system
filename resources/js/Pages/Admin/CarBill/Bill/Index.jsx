@@ -371,7 +371,7 @@ const handleCustomerSelect = (customer) => {
                           key={payment.id}
                         >
                           <td className="px-3 py-2">{payment.id}</td>
-                          <td className="px-3 py-2 text-nowrap">{payment.customer_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{payment.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.total_amount}</td>
                           {/* <td className="px-3 py-2 text-nowrap">{payment.box_name}</td> */}
                           <td className="px-3 py-2 text-nowrap">{payment.created_by}</td>

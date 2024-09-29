@@ -233,14 +233,18 @@ class BillController extends Controller
 
             $query = User::role('customer');
 
-            if (request("name")) {
-                $query->where("name", "like", "%" . request("name") . "%");
+            if (request("customer_company")) {
+                $query->whereHas('customer', function($q) {
+                    $q->where("customer_company", "like", "%" . request("customer_company") . "%");
+                });
             }
+
             if (request("email")) {
                 $query->where("email", "like", "%" . request("email") . "%");
             }
 
-            $customers = $query->with('credits','bills')->paginate(25)->onEachSide(1);
+            $customers = $query->with('credits', 'bills', 'customer')->paginate(25)->onEachSide(1);
+
 
             return inertia("Admin/CarBill/Bill/Reports/CustomersBills", [
                 "users" => CustomersBillsResource::collection($customers),

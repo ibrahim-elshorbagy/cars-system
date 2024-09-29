@@ -26,6 +26,7 @@ class ShowCarResource extends JsonResource
             'chassis' => $this->chassis ?? null,
             'customer_name' => $this->user->name ?? null,
             'customer_id' => $this->user->id ?? null,
+            'customer_company' => $this->user->customer->customer_company ?? null,
             'vendor_name' => $this->vendor->name ?? null,
             'vendor_id' => $this->vendor->id ?? null,
             'destination_name' => $this->destination->name ?? null,

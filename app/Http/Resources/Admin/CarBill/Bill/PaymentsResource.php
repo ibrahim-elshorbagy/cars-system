@@ -20,6 +20,7 @@ class PaymentsResource extends JsonResource
 
             'customer_id' => $this->customer->id,
             'customer_name' => $this->customer->name,
+            'customer_company'=>$this->customer->customer->customer_company,
             'total_amount' => $this->total_amount,
             'box_name' => $this->box->name,
             'box_id' => $this->box->id,

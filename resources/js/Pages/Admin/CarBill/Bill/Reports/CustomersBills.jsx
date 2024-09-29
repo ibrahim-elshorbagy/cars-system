@@ -57,7 +57,7 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الاسم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الشركه</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
@@ -74,12 +74,12 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                       <th className="p-3">
                         <TextInput
                           className="w-full"
-                          defaultValue={queryParams.name}
-                          placeholder={"الاسم"}
+                          defaultValue={queryParams.customer_company}
+                          placeholder={"الشركه"}
                           onBlur={(e) =>
-                            searchFieldChanged("name", e.target.value)
+                            searchFieldChanged("customer_company", e.target.value)
                           }
-                          onKeyPress={(e) => onKeyPress("name", e)}
+                          onKeyPress={(e) => onKeyPress("customer_company", e)}
                         />
                       </th>
                       <th className="p-3">
@@ -112,7 +112,7 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                           key={user.id}
                         >
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.id}</td>
-                          <th className="p-3 text-xs text-nowrap md:text-base">{user.name}</th>
+                          <th className="p-3 text-xs text-nowrap md:text-base">{user.customer_company}</th>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.email}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.phone}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.whatsapp}</td>
