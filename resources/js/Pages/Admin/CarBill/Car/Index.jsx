@@ -547,7 +547,7 @@ const handleEditVinBlur = () => {
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-            <form onSubmit={handleCreateCar} className="relative w-10/12 overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+            <form onSubmit={handleCreateCar} className="relative w-10/12 max-h-[95vh] overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
                 <Tabs defaultValue="general" >
                     <TabsList className="sticky top-0 z-10 flex gap-4 p-4 bg-white border-b justify-content dark:bg-gray-800">
                         <h2 className="text-2xl font-semibold dark:text-white">إضافة سيارة</h2>
@@ -564,9 +564,9 @@ const handleEditVinBlur = () => {
                     <TabsContent value="general">
                     <div className="flex flex-col justify-between h-[85vh] overflow-auto">
 
-                        <div className="p-3 sm:p-6 ">
+                        <div className="p-3 md:p-6 ">
                             {/*  Customer Chassis bookingNo */}
-                            <div className="grid items-center justify-center gap-5 my-10 md:grid-cols-2 sm:grid-cols-1 ">
+                            <div className="grid items-center justify-center gap-5 md:my-10 md:grid-cols-2 sm:grid-cols-1 ">
 
 
                                          <div>
@@ -726,13 +726,13 @@ const handleEditVinBlur = () => {
                         </div>
 
 
-                            <div className="p-6">
+                            {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-6">
                                 <ul className="mt-2 text-red-600 list-disc list-inside">
                                     {Object.keys(createErrors).map((key) => (
                                         <li key={key}>{createErrors[key]}</li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div>)}
 
 
 
@@ -760,7 +760,7 @@ const handleEditVinBlur = () => {
                     <TabsContent value="shipping">
                         <div className=" flex flex-col justify-between h-[85vh] overflow-auto">
 
-                                <div className="p-6">
+                                <div className="p-3 md:p-6">
                                 {/* Vendor + Destination + Shipping Line */}
 
                                     <div className="grid gap-5 mb-10 sm:grid-cols-1 md:grid-cols-2 ">
@@ -957,13 +957,13 @@ const handleEditVinBlur = () => {
 
 
 
-                                    <div className="p-6">
+                                    {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-6">
                                         <ul className="mt-2 text-red-600 list-disc list-inside">
                                             {Object.keys(createErrors).map((key) => (
                                                 <li key={key}>{createErrors[key]}</li>
                                             ))}
                                         </ul>
-                                    </div>
+                                    </div>)}
 
                                 </div>
 
@@ -1007,7 +1007,7 @@ const handleEditVinBlur = () => {
                                             <InputError message={createErrors.images} className="mt-2" />
                                         </div>
                                 {/* Images Preview and Deletion */}
-                                    <div className="gap-4 mt-4 columns-5">
+                                    <div className="gap-4 mt-4 sm:columns-2 md:columns-5">
                                         {CreateImages.map((image, index) => (
                                             <div key={index} className="relative mb-4 break-inside-avoid">
                                                 <span
@@ -1025,13 +1025,13 @@ const handleEditVinBlur = () => {
                                         ))}
                                     </div>
 
-                                <div>
+                                {createErrors && Object.keys(createErrors).length > 0 && (<div className="p-6">
                                     <ul className="mt-2 text-red-600 list-disc list-inside">
                                         {Object.keys(createErrors).map((key) => (
                                             <li key={key}>{createErrors[key]}</li>
                                         ))}
                                     </ul>
-                                </div>
+                                </div>)}
 
                             </div>
 
@@ -1079,7 +1079,7 @@ const handleEditVinBlur = () => {
       {/* Modal for editing a car */}
       {isEditModalOpen && (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <form onSubmit={handleEditCar} className="relative w-10/12 max-h-screen overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+            <form onSubmit={handleEditCar} className="relative w-10/12 max-h-[95vh]  overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
 
         <Tabs defaultValue="general" >
                 <TabsList className="sticky top-0 z-10 flex p-4 bg-white border-b justify-content dark:bg-gray-800">
@@ -1097,10 +1097,9 @@ const handleEditVinBlur = () => {
                 <TabsContent value="general">
                     <div className=" flex flex-col justify-between h-[85vh] overflow-auto">
 
-                                <div className="p-6 ">
+                                <div className="p-3 md:p-6 ">
 
-
-                                    <div className="grid items-center justify-center gap-5 my-10 sm:grid-cols-2 md:grid-cols-2 ">
+                                    <div className="grid items-center justify-center gap-5 md:my-10 sm:grid-cols-2 md:grid-cols-2 ">
 
                                                 <div>
                                                 <InputLabel className="text-xl text-nowrap" htmlFor="edit_make_id" value="Make" />
@@ -1243,13 +1242,13 @@ const handleEditVinBlur = () => {
 
 
 
-                                <div className="p-6">
+                               {editErrors && Object.keys(editErrors).length > 0 && ( <div className="p-6">
                                     <ul className="mt-2 text-red-600 list-disc list-inside">
                                         {Object.keys(editErrors).map((key) => (
                                             <li key={key}>{editErrors[key]}</li>
                                         ))}
                                     </ul>
-                                </div>
+                                </div>)}
 
 
 
@@ -1279,9 +1278,9 @@ const handleEditVinBlur = () => {
 
                             <div className="flex flex-col justify-between h-[85vh] overflow-auto">
 
-                                <div className="p-6">
+                                <div className="p-3 md:p-6">
 
-                                        <div className="grid items-center justify-center grid-cols-1 gap-5 my-10 md:grid-cols-2 ">
+                                        <div className="grid items-center justify-center grid-cols-1 gap-5 md:my-10 md:grid-cols-2 ">
 
                                                 <div >
                                                         <InputLabel htmlFor="edit_lot" className="my-2 text-xl text-nowrap" value={"Lot / Stok"} />
@@ -1484,13 +1483,13 @@ const handleEditVinBlur = () => {
 
                                             </div>
 
-                                        <div className="p-6">
+                                        {editErrors && Object.keys(editErrors).length > 0 &&(<div className="p-6">
                                             <ul className="mt-2 text-red-600 list-disc list-inside">
                                                 {Object.keys(editErrors).map((key) => (
                                                     <li key={key}>{editErrors[key]}</li>
                                                 ))}
                                             </ul>
-                                        </div>
+                                        </div>)}
 
 
                                 </div>
@@ -1520,7 +1519,7 @@ const handleEditVinBlur = () => {
                 <TabsContent value="photos">
                     <div className="flex flex-col justify-between h-[85vh] overflow-auto">
 
-                                  <div className="p-6">
+                                  <div className="p-3 md:p-6">
 
                                             <div className="mb-5 md:w-1/2 lg:w-1/4">
                                                 <InputLabel htmlFor="edit_images" className="mt-2 text-xl text-nowrap" value={"images"} />
@@ -1536,7 +1535,7 @@ const handleEditVinBlur = () => {
                                             </div>
 
                                             {/* Preview Old Images */}
-                                            <div className="gap-4 columns-5">
+                                            <div className="gap-4 sm:columns-2 md:columns-5">
                                                 {editOldImages.map((image, index) => (
                                                     <div key={index} className="relative mb-4 break-inside-avoid">
                                                         <span
@@ -1551,7 +1550,7 @@ const handleEditVinBlur = () => {
                                             </div>
 
                                             {/* Preview New Images */}
-                                            <div className="gap-4 mt-5 columns-5">
+                                            <div className="gap-4 mt-5 sm:columns-2 md:columns-5">
                                                 {editNewImages.map((image, index) => (
                                                     <div key={index} className="relative mb-4 break-inside-avoid">
                                                         <span
@@ -1565,13 +1564,13 @@ const handleEditVinBlur = () => {
                                                 ))}
                                             </div>
 
-                                            <div className="p-6">
+                                            {editErrors && Object.keys(editErrors).length > 0 &&(<div className="p-6">
                                                 <ul className="mt-2 text-red-600 list-disc list-inside">
                                                     {Object.keys(editErrors).map((key) => (
                                                         <li key={key}>{editErrors[key]}</li>
                                                     ))}
                                                 </ul>
-                                            </div>
+                                            </div>)}
                                     </div>
 
                                     <div className="flex justify-end gap-2 m-5">
