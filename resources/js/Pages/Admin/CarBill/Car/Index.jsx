@@ -555,7 +555,7 @@ const handleEditVinBlur = () => {
                         <div>
                         <TabsTrigger value="general">General</TabsTrigger>
                         <TabsTrigger value="shipping">Shipping</TabsTrigger>
-                        <TabsTrigger value="photos">Photos</TabsTrigger>
+                        <TabsTrigger value="photos">Car Photos</TabsTrigger>
                         </div>
 
 
@@ -568,8 +568,39 @@ const handleEditVinBlur = () => {
                             {/*  Customer Chassis bookingNo */}
                             <div className="grid items-center justify-center gap-5 md:my-10 md:grid-cols-2 sm:grid-cols-1 ">
 
+                                        <div >
+                                            <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
+                                            <div className="flex gap-5 mt-2">
+                                            <ComboboxMakes
+                                                items={customers}
+                                                onItemSelect={(item) => setCreateData("user_id", item.id)}
+                                                selectedMakeId={createData.user_id}
+                                                placeholder="اختر العميل"
+                                                emptyMessage="لا يوجد عملاء"
+                                                />
+                                            <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
+                                        </div>
 
-                                         <div>
+                                        <div >
+                                            <InputLabel htmlFor="vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                            <div className="flex gap-5 mt-2">
+
+                                                <TextInput
+                                                    id="vin"
+                                                    type="text"
+                                                    name="vin"
+                                                    className="block w-full mt-1"
+                                                    onChange={(e) => setVin(e.target.value ?? '')}
+                                                    onBlur={handleVinBlur}
+                                                    value={vin ?? ''}
+
+                                                />
+                                                <InputError  message={'*'} className="mt-2 text-xl"  />
+                                            </div>
+                                        </div>
+
+                                        <div>
                                             <InputLabel className="text-xl text-nowrap" htmlFor="make_id" value="Make" />
                                             <div className="flex gap-5 mt-2">
                                             <ComboboxMakes
@@ -584,6 +615,8 @@ const handleEditVinBlur = () => {
                                             <InputError message={'*'} className="mt-2 text-xl" />
                                             </div>
                                         </div>
+
+
                                         <div>
                                             <InputLabel className="text-xl text-nowrap" htmlFor="model_id" value="Model" />
                                             <div className="flex gap-5 mt-2">
@@ -607,37 +640,7 @@ const handleEditVinBlur = () => {
 
 
 
-                                <div >
-                                    <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
-                                    <div className="flex gap-5 mt-2">
-                                    <ComboboxMakes
-                                        items={customers}
-                                        onItemSelect={(item) => setCreateData("user_id", item.id)}
-                                        selectedMakeId={createData.user_id}
-                                        placeholder="اختر العميل"
-                                        emptyMessage="لا يوجد عملاء"
-                                        />
-                                    <InputError message={'*'} className="mt-2 text-xl" />
-                                    </div>
-                                </div>
 
-                                <div >
-                                    <InputLabel htmlFor="vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
-                                    <div className="flex gap-5 mt-2">
-
-                                        <TextInput
-                                            id="vin"
-                                            type="text"
-                                            name="vin"
-                                            className="block w-full mt-1"
-                                            onChange={(e) => setVin(e.target.value ?? '')}
-                                            onBlur={handleVinBlur}
-                                            value={vin ?? ''}
-
-                                        />
-                                        <InputError  message={'*'} className="mt-2 text-xl"  />
-                                    </div>
-                                </div>
                                 <div >
                                     <InputLabel htmlFor="color" className="mt-2 text-xl text-nowrap" value={"Color"} />
                                     <div className="flex gap-5 mt-2">
@@ -761,11 +764,27 @@ const handleEditVinBlur = () => {
                         <div className=" flex flex-col justify-between h-[85vh] overflow-auto">
 
                                 <div className="p-3 md:p-6">
-                                {/* Vendor + Destination + Shipping Line */}
+                                      <div className="grid gap-5 mb-10 sm:grid-cols-1 md:grid-cols-2 ">
+                                        <div>
+                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="ship_status" value={"Shipping Status"} />
+                                            <SelectInput
+                                                id="ship_status"
+                                                name="ship_status"
+                                                value={createData.ship_status || ""}
+                                                onChange={(e) => setCreateData("ship_status", e.target.value)}
+                                            >
+                                                <option value="">اختر</option>
 
-                                    <div className="grid gap-5 mb-10 sm:grid-cols-1 md:grid-cols-2 ">
+                                                {shipStatus.map((box) => (
+                                                <option value={box.name} key={box.id}>
+                                                    {box.name}
+                                                </option>
+                                                ))}
+                                            </SelectInput>
+                                        </div>
+
                                         <div >
-                                        <InputLabel htmlFor="lot" className="my-2 text-xl text-nowrap" value={"Lot / Stok"} />
+                                        <InputLabel htmlFor="lot" className="my-2 text-xl text-nowrap" value={"Lot /Stock"} />
                                         <TextInput
                                             id="lot"
                                             type="text"
@@ -807,7 +826,7 @@ const handleEditVinBlur = () => {
                                             <ComboboxMakes
                                                 items={vendors}
                                                 onItemSelect={(item) => setCreateData("vendor_id", item.id)}
-                                                placeholder="اختر الماز"
+                                                placeholder="اختر المزاد"
                                                 emptyMessage="لا يوجد مزادات"
                                                 />
 
@@ -906,23 +925,7 @@ const handleEditVinBlur = () => {
                                                 />
                                         </div>
 
-                                        <div>
-                                            <InputLabel className="my-2 text-xl text-nowrap" htmlFor="ship_status" value={"Shipping Status"} />
-                                            <SelectInput
-                                                id="ship_status"
-                                                name="ship_status"
-                                                value={createData.ship_status || ""}
-                                                onChange={(e) => setCreateData("ship_status", e.target.value)}
-                                            >
-                                                <option value="">اختر</option>
 
-                                                {shipStatus.map((box) => (
-                                                <option value={box.name} key={box.id}>
-                                                    {box.name}
-                                                </option>
-                                                ))}
-                                            </SelectInput>
-                                        </div>
 
                                         <div >
                                             <InputLabel htmlFor="won_price" className="my-2 text-xl text-nowrap" value={"Won Price"} />
@@ -995,7 +998,7 @@ const handleEditVinBlur = () => {
                             <div className="p-6">
 
                                         <div className="md:w-1/2 lg:w-1/4">
-                                            <InputLabel htmlFor="images" className="mt-2 text-xl text-nowrap" value={"images"} />
+                                            <InputLabel htmlFor="images" className="mt-2 text-xl text-nowrap" value={"Car Photos"} />
                                             <Input
                                                 id="images"
                                                 type="file"
@@ -1086,7 +1089,7 @@ const handleEditVinBlur = () => {
                     <div>
                     <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="shipping">Shipping</TabsTrigger>
-                    <TabsTrigger value="photos">Photos</TabsTrigger>
+                    <TabsTrigger value="photos">Car Photos</TabsTrigger>
 
                     </div>
 
@@ -1101,40 +1104,8 @@ const handleEditVinBlur = () => {
 
                                     <div className="grid items-center justify-center gap-5 md:my-10 sm:grid-cols-2 md:grid-cols-2 ">
 
-                                                <div>
-                                                <InputLabel className="text-xl text-nowrap" htmlFor="edit_make_id" value="Make" />
-                                                <div className="flex gap-5 mt-2">
-                                                <ComboboxMakes
-                                                    items={makes}
-                                                    onItemSelect={handleEditMakeSelect}
-                                                    selectedMakeId={selectedEditMakeId}
-                                                    placeholder="اختر الماركه"
-                                                    emptyMessage="لا يوجد مركات"
-                                                />
-                                                <InputError message={'*'} className="mt-2 text-xl" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <InputLabel className="text-xl text-nowrap" htmlFor="edit_model_id" value="Model" />
-                                                <div className="flex gap-5 mt-2">
-                                                <ComboboxMakes
-                                                    items={filteredEditModels}
-                                                    onItemSelect={(item) => setEditData("model_id", item.id)}
-                                                    selectedMakeId={editData.model_id}
-                                                    placeholder="اختر الموديل"
-                                                    emptyMessage="لا يوجد موديلات"
-                                                    disabled={!selectedEditMakeId}
-                                                />
-                                                <InputError message={'*'} className="mt-2 text-xl" />
-                                                </div>
-                                            </div>
-
-
-
-
-
                                         <div >
-                                              <InputLabel className="text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
+                                            <InputLabel className="text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
                                             <div className="flex gap-5 mt-2">
 
                                             <ComboboxMakes
@@ -1144,25 +1115,58 @@ const handleEditVinBlur = () => {
                                                 placeholder="اختر العميل"
                                                 emptyMessage="لا يوجد عملاء"
                                                 />
-                                                  <InputError message={'*'} className="mt-2 text-xl" />
+                                                <InputError message={'*'} className="mt-2 text-xl" />
                                                 </div>
                                         </div>
 
                                         <div>
-                                        <InputLabel htmlFor="edit_vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
-                                        <div className="flex gap-5 mt-2">
-                                            <TextInput
-                                            id="edit_vin"
-                                            type="text"
-                                            name="edit_vin"
-                                            className="block w-full mt-1"
-                                            value={editVin ?? ''}
-                                            onChange={(e) => setEditVin(e.target.value ?? '')}
-                                            onBlur={handleEditVinBlur}
+                                            <InputLabel htmlFor="edit_vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                            <div className="flex gap-5 mt-2">
+                                                <TextInput
+                                                id="edit_vin"
+                                                type="text"
+                                                name="edit_vin"
+                                                className="block w-full mt-1"
+                                                value={editVin ?? ''}
+                                                onChange={(e) => setEditVin(e.target.value ?? '')}
+                                                onBlur={handleEditVinBlur}
+                                                />
+                                                <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <InputLabel className="text-xl text-nowrap" htmlFor="edit_make_id" value="Make" />
+                                            <div className="flex gap-5 mt-2">
+                                            <ComboboxMakes
+                                                items={makes}
+                                                onItemSelect={handleEditMakeSelect}
+                                                selectedMakeId={selectedEditMakeId}
+                                                placeholder="اختر الماركه"
+                                                emptyMessage="لا يوجد مركات"
                                             />
                                             <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
                                         </div>
+
+
+                                        <div>
+                                            <InputLabel className="text-xl text-nowrap" htmlFor="edit_model_id" value="Model" />
+                                            <div className="flex gap-5 mt-2">
+                                            <ComboboxMakes
+                                                items={filteredEditModels}
+                                                onItemSelect={(item) => setEditData("model_id", item.id)}
+                                                selectedMakeId={editData.model_id}
+                                                placeholder="اختر الموديل"
+                                                emptyMessage="لا يوجد موديلات"
+                                                disabled={!selectedEditMakeId}
+                                            />
+                                            <InputError message={'*'} className="mt-2 text-xl" />
+                                            </div>
                                         </div>
+
+
+
 
 
                                     <div >
@@ -1282,8 +1286,28 @@ const handleEditVinBlur = () => {
 
                                         <div className="grid items-center justify-center grid-cols-1 gap-5 md:my-10 md:grid-cols-2 ">
 
+
+                                           <div >
+                                                    <InputLabel className="my-2 text-xl text-nowrap" htmlFor="ship_status" value={"Shipping Status"} />
+                                                    <SelectInput
+                                                        id="ship_status"
+                                                        name="ship_status"
+                                                        value={editData.ship_status || ""}
+                                                        onChange={(e) => setEditData("ship_status", e.target.value)}
+                                                    >
+                                                        <option value="">اختر</option>
+
+                                                        {shipStatus.map((box) => (
+                                                        <option value={box.name} key={box.id}>
+                                                            {box.name}
+                                                        </option>
+                                                        ))}
+                                                    </SelectInput>
+                                                </div>
+
+                                          
                                                 <div >
-                                                        <InputLabel htmlFor="edit_lot" className="my-2 text-xl text-nowrap" value={"Lot / Stok"} />
+                                                        <InputLabel htmlFor="edit_lot" className="my-2 text-xl text-nowrap" value={"Lot /Stock"} />
                                                         <TextInput
                                                             id="edit_lot"
                                                             type="text"
@@ -1333,7 +1357,7 @@ const handleEditVinBlur = () => {
                                                         onItemSelect={(item) => setEditData("vendor_id", item.id)}
                                                         selectedMakeId={editData.vendor_id}
 
-                                                        placeholder="اختر الماز"
+                                                        placeholder="اختر المزاد"
                                                         emptyMessage="لا يوجد مزادات"
                                                         />
 
@@ -1430,23 +1454,6 @@ const handleEditVinBlur = () => {
                                                     />
 
                                           </div>
-                                              <div >
-                                                    <InputLabel className="my-2 text-xl text-nowrap" htmlFor="ship_status" value={"Shipping Status"} />
-                                                    <SelectInput
-                                                        id="ship_status"
-                                                        name="ship_status"
-                                                        value={editData.ship_status || ""}
-                                                        onChange={(e) => setEditData("ship_status", e.target.value)}
-                                                    >
-                                                        <option value="">اختر</option>
-
-                                                        {shipStatus.map((box) => (
-                                                        <option value={box.name} key={box.id}>
-                                                            {box.name}
-                                                        </option>
-                                                        ))}
-                                                    </SelectInput>
-                                                </div>
 
 
 
@@ -1522,7 +1529,7 @@ const handleEditVinBlur = () => {
                                   <div className="p-3 md:p-6">
 
                                             <div className="mb-5 md:w-1/2 lg:w-1/4">
-                                                <InputLabel htmlFor="edit_images" className="mt-2 text-xl text-nowrap" value={"images"} />
+                                                <InputLabel htmlFor="edit_images" className="mt-2 text-xl text-nowrap" value={"Car Photos"} />
                                                 <Input
                                                     id="edit_images"
                                                     type="file"

@@ -326,7 +326,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       {/* Modal for adding a new user */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="sm:w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">إضافة مستخدم جديد</h2>
             </div>
@@ -448,7 +448,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           type="text"
                           name="phone"
                           dir="ltr"
-                          value={createData.phone}
+                                          value={createData.phone}
+                      placeholder="+962799504930"
+
                           className="block w-full mt-1"
                           isFocused={true}
                           onChange={(e) => setCreateData("phone", e.target.value)}
@@ -462,7 +464,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       type="text"
                       name="whatsapp"
                       dir="ltr"
-                      value={createData.whatsapp}
+                                          value={createData.whatsapp}
+                      placeholder="+962799504930"
+
                       className="block w-full mt-1"
                       isFocused={true}
                       onChange={(e) => setCreateData("whatsapp", e.target.value)}
@@ -495,7 +499,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
       {/* Modal for editing a user */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="sm:w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">تعديل المستخدم</h2>
             </div>
@@ -549,7 +553,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
 
                               <div className="mb-4">
-                        <InputLabel htmlFor="edit_user_name" value={"الاسام الكامل"} />
+                        <InputLabel htmlFor="edit_user_name" value={"الاسم الكامل"} />
                         <TextInput
                             id="edit_user_name"
                             type="text"
@@ -618,7 +622,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           type="text"
                           name="phone"
                           dir="ltr"
-                          value={editData.phone}
+                                          value={editData.phone}
+                      placeholder="+962799504930"
+
                           className="block w-full mt-1"
                           isFocused={true}
                           onChange={(e) => setEditData("phone", e.target.value)}
@@ -632,7 +638,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       type="text"
                       name="whatsapp"
                       dir="ltr"
-                      value={editData.whatsapp}
+                                          value={editData.whatsapp}
+                      placeholder="+962799504930"
+                                          
                       className="block w-full mt-1"
                       isFocused={true}
                       onChange={(e) => setEditData("whatsapp", e.target.value)}

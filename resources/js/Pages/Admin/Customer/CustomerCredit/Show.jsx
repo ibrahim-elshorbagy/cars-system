@@ -26,7 +26,7 @@ export default function Index({ auth, site_settings, record }) {
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " + " سند قبض رصيد "} />
+      <Head title={site_settings.websiteName + " - " + " سند  رصيد "} />
 
       {/* Main Container */}
         <div className="p-4 mt-6 bg-white shadow-lg Customer_Credit_print sm:p-6 md:p-10 dark:bg-gray-900 dark:text-white">
@@ -34,55 +34,67 @@ export default function Index({ auth, site_settings, record }) {
           {/* Header */}
           <div className="flex items-center justify-between pb-4 mb-8 border-b-2 border-gray-500">
             <div>
-              <h1 className="text-xs font-bold lg:text-2xl ">{site_settings.websiteName}</h1>
-              <p className="text-xs lg:text-lg">{site_settings.phone}</p>
-              <p className="text-xs lg:text-lg">{site_settings.email}</p>
+              <h1 className="text-3xl font-bold">{site_settings.websiteName}</h1>
+              <p className="text-1xl ">{site_settings.phone}</p>
+              <p className="text-1xl ">{site_settings.email}</p>
             </div>
             <div>
               <img
                 src={site_settings.websiteLogo}
                 alt="Website Logo"
-                className="h-8 lg:h-20"
+                className="h-24"
               />
             </div>
           </div>
 
-          {/* Receipt Details */}
-          <div className="pb-6 mb-8 text-lg border-b-2 border-gray-500 sm:text-xl lg:text-2xl">
-            <div className="text-right">
-              <h2 className="text-xl font-bold sm:text-2xl lg:text-3xl">
-                {record.added_credit > 0 ? "سند قبض" : "سند صرف"}
-              </h2>
-              <p className="my-2 text-xl sm:text-2xl lg:text-2xl"> رقم : {record.id}</p>
-              <p className="my-2 text-xl sm:text-2xl lg:text-2xl"> تاريخ الانشاء : {record.created_at}</p>
+            {/* Receipt Details */}
+            <div className="pb-6 mb-8 text-lg border-b-2 border-gray-500 sm:text-xl lg:text-2xl">
+                <div className="text-right">
+                <h2 className="text-xl font-bold sm:text-2xl lg:text-3xl">
+                    {record.added_credit > 0 ? "سند قبض" : "سند تسديد ذمم"}
+                </h2>
+                <p className="my-2 text-xl "> رقم : {record.id}</p>
+                <p className="my-2 text-xl "> تاريخ الانشاء : {record.created_at}</p>
+                    </div>
+
+                <p className="mt-10 ">
+                {record.added_credit > 0 ? (
+                    <>وصلنا من السادة: {record.customer_company} مبلغ وقدره {record.added_credit} $ ليصبح رصيده الاجمالي {record.balance} $ حتى تاريخ هذا السند.</>
+                ) : record.used_credit > 0 ? (
+                    <> {record.description} , ليصبح الرصيد الاجمالي {record.balance} $ حتى تاريخ هذا السند.</>
+                ) : (
+                    <>الرصيد الاجمالي للسيد: {record.customer_name} هو {record.balance} $ حتى تاريخ هذا السند.</>
+                )}
+                </p>
+
             </div>
 
-            <p className="mt-10 font-bold"> وصل للسيد : {record.customer_name}</p>
-            <p className="mt-3 "> الشركه : {record.customer_company}</p>
 
-            <p className="my-5 "> الوصف : {record.description}</p>
-
-            {record.added_credit > 0 && (
-              <p className="my-5 "> رصيد مضاف : {record.added_credit} $</p>
-            )}
-
-            {record.used_credit > 0 && (
-              <p className="my-5 "> رصيد مستخدم : {record.used_credit} $</p>
-            )}
-
-            <p className="my-5 "> الرصيد : {record.balance} $</p>
-          </div>
             {/* Footer Details */}
-          <div className="text-lg sm:gap-8 lg:gap-12 sm:text-xl lg:text-2xl">
-            {/* <div>
-              <p className="font-bold">تاريخ الانشاء</p>
-              <p>{record.created_at}</p>
-            </div> */}
-            <div>
-              <p className="font-bold">المحاسب</p>
-              <p>{auth.user.name}</p>
+            <div className="grid grid-cols-4">
+                <div>
+                    <p className="font-bold">أنشئ بواسطة</p>
+                    <p>{record.created_by ? record.created_by : "غير متوفر"}</p>
+                </div>
+                <div>
+                    <p className="font-bold">تاريخ الإنشاء</p>
+                    <p>{record.created_at}</p>
+                </div>
+
+                {/* Conditionally render the updated fields if updated_by is present */}
+                {record.updated_by && (
+                    <>
+                    <div>
+                        <p className="font-bold">تاريخ التعديل</p>
+                        <p>{record.updated_at}</p>
+                    </div>
+                    <div>
+                        <p className="font-bold">آخر تعديل بواسطة</p>
+                        <p>{record.updated_by}</p>
+                    </div>
+                    </>
+            )}
             </div>
-          </div>
 
 
       </div>

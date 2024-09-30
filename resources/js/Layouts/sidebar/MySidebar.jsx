@@ -56,7 +56,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                     permissions: ["read-customer-credit"],
                 },
                 {
-                    text: "تسديد ذمم",
+                    text: "تسديد الذمم",
                     href: "bill-payment.index",
                     icon: <RiBillFill />,
                     permissions: ["read-bill"],

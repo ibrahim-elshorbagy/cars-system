@@ -265,12 +265,14 @@ const handleCustomerSelect = (customer) => {
     };
 
 // --------------------------- handel open Show modal ----------------
-
+const [thePayment,setThePayment] = useState(null)
     const toggleShowModal = (payment = null) => {
         if (payment) {
-        const customer = customerList.find((c) => c.customer_id === payment.customer_id);
+            const customer = customerList.find((c) => c.customer_id === payment.customer_id);
 
+            setThePayment(payment);
 
+            console.log(payment);
         if (customer) {
             setSelectedCustomer(customer);
 
@@ -282,6 +284,8 @@ const handleCustomerSelect = (customer) => {
 
                     bill_id: bill.bill_id,
                     car_chassis: bill.car_chassis,
+                    car_make: bill.car_make,
+                    car_model: bill.car_model,
 
                     won_price: bill.won_price,
                     won_price_paid_amount:bill.won_price_paid_amount,
@@ -344,7 +348,7 @@ const handleCustomerSelect = (customer) => {
             <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
               {visibleDanger}
             </div>
-          )}
+                  )}
           {/* Payments table */}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
             <div className="p-6 text-gray-900 dark:text-gray-100">
@@ -356,9 +360,9 @@ const handleCustomerSelect = (customer) => {
                       <th className="p-3">الشركة</th>
                       <th className="p-3">القيمة الكليه</th>
                       {/* <th className="p-3">صندوق</th> */}
-                      <th className="p-3">اضافه بواسطه</th>
-                      <th className="p-3">تحديث بواسطه</th>
-                      <th className="p-3">تاريخ الانشاء</th>
+                      {/* <th className="p-3">اضافه بواسطه</th> */}
+                      {/* <th className="p-3">تحديث بواسطه</th> */}
+                      {/* <th className="p-3">تاريخ الانشاء</th> */}
                       <th className="p-3">تاريخ التحديث</th>
                       <th className="p-3">الإجراءات</th>
                     </tr>
@@ -374,9 +378,9 @@ const handleCustomerSelect = (customer) => {
                           <td className="px-3 py-2 text-nowrap">{payment.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.total_amount}</td>
                           {/* <td className="px-3 py-2 text-nowrap">{payment.box_name}</td> */}
-                          <td className="px-3 py-2 text-nowrap">{payment.created_by}</td>
-                          <td className="px-3 py-2 text-nowrap">{payment.updated_by}</td>
-                          <td className="px-3 py-2 text-nowrap">{payment.created_at}</td>
+                          {/* <td className="px-3 py-2 text-nowrap">{payment.created_by}</td> */}
+                          {/* <td className="px-3 py-2 text-nowrap">{payment.updated_by}</td> */}
+                          {/* <td className="px-3 py-2 text-nowrap">{payment.created_at}</td> */}
                           <td className="px-3 py-2 text-nowrap">{payment.updated_at}</td>
                               <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-billPayment") && (
@@ -472,7 +476,7 @@ const handleCustomerSelect = (customer) => {
                 <table className="w-full text-center text-gray-700 dark:text-white">
                     <thead>
                     <tr>
-                        <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">VIN</th>
                         <th className="p-2 text-xs text-nowrap md:text-base">Won Price</th>
                         <th className="p-2 text-xs text-nowrap md:text-base">Won Price Paid</th>
                         <th className="p-2 text-xs text-nowrap md:text-base">Won Price Remain</th>
@@ -553,7 +557,7 @@ const handleCustomerSelect = (customer) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="relative w-11/12 max-h-screen overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل تسديد</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل التسديد</h2>
             </div>
                     <div className="p-6">
 
@@ -589,7 +593,7 @@ const handleCustomerSelect = (customer) => {
                   <table className="w-full text-center text-gray-700 dark:text-white">
                     <thead>
                     <tr>
-                        <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">VIN</th>
                         <th className="p-2 text-xs text-nowrap md:text-base">Won Price</th>
                         <th className="p-2 text-xs text-nowrap md:text-base">Won Price Paid</th>
                         <th className="p-2 text-xs text-nowrap md:text-base">Won Price Remain</th>
@@ -669,21 +673,37 @@ const handleCustomerSelect = (customer) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="relative w-11/12 max-h-screen overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل تسديد</h2>
+              <h2 className="text-lg font-semibold dark:text-white">مشاهده التسديد</h2>
             </div>
                     <div className="p-6">
-
+                            <div className="flex items-center justify-between pb-4 mb-8 border-b-2 border-gray-500">
+                                <div>
+                                <h1 className="text-xs font-bold lg:text-3xl ">{site_settings.websiteName}</h1>
+                                <p className="text-xs lg:text-lg">{site_settings.phone}</p>
+                                <p className="text-xs lg:text-lg">{site_settings.email}</p>
+                                </div>
+                                <div>
+                                <img
+                                    src={site_settings.websiteLogo}
+                                    alt="Website Logo"
+                                    className="h-8 lg:h-16"
+                                />
+                                </div>
+                            </div>
                         <div className="flex gap-5 m-6 text-gray-700 md:text-xl dark:text-white">
                             <span > رصيد العميل : {selectedCustomer.customer_balance} </span>
                             <span > رصيد مستخدم : {selectedCustomer.total_used || 0} </span>
                         </div>
 
                 {showPayment && (
-                    <>
+                              <>
+
                         <table className="w-full text-center text-gray-700 dark:text-white">
                             <thead>
                             <tr>
-                                <th className="p-2 text-xs text-nowrap md:text-base">رقم الهيكل</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">VIN</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Make</th>
+                                <th className="p-2 text-xs text-nowrap md:text-base">Model</th>
                                 <th className="p-2 text-xs text-nowrap md:text-base">Won Price</th>
                                 <th className="p-2 text-xs text-nowrap md:text-base">Won Price Paid</th>
                                 <th className="p-2 text-xs text-nowrap md:text-base">Won Price Remain</th>
@@ -699,6 +719,8 @@ const handleCustomerSelect = (customer) => {
                                 {showPayment.map((bill, index) => (
                                     <tr key={bill.car_chassis}>
                                         <td className="py-4 border-t border-b">{bill.car_chassis}</td>
+                                        <td className="py-4 border-t border-b">{bill.car_make}</td>
+                                        <td className="py-4 border-t border-b">{bill.car_model}</td>
                                         <td className="py-4 border-t border-b">{bill.won_price}</td>
                                         <td className="py-4 border-t border-b">{bill.won_price_paid_amount}</td>
                                         <td className="py-4 border-t border-b">{bill.remain_won_price}</td>
@@ -714,7 +736,42 @@ const handleCustomerSelect = (customer) => {
                             </tbody>
                         </table>
                     </>
-                )}
+                          )}
+                        {thePayment && (
+                            <div className="mt-10 text-gray-700 dark:text-white">
+                            <h3 className="mb-4 text-xl font-bold">تفاصيل السند</h3>
+                            <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                                {/* Created By */}
+                                <div>
+                                <p className="font-bold">أنشئ بواسطة:</p>
+                                <p>{thePayment.created_by ? thePayment.created_by : "غير متوفر"}</p>
+                                </div>
+
+                                {/* Created At */}
+                                <div>
+                                <p className="font-bold">تاريخ الإنشاء:</p>
+                                <p>{thePayment.created_at}</p>
+                                </div>
+
+                                {/* Updated By - Conditional Rendering */}
+
+                                <div>
+                                    <p className="font-bold">آخر تعديل بواسطة:</p>
+                                    <p>{thePayment.updated_by}</p>
+                                </div>
+
+
+                                {/* Updated At - Conditional Rendering */}
+
+                                <div>
+                                    <p className="font-bold">تاريخ آخر تعديل:</p>
+                                    <p>{thePayment.updated_at}</p>
+                                </div>
+
+                            </div>
+                            </div>
+                        )}
+
                 <div className="flex justify-end gap-2 mt-6">
                     <button
                         type="button"

@@ -439,6 +439,8 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           id="phone"
                           type="text"
                                           name="phone"
+                      placeholder="+962799504930"
+
                         dir="ltr"
                           value={createData.phone}
                           className="block w-full mt-1"
@@ -451,7 +453,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <TextInput
                       id="whatsapp"
                       type="text"
-                      name="whatsapp"
+                                          name="whatsapp"
+                      placeholder="+962799504930"
+                                          
                       dir="ltr"
                       value={createData.whatsapp}
                       className="block w-full mt-1"
@@ -575,10 +579,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       <TextInput
                           id="edit_phone"
                           type="text"
-                                          name="phone"
-                                          dir="ltr"
+                          name="phone"
+                          dir="ltr"
                           value={editData.phone}
                           className="block w-full mt-1"
+                          placeholder="+962799504930"
 
                           onChange={(e) => setEditData("phone", e.target.value)}
                       />
@@ -590,9 +595,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       id="edit_whatsapp"
                       type="text"
                       name="whatsapp"
-                                          value={editData.whatsapp}
-                                          dir="ltr"
+                      value={editData.whatsapp}
+                      dir="ltr"
                       className="block w-full mt-1"
+                      placeholder="+962799504930"
+
 
                       onChange={(e) => setEditData("whatsapp", e.target.value)}
                   />

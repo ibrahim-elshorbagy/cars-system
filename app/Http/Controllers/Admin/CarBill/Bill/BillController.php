@@ -31,7 +31,15 @@ class BillController extends Controller
         $payments = $query->paginate(25)->onEachSide(1);
 
         // Load customers and boxes list
-        $customers = User::role('customer')->select('id','name')->with('credits','bills')->get();
+       $customers = User::role('customer')
+        ->select('id', 'name')
+        ->with([
+            'credits',
+            'bills.car.model',
+            'bills.car.make'
+        ])
+        ->get();
+
         $boxeslist = Box::all();
 
         // Return data to the frontend
@@ -243,7 +251,7 @@ class BillController extends Controller
                 $query->where("email", "like", "%" . request("email") . "%");
             }
 
-            $customers = $query->with('credits', 'bills', 'customer')->paginate(25)->onEachSide(1);
+            $customers = $query->with('credits', 'bills.paymentBills', 'customer')->paginate(25)->onEachSide(1);
 
 
             return inertia("Admin/CarBill/Bill/Reports/CustomersBills", [

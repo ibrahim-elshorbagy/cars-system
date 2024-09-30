@@ -73,8 +73,9 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
 
   const toggleEditModal = (model = null) => {
     if (model) {
-      setEditingModel(model);
-      setEditData({
+        setEditingModel(model);
+        console.log(editingModel);
+        setEditData({
         name: model.name,
         make_id: model.make_id,
         _method: "PUT",
@@ -382,7 +383,14 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
 // Combobox for selecting makes
 function ComboboxMakes({ items, onItemSelect, placeholder, selectedMakeId, emptyMessage }) {
   const [open, setOpen] = useState(false);
-  const [selectedMake, setSelectedMake] = useState(selectedMakeId ? items.find((item) => item.id === selectedMakeId) : null);
+  const [selectedMake, setSelectedMake] = useState(null);
+
+  useEffect(() => {
+    if (selectedMakeId) {
+      const make = items.find((item) => String(item.id) === String(selectedMakeId));
+      setSelectedMake(make || null);
+    }
+  }, [selectedMakeId, items]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

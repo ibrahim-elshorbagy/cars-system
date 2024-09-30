@@ -39,8 +39,10 @@ class UserPaymentsResource extends JsonResource
 
                 // 6. Return the bill information including the car's chassis number, costs, paid amounts, and remaining amounts:
                 return [
-
+                    'car'=> $bill->car,
                     'car_chassis' => $bill->car->chassis, // car info for every bill
+                    'car_make' => $bill->car && $bill->car->make ? $bill->car->make->name : 'N/A',
+                    'car_model' => $bill->car && $bill->car->model ? $bill->car->model->name : 'N/A',
 
                     'bill_id' => $bill->id, // car info for every bill
 
