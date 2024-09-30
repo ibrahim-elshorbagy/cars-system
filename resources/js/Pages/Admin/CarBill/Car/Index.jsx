@@ -543,8 +543,12 @@ const handleEditVinBlur = () => {
         </div>
       </div>
 
+
+
+
+
       {/* Modal for adding a new car */}
-      {isCreateModalOpen && (
+    {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
             <form onSubmit={handleCreateCar} className="relative w-10/12 max-h-[95vh] overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
@@ -1063,7 +1067,7 @@ const handleEditVinBlur = () => {
         </div>
 
 
-      )}
+    )}
 
 
 
@@ -1305,7 +1309,7 @@ const handleEditVinBlur = () => {
                                                     </SelectInput>
                                                 </div>
 
-                                          
+
                                                 <div >
                                                         <InputLabel htmlFor="edit_lot" className="my-2 text-xl text-nowrap" value={"Lot /Stock"} />
                                                         <TextInput
@@ -1620,66 +1624,73 @@ const handleEditVinBlur = () => {
 }
 
 // Combobox for selecting makes
+
 function ComboboxMakes({ items, onItemSelect, placeholder, selectedMakeId, emptyMessage }) {
-  const [open, setOpen] = useState(false);
-  const [selectedMake, setSelectedMake] = useState(null);
 
-  // Use useEffect to sync selectedMake with selectedMakeId prop changes
-  useEffect(() => {
-    if (selectedMakeId) {
-      const newSelectedMake = items.find((item) => item.id === selectedMakeId) || null;
-      setSelectedMake(newSelectedMake);
-    } else {
-      setSelectedMake(null); // Reset if no selectedMakeId
+    const [open, setOpen] = useState(false);
+    const [selectedMake, setSelectedMake] = useState(null);
+
+
+    useEffect(() => {
+        if (selectedMakeId) {
+            const newSelectedMake = items.find((item) => String(item.id) === String(selectedMakeId)) || null;
+            setSelectedMake(newSelectedMake);
+            } else {
+            setSelectedMake(null);
+            }
+    }, [selectedMakeId, items]);
+
+    return (
+        <Popover open={open} onOpenChange={setOpen}>
+
+            <PopoverTrigger asChild>
+                <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="justify-between w-full"
+                >
+                {selectedMake ? selectedMake.name : placeholder}
+                <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+                </Button>
+            </PopoverTrigger>
+
+
+            <PopoverContent className="w-full p-0">
+                <Command>
+                <CommandInput placeholder="ابحث ..." />
+                <CommandList>
+                    {items && items.length === 0 ? (
+                    <CommandEmpty>{emptyMessage}</CommandEmpty>
+                    ) : (
+                    <CommandGroup>
+                        {items &&
+                        items.map((item) => (
+                            <CommandItem
+                            key={item.id}
+                            value={item.name}
+                            onSelect={() => {
+                                setSelectedMake(item);
+                                onItemSelect(item);
+                                setOpen(false);
+                            }}
+                            >
+                            <Check
+                                className={`mr-2 h-4 w-4 ${
+                                selectedMake?.id === item.id ? 'opacity-100' : 'opacity-0'
+                                }`}
+                            />
+                            {item.name}
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
+                    )}
+                </CommandList>
+                </Command>
+            </PopoverContent>
+
+
+        </Popover>
+    );
     }
-  }, [selectedMakeId, items]); // Re-run if selectedMakeId or items change
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="justify-between w-full"
-        >
-          {selectedMake ? selectedMake.name : placeholder}
-          <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
-        <Command>
-          <CommandInput placeholder="ابحث ..." />
-          <CommandList>
-            {items && items.length === 0 ? (
-              <CommandEmpty>{emptyMessage}</CommandEmpty>
-            ) : (
-              <CommandGroup>
-                {items &&
-                  items.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      value={item.name}
-                      onSelect={() => {
-                        setSelectedMake(item);
-                        onItemSelect(item);
-                        setOpen(false);
-                      }}
-                    >
-                      <Check
-                        className={`mr-2 h-4 w-4 ${
-                          selectedMake?.id === item.id ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      />
-                      {item.name}
-                    </CommandItem>
-                  ))}
-              </CommandGroup>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
 

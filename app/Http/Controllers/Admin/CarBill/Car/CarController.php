@@ -29,6 +29,12 @@ use App\Models\Admin\Transportation\Terminal;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
+
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\AutoEncoder;
+
+
 class CarController extends Controller
 {
     public function index()
@@ -116,21 +122,38 @@ class CarController extends Controller
             }
 
             // Handle images upload
-            if ($request->hasFile('images')) {
+                $manager = new ImageManager(new Driver());
+
                 foreach ($request->file('images') as $image) {
-                    // Store the image and get its path
-                    $imagePath = $image->store('/cars/'. $car->user_id . '/' . $car->id . '/images', 'public');
+                        // Generate the directory path
+                        $directoryPath = 'cars/' . $car->user_id . '/' . $car->id . '/images';
 
-                    // Get the public URL of the stored image
-                    $imageUrl = Storage::url($imagePath);
+                        // Ensure the directory exists
+                        if (!Storage::disk('public')->exists($directoryPath)) {
+                            Storage::disk('public')->makeDirectory($directoryPath, 0755, true);
+                        }
 
-                    // Save the image URL in the database
-                    CarImage::create([
-                        'car_id' => $car->id,
-                        'image_url' => $imageUrl,
-                    ]);
+                        // Generate the full image path
+                        $imagePath = $directoryPath . '/' . uniqid('car_') . '.' . $image->getClientOriginalExtension();
+
+                        // Read the image using Intervention Image
+                        $img = $manager->read($image);
+
+
+                        // Save the image with compression
+                        $fullPath = Storage::disk('public')->path($imagePath);
+                        $img->save($fullPath, 80);
+
+                        // Get the public URL of the stored image
+                        $imageUrl = Storage::url($imagePath);
+
+                        // Save the image URL in the database
+                        CarImage::create([
+                            'car_id' => $car->id,
+                            'image_url' => $imageUrl,
+                        ]);
                 }
-            }
+
 
             DB::commit();
 
@@ -211,15 +234,39 @@ class CarController extends Controller
 
                 // 4. Store new images (if any)
                 if ($request->hasFile('images')) {
+
+                    $manager = new ImageManager(new Driver());
+
                     foreach ($request->file('images') as $image) {
-                        $imagePath = $image->store('/cars/'.$car->user_id . '/' . $car->id . '/images', 'public');
+                        // Generate the directory path
+                        $directoryPath = 'cars/' . $car->user_id . '/' . $car->id . '/images';
+
+                        // Ensure the directory exists
+                        if (!Storage::disk('public')->exists($directoryPath)) {
+                            Storage::disk('public')->makeDirectory($directoryPath, 0755, true);
+                        }
+
+                        // Generate the full image path
+                        $imagePath = $directoryPath . '/' . uniqid('car_') . '.' . $image->getClientOriginalExtension();
+
+                        // Read the image using Intervention Image
+                        $img = $manager->read($image);
+
+                        // Save the image with compression
+                        $fullPath = Storage::disk('public')->path($imagePath);
+                        $img->save($fullPath, 80);
+
+                        // Get the public URL of the stored image
+                        $imageUrl = Storage::url($imagePath);
+
+                        // Save the image URL in the database
                         CarImage::create([
                             'car_id' => $car->id,
-                            'image_url' => Storage::url($imagePath),
+                            'image_url' => $imageUrl,
                         ]);
                     }
                 }
-            }
+        }
 
 
             // Commit the transaction

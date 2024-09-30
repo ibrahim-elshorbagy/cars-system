@@ -210,19 +210,21 @@ const [selectedImage, setSelectedImage] = useState(null);
                 className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
                 onClick={closeModal}
                 >
-                <div className="relative">
-                    <button
-                    className="absolute text-3xl text-white top-2 right-2"
-                    onClick={closeModal}
-                    >
-                    &times;
-                    </button>
-                    <img
-                    className="max-w-[90%] max-h-[90%]"
-                    src={selectedImage}
-                    alt="Selected Car"
-                    />
-                </div>
+                    <div className="relative">
+                        <button
+                        className="absolute text-3xl text-white top-2 right-2"
+                        onClick={closeModal}
+                        >
+                        &times;
+                      </button>
+
+                        <img
+                            className="max-w-[90%] max-h-[90%]"
+                            src={selectedImage}
+                            alt="Selected Car"
+                      />
+
+                    </div>
                 </div>
           )}
 

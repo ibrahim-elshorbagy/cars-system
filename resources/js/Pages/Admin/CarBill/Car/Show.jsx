@@ -212,7 +212,8 @@ export default function Show({ auth, site_settings, car }) {
                         onClick={closeModal}
                         >
                         &times;
-                        </button>
+                      </button>
+
                         <img
                         className="max-w-[90%] max-h-[90%]"
                         src={selectedImage}
