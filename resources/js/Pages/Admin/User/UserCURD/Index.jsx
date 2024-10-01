@@ -640,7 +640,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       dir="ltr"
                                           value={editData.whatsapp}
                       placeholder="+962799504930"
-                                          
+
                       className="block w-full mt-1"
                       isFocused={true}
                       onChange={(e) => setEditData("whatsapp", e.target.value)}

@@ -680,6 +680,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("create-customer-credit")}
                             onChange={() => handleCheckboxChange("create-customer-credit")}
+                            disabled={role.id == 2 ||role.id == 3}
+
                           />
                         </td>
                         <td className="px-6 py-4">اضافة رصيد</td>
@@ -691,6 +693,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("read-customer-credit")}
                             onChange={() => handleCheckboxChange("read-customer-credit")}
+
                           />
                         </td>
                         <td className="px-6 py-4">سجل الرصيد</td>
@@ -704,6 +707,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("reverse-customer-credit")}
                             onChange={() => handleCheckboxChange("reverse-customer-credit")}
+
+                            disabled={role.id == 2 ||role.id == 3}
                           />
                         </td>
                         <td className="px-6 py-4">عملية رصيد عكسيه</td>
@@ -772,6 +777,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("create-billPayment")}
                             onChange={() => handleCheckboxChange("create-billPayment")}
+                            disabled={role.id == 2 ||role.id == 3}
+
                           />
                         </td>
                         <td className="px-6 py-4">انشاء عمليه تسديد ذمه </td>
@@ -783,6 +790,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("update-billPayment")}
                             onChange={() => handleCheckboxChange("update-billPayment")}
+                            disabled={role.id == 2 ||role.id == 3}
+
                           />
                         </td>
                         <td className="px-6 py-4">تحديث عملية تسديد ذمه </td>
@@ -794,6 +803,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("delete-billPayment")}
                             onChange={() => handleCheckboxChange("delete-billPayment")}
+                            disabled={role.id == 2 ||role.id == 3}
+
                           />
                         </td>
                         <td className="px-6 py-4">حذف عملية تسديد ذمه</td>
@@ -816,6 +827,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("view-admin-dashboard")}
                             onChange={() => handleCheckboxChange("view-admin-dashboard")}
+                            disabled={role.id == 3}
                           />
                         </td>
                         <td className="px-6 py-4">لوحة تحكم الخاصه بمستخدمي النظام</td>
@@ -827,6 +839,8 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             type="checkbox"
                             checked={data.permissions.includes("for-customer-view-dashboard")}
                             onChange={() => handleCheckboxChange("for-customer-view-dashboard")}
+                            disabled={role.id != 3}
+
                           />
                         </td>
                         <td className="px-6 py-4">لوحة التحكم الخاصه ب العملاء </td>

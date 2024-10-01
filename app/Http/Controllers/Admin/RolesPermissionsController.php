@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class RolesPermissionsController extends Controller
 {
@@ -16,6 +17,8 @@ class RolesPermissionsController extends Controller
 
         return inertia('Admin/RolesPermissions/Index', [
             'roles' => $roles,
+            'success' => session('success'),
+            'danger' => session('danger'),
         ]);
     }
 
@@ -42,11 +45,20 @@ class RolesPermissionsController extends Controller
         $data = $request->validate([
             'permissions' => 'array|required', // Expecting an array of permissions
         ]);
+        DB::beginTransaction();
 
+        try {
         // Sync the role's permissions with the selected ones
         $role->syncPermissions($data['permissions']);
+          DB::commit();
 
-        return redirect()->route('admin.roles-permissions.index')->with('success', 'Permissions updated successfully.');
+        return redirect()->route('admin.roles-permissions.index')->with('success', 'تم تحديث صلاحيات بنجاح');
+
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of error
+            DB::rollBack();
+            return back()->with('danger' , $e->getMessage());
+        }
     }
 
 }

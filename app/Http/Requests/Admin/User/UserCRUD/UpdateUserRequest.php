@@ -42,10 +42,9 @@ class UpdateUserRequest extends FormRequest
             ],
             "role" => ["required", "integer"],
             'box_id' => [
-            Rule::requiredIf(function () {
-                return $this->input('role') == 4; // Ensure box_id is required if role is 4 (Accountant)
-            }),
-            'exists:boxes,id', // Ensure the box exists in the database
+                Rule::requiredIf(fn() => $this->input('role') == 4),
+                'nullable',
+                'exists:boxes,id'
         ],
         ];
     }

@@ -188,7 +188,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             العملاء
           </h2>
-          {auth.user.permissions.includes("create-user") && (
+          {auth.user.permissions.includes("create-customer") && (
             <button
               onClick={toggleCreateModal}
               className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
@@ -310,7 +310,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             {user.created_at}
                           </td>
                           <td className="px-3 py-2 text-nowrap">
-                            {auth.user.permissions.includes("update-user") && (user.id !=1) && (
+                            {auth.user.permissions.includes("update-customer") && (user.id !=1) && (
                               <button
                                  onClick={() => toggleEditModal(user)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -318,7 +318,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-user") && (user.id !=1) &&  (
+                            {auth.user.permissions.includes("delete-customer") && (user.id !=1) &&  (
                               <button
                                 onClick={() => deleteUser(user)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
@@ -455,7 +455,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       type="text"
                                           name="whatsapp"
                       placeholder="+962799504930"
-                                          
+
                       dir="ltr"
                       value={createData.whatsapp}
                       className="block w-full mt-1"
