@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Bill\PaymentBill;
+use App\Models\Admin\Car\Car;
 
 class DashboardController extends Controller
 {
@@ -32,10 +33,12 @@ class DashboardController extends Controller
     {
 
 
+        $carStatusCounts = Car::selectRaw('ship_status, COUNT(*) as count')
+            ->groupBy('ship_status')
+            ->pluck('count', 'ship_status');
 
-        // Passing data to the frontend
         return inertia('Admin/Dashboard', [
-
+            'carStatusCounts' => $carStatusCounts
         ]);
     }
 
@@ -65,6 +68,8 @@ class DashboardController extends Controller
                                 $query->where('user_id', $userId);
                             })->sum(DB::raw('won_price_amount + shipping_cost_amount'));
 
+        $carsCount = Car::where('user_id', $userId)->count();
+
 
         return inertia('Customer/Dashboard',[
             'customer_balance' => $customer_balance,
@@ -72,6 +77,7 @@ class DashboardController extends Controller
             'total_shipping_cost' => $total_shipping_cost,
             'total_require' => $total_require,
             'total_paid' => $total_paid,
+            'carsCount' => $carsCount,
 
         ]);
     }

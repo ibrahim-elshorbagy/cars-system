@@ -74,7 +74,6 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
   const toggleEditModal = (model = null) => {
     if (model) {
         setEditingModel(model);
-        console.log(editingModel);
         setEditData({
         name: model.name,
         make_id: model.make_id,

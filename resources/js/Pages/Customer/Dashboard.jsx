@@ -9,10 +9,12 @@ import {
     CardTitle,
 } from "@/Components/ui/card";
 import { FaBalanceScale, FaMoneyBill, FaShippingFast, FaExclamationCircle, FaMoneyCheckAlt } from "react-icons/fa";
+import { IoCarSportSharp } from "react-icons/io5";
+import { Link } from "@inertiajs/react";
 
 
 
-const Dashboard = ({ auth,site_settings,customer_balance,total_won_price,total_shipping_cost,total_require,total_paid }) => {
+const Dashboard = ({ auth,site_settings,customer_balance,total_won_price,total_shipping_cost,total_require,total_paid,carsCount }) => {
 
 
     return (
@@ -23,14 +25,36 @@ const Dashboard = ({ auth,site_settings,customer_balance,total_won_price,total_s
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
                         <div className="gap-4 p-6 text-gray-900 dark:text-gray-100">
                             <div className="grid grid-cols-1 gap-4 py-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                                    {/* Customer Balance */}
+                                {/* Customer Cars */}
+                                <Link href={route('customer-my-cars.index')}>
+
+                                    <Card className="bg-white dark:bg-gray-900">
+                                        <CardHeader>
+                                            <div className="flex items-center gap-3">
+                                                <IoCarSportSharp  className="mr-3 text-3xl text-indigoBlue" />
+                                                <div>
+                                                    <CardTitle>My Cars</CardTitle>
+                                                    <CardDescription>سياراتي</CardDescription>
+                                                </div>
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="text-lg font-bold text-indigoBlue ">
+                                                {carsCount}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+
+                                </Link>
+
+                                {/* Customer Balance */}
                                     <Card className="bg-white dark:bg-gray-900">
                                         <CardHeader>
                                             <div className="flex items-center gap-3">
                                                 <FaBalanceScale className="mr-3 text-3xl text-green-500" />
                                                 <div>
                                                     <CardTitle>Customer Balance</CardTitle>
-                                                    <CardDescription>رصيد العميل</CardDescription>
+                                                    <CardDescription>رصيد العميل </CardDescription>
                                                 </div>
                                             </div>
                                         </CardHeader>
@@ -121,20 +145,18 @@ const Dashboard = ({ auth,site_settings,customer_balance,total_won_price,total_s
     );
 };
 
-const DashboardHeader = () => {
-
-    return (
-        <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
-            {"لوحة التحكم"}
-        </h2>
-    );
-};
 
 Dashboard.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
         site_settings={page.props.site_settings}
-        header={<DashboardHeader />}
+        header={
+
+            <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
+            لوحة التحكم
+            </h2>
+
+        }
     >
         {page}
     </AuthenticatedLayout>

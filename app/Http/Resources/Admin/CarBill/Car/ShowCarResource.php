@@ -5,6 +5,7 @@ namespace App\Http\Resources\Admin\CarBill\Car;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class ShowCarResource extends JsonResource
 {
@@ -53,6 +54,8 @@ class ShowCarResource extends JsonResource
 
             'created_by' => $this->createdBy->name ?? null,
             'updated_by' => $this->updatedBy->name ?? null,
+            'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
+            'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
 
 
         ];

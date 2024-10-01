@@ -73,14 +73,17 @@ class DatabaseSeeder extends Seeder
         );
 
     $statuses = [
-            ['id' => 1, 'name' => 'Pending'],
-            ['id' => 2, 'name' => 'Loading'],
-            ['id' => 3, 'name' => 'Shipped'],
-            ['id' => 4, 'name' => 'Delivered'],
-            ['id' => 5, 'name' => 'Dispatch'],
-            ['id' => 6, 'name' => 'Picked up'],
+            ['id' => 1, 'name' => 'Purchased'],
+            ['id' => 2, 'name' => 'Payment done'],
+            ['id' => 3, 'name' => 'Dispached'],
+            ['id' => 4, 'name' => 'Picked up'],
+            ['id' => 5, 'name' => 'At warehouse'],
+            ['id' => 6, 'name' => 'Loading'],
             ['id' => 7, 'name' => 'Booked'],
+            ['id' => 8, 'name' => 'Shipped'],
+            ['id' => 9, 'name' => 'Delivered'],
         ];
+
 
         // Seed the ship statuses into the database
         foreach ($statuses as $status) {

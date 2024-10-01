@@ -226,8 +226,8 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الدور</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">تاريخ الإنشاء</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الاضافة</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">التحديث</td>
                       <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
                     </tr>
                   </thead>
@@ -285,7 +285,6 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
-                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -318,10 +317,19 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                 "No WhatsApp"
                             )}
                             </td>
-                          <td className="px-3 py-2">{user.role}</td>
-                          <td className="px-3 py-2 text-nowrap">
-                            {user.created_at}
-                          </td>
+                            <td className="px-3 py-2">
+                            <span className="flex flex-col gap-2">
+                                <span>{user.created_by}</span>
+                                <span className="text-xs">{user.created_at}</span>
+                            </span>
+                            </td>
+                            <td className="px-3 py-2">
+                            <span className="flex flex-col gap-2">
+                                <span>{user.updated_by}</span>
+                                <span className="text-xs">{user.updated_at}</span>
+                            </span>
+                            </td>
+
                           <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-customer") && (user.id !=1) && (
                               <button

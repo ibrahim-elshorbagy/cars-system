@@ -56,6 +56,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
     const [visibleDanger, setVisibleDanger] = useState(danger);
     const [operationPerformed, setOperationPerformed] = useState(false);
 
+    const [VinDataMsg, setVinDataMsg] = useState(''); // State to hold VIN ERROR messages
+
     useEffect(() => {
     if (success && operationPerformed) {
         setVisibleSuccess(success);
@@ -125,6 +127,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         if (!isCreateModalOpen) {
             createReset();
             setVin('');
+            setVinDataMsg('');
         }
 
     };
@@ -187,7 +190,12 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                 });
         };
 
-// ------------------------------------------------------------------------------------------------------------ handel search for make and model and year with VIN
+// ------------------------------------------------------------------------------------------------------------ handel search VIN on create
+    const handleCreateVinChange = (e) => {
+        const value = e.target.value ?? '';
+            setVin(value);
+            setCreateData('chassis',value)
+    };
 
   // Handle VIN input blur event and make a request to Laravel API route
     const handleVinBlur = () => {
@@ -198,9 +206,30 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
         const vinData = response.data.response[0];
         const { Make, Model, ModelYear, VIN } = vinData;
 
+        let errorMessage = '';
+
+        if (vinData.Model === '' || vinData.Make === '') {
+            errorMessage = 'لا يوجد بيانات لهذا VIN';
+            setVinDataMsg(errorMessage.trim());
+
+            return;
+
+        }
+
         // Ensure all values are properly initialized
         const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
         const modelEntry = models.find((mod) => mod.name.toLowerCase() === Model.toLowerCase() && String(mod.make_id) === String(makeEntry?.id));
+
+                if (!makeEntry && !modelEntry) {
+                    errorMessage = ` الماركه ${Make} و الموديل ${Model} غير مسجلين بالنظام.`;
+                } else if (!makeEntry) {
+                    errorMessage = ` الماركه ${Make} غير مسجله بالنظام.`;
+                } else if (!modelEntry) {
+                    errorMessage = ` الموديل ${Model} غير مسجل بالنظام.`;
+                }
+
+        setVinDataMsg(errorMessage.trim());
+
 
         // Set createData state properly
         setCreateData({
@@ -249,6 +278,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
             editReset();
             setEditNewImages([]);
             setEditingCar(car);
+            setVinDataMsg('');
 
             setEditData({
                     make_id: car.make_id,
@@ -359,6 +389,13 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
 //------------------------------------------------------------------------------------------------------------------ Handel Vin selection on edit
 
+
+    const handleEditVinChange = (e) => {
+        const value = e.target.value ?? '';
+            setEditVin(value);
+            setEditData('chassis',value)
+    };
+
 const handleEditVinBlur = () => {
   if (!editVin) return;
 
@@ -368,9 +405,27 @@ const handleEditVinBlur = () => {
         const vinData = response.data.response[0];
         const { Make, Model, ModelYear, VIN } = vinData;
 
+        let errorMessage = '';
+
+        if (vinData.Model === '' || vinData.Make === '') {
+            errorMessage = 'لا يوجد بيانات لهذا VIN';
+            setVinDataMsg(errorMessage.trim());
+            return;
+        }
+
         // Ensure all values are properly initialized
         const makeEntry = makes.find((m) => m.name.toLowerCase() === Make.toLowerCase());
         const modelEntry = models.find((mod) => mod.name.toLowerCase() === Model.toLowerCase() && String(mod.make_id) === String(makeEntry?.id));
+
+            if (!makeEntry && !modelEntry) {
+                errorMessage = ` الماركه ${Make} و الموديل ${Model} غير مسجلين بالنظام.`;
+            } else if (!makeEntry) {
+                errorMessage = ` الماركه ${Make} غير مسجله بالنظام.`;
+            } else if (!modelEntry) {
+                errorMessage = ` الموديل ${Model} غير مسجل بالنظام.`;
+            }
+
+            setVinDataMsg(errorMessage.trim());
 
 
       // Set editData state properly
@@ -446,8 +501,6 @@ const handleEditVinBlur = () => {
                       <th className="p-3">ID</th>
                       <th className="p-3">اسم الشركه</th>
                       <th className="p-3">VIN</th>
-                      <th className="p-3">اضافة بواسطة</th>
-                      <th className="p-3">تحديث بواسطة</th>
                       <th className="p-3">Status</th>
                       <th className="p-3 text-center">الإجراءات</th>
                     </tr>
@@ -475,8 +528,6 @@ const handleEditVinBlur = () => {
                       </th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
-                      <th className="p-3"></th>
-                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -491,8 +542,6 @@ const handleEditVinBlur = () => {
                               <td className="px-3 py-2">{car.id}</td>
                           <td className="px-3 py-2 text-nowrap">{car.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.created_by}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.updated_by}</td>
                           <td className="px-3 py-2 text-nowrap">{car.ship_status}</td>
                           <td className="flex justify-center gap-2 px-3 py-2 text-center">
                             {auth.user.permissions.includes("update-car") && (
@@ -572,7 +621,7 @@ const handleEditVinBlur = () => {
                                             <InputLabel className="mt-2 text-xl text-nowrap" htmlFor="user_id" value={"Customer"} />
                                             <div className="flex gap-5 mt-2">
                                             <ComboboxMakes
-                                                items={customers}
+                                                items={customers.data}
                                                 onItemSelect={(item) => setCreateData("user_id", item.id)}
                                                 selectedMakeId={createData.user_id}
                                                 placeholder="اختر العميل"
@@ -582,8 +631,12 @@ const handleEditVinBlur = () => {
                                             </div>
                                         </div>
 
-                                        <div >
-                                            <InputLabel htmlFor="vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                        <div>
+                                                <div className="flex items-center gap-5">
+                                                <InputLabel htmlFor="vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                                <InputError message={VinDataMsg} className="mt-2 text-xs" />
+
+                                                </div>
                                             <div className="flex gap-5 mt-2">
 
                                                 <TextInput
@@ -591,15 +644,16 @@ const handleEditVinBlur = () => {
                                                     type="text"
                                                     name="vin"
                                                     className="block w-full mt-1"
-                                                    onChange={(e) => setVin(e.target.value ?? '')}
+                                                    onChange={handleCreateVinChange}
                                                     onBlur={handleVinBlur}
                                                     value={vin ?? ''}
 
                                                 />
                                                 <InputError  message={'*'} className="mt-2 text-xl"  />
                                             </div>
-                                        </div>
 
+
+                                        </div>
                                         <div>
                                             <InputLabel className="text-xl text-nowrap" htmlFor="make_id" value="Make" />
                                             <div className="flex gap-5 mt-2">
@@ -1109,7 +1163,7 @@ const handleEditVinBlur = () => {
                                             <div className="flex gap-5 mt-2">
 
                                             <ComboboxMakes
-                                                items={customers}
+                                                items={customers.data}
                                                 onItemSelect={(item) => setEditData("user_id", item.id)}
                                                 selectedMakeId={editData.user_id}
                                                 placeholder="اختر العميل"
@@ -1119,8 +1173,12 @@ const handleEditVinBlur = () => {
                                                 </div>
                                         </div>
 
-                                        <div>
+                                          <div>
+                                            <div className="flex items-center gap-5">
                                             <InputLabel htmlFor="edit_vin" className="mt-2 text-xl text-nowrap" value={"VIN"} />
+                                            <InputError message={VinDataMsg} className="mt-2 text-xs" />
+
+                                            </div>
                                             <div className="flex gap-5 mt-2">
                                                 <TextInput
                                                 id="edit_vin"
@@ -1128,7 +1186,7 @@ const handleEditVinBlur = () => {
                                                 name="edit_vin"
                                                 className="block w-full mt-1"
                                                 value={editVin ?? ''}
-                                                onChange={(e) => setEditVin(e.target.value ?? '')}
+                                                onChange={handleEditVinChange}
                                                 onBlur={handleEditVinBlur}
                                                 />
                                                 <InputError message={'*'} className="mt-2 text-xl" />

@@ -272,7 +272,6 @@ const [thePayment,setThePayment] = useState(null)
 
             setThePayment(payment);
 
-            console.log(payment);
         if (customer) {
             setSelectedCustomer(customer);
 

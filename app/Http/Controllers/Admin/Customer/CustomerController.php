@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -44,7 +45,7 @@ Full opertions For Customers (add,delete ,update)
                 });
         }
 
-        $users = $query->with('customer')->paginate(25)->onEachSide(1);
+        $users = $query->with(['customer', 'customer.createdBy', 'customer.updatedBy'])->paginate(25)->onEachSide(1);
 
         return inertia("Admin/Customer/Index", [
             "users" => CustomerResource::collection($users),
@@ -63,6 +64,8 @@ Full opertions For Customers (add,delete ,update)
     {
         $data = $request->validated();
 
+        DB::beginTransaction();
+        try {
 
         $data['email_verified_at'] = now();
         $data['password'] = bcrypt($data['password']);
@@ -74,6 +77,7 @@ Full opertions For Customers (add,delete ,update)
         Customer::create([
             'user_id' => $user->id,
             'customer_company'=>$data['customer_company'],
+            "created_by" => Auth()->user()->id
         ]);
 
         $site_name = Setting::where('name', 'site_name')->value('value');
@@ -83,10 +87,17 @@ Full opertions For Customers (add,delete ,update)
         $whatsappNumber = $data['whatsapp'];
         $message = "عميلنا العزيز، يمكنك الدخول لنظام \"{$site_name}\" عن طريق الرابط \"{$site_url}\" باستخدام معلومات الدخول التالية: اسم المستخدم \"{$user->user_name}\" وكلمة المرور \"{$request->password}\"، علماً بأن البريد الإلكتروني المعتمد هو \"{$user->email}\".";
 
+        DB::commit();
 
         return back()->with('success', "تم انشاء العميل بنجاح")
             ->with('whatsapp_redirect', 'https://wa.me/' . $whatsappNumber . '?text=' . urlencode($message));
+        } catch (\Exception $e) {
 
+            DB::rollBack();
+
+
+            return back()->with('danger', 'حدث خطأ : ' . $e->getMessage());
+        }
     }
 
 
@@ -96,6 +107,9 @@ Full opertions For Customers (add,delete ,update)
     public function update(UpdateCustomerRequest $request, User $customer)
     {
         $data = $request->validated();
+
+        DB::beginTransaction();
+        try {
 
         // Handle WhatsApp message redirection only if the password is updated
         $whatsapp_redirect = null;
@@ -123,16 +137,27 @@ Full opertions For Customers (add,delete ,update)
         // Update the customer details
         $customer->update($data);
         if(isset($data['customer_company'])){
-        $customer->customer()->update(['customer_company'=>$data['customer_company']]);
+        $customer->customer()->update([
+                'customer_company'=>$data['customer_company'],
+                'updated_by' => Auth()->user()->id
+                    ]);
         }
         // If password was updated, include the WhatsApp redirect in the response
         if ($whatsapp_redirect) {
             return back()->with('success', 'تم تحديث العميل بنجاح')
                 ->with('whatsapp_redirect', $whatsapp_redirect);
         }
+            DB::commit();
 
         // Return success message without WhatsApp redirect for other updates
         return back()->with('success', 'تم تحديث العميل بنجاح');
+
+          } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with('danger', 'حدث خطأ : ' . $e->getMessage());
+        }
     }
 
 

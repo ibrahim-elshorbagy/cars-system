@@ -241,7 +241,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                 transitionDuration={300}
                 backgroundColor="white dark:bg-gray-800"
             >
-                <div className="flex items-center justify-between p-4 overflow-hidden">
+                <div className="flex items-center justify-between p-6 pt-4 pb-12 overflow-hidden">
                     <h1
                         className={`flex gap-2 text-xl font-bold text-white dark:text-white transition-all duration-300 ${
                             collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"

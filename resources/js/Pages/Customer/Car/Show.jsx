@@ -76,11 +76,11 @@ const [selectedImage, setSelectedImage] = useState(null);
                             <th className="px-3 py-3 ">{car.model_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Model</td>
                         </tr>
-                        <tr className="bg-white dark:bg-gray-800">
+                        <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.color}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Color</td>
                         </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
+                        <tr className="bg-white dark:bg-gray-800">
                             <th className="px-3 py-3 ">{car.year}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Year</td>
                         </tr>
@@ -97,8 +97,6 @@ const [selectedImage, setSelectedImage] = useState(null);
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Title</td>
                         </tr>
 
-
-
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">
                             {car.carfax_report_url ? (
@@ -111,6 +109,26 @@ const [selectedImage, setSelectedImage] = useState(null);
                             </th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Carfax Report</td>
                         </tr>
+
+
+                        <tr className="bg-White dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.created_at}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">تاريخ الانشاء</td>
+                        </tr>
+                            <tr className="bg-gray-100 dark:bg-gray-700">
+                            <th className="px-3 py-3 ">{car.created_by}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">انشئ بوسطة</td>
+                        </tr>
+                            {/* <tr className="bg-white dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.updated_at}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">تاريخ التحديث</td>
+                        </tr>
+                        <tr className="bg-gray-100 dark:bg-gray-700">
+                            <th className="px-3 py-3 ">{car.updated_by}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">تحديث بواسطه</td>
+                        </tr> */}
+
+
                         </tbody>
                     </table>
                     </TabsContent>
@@ -139,7 +157,7 @@ const [selectedImage, setSelectedImage] = useState(null);
                             <th className="px-3 py-3 ">{car.vendor_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Vendor</td>
                         </tr>
-                        <tr className="bg-white dark:bg-gray-800">
+                        <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.destination_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Destination</td>
                         </tr>
@@ -152,7 +170,7 @@ const [selectedImage, setSelectedImage] = useState(null);
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Facility</td>
                         </tr>
 
-                        <tr className="bg-gray-100 dark:bg-gray-700">
+                        <tr className="bg-white dark:bg-gray-800">
                             <th className="px-3 py-3 ">{car.terminal_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Terminal</td>
                         </tr>
@@ -167,13 +185,13 @@ const [selectedImage, setSelectedImage] = useState(null);
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.arrival_date}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Arrival Date</td>
-                                              </tr>
+                        </tr>
 
-                        <tr className="bg-gray-100 dark:bg-gray-700">
+                        <tr className="bg-white dark:bg-gray-800">
                             <th className="px-3 py-3 ">{car.won_price}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Won Price</td>
                         </tr>
-                        <tr className="bg-white dark:bg-gray-800">
+                        <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.shipping_cost}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Shipping Cost</td>
                         </tr>

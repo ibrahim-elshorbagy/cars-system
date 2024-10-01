@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\CarBill\Car;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Car\CarStore;
 use App\Http\Requests\Admin\Car\CarUpdate;
+use App\Http\Resources\Admin\CarBill\Car\CustomerResource;
 use App\Http\Resources\Admin\CarBill\Car\ShowCarResource;
 
 
@@ -63,7 +64,7 @@ class CarController extends Controller
         $makes = Make::all();
         $models = Modell::all();
         $shipStatus =ShipStatus::all();
-        $customers = User::role('customer')->select('id','name')->get();
+        $customers = User::role('customer')->select('id','name')->with('customer')->get();
         $boxeslist = Box::all();
 
 
@@ -74,7 +75,7 @@ class CarController extends Controller
             'success' => session('success'),
             'danger' => session('danger'),
 
-            'customers'=>$customers,
+            'customers'=>CustomerResource::collection($customers),
             'boxeslist' => $boxeslist,
 
             'vendors'   =>$vendors,
