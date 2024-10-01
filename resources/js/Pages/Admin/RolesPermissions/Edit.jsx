@@ -768,7 +768,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                             onChange={() => handleCheckboxChange("read-bill")}
                           />
                         </td>
-                        <td className="px-6 py-4">مشاهده حركات الذمم</td>
+                        <td className="px-6 py-4">مشاهدة حركات الذمم</td>
                       </tr>
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">create-billPayment</td>

@@ -53,7 +53,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       {/* <th className="p-3">ID</th> */}
-                      <th className="p-3 text-xs text-nowrap md:text-base">رقم الشاسيه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">VIN</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">سعر الشراء</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">حالة االشحن</th>
@@ -66,7 +66,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.chassis}
-                          placeholder={"رقم الشاسيه"}
+                          placeholder={"VIN"}
                           onBlur={(e) => searchFieldChanged("chassis", e.target.value)}
                           onKeyPress={(e) => onKeyPress("chassis", e)}
                         />
@@ -97,7 +97,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                                 href={route("customer-my-car.show", car.id)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                             >
-                            مشاهده
+                            مشاهدة
                             </Link>
                           </td>
                         </tr>

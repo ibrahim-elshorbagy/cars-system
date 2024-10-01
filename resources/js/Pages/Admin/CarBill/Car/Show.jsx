@@ -70,6 +70,22 @@ export default function Show({ auth, site_settings, car }) {
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Chassis</td>
                         </tr>
                         <tr className="bg-gray-100 dark:bg-gray-700">
+                            <th className="px-3 py-3 ">{car.make_name}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Make</td>
+                        </tr>
+                        <tr className="bg-white dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.model_name}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Model</td>
+                        </tr>
+                        <tr className="bg-white dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.color}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Color</td>
+                        </tr>
+                        <tr className="bg-gray-100 dark:bg-gray-700">
+                            <th className="px-3 py-3 ">{car.year}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Year</td>
+                        </tr>
+                        <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="flex justify-end px-3 py-3">
                             {car.keys == 1 ? <FaCheck className="w-6 h-6 text-green-500" /> : <FaTimes className="w-6 h-6 text-red-500" />}
                             </th>
@@ -81,22 +97,9 @@ export default function Show({ auth, site_settings, car }) {
                             </th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Title</td>
                         </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="px-3 py-3 ">{car.make_name}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Make</td>
-                        </tr>
-                        <tr className="bg-white dark:bg-gray-800">
-                            <th className="px-3 py-3 ">{car.color}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Color</td>
-                        </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="px-3 py-3 ">{car.year}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Year</td>
-                        </tr>
-                        <tr className="bg-white dark:bg-gray-800">
-                            <th className="px-3 py-3 ">{car.model_name}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Model</td>
-                        </tr>
+
+
+
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">
                             {car.carfax_report_url ? (
@@ -117,6 +120,10 @@ export default function Show({ auth, site_settings, car }) {
                     <TabsContent value="shipping">
                     <table className="w-full text-sm text-left text-gray-500 ltr:text-left dark:text-gray-100">
                         <tbody>
+                        <tr className="bg-white dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.ship_status}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Status</td>
+                        </tr>
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.lot}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Lot/Sotok</td>
@@ -133,29 +140,22 @@ export default function Show({ auth, site_settings, car }) {
                             <th className="px-3 py-3 ">{car.vendor_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Vendor</td>
                         </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="px-3 py-3 ">{car.facility_name}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Facility</td>
+                        <tr className="bg-white dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.destination_name}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Destination</td>
                         </tr>
                         <tr className="bg-white dark:bg-gray-800">
                             <th className="px-3 py-3 ">{car.line_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Shipping Line</td>
                         </tr>
                         <tr className="bg-gray-100 dark:bg-gray-700">
+                            <th className="px-3 py-3 ">{car.facility_name}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Facility</td>
+                        </tr>
+
+                        <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.terminal_name}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Terminal</td>
-                        </tr>
-                        <tr className="bg-white dark:bg-gray-800">
-                            <th className="px-3 py-3 ">{car.ship_status}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Status</td>
-                        </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="px-3 py-3 ">{car.won_price}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Won Price</td>
-                        </tr>
-                        <tr className="bg-white dark:bg-gray-800">
-                            <th className="px-3 py-3 ">{car.shipping_cost}</th>
-                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Shipping Cost</td>
                         </tr>
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.date_won}</th>
@@ -168,7 +168,17 @@ export default function Show({ auth, site_settings, car }) {
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.arrival_date}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Arrival Date</td>
+                                              </tr>
+                                              
+                        <tr className="bg-gray-100 dark:bg-gray-700">
+                            <th className="px-3 py-3 ">{car.won_price}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Won Price</td>
                         </tr>
+                        <tr className="bg-white dark:bg-gray-800">
+                            <th className="px-3 py-3 ">{car.shipping_cost}</th>
+                            <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Shipping Cost</td>
+                        </tr>
+
                         </tbody>
                     </table>
                     </TabsContent>

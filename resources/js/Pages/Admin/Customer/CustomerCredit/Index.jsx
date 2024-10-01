@@ -267,8 +267,8 @@ const {
                       <th className="p-3 text-xs text-nowrap md:text-base">الرصيد</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الوصف</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الصندوق</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">اضافه بواسطه</th>
-                      {/* <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th> */}
+                      <th className="p-3 text-xs text-nowrap md:text-base">اضافة بواسطة</th>
+                      {/* <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطة</th> */}
                       {/* <th className="p-3 text-xs text-nowrap md:text-base">وقت التحديث</th> */}
                       <th className="p-3 text-xs text-nowrap md:text-base">اجراءات</th>
                     </tr>
@@ -278,7 +278,7 @@ const {
                       <th className="p-3"></th>
                       <th className="p-3"></th>
 
-                      <th className="p-3 min-w-60 max-w-96">
+                      <th className="p-3 min-w-32 max-w-36">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -311,7 +311,7 @@ const {
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.added_credit}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.used_credit}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.balance}</td>
-                          <td className="px-3 py-2 text-xs md:text-base min-w-80 max-w-96">{record.description}</td>
+                          <td className="px-3 py-2 text-xs md:text-base min-w-44 max-w-44">{record.description}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.box_name}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.created_by}</td>
                           {/* <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.updated_by}</td> */}
@@ -321,7 +321,7 @@ const {
                                 href={route("customer-credit.show", record.id)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                             >
-                            مشاهده
+                            مشاهدة
                             </Link>
                           </td>
                           {/* <td className="px-3 py-2 text-nowrap">

@@ -107,7 +107,7 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
                     <th className="p-3 text-xs text-nowrap md:text-base">الوصف</th>
                     <th className="p-3 text-xs text-nowrap md:text-base">تم بواسطه</th>
                     <th className="p-3 text-xs text-nowrap md:text-base">تاريخ الانشاء</th>
-                    <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th>
+                    <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطة</th>
                     <th className="p-3 text-xs text-nowrap md:text-base">تاريخ التحديث</th>
                   </tr>
                 </thead>

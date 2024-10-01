@@ -210,8 +210,8 @@ useEffect(() => {
                       <th className="p-3 text-xs text-nowrap md:text-base">من الصندوق</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">إلى الصندوق</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">القيمة</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">اضافه بواسطه</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">اضافة بواسطة</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">تحديث بواسطة</th>
 
                       <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
                     </tr>

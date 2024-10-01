@@ -360,8 +360,8 @@ const [thePayment,setThePayment] = useState(null)
                       <th className="p-3">الشركة</th>
                       <th className="p-3">القيمة الكليه</th>
                       {/* <th className="p-3">صندوق</th> */}
-                      {/* <th className="p-3">اضافه بواسطه</th> */}
-                      {/* <th className="p-3">تحديث بواسطه</th> */}
+                      {/* <th className="p-3">اضافة بواسطة</th> */}
+                      {/* <th className="p-3">تحديث بواسطة</th> */}
                       {/* <th className="p-3">تاريخ الانشاء</th> */}
                       <th className="p-3">تاريخ التحديث</th>
                       <th className="p-3">الإجراءات</th>
@@ -403,7 +403,7 @@ const [thePayment,setThePayment] = useState(null)
                                     onClick={() => toggleShowModal(payment)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                               >
-                                مشاهده
+                                مشاهدة
                               </button>
                           </td>
                         </tr>
@@ -673,7 +673,7 @@ const [thePayment,setThePayment] = useState(null)
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="relative w-11/12 max-h-screen overflow-y-auto transition-all duration-300 ease-in-out transform bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">مشاهده التسديد</h2>
+              <h2 className="text-lg font-semibold dark:text-white">مشاهدة التسديد</h2>
             </div>
                     <div className="p-6">
                             <div className="flex items-center justify-between pb-4 mb-8 border-b-2 border-gray-500">

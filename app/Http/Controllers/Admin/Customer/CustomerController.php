@@ -38,6 +38,12 @@ Full opertions For Customers (add,delete ,update)
             $query->where("email", "like", "%" . request("email") . "%");
         }
 
+        if (request("customer_company")) {
+                $query->whereHas('customer', function($q) {
+                    $q->where("customer_company", "like", "%" . request("customer_company") . "%");
+                });
+        }
+
         $users = $query->with('customer')->paginate(25)->onEachSide(1);
 
         return inertia("Admin/Customer/Index", [

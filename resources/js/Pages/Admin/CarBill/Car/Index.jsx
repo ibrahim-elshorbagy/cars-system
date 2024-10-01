@@ -445,9 +445,10 @@ const handleEditVinBlur = () => {
                     <tr className="text-nowrap">
                       <th className="p-3">ID</th>
                       <th className="p-3">اسم الشركه</th>
-                      <th className="p-3">رقم الشاسيه</th>
-                      <th className="p-3">اضافه بواسطه</th>
-                      <th className="p-3">تحديث بواسطه</th>
+                      <th className="p-3">VIN</th>
+                      <th className="p-3">اضافة بواسطة</th>
+                      <th className="p-3">تحديث بواسطة</th>
+                      <th className="p-3">Status</th>
                       <th className="p-3 text-center">الإجراءات</th>
                     </tr>
                   </thead>
@@ -467,11 +468,12 @@ const handleEditVinBlur = () => {
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.chassis}
-                          placeholder={"رقم الشاسيه"}
+                          placeholder={"VIN"}
                           onBlur={(e) => searchFieldChanged("chassis", e.target.value)}
                           onKeyPress={(e) => onKeyPress("chassis", e)}
                         />
                       </th>
+                      <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
@@ -486,11 +488,12 @@ const handleEditVinBlur = () => {
                                         } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={car.id}
                         >
-                          <td className="px-3 py-2">{car.id}</td>
+                              <td className="px-3 py-2">{car.id}</td>
                           <td className="px-3 py-2 text-nowrap">{car.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
                           <td className="px-3 py-2 text-nowrap">{car.created_by}</td>
                           <td className="px-3 py-2 text-nowrap">{car.updated_by}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.ship_status}</td>
                           <td className="flex justify-center gap-2 px-3 py-2 text-center">
                             {auth.user.permissions.includes("update-car") && (
                               <button
@@ -502,26 +505,19 @@ const handleEditVinBlur = () => {
                             )}
 
                                 {auth.user.permissions.includes("delete-car") && (
-                                    car.cant ? (
-                                        <div className="flex items-center">
-                                        <FiLock className="text-red-600" /> {/* Lock icon */}
-                                        <span className="ml-2 text-red-600 dark:text-red-500"></span> {/* Display "Locked" */}
-                                        </div>
-                                    ) : (
                                         <button
                                         onClick={() => deleteCar(car)}
                                         className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                                         >
                                         حذف
                                         </button>
-                                    )
                                 )}
 
                             <Link
                                 href={route("car.show", car.id)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                             >
-                            مشاهده
+                            مشاهدة
                             </Link>
 
                           </td>

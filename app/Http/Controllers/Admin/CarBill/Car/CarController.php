@@ -123,37 +123,38 @@ class CarController extends Controller
 
             // Handle images upload
                 $manager = new ImageManager(new Driver());
+                if ($request->hasFile('images')) {
 
-                foreach ($request->file('images') as $image) {
-                        // Generate the directory path
-                        $directoryPath = 'cars/' . $car->user_id . '/' . $car->id . '/images';
+                    foreach ($request->file('images') as $image) {
+                            // Generate the directory path
+                            $directoryPath = 'cars/' . $car->user_id . '/' . $car->id . '/images';
 
-                        // Ensure the directory exists
-                        if (!Storage::disk('public')->exists($directoryPath)) {
-                            Storage::disk('public')->makeDirectory($directoryPath, 0755, true);
-                        }
+                            // Ensure the directory exists
+                            if (!Storage::disk('public')->exists($directoryPath)) {
+                                Storage::disk('public')->makeDirectory($directoryPath, 0755, true);
+                            }
 
-                        // Generate the full image path
-                        $imagePath = $directoryPath . '/' . uniqid('car_') . '.' . $image->getClientOriginalExtension();
+                            // Generate the full image path
+                            $imagePath = $directoryPath . '/' . uniqid('car_') . '.' . $image->getClientOriginalExtension();
 
-                        // Read the image using Intervention Image
-                        $img = $manager->read($image);
+                            // Read the image using Intervention Image
+                            $img = $manager->read($image);
 
 
-                        // Save the image with compression
-                        $fullPath = Storage::disk('public')->path($imagePath);
-                        $img->save($fullPath, 80);
+                            // Save the image with compression
+                            $fullPath = Storage::disk('public')->path($imagePath);
+                            $img->save($fullPath, 80);
 
-                        // Get the public URL of the stored image
-                        $imageUrl = Storage::url($imagePath);
+                            // Get the public URL of the stored image
+                            $imageUrl = Storage::url($imagePath);
 
-                        // Save the image URL in the database
-                        CarImage::create([
-                            'car_id' => $car->id,
-                            'image_url' => $imageUrl,
-                        ]);
+                            // Save the image URL in the database
+                            CarImage::create([
+                                'car_id' => $car->id,
+                                'image_url' => $imageUrl,
+                            ]);
+                    }
                 }
-
 
             DB::commit();
 

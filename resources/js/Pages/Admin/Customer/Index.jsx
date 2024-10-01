@@ -220,10 +220,10 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">اسم المستخدم</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الاسم</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">اسم الشركه</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">اسم الاتصال</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">اسم الدخول</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الدور</td>
@@ -235,6 +235,29 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     <tr className="text-nowrap">
                         <th className="p-3"></th>
                         <th className="p-3">
+                                              <TextInput
+                          className="w-full"
+                          defaultValue={queryParams.customer_company}
+                          placeholder={"اسم الشركه"}
+                          onBlur={(e) =>
+                            searchFieldChanged("customer_company", e.target.value)
+                          }
+                          onKeyPress={(e) => onKeyPress("customer_company", e)}
+                        />
+                        </th>
+
+                      <th className="p-3">
+                        <TextInput
+                          className="w-full"
+                          defaultValue={queryParams.name}
+                          placeholder={"اسم الاتصال"}
+                          onBlur={(e) =>
+                            searchFieldChanged("name", e.target.value)
+                          }
+                          onKeyPress={(e) => onKeyPress("name", e)}
+                        />
+                        </th>
+                        <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.user_name}
@@ -245,17 +268,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("user_name", e)}
                         />
                       </th>
-                      <th className="p-3">
-                        <TextInput
-                          className="w-full"
-                          defaultValue={queryParams.name}
-                          placeholder={"الاسم"}
-                          onBlur={(e) =>
-                            searchFieldChanged("name", e.target.value)
-                          }
-                          onKeyPress={(e) => onKeyPress("name", e)}
-                        />
-                      </th>
+
                       <th className="p-3">
                         <TextInput
                           className="w-full"
@@ -285,11 +298,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
                           key={user.id}
                         >
-                          <td className="px-3 py-2">{user.id}</td>
-                          <th className="px-3 py-2 text-nowrap">{user.user_name}</th>
-                          <th className="px-3 py-2 text-nowrap">{user.name}</th>
-                          <td className="px-3 py-2">{user.email}</td>
+                              <td className="px-3 py-2">{user.id}</td>
                           <td className="px-3 py-2">{user.customer_company}</td>
+                          <th className="px-3 py-2 text-nowrap">{user.name}</th>
+                          <th className="px-3 py-2 text-nowrap">{user.user_name}</th>
+                          <td className="px-3 py-2">{user.email}</td>
                           <td className="px-3 py-2">{user.phone ? user.phone : "No Phone"}</td>
                             <td className="px-3 py-2">
                             {user.whatsapp ? (
