@@ -117,17 +117,29 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
           site_settings={site_settings}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            الصناديق
-          </h2>
-          {auth.user.permissions.includes("create-box") && (
-            <button
-              onClick={toggleCreateModal}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
-            >
-              اضافة جديد
-            </button>
-          )}
+            <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                الصناديق
+            </h2>
+
+            <div className="flex items-center gap-3">
+                {auth.user.permissions.includes("read-box-transaction") && (
+                        <Link
+                        href={route('box.index.transaction')}
+                        className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-500 hover:bg-burntOrangeHover"
+                        >
+                        موجودات الصندوق
+                        </Link>
+                    )}
+                {auth.user.permissions.includes("create-box") && (
+                    <button
+                    onClick={toggleCreateModal}
+                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                    >
+                    اضافة جديد
+                    </button>
+                )}
+
+            </div>
         </div>
       }
     >
@@ -230,7 +242,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
       {/* Modal for adding a new box */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="sm:w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold text-black dark:text-white ">إضافة صندوق جديد</h2>
             </div>
@@ -276,7 +288,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
       {/* Modal for editing a box */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="sm:w-1/2 transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold">تعديل الصندوق</h2>
             </div>

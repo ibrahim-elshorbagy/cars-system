@@ -156,23 +156,26 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       {/* <th className="p-3">ID</th> */}
-                      <th className="p-3 text-xs text-nowrap md:text-base">VIN</th>
+                      <th className="p-2 text-xs text-nowrap md:text-base">VIN</th>
 
 
 
-                      <th className="p-3 text-xs text-nowrap md:text-base ">سعر الشراء</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base ">مدفوع</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base ">متبقي</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">سعر الشراء</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">مدفوع</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">متبقي</th>
 
-                      <th className="p-3 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base ">مدفوع</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base ">متبقي</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base ">الإجراءات</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">مدفوع</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">متبقي</th>
+
+                        <th className="p-2 text-xs text-nowrap md:text-base ">مجموع الذمم</th>
+
+                        <th className="p-2 text-xs text-nowrap md:text-base ">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                        <th className="p-3">
+                        <th className="p-2">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.chassis}
@@ -181,6 +184,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                           onKeyPress={(e) => onKeyPress("chassis", e)}
                         />
                       </th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -201,7 +205,20 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                           key={car.id}
                         >
                           {/* <td className="px-3 py-2">{car.id}</td> */}
-                            <td className="p-3 text-nowrap">{car.chassis}</td>
+                                <td className="p-3 text-nowrap">
+                                <div className="flex flex-col items-start">
+                                    {/* VIN Name */}
+                                    <span className="text-lg font-bold lg:text-xl">{car.chassis}</span>
+
+                                    {/* Car Details */}
+                                    <div className="text-sm text-gray-600 lg:text-base">
+                                    <span className="mr-1">{car.make_name}</span>
+                                    <span className="mr-1">{car.model_name}</span>
+                                    <span>{car.year}</span>
+                                    </div>
+                                </div>
+                                </td>
+
 
                             <td className="p-2 text-nowrap">{car.won_price}</td>
                             <td className="p-2 text-nowrap">{car.paid_won_price}</td>
@@ -210,6 +227,9 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                             <td className="p-2 text-nowrap">{car.shipping_cost}</td>
                             <td className="p-2 text-nowrap">{car.paid_shipping_cost}</td>
                             <td className="p-2 text-nowrap">{car.remain_shipping_cost}</td>
+
+                            <td className="p-2 text-nowrap">{parseFloat(car.remain_shipping_cost) + parseFloat(car.remain_won_price)}</td>
+
 
 
 
