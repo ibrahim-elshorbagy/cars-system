@@ -22,7 +22,8 @@ class Accountant extends Model
 
     public function box(){
 
-        return $this->belongsTo(Box::class, 'user_id');
+    return $this->belongsTo(Box::class, 'box_id', 'id');
+    
     }
 
 }

@@ -30,11 +30,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
+        if ($user) {
+            $user->load(['accountant.box']);
+            // $user->load(['accountant.box', 'customer']);
+        }
+
         $websiteName = Setting::where('name', 'site_name')->value('value');
         $websiteLogo = Setting::where('name', 'company_logo')->value('value');
         $site_cover = Setting::where('name', 'site_cover')->value('value');
         $phone = Setting::where('name', 'support_phone')->value('value');
         $email = Setting::where('name', 'support_email')->value('value');
+
         return [
             ...parent::share($request),
             'auth' => [
@@ -45,8 +53,14 @@ class HandleInertiaRequests extends Middleware
                         'id' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
-                        'box_id'=> $user->accountant->box_id ?? null,
-                        'box_name'=> $user->accountant->box->name ?? null,
+                        'phone' => $user->phone,
+                        'whatsapp' => $user->whatsapp,
+                        'user_name' => $user->user_name,
+
+                        // 'customer_company' => $user->customer?->customer_company ?? null,
+                        'box_id'=> $user->accountant?->box_id ?? null,
+                        'box_name'=> $user->accountant?->box->name ?? null,
+
                         // 'phone' => $user->customer?->phone ?? null,
                         // 'address' => $user->customer?->address ?? null,
                         'roles' => $user->getRoleNames(),

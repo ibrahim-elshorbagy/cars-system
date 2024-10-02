@@ -37,14 +37,13 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-            $customerData = $request->only(['phone', 'address']);
 
             $request->user()->save();
 
-             if ($request->user()->hasRole('customer')) { 
-                $customerData = $request->only(['phone', 'address']);
-                $request->user()->customer()->update($customerData);
-            }
+            //  if ($request->user()->hasRole('customer')) {
+            //     $customerData = $request->only(['customer_company']);
+            //     $request->user()->customer()->update($customerData);
+            // }
 
         return Redirect::route('profile.edit');
     }

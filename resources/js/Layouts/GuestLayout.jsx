@@ -109,27 +109,21 @@ export default function Guest({ children ,site_settings }) {
             </nav>
 
             {children}
-            <footer dir="ltr" className="py-6 text-white bg-gray-900">
-                <div className="container flex flex-col items-center justify-between gap-2 px-4 mx-auto">
-                    <div className="flex items-center mb-4 text-sm md:text-base md:mb-0">
-
-                    <span>Auction Tracking & Accounting System By &nbsp;</span>
-
-                    <a href="https://www.webmaster.com.jo/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
-                        Jordan Webmaster™
-                    </a>
-
-                    </div>
-
-
-                    <div className="flex items-center mt-4 text-sm md:text-base md:mt-0">
-                    <span> All rights reserved © 2024 , For support</span>
-                        <a href="https://wa.me/962799504930" target="_blank" rel="noopener noreferrer" className="flex items-center ml-2 text-green-400 hover:text-green-300">
-                        <FaWhatsapp className="mr-1" />+962799504930
-                    </a>
-                    </div>
+        <footer dir="ltr" className="py-6 text-white bg-gray-950">
+            <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
+                <div className="flex flex-col items-center justify-center mb-4 text-sm md:text-base md:mb-0 md:block">
+                    Auction Tracking & Accounting System By &nbsp;<a href="https://www.webmaster.com.jo/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Jordan Webmaster™</a>
                 </div>
-            </footer>
+
+                <div className="grid grid-cols-2 gap-5">
+                    <div>All rights reserved © 2024</div>
+                        <div className="flex flex-col sm:flex-row">
+                            <div>For support</div>
+                            <div><a href="https://wa.me/962799504930" target="_blank" rel="noopener noreferrer" className="flex items-center ml-2 text-green-400 hover:text-green-300">
+                                <FaWhatsapp className="mr-1" />+962799504930 </a></div></div>
+                </div>
+            </div>
+        </footer>
         </div>
 
     );

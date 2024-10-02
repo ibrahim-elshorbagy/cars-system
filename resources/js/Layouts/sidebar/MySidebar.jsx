@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Sidebar, Menu, SubMenu, MenuItem } from "react-pro-sidebar";
-import { MdDashboard, MdChevronLeft, MdChevronRight, MdOutlineCategory, MdInventory } from "react-icons/md";
+import { MdDashboard, MdOutlineAccountBox, MdChevronLeft, MdChevronRight, MdOutlineCategory, MdInventory } from "react-icons/md";
 import SideNavLink from "@/Components/SideNavLink";
 import { Link } from "@inertiajs/react";
 
 import { SiSpringsecurity } from "react-icons/si";
-import { FaUser, FaGavel, FaMapMarkerAlt, FaShip, FaTruck, FaBuilding, FaCar, FaCogs } from "react-icons/fa";
+import { FaUser, FaDatabase, FaGavel, FaMapMarkerAlt, FaShip, FaTruck, FaBuilding, FaCar, FaCogs } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { TbArrowsTransferUp } from "react-icons/tb";
 import { TbReportMoney } from "react-icons/tb";
@@ -28,12 +28,12 @@ const MySidebar = ({ user, site_settings }) => {
         {
             type: "section",
             title: " الشحن (Shipping)",
-            icon: <MdDashboard />,
+            icon: <FaTruck  />,
             links: [
                 {
                     text: "العملاء",
                     href: "customer.index",
-                    icon: <MdDashboard />,
+                    icon: <FaUser />,
                     permissions: ["read-customer"],
                 },
                 {
@@ -47,7 +47,7 @@ const MySidebar = ({ user, site_settings }) => {
         {
             type: "section",
             title: "المحاسبة (Accounting)",
-            icon: <MdDashboard />,
+            icon: <TbReportMoney  />,
             links: [
                             {
                     text: "ارصدة العملاء",
@@ -84,7 +84,7 @@ const MySidebar = ({ user, site_settings }) => {
         {
             type: "section",
             title: "البيانات",
-            icon: <MdDashboard />,
+            icon: <FaDatabase  />,
             links: [
 
                 {
@@ -134,7 +134,7 @@ const MySidebar = ({ user, site_settings }) => {
                 {
             type: "section",
             title: "لوحة التحكم",
-            icon: <MdDashboard />,
+            icon: <IoMdSettings  />,
                     links: [
                 {
                     text: "الاعدادات",
@@ -170,7 +170,7 @@ const MySidebar = ({ user, site_settings }) => {
         {
             type: "section",
             title: "لوحة التحكم",
-            icon: <MdDashboard />,
+            icon: <MdOutlineAccountBox  />,
             permissions: ['for-customer-view-dashboard'],
             links: [
                 {
@@ -259,7 +259,7 @@ const MySidebar = ({ user, site_settings }) => {
                     </button>
                 </div>
                 <div className="px-6 pt-2">
-                    <hr className="border-gray-300 dark:border-gray-900" />
+                    <hr className="border-gray-300 dark:border-gray-500" />
                 </div>
                 <Menu iconShape="square" className="pt-2 text-white dark:text-white">
                     {filteredMenuItems.map((item, index) => {

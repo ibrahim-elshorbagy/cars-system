@@ -15,11 +15,20 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'phone'=>['nullable',' regex:/^\+[1-9]\d{1,14}$/','max:255',Rule::unique('customers')->where(function ($query) {return $query->where('user_id', $this->user()->id);})->ignore($this->route('customer')->id ?? null)],
-            'address'=>["nullable",'string'],
+            'phone' => ['nullable', 'regex:/^\+[1-9]\d{1,14}$/', 'max:255'],
+            'whatsapp' => ['nullable', 'regex:/^\+[1-9]\d{1,14}$/', 'max:255'],
         ];
+
+        if ($this->user()->hasRole('customer')) {
+            $rules['customer_company'] = ['required', 'string'];
+        } else {
+            $rules['customer_company'] = ['nullable', 'string'];
+        }
+
+        return $rules;
     }
 }

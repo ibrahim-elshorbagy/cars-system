@@ -16,9 +16,12 @@ export default function UpdateProfileInformation({
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
+            user_name: user.user_name,
             email: user.email,
             phone: user.phone,
+            whatsapp: user.whatsapp,
             address: user.address,
+            customer_company: user.customer_company,
         });
 
     const submit = (e) => {
@@ -37,6 +40,14 @@ export default function UpdateProfileInformation({
             </header>
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
+                    <InputLabel htmlFor="name" value={"اسم المستخدم"} />
+
+                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    {data.user_name}
+                </h2>
+
+                </div>
+                <div>
                     <InputLabel htmlFor="name" value={"الاسم"} />
 
                     <TextInput
@@ -52,7 +63,6 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
-                {user.permissions.includes("for-customer-view-dashboard") && (
 
                     <div>
 
@@ -63,31 +73,46 @@ export default function UpdateProfileInformation({
                             className="block w-full mt-1"
                             value={data.phone}
                             onChange={(e) => setData("phone", e.target.value)}
-                            required
-                            isFocused
-                            autoComplete="phone"
+                            placeholder="+962799504930"
+                            dir="ltr"
+
+
                         />
 
                         <InputError className="mt-2" message={errors.phone} />
                     </div>
-                )}
 
-                {user.permissions.includes("for-customer-view-dashboard") && (
                     <div>
-                        <InputLabel htmlFor="address" value={"العنوان"} />
+
+                        <InputLabel htmlFor="whatsapp" value={"whatsapp"} />
 
                         <TextInput
-                            id="address"
+                            id="whatsapp"
                             className="block w-full mt-1"
-                            value={data.address}
-                            onChange={(e) => setData("address", e.target.value)}
-                            required
-                            isFocused
-                            autoComplete="address"
+                            value={data.whatsapp}
+                            onChange={(e) => setData("whatsapp", e.target.value)}
+                            placeholder="+962799504930"
+                            dir="ltr"
+
                         />
 
-                        <InputError className="mt-2" message={errors.address} />
-                    </div>)}
+                        <InputError className="mt-2" message={errors.whatsapp} />
+                </div>
+
+
+                    <div>
+                        <InputLabel htmlFor="email" value={"البريد الاكتروني"} />
+
+                        <TextInput
+                            id="email"
+                            className="block w-full mt-1"
+                            type='email'
+                            value={data.email}
+                            onChange={(e) => setData("email", e.target.value)}
+                        />
+
+                        <InputError className="mt-2" message={errors.email} />
+                    </div>
 
 
                 <div className="flex items-center gap-4">

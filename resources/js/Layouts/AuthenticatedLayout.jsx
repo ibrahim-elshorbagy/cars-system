@@ -281,7 +281,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
             </div>
         </div>
 
-        <footer dir="ltr" className="py-6 text-white bg-gray-900">
+        <footer dir="ltr" className="py-6 text-white bg-gray-950">
             <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
                 <div className="flex flex-col items-center justify-center mb-4 text-sm md:text-base md:mb-0 md:block">
                     Auction Tracking & Accounting System By &nbsp;<a href="https://www.webmaster.com.jo/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Jordan Webmaster™</a>
