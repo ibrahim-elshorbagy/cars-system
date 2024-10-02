@@ -78,7 +78,9 @@ export default function Index({ auth, site_settings, customers, payments, succes
 
     setIsCreateModalOpen(!isCreateModalOpen);
     if (!isCreateModalOpen) {
-      createReset();
+        createReset();
+        setSelectedCustomer('');
+
     }
   };
 
@@ -96,17 +98,30 @@ export default function Index({ auth, site_settings, customers, payments, succes
 // --------------------------- Handle customer selection  ----------------
 
 const handleCustomerSelect = (customer) => {
-    setSelectedCustomer(customer);
 
-    const initialPayments = customer.bills.map((bill) => ({
+    setSelectedCustomer(customer);
+    const filteredBills = customer.bills.filter(
+    (bill) => Number(bill.won_price) !== Number(bill.won_price_paid_amount) || Number(bill.shipping_cost) !== Number(bill.shipping_cost_paid_amount)
+    );
+    console.log('filteredBills:', filteredBills)
+    // Map the filtered bills to the initial payments structure
+    const initialPayments = filteredBills.map((bill) => ({
         bill_id: bill.bill_id,
         car_chassis: bill.car_chassis,
-        won_price_payment: 0,
+
+        won_price: bill.won_price,
+        won_price_paid_amount: bill.won_price_paid_amount,
         remain_won_price: bill.remain_won_price,
-        shipping_cost_payment: 0,
+        won_price_payment: 0,
+
+
+        shipping_cost: bill.shipping_cost,
+        shipping_cost_paid_amount: bill.shipping_cost_paid_amount,
         remain_shipping_cost: bill.remain_shipping_cost,
+        shipping_cost_payment: 0,
 
     }));
+
     setCreateData({
         customer_id: customer.customer_id,
         payments: initialPayments,
@@ -116,24 +131,39 @@ const handleCustomerSelect = (customer) => {
 // --------------------------- Handle changes on payment for create form ----------------
 
   // Handle payment change in the form
-  const handlePaymentChange = (index, type, value) => {
+    const handlePaymentChange = (index, type, value) => {
+    // Create a copy of the payments array to avoid mutating state directly
     const updatedPayments = [...createData.payments];
-    updatedPayments[index][type] = value;
-      setCreateData("payments", updatedPayments);
+
+    // Ensure that the index exists in the array to avoid 'undefined' errors
+    if (updatedPayments[index]) {
+        updatedPayments[index][type] = value;
+    }
+
+    // Update the state with the modified payments array
+    setCreateData((prevData) => ({
+        ...prevData,
+        payments: updatedPayments,
+    }));
 
     // Recalculate the total
     const overallTotalUsed = updatedPayments.reduce((total, payment) => {
         return total + (Number(payment.won_price_payment) || 0) + (Number(payment.shipping_cost_payment) || 0);
     }, 0);
 
+    // Update the customer total used
     setSelectedCustomer((prevState) => ({
         ...prevState,
         total_used: overallTotalUsed,
     }));
 
-    setCreateData("total_used", overallTotalUsed);
+    // Update the total used in createData as well
+    setCreateData((prevData) => ({
+        ...prevData,
+        total_used: overallTotalUsed,
+    }));
+    };
 
-  };
 
 
  // --------------------------------------------------- Edit forms defiens --------------------------------
@@ -189,66 +219,76 @@ const handleCustomerSelect = (customer) => {
 
 // --------------------------- handel open edit modal ----------------
 
-    const toggleEditModal = (payment = null) => {
-        if (payment) {
-        // Find the customer from the customer list based on the payment's customer_id
-        const customer = customerList.find((c) => c.customer_id === payment.customer_id); //the customer we edit his payment
+  const toggleEditModal = (payment = null) => {
+    if (payment) {
+      // Find the customer from the customer list based on the payment's customer_id
+      const customer = customerList.find((c) => c.customer_id === payment.customer_id);
 
+      if (customer) {
+        setSelectedCustomer(customer);
 
-        if (customer) {
-            setSelectedCustomer(customer);
-            // Merge customer bills with payment bills (if the bill was already paid)
+        // Merge customer bills with payment bills (if the bill was already paid in this transaction)
+        const allBills = customer.bills
+          .filter((bill) => {
+            // Find if this bill was paid in the current transaction
+            const paymentBill = payment.paid_bills.find(
+              (paid_bill) => String(paid_bill.bill_id) === String(bill.bill_id)
+            );
 
-            const allBills = customer.bills.map((bill) => {
-                // const paymentBill = payment.paid_bills.find(paid_bill => paid_bill.bill_id === bill.bill_id); //the payment and it's paid bills  edit
-                const paymentBill = payment.paid_bills.find(paid_bill => String(paid_bill.bill_id) === String(bill.bill_id));
+            // Include the bill if it has been paid in this transaction or if it is not fully paid
+            return (
+              paymentBill ||
+              Number(bill.won_price) !== Number(bill.won_price_paid_amount) ||
+              Number(bill.shipping_cost) !== Number(bill.shipping_cost_paid_amount)
+            );
+          })
+          .map((bill) => {
+            // Check if this bill has a corresponding payment record in the current transaction
+            const paymentBill = payment.paid_bills.find(
+              (paid_bill) => String(paid_bill.bill_id) === String(bill.bill_id)
+            );
 
+            return {
+              payment_bill_id: paymentBill ? paymentBill.payment_bill_id : null,
+              bill_id: bill.bill_id,
+              car_chassis: bill.car_chassis,
+              won_price: bill.won_price,
+              won_price_paid_amount: bill.won_price_paid_amount,
+              remain_won_price: bill.remain_won_price,
+              won_price_payment: paymentBill ? paymentBill.won_price_paid_on_bill : 0,
+              shipping_cost: bill.shipping_cost,
+              remain_shipping_cost: bill.remain_shipping_cost,
+              shipping_cost_paid_amount: bill.shipping_cost_paid_amount,
+              shipping_cost_payment: paymentBill ? paymentBill.shipping_cost_paid_on_bill : 0,
+            };
+          });
 
-                return {
-                    payment_bill_id: paymentBill ? paymentBill.payment_bill_id : null,
+        // Set the form data for editing
+        setEditData({
+          customer_id: customer.customer_id,
+          payments: allBills,
+          box_id: payment.box_id,
+          total_used: Number(payment.total_amount),
+          _method: "PUT",
+        });
 
-                    bill_id: bill.bill_id,
-                    car_chassis: bill.car_chassis,
+        // Update the selected customer state
+        setSelectedCustomer((prevState) => ({
+          ...prevState,
+          total_used: payment.total_amount,
+        }));
 
-                    won_price: bill.won_price,
-                    won_price_paid_amount:bill.won_price_paid_amount,
-                    remain_won_price: bill.remain_won_price,
-                    won_price_payment: paymentBill ? paymentBill.won_price_paid_on_bill : 0,
-
-
-
-                    shipping_cost:bill.shipping_cost,
-                    remain_shipping_cost: bill.remain_shipping_cost,
-                    shipping_cost_paid_amount: bill.shipping_cost_paid_amount,
-                    shipping_cost_payment: paymentBill ? paymentBill.shipping_cost_paid_on_bill : 0,
-
-                };
-            });
-            // Set the form data for editing
-            setEditData({
-                customer_id: customer.customer_id,
-                payments: allBills,
-                box_id: payment.box_id,
-                total_used: Number(payment.total_amount),
-                _method: "PUT",
-            });
-
-            setSelectedCustomer((prevState) => ({
-                ...prevState,
-                total_used: payment.total_amount,
-            }));
-
-            setEditingPayment(payment);
-        }
+        setEditingPayment(payment);
+      }
     } else {
-        setEditingPayment(null);
-        editReset();
+      setEditingPayment(null);
+      editReset();
     }
 
     // Toggle the modal visibility
     setIsEditModalOpen(!isEditModalOpen);
+  };
 
-};
 // --------------------------- handel delete ----------------
       const deletePayment = (payment) => {
     if (!window.confirm("هل انت متاكد من حذف عملية تسديد الذمم ؟ ")) {
@@ -265,56 +305,55 @@ const handleCustomerSelect = (customer) => {
     };
 
 // --------------------------- handel open Show modal ----------------
-const [thePayment,setThePayment] = useState(null)
-    const toggleShowModal = (payment = null) => {
+const [thePayment, setThePayment] = useState(null)
+
+const toggleShowModal = (payment = null) => {
         if (payment) {
             const customer = customerList.find((c) => c.customer_id === payment.customer_id);
 
-            setThePayment(payment);
+            setThePayment(payment); //for extra info from payment itself like (created_at ..etc)
 
-        if (customer) {
-            setSelectedCustomer(customer);
+            if (customer) {
+                setSelectedCustomer(customer); //we set customer to get  balance + total_used on this payment
 
-            const allBills = customer.bills.map((bill) => {
-                const paymentBill = payment.paid_bills.find(paid_bill => String(paid_bill.bill_id) === String(bill.bill_id));
+                const paidBills = customer.bills
+                    .map((bill) => {
+                        const paymentBill = payment.paid_bills.find(paid_bill => String(paid_bill.bill_id) === String(bill.bill_id));
+                        if (paymentBill) {
+                            return {
+                                payment_bill_id: paymentBill.payment_bill_id,
+                                bill_id: bill.bill_id,
+                                car_chassis: bill.car_chassis,
+                                car_make: bill.car_make,
+                                car_model: bill.car_model,
+                                won_price: bill.won_price,
+                                won_price_paid_amount: bill.won_price_paid_amount,
+                                remain_won_price: bill.remain_won_price,
+                                won_price_payment: paymentBill.won_price_paid_on_bill,
+                                shipping_cost: bill.shipping_cost,
+                                remain_shipping_cost: bill.remain_shipping_cost,
+                                shipping_cost_paid_amount: bill.shipping_cost_paid_amount,
+                                shipping_cost_payment: paymentBill.shipping_cost_paid_on_bill,
+                            };
+                        }
+                        return null;
+                    })
+                    .filter(bill => bill !== null);
 
-                return {
-                    payment_bill_id: paymentBill ? paymentBill.payment_bill_id : null,
+                setSelectedCustomer((prevState) => ({
+                    ...prevState,
+                    total_used: payment.total_amount,
+                }));
+                setShowPayment(paidBills);
+            } else {
+                setShowPayment(null);
+            }
+        }
+        // Toggle the modal visibility
+        setIsShowModalOpen(!isShowModalOpen);
+    };
 
-                    bill_id: bill.bill_id,
-                    car_chassis: bill.car_chassis,
-                    car_make: bill.car_make,
-                    car_model: bill.car_model,
 
-                    won_price: bill.won_price,
-                    won_price_paid_amount:bill.won_price_paid_amount,
-                    remain_won_price: bill.remain_won_price,
-                    won_price_payment: paymentBill ? paymentBill.won_price_paid_on_bill : 0,
-
-                    shipping_cost:bill.shipping_cost,
-                    remain_shipping_cost: bill.remain_shipping_cost,
-                    shipping_cost_paid_amount: bill.shipping_cost_paid_amount,
-                    shipping_cost_payment: paymentBill ? paymentBill.shipping_cost_paid_on_bill : 0,
-
-                };
-            });
-
-            setSelectedCustomer((prevState) => ({
-                ...prevState,
-                total_used: payment.total_amount,
-            }));
-
-            setShowPayment(allBills);
-        }else {
-        setShowPayment(null);
-     }
-
-    }
-
-    // Toggle the modal visibility
-    setIsShowModalOpen(!isShowModalOpen);
-
-};
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -488,7 +527,7 @@ const [thePayment,setThePayment] = useState(null)
                     </tr>
                     </thead>
                     <tbody>
-                    {selectedCustomer.bills.map((bill, index) => (
+                    {createData.payments.map((bill, index) => (
                         <tr key={bill.car_chassis} className="">
                             <td className="py-4 border-t border-b">{bill.car_chassis}</td>
                             <td className="py-4 border-t border-b">{bill.won_price}</td>
@@ -498,9 +537,9 @@ const [thePayment,setThePayment] = useState(null)
                             <td className="py-4 border-t border-b border-l-2">
                                 <TextInput
                                 type="number"
-                                value={createData.payments[index]?.won_price_payment || 0}
+                                // value={createData.payments[index]?.won_price_payment || 0}
                                 onChange={(e) => handlePaymentChange(index, "won_price_payment", e.target.value)}
-                                max={selectedCustomer.bills[index].remain_won_price}
+                                max={bill.remain_won_price}
 
                                 />
                             </td>
@@ -511,9 +550,9 @@ const [thePayment,setThePayment] = useState(null)
                             <td className="py-4 border-t border-b">
                                 <TextInput
                                 type="number"
-                                value={createData.payments[index]?.shipping_cost_payment || 0}
+                                // value={createData.payments[index]?.shipping_cost_payment || 0}
                                 onChange={(e) => handlePaymentChange(index, "shipping_cost_payment", e.target.value)}
-                                max={selectedCustomer.bills[index].remain_shipping_cost}
+                                max={bill.remain_shipping_cost}
 
                                 />
                             </td>
@@ -805,7 +844,7 @@ function ComboboxMakes({ items, onItemSelect, selectedMakeId, placeholder, empty
           aria-expanded={open}
           className="justify-between w-full"
         >
-          {selectedMake ? selectedMake.customer_name : placeholder}
+          {selectedMake ? selectedMake.customer_company : placeholder}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
@@ -820,7 +859,7 @@ function ComboboxMakes({ items, onItemSelect, selectedMakeId, placeholder, empty
                 {items.map((item) => (
                   <CommandItem
                     key={item.customer_id}
-                    value={item.customer_name}
+                    value={item.customer_company}
                     onSelect={() => {
                       setSelectedMake(item);
                       onItemSelect(item);
@@ -834,7 +873,7 @@ function ComboboxMakes({ items, onItemSelect, selectedMakeId, placeholder, empty
                           : "opacity-0"
                       }`}
                     />
-                    {item.customer_name}
+                    {item.customer_company}
                   </CommandItem>
                 ))}
               </CommandGroup>

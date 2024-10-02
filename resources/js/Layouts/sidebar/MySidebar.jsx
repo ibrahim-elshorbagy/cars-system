@@ -269,7 +269,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                                     key={`link-${index}`}
                                     icon={item.icon}
                                     component={<Link href={route(item.href)} />}
-                                    className="py-2 my-2 dark:hover:text-white hover:text-burntOrange"
+                                    className="py-2 my-2 "
                                 >
                                     {item.text}
                                 </MenuItem>
@@ -280,19 +280,20 @@ const MySidebar = ({ user, direction, site_settings }) => {
                                     key={`section-${index}`}
                                     icon={item.icon}
                                     label={item.title}
-                                    className="py-2 my-2 dark:hover:text-white hover:text-burntOrange"
+                                    className="py-2 my-2 bg-indigoBlue dark:bg-gray-900 "
+                                    active={item.href === route().current()}
+                                    open
+
                                 >
                                     {item.links.map((link, idx) => (
                                         <SideNavLink
                                             key={`${idx}-${link.href}`}
                                             href={route(link.href)}
-                                            active={route().current(link.href)}
-                                            className="flex items-center justify-between px-4 py-2"
+                                            active={link.href === route().current()}
+
                                         >
-                                            <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
                                                 {link.icon}
                                                 {link.text}
-                                            </div>
                                         </SideNavLink>
                                     ))}
                                 </SubMenu>

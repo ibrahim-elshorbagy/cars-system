@@ -46,6 +46,16 @@ class UpdatePaymentRequest extends FormRequest
         $validator->after(function ($validator) {
             $this->validateCustomerCredit($validator);
             $this->validateBillPayments($validator);
+
+            // Check if at least one payment is non-zero
+            $totalPayments = collect($this->input('payments'))->sum(function ($payment) {
+                return ($payment['won_price_payment'] ?? 0) + ($payment['shipping_cost_payment'] ?? 0);
+            });
+
+            if ($totalPayments <= 0) {
+                $validator->errors()->add('payments', 'يجب إدخال مبلغ مدفوع على الأقل في واحدة من السيارات.');
+            }
+            
         });
 
         if (auth()->user()->hasRole('Accountant') && !$this->filled('box_id')) {

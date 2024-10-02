@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Admin\Bill\Bill;
 use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Bill\PaymentBill;
+use App\Models\Admin\Box\Box;
+use App\Models\Admin\Box\BoxTransaction;
 use App\Models\Admin\Car\Car;
 
 class DashboardController extends Controller
@@ -31,16 +33,58 @@ class DashboardController extends Controller
 
     public function AdminDashboard()
     {
-
-
         $carStatusCounts = Car::selectRaw('ship_status, COUNT(*) as count')
             ->groupBy('ship_status')
             ->pluck('count', 'ship_status');
 
+        $boxes = []; // Array to hold box information
+
+        if (Auth::user()->hasRole('Accountant')) {
+            // Fetch only the accountant's assigned box
+            $boxId = Auth::user()->accountant->box_id;
+            $totals = BoxTransaction::where('box_id', $boxId)
+                ->selectRaw('box_id, SUM(income) as total_income, SUM(outcome) as total_outcome')
+                ->groupBy('box_id')
+                ->first();
+
+            $boxes[] = [
+                'box' => Box::find($boxId),
+                'total_income' => $totals->total_income ?? 0,
+                'total_outcome' => $totals->total_outcome ?? 0,
+                'net_balance' => ($totals->total_income ?? 0) - ($totals->total_outcome ?? 0),
+            ];
+
+        } elseif (Auth::user()->hasRole('admin')) {
+            // Get all boxes even if they don't have transactions
+            $allBoxes = Box::all();
+
+            // Get totals for boxes that have transactions
+            $totals = BoxTransaction::selectRaw('box_id, SUM(income) as total_income, SUM(outcome) as total_outcome')
+                ->groupBy('box_id')
+                ->get()
+                ->keyBy('box_id');
+
+            // Loop through all boxes and add their totals or zero values
+            foreach ($allBoxes as $box) {
+                $income = $totals->has($box->id) ? $totals[$box->id]->total_income : 0;
+                $outcome = $totals->has($box->id) ? $totals[$box->id]->total_outcome : 0;
+
+                $boxes[] = [
+                    'box' => $box,
+                    'total_income' => $income,
+                    'total_outcome' => $outcome,
+                    'net_balance' => $income - $outcome,
+                ];
+            }
+        }
+
         return inertia('Admin/Dashboard', [
-            'carStatusCounts' => $carStatusCounts
+            'carStatusCounts' => $carStatusCounts,
+            'boxes' => $boxes,
         ]);
     }
+
+
 
 
 

@@ -24,6 +24,7 @@ class UserPaymentsResource extends JsonResource
             // 2. Return the basic Customer information:
             'customer_id' => $this->id,
             'customer_name' => $this->name,
+            'customer_company' => $this->customer->customer_company,
             'customer_balance' => $userCreditBalance,
 
             // 3. Return the customer's associated bills:

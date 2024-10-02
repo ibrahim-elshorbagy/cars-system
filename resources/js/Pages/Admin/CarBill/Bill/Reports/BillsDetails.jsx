@@ -29,7 +29,7 @@ export default function Index({ auth,site_settings, bills }) {
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 lg:p-6 dark:text-gray-100">
                         <div className="overflow-auto">
                         <Accordion type="single" collapsible className="my-6 space-y-4">
                         {bills.map((bill, index) => (
@@ -39,14 +39,32 @@ export default function Index({ auth,site_settings, bills }) {
                             className="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700"
                             >
                             {/* Show Full Details on Medium and Larger Screens */}
-                            <AccordionTrigger className="hidden p-4 font-semibold text-white rounded-t-lg lg:flex bg-indigoBlue dark:bg-indigoBlue">
-                                Cars: {bill.car_chassis} - سعر الشراء ( Won Price ): $ {bill.won_price.amount} , مدفوع ( Paid ): ${bill.won_price.total_paid} - سعر الشحن ( Shipping Cost ): ${bill.shipping_cost.amount} , مدفوع ( Paid ): ${bill.shipping_cost.total_paid}
-                            </AccordionTrigger>
+                                <AccordionTrigger className="p-2 text-xs font-semibold text-white rounded-t-lg lg:text-lg lg:p-4 lg:flex bg-indigoBlue dark:bg-indigoBlue">
+                                        <div className="text-right">
+                                        <div className="text-xl">
+                                        {bill.car_chassis}
+                                        </div>
+                                        <table className="w-full">
+                                            <tbody>
+                                                <tr >
+                                                <td className="text-right lg:py-2 ">سعر الشراء : ${bill.won_price.amount}</td>
+                                                <td className="text-right lg:py-2 lg:px-4">مدفوع : ${bill.won_price.total_paid}</td>
+                                                </tr>
+                                                <tr >
+                                                <td className="text-right lg:py-2 ">سعر الشحن : ${bill.shipping_cost.amount}</td>
+                                                <td className="text-right lg:py-2 lg:px-4">مدفوع : ${bill.shipping_cost.total_paid}</td>
+                                                <td className="text-left lg:py-2 lg:px-4">
+                                                مجموع الذمم : ${ (parseFloat(bill.won_price.amount) + parseFloat(bill.shipping_cost.amount)) -  (parseFloat(bill.won_price.total_paid) + parseFloat(bill.shipping_cost.total_paid))}
+                                                </td>
 
-                            {/* Show Only Chassis on Small Screens */}
-                            <AccordionTrigger className="flex p-4 font-semibold text-white rounded-t-lg lg:hidden bg-indigoBlue dark:bg-indigoBlue">
-                                Cars: {bill.car_chassis}
-                            </AccordionTrigger>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </AccordionTrigger>
+
+
                             <AccordionContent className="p-4 bg-gray-100 dark:bg-gray-800">
                                 {/* Won Price Section */}
                                 <div className="mb-4">
@@ -59,7 +77,7 @@ export default function Index({ auth,site_settings, bills }) {
                                     <thead>
                                         <tr className="text-gray-700 bg-blue-50 dark:bg-gray-900 dark:text-gray-300">
                                         <th className="px-4 py-2 text-right">ID</th>
-                                        <th className="px-4 py-2 text-right">المقدار</th>
+                                        <th className="px-4 py-2 text-right">القيمة المسددة</th>
                                         <th className="px-4 py-2 text-right">تاريخ الدفع</th>
                                         </tr>
                                     </thead>
@@ -94,7 +112,7 @@ export default function Index({ auth,site_settings, bills }) {
                                     <thead>
                                         <tr className="text-gray-700 bg-blue-50 dark:bg-gray-900 dark:text-gray-300">
                                         <th className="px-4 py-2 text-right">ID</th>
-                                        <th className="px-4 py-2 text-right">المقدار</th>
+                                        <th className="px-4 py-2 text-right">القيمة المسددة</th>
                                         <th className="px-4 py-2 text-right">تاريخ الدفع</th>
                                         </tr>
                                     </thead>

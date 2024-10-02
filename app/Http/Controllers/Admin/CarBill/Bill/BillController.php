@@ -36,7 +36,8 @@ class BillController extends Controller
         ->with([
             'credits',
             'bills.car.model',
-            'bills.car.make'
+            'bills.car.make',
+            'customer'
         ])
         ->get();
 
@@ -44,10 +45,11 @@ class BillController extends Controller
 
         // Return data to the frontend
         return inertia("Admin/CarBill/Bill/Index", [
-            'customers' => UserPaymentsResource::collection($customers),
-            'boxeslist' => $boxeslist,
+            'customers' => UserPaymentsResource::collection($customers),  //this for making new payment + see the customer full cars list
 
-            "payments" => PaymentsResource::collection($payments),
+            "payments" => PaymentsResource::collection($payments), //this is for payment this what we display on the page
+
+            'boxeslist' => $boxeslist,
 
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -67,7 +69,12 @@ class BillController extends Controller
 
             $customer_company = User::find($data['customer_id'])->customer->customer_company;
 
-        $data['description'] = " تم خصم المبلغ " . $data['total_used'] . " $ " . " من العميل " . $customer_company ." نتيجه عملية تسديد ذمم "; ;
+        $data['description'] = " تم خصم المبلغ " . $data['total_used'] . " $ " . " من العميل " . $customer_company ." نتيجه عملية تسديد ذمم ";
+
+        // If the user has the Accountant role, set their specific box_id
+            if (Auth::user()->hasRole('Accountant')) {
+                $data['box_id'] = Auth::user()->accountant->box_id;
+            }
 
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
@@ -77,10 +84,7 @@ class BillController extends Controller
                 'created_by'=>Auth::user()->id,
             ]);
 
-            // If the user has the Accountant role, set their specific box_id
-            if (Auth::user()->hasRole('Accountant')) {
-                $data['box_id'] = Auth::user()->accountant->box_id;
-            }
+
             // Store the full payment transaction in `payments`
             $payment = Payment::create([
                 'user_id' => $data['customer_id'],

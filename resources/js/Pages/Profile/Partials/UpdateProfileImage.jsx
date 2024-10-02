@@ -44,7 +44,7 @@ export default function UpdateProfileImage({ className = "" }) {
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    تحديث الصوره
+                    تتحديث الصورة
                 </h2>
             </header>
 
@@ -71,7 +71,7 @@ export default function UpdateProfileImage({ className = "" }) {
 
                 <div className="flex items-center gap-4 mt-2">
                     <SecondaryButton type="button" onClick={selectNewPhoto}>
-                        اختيار صوره جديده
+                        اختيار صورة جديدة
                     </SecondaryButton>
 
                     {user.profile_photo_path && (

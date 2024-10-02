@@ -171,7 +171,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                         <Dropdown.Link
                                             href={route("profile.edit")}
                                         >
-                                            البروفيل
+                                            بياناتي
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
@@ -243,7 +243,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                         </div>
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("profile.edit")}>
-                                البروفيل
+                                بياناتي
                             </ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route("logout")} as="button">
                                 تسجيل الخروج

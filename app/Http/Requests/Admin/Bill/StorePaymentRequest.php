@@ -27,8 +27,8 @@ class StorePaymentRequest extends FormRequest
             'customer_id' => 'required|exists:users,id',
             'payments' => 'required|array',
             'payments.*.bill_id' => 'required|exists:bills,id',
-            'payments.*.won_price_payment' => 'required|numeric|min:0',
-            'payments.*.shipping_cost_payment' => 'required|numeric|min:0',
+            'payments.*.won_price_payment' => 'nullable|numeric|min:0',
+            'payments.*.shipping_cost_payment' => 'nullable|numeric|min:0',
             'total_used' => 'nullable|numeric|min:0',
         ];
 
@@ -45,10 +45,19 @@ class StorePaymentRequest extends FormRequest
         $validator->after(function ($validator) {
             $this->validateCustomerCredit($validator);
             $this->validateBillPayments($validator);
+
+            // Check if at least one payment is non-zero
+            $totalPayments = collect($this->input('payments'))->sum(function ($payment) {
+                return ($payment['won_price_payment'] ?? 0) + ($payment['shipping_cost_payment'] ?? 0);
+            });
+
+            if ($totalPayments <= 0) {
+                $validator->errors()->add('payments', 'يجب إدخال مبلغ مدفوع على الأقل في واحدة من السيارات.');
+            }
         });
 
+        // Set the default box_id for Accountant role
         if (auth()->user()->hasRole('Accountant') && !$this->filled('box_id')) {
-
             $this->merge([
                 'box_id' => auth()->user()->accountant->box_id
             ]);
@@ -57,10 +66,9 @@ class StorePaymentRequest extends FormRequest
                 $validator->errors()->add('box_id', 'يجب أن يكون لديك صندوق محدد.');
             }
         }
-
     }
 
-    protected function validateCustomerCredit($validator)  
+    protected function validateCustomerCredit($validator)
     {
         // Retrieve customer and their credits
         $customer = User::findOrFail($this->input('customer_id'));

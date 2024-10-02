@@ -374,7 +374,7 @@ const {
                             <div>
                                 <InputLabel className="mb-1.5" htmlFor="user_id" value={"العميل"} />
                                 <ComboboxMakes
-                                    items={customers}
+                                    items={customers.data}
                                     onItemSelect={(item) => setCreateData("user_id", item.id)}
                                     placeholder="اختر العميل"
                                     emptyMessage="لا يوجد عملاء"
@@ -445,7 +445,7 @@ const {
                             <div>
                                 <InputLabel className="mb-1.5" htmlFor="user_id" value={"العميل"} />
                                 <ComboboxMakes
-                                    items={customers}
+                                    items={customers.data}
                                     onItemSelect={(item) => setReverseData("user_id", item.id)}
                                     placeholder="اختر العميل"
                                     emptyMessage="لا يوجد عملاء"

@@ -12,11 +12,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
+use App\Http\Resources\Admin\CarBill\Car\CustomerResource;
+
+
+
 class CustomerCreditController extends Controller
 {
     public function index(){
 
-            $customers = User::role('customer')->select('id','name')->get();
+            $customers = User::role('customer')->with('customer')->select('id','name')->get();
             $boxes = Box::all();
             $query = CustomerCredit::query()->with('user');
 
@@ -29,7 +34,7 @@ class CustomerCreditController extends Controller
 
             return inertia("Admin/Customer/CustomerCredit/Index", [
                 "records" => CustomerCreditResource::collection($records),
-                'customers'=>$customers,
+                'customers'=>CustomerResource::collection($customers),
                 'boxes'=>$boxes,
                 'success' => session('success'),
                 'danger'=>session('danger'),
