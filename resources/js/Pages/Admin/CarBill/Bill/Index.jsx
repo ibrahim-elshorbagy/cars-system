@@ -527,39 +527,39 @@ const toggleShowModal = (payment = null) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {createData.payments.map((bill, index) => (
-                        <tr key={bill.car_chassis} className="">
-                            <td className="py-4 border-t border-b">{bill.car_chassis}</td>
-                            <td className="py-4 border-t border-b">{bill.won_price}</td>
-                            <td className="py-4 border-t border-b">{bill.won_price_paid_amount}</td>
-                            <td className="py-4 border-t border-b">{bill.remain_won_price}</td>
-
-                            <td className="py-4 border-t border-b border-l-2">
-                                <TextInput
-                                type="number"
-                                // value={createData.payments[index]?.won_price_payment || 0}
-                                onChange={(e) => handlePaymentChange(index, "won_price_payment", e.target.value)}
-                                max={bill.remain_won_price}
-
-                                />
-                            </td>
-
-                            <td className="py-4 border-t border-b">{bill.shipping_cost}</td>
-                            <td className="py-4 border-t border-b">{bill.shipping_cost_paid_amount}</td>
-                            <td className="py-4 border-t border-b">{bill.remain_shipping_cost}</td>
-                            <td className="py-4 border-t border-b">
-                                <TextInput
-                                type="number"
-                                // value={createData.payments[index]?.shipping_cost_payment || 0}
-                                onChange={(e) => handlePaymentChange(index, "shipping_cost_payment", e.target.value)}
-                                max={bill.remain_shipping_cost}
-
-                                />
-                            </td>
-                        </tr>
-
-                    ))}
+                        {createData.payments.length > 0 ? (
+                            createData.payments.map((bill, index) => (
+                                <tr key={bill.car_chassis} className="">
+                                    <td className="py-4 border-t border-b">{bill.car_chassis}</td>
+                                    <td className="py-4 border-t border-b">{bill.won_price}</td>
+                                    <td className="py-4 border-t border-b">{bill.won_price_paid_amount}</td>
+                                    <td className="py-4 border-t border-b">{bill.remain_won_price}</td>
+                                    <td className="py-4 border-t border-b border-l-2">
+                                        <TextInput
+                                            type="number"
+                                            onChange={(e) => handlePaymentChange(index, "won_price_payment", e.target.value)}
+                                            max={bill.remain_won_price}
+                                        />
+                                    </td>
+                                    <td className="py-4 border-t border-b">{bill.shipping_cost}</td>
+                                    <td className="py-4 border-t border-b">{bill.shipping_cost_paid_amount}</td>
+                                    <td className="py-4 border-t border-b">{bill.remain_shipping_cost}</td>
+                                    <td className="py-4 border-t border-b">
+                                        <TextInput
+                                            type="number"
+                                            onChange={(e) => handlePaymentChange(index, "shipping_cost_payment", e.target.value)}
+                                            max={bill.remain_shipping_cost}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="9" className="py-4 text-center border-t border-b">لا يوجد سيارات</td>
+                            </tr>
+                        )}
                     </tbody>
+
                         </table>
                         <div>
                             <ul className="mt-2 text-red-600 list-disc list-inside">

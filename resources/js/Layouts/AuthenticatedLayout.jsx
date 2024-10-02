@@ -264,7 +264,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
 
             </nav>
 
-            <div className="pt-16 bg-white sm:flex-1 sm:flex">
+            <div className="h-screen pt-16  sm:flex-1 sm:flex">
 
                 <div className="hidden sm:flex">
                     <MySidebar user={user} site_settings={site_settings} />

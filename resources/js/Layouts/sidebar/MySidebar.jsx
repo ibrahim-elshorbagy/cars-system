@@ -13,7 +13,7 @@ import { RiBillFill } from "react-icons/ri";
 import { PiBagSimpleFill } from "react-icons/pi";
 import { TbReceiptTax } from "react-icons/tb";
 
-const MySidebar = ({ user, direction, site_settings }) => {
+const MySidebar = ({ user, site_settings }) => {
     const [collapsed, setCollapsed] = useState(false);
 
     const menuItems = [
@@ -280,8 +280,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                                     key={`section-${index}`}
                                     icon={item.icon}
                                     label={item.title}
-                                    className="py-2 my-2 bg-indigoBlue dark:bg-gray-900 "
-                                    active={item.href === route().current()}
+                                    className="py-2 my-2 dark:bg-gray-900 hover:bg-transparent hover:text-black dark:hover:text-indigoBlue dark:hover:bg-transparent bg-indigoBlue dark:text-white"
                                     open
 
                                 >
@@ -290,7 +289,7 @@ const MySidebar = ({ user, direction, site_settings }) => {
                                             key={`${idx}-${link.href}`}
                                             href={route(link.href)}
                                             active={link.href === route().current()}
-
+                                            open
                                         >
                                                 {link.icon}
                                                 {link.text}
