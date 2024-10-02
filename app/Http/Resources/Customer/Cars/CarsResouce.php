@@ -20,6 +20,9 @@ class CarsResouce extends JsonResource
             'ship_status' => $this->ship_status ?? null,
             'won_price' => $this->bill->won_price ?? null,
             'shipping_cost' => $this->bill->shipping_cost ?? null,
+            'make_name' => $this->make->name ?? null,
+            'model_name' => $this->model->name ?? null,
+            'year' => $this->year ?? null,
 
         ];
     }

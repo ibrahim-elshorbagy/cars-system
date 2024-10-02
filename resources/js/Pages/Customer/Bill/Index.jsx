@@ -158,11 +158,13 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                       {/* <th className="p-3">ID</th> */}
                       <th className="p-3 text-xs text-nowrap md:text-base">VIN</th>
 
-                      <th className="p-3 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
+
+
+                      <th className="p-3 text-xs text-nowrap md:text-base ">سعر الشراء</th>
                       <th className="p-3 text-xs text-nowrap md:text-base ">مدفوع</th>
                       <th className="p-3 text-xs text-nowrap md:text-base ">متبقي</th>
 
-                      <th className="p-3 text-xs text-nowrap md:text-base ">سعر الشراء</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
                       <th className="p-3 text-xs text-nowrap md:text-base ">مدفوع</th>
                       <th className="p-3 text-xs text-nowrap md:text-base ">متبقي</th>
                       <th className="p-3 text-xs text-nowrap md:text-base ">الإجراءات</th>
@@ -200,13 +202,16 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                         >
                           {/* <td className="px-3 py-2">{car.id}</td> */}
                             <td className="p-3 text-nowrap">{car.chassis}</td>
-                            <td className="p-2 text-nowrap">{car.shipping_cost}</td>
-                            <td className="p-2 text-nowrap">{car.paid_shipping_cost}</td>
-                            <td className="p-2 text-nowrap">{car.remain_shipping_cost}</td>
 
                             <td className="p-2 text-nowrap">{car.won_price}</td>
                             <td className="p-2 text-nowrap">{car.paid_won_price}</td>
                             <td className="p-2 text-nowrap">{car.remain_won_price}</td>
+
+                            <td className="p-2 text-nowrap">{car.shipping_cost}</td>
+                            <td className="p-2 text-nowrap">{car.paid_shipping_cost}</td>
+                            <td className="p-2 text-nowrap">{car.remain_shipping_cost}</td>
+
+
 
                             <td className="p-2 text-nowrap">
                             <Link

@@ -19,11 +19,11 @@ class BoxTransferController extends Controller
         $query = BoxTransfer::query();
 
         // If a specific box filter is applied
-        if (request('box') && request('box') !== 'all') {
-            $query->where(function ($q) {
-                $q->where('from_box_id', request('box'));
-            });
-        }
+        // if (request('box') && request('box') !== 'all') {
+        //     $query->where(function ($q) {
+        //         $q->where('from_box_id', request('box'));
+        //     });
+        // }
 
         // If the user is an accountant, restrict them to only their box
         if (Auth::user()->hasRole('Accountant')) {
@@ -36,11 +36,11 @@ class BoxTransferController extends Controller
             // Get only the accountant's box and its balance
             $boxes = Box::where('id', $box_id)->with(['transactions'])->get();
         } else {
-            // Get all boxes for the dropdown
+            // Get all boxes for admin
             $boxes = Box::query()->with(['transactions'])->get();
         }
 
-        // Calculate the balance for each box
+        // Calculate the balance for each box the user has access to
         $boxesWithBalances = $boxes->map(function ($box) {
             $totalIncome = $box->transactions()->sum('income');
             $totalOutcome = $box->transactions()->sum('outcome');
@@ -55,16 +55,20 @@ class BoxTransferController extends Controller
             ];
         });
 
+        $boxList = Box::select('name', 'id')->get();
+
         // Get the list of transfers with pagination
         $transfers = $query->with(['fromBox', 'toBox','createdBy:id,name', 'updatedBy:id,name'])->orderBy('created_at', 'desc')->paginate(10);
 
-        // Return the view with transfers and boxes for selection
+
         return inertia("Admin/Box/Transfers/Index", [
             'transfers' => $transfers,
             'boxes' => $boxesWithBalances,
+            'boxList' => $boxList,
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
             'danger' => session('danger'),
+
         ]);
     }
 

@@ -54,9 +54,12 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                     <tr className="text-nowrap">
                       {/* <th className="p-3">ID</th> */}
                       <th className="p-3 text-xs text-nowrap md:text-base">VIN</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">Make</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">Model</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">Year</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">سعر الشراء</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">حالة االشحن</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">Status</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
                     </tr>
                   </thead>
@@ -75,6 +78,9 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -88,6 +94,9 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                         >
                           {/* <td className="px-3 py-2">{car.id}</td> */}
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.chassis}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.make_name}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.model_name}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{car.year}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.shipping_cost}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.won_price}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.ship_status}</td>

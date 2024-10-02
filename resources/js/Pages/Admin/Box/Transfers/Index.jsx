@@ -8,7 +8,7 @@ import InputError from "@/Components/InputError";
 import { Button } from "@/components/ui/button";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, site_settings, transfers, boxes, queryParams = null, success, danger }) {
+export default function Index({ auth, site_settings, transfers, boxes,boxList, queryParams = null, success, danger }) {
   queryParams = queryParams || {};
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -98,7 +98,7 @@ const handleEditFromBoxChange = (e) => {
 
 useEffect(() => {
   if (selectedFromBoxEdit) {
-    const filtered = boxes.filter((box) => box.id !== parseInt(selectedFromBoxEdit));
+    const filtered = boxList.filter((box) => box.id !== parseInt(selectedFromBoxEdit));
     setFilteredToBoxesEdit(filtered);
   } else {
     setFilteredToBoxesEdit(boxes);
@@ -130,7 +130,7 @@ const handleCreateFromBoxChange = (e) => {
 };
 useEffect(() => {
   if (selectedFromBoxCreate) {
-    const filtered = boxes.filter((box) => box.id !== parseInt(selectedFromBoxCreate));
+    const filtered = boxList.filter((box) => box.id !== parseInt(selectedFromBoxCreate));
     setFilteredToBoxes(filtered);
   } else {
     setFilteredToBoxes(boxes);
@@ -273,7 +273,7 @@ useEffect(() => {
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateTransfer}>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                             {/* From Box Dropdown */}
                             <div className="col-span-1">
                             <InputLabel className="mb-3" htmlFor="from_box_id" value={"من الصندوق"} />
@@ -286,9 +286,10 @@ useEffect(() => {
                                 <option value="">اختر</option>
 
                                 {auth.user.roles.includes("Accountant") ? (
-                                <option value={auth.user.accountant.box_id}>
-                                    {auth.user.accountant.box_name}
+                                <option value={auth.user.box_id}>
+                                    {auth.user.box_name}
                                 </option>
+
                                 ) : (
                                 boxes.map((box) => (
                                     <option value={box.id} key={box.id}>

@@ -61,7 +61,8 @@ export default function Index({ auth, site_settings, record }) {
                 {record.added_credit > 0 ? (
                     <>وصلنا من السادة: {record.customer_company} مبلغ وقدره {record.added_credit} $ ليصبح رصيده الاجمالي {record.balance} $ حتى تاريخ هذا السند.</>
                 ) : record.used_credit > 0 ? (
-                    <> {record.description} , ليصبح الرصيد الاجمالي {record.balance} $ حتى تاريخ هذا السند.</>
+                              <>تم خصم المبلغ  {record.used_credit} من العميل {record.customer_company}  نتيجه عملية تسديد ذمم ,
+                                ليصبح الرصيد الاجمالي  {record.balance} $ حتى تاريخ هذا السند.</>
                 ) : (
                     <>الرصيد الاجمالي للسيد: {record.customer_name} هو {record.balance} $ حتى تاريخ هذا السند.</>
                 )}

@@ -501,6 +501,9 @@ const handleEditVinBlur = () => {
                       <th className="p-3">ID</th>
                       <th className="p-3">اسم الشركه</th>
                       <th className="p-3">VIN</th>
+                      <th className="p-3">Make</th>
+                      <th className="p-3">Model</th>
+                      <th className="p-3">Year</th>
                       <th className="p-3">Status</th>
                       <th className="p-3 text-center">الإجراءات</th>
                     </tr>
@@ -528,6 +531,9 @@ const handleEditVinBlur = () => {
                       </th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -542,6 +548,9 @@ const handleEditVinBlur = () => {
                               <td className="px-3 py-2">{car.id}</td>
                           <td className="px-3 py-2 text-nowrap">{car.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.make_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.model_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{car.year}</td>
                           <td className="px-3 py-2 text-nowrap">{car.ship_status}</td>
                           <td className="flex justify-center gap-2 px-3 py-2 text-center">
                             {auth.user.permissions.includes("update-car") && (
