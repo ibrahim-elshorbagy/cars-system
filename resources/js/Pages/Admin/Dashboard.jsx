@@ -93,36 +93,36 @@ const Dashboard = ({ auth, site_settings, carStatusCounts,total_income, total_ou
                                     </div>
                                     <div className="grid grid-cols-1 gap-2 p-2 sm:grid-cols-2 lg:grid-cols-3 sm:gap-4 sm:p-4">
                                     {/* Total Income */}
-                                                <Card className="w-full">
-                                                    <CardContent className="flex items-center justify-between p-3 bg-green-100 md:p-6 dark:bg-green-800">
-                                                    <div className="flex flex-col items-start">
-                                                        <p className="text-xs font-medium text-gray-500 md:text-md dark:text-gray-400">
-                                                        مجموع الداخل
-                                                        </p>
-                                                        <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
-                                                        {selectedBox.total_income}
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">
-                                                        <CreditCard className="w-4 h-4 text-gray-800 md:w-6 md:h-6 dark:text-white" />
-                                                    </div>
-                                                    </CardContent>
+                                    <Card className="w-full">
+                                            <CardContent className="flex items-center justify-between p-3 bg-green-100 md:p-6 dark:bg-green-800">
+                                            <div className="flex flex-col items-start">
+                                                <p className="text-xs font-medium text-gray-500 md:text-md dark:text-gray-400">
+                                                مجموع الداخل
+                                                </p>
+                                                <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
+                                                {Number(selectedBox.total_income).toFixed(2) }
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">
+                                                <CreditCard className="w-4 h-4 text-gray-800 md:w-6 md:h-6 dark:text-white" />
+                                            </div>
+                                        </CardContent>
                                     </Card>
                                     {/* Total Outcome */}
-                                                <Card className="w-full">
-                                                    <CardContent className="flex items-center justify-between p-3 bg-yellow-100 md:p-6 dark:bg-yellow-800">
-                                                    <div className="flex flex-col items-start">
-                                                        <p className="text-xs font-medium text-gray-500 md:text-md dark:text-gray-400">
-                                                        مجموع الخارج
-                                                        </p>
-                                                        <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
-                                                        {selectedBox.total_outcome}
-                                                        </p>
-                                                    </div>
-                                                    <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">
-                                                        <TbTransfer className="w-4 h-4 text-gray-800 md:w-6 md:h-6 dark:text-white" />
-                                                    </div>
-                                                    </CardContent>
+                                        <Card className="w-full">
+                                            <CardContent className="flex items-center justify-between p-3 bg-yellow-100 md:p-6 dark:bg-yellow-800">
+                                            <div className="flex flex-col items-start">
+                                                <p className="text-xs font-medium text-gray-500 md:text-md dark:text-gray-400">
+                                                مجموع الخارج
+                                                </p>
+                                                <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
+                                                  {Number(selectedBox.total_outcome).toFixed(2)}
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">
+                                                <TbTransfer className="w-4 h-4 text-gray-800 md:w-6 md:h-6 dark:text-white" />
+                                            </div>
+                                        </CardContent>
                                     </Card>
                                     {/* Net Balance */}
                                     <Card className="w-full">
@@ -132,7 +132,8 @@ const Dashboard = ({ auth, site_settings, carStatusCounts,total_income, total_ou
                                             موجودات الصندوق
                                             </p>
                                             <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
-                                            {selectedBox.net_balance}
+                                                          {Number(selectedBox.net_balance).toFixed(2)}
+                                                          
                                             </p>
                                         </div>
                                         <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">

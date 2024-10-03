@@ -547,7 +547,19 @@ const handleEditVinBlur = () => {
                         >
                               <td className="px-3 py-2">{car.id}</td>
                           <td className="px-3 py-2 text-nowrap">{car.customer_company}</td>
-                          <td className="px-3 py-2 text-nowrap">{car.chassis}</td>
+                              <td className="px-3 py-2 text-nowrap">
+                                  <div className="flex flex-col items-start">
+                                        {/* VIN Name */}
+                                        <span className="text-lg ">{car.chassis}</span>
+
+                                        {/* Car Details */}
+                                        <div className="text-sm lg:text-base">
+                                        <span className="mr-1">{car.make_name}</span>
+                                        <span className="mr-1">{car.model_name}</span>
+                                        <span>{car.year}</span>
+                                        </div>
+                                    </div>
+                                </td>
                           <td className="px-3 py-2 text-nowrap">{car.make_name}</td>
                           <td className="px-3 py-2 text-nowrap">{car.model_name}</td>
                           <td className="px-3 py-2 text-nowrap">{car.year}</td>

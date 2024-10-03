@@ -93,7 +93,19 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                           key={car.id}
                         >
                           {/* <td className="px-3 py-2">{car.id}</td> */}
-                          <td className="p-3 text-xs text-nowrap md:text-base">{car.chassis}</td>
+                            <td className="p-3 text-xs text-nowrap md:text-base">
+                                    <div className="flex flex-col items-start">
+                                        {/* VIN Name */}
+                                        <span className="text-lg ">{car.chassis}</span>
+
+                                        {/* Car Details */}
+                                        <div className="text-sm lg:text-base">
+                                        <span className="mr-1">{car.make_name}</span>
+                                        <span className="mr-1">{car.model_name}</span>
+                                        <span>{car.year}</span>
+                                        </div>
+                                    </div>
+                              </td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.make_name}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.model_name}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{car.year}</td>
