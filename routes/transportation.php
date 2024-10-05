@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Transportation\LineController;
 use App\Http\Controllers\Admin\Transportation\FacilityController;
 use App\Http\Controllers\Admin\Transportation\MakeController;
 use App\Http\Controllers\Admin\Transportation\ModellController;
+use App\Http\Controllers\Admin\Transportation\ShippingFeeTypeController;
 use App\Http\Controllers\Admin\Transportation\TerminalController;
 use Illuminate\Support\Facades\Route;
 
@@ -148,6 +149,24 @@ Route::group(['prefix' => 'admin/transportation'], function () {
 
     Route::group(['middleware' => ['permission:delete-model']], function () {
         Route::delete('/model/{model}', [ModellController::class, 'destroy'])->name('model.destroy');
+    });
+
+    //---------------------------------------------------------------------------------------------
+    // Routes for  (ShippingFee)
+    Route::group(['middleware' => ['permission:create-ShippingFee']], function () {
+        Route::post('/ShippingFee', [ShippingFeeTypeController::class, 'store'])->name('ShippingFee.store');
+    });
+
+    Route::group(['middleware' => ['permission:read-ShippingFee']], function () {
+        Route::get('/ShippingFee', [ShippingFeeTypeController::class, 'index'])->name('ShippingFee.index');
+    });
+
+    Route::group(['middleware' => ['permission:update-ShippingFee']], function () {
+        Route::put('/ShippingFee/{ShippingFee}', [ShippingFeeTypeController::class, 'update'])->name('ShippingFee.update');
+    });
+
+    Route::group(['middleware' => ['permission:delete-ShippingFee']], function () {
+        Route::delete('/ShippingFee/{ShippingFee}', [ShippingFeeTypeController::class, 'destroy'])->name('ShippingFee.destroy');
     });
 
 });

@@ -22,6 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Textarea } from "@headlessui/react";
 
 export default function Index({ auth,site_settings, records, customers,boxes, queryParams = null, success,danger }) {
   queryParams = queryParams || {};
@@ -441,7 +442,7 @@ const {
             <div className="p-6">
               <form onSubmit={handleReverseRecord}>
 
-                        <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-2">
                             <div>
                                 <InputLabel className="mb-1.5" htmlFor="user_id" value={"العميل"} />
                                 <ComboboxMakes
@@ -465,7 +466,19 @@ const {
                                 onChange={(e) => setReverseData("used_credit", e.target.value)}
                                 />
                                 <InputError message={ReverseErrors.used_credit} className="mt-2" />
-                                </div>
+                            </div>
+                            <div className="col-span-2 mb-4">
+                                <InputLabel htmlFor="description" value={"بيان"} />
+                                <Textarea
+                                id="description"
+                                type="number"
+                                name="name"
+                                value={ReverseData.description || ""}
+                                className="block w-full h-32 mt-1"
+                                onChange={(e) => setReverseData("description", e.target.value)}
+                                />
+                                <InputError message={ReverseErrors.description} className="mt-2" />
+                            </div>
                                 {!auth.user.roles.includes("Accountant") && boxes && boxes.length > 0 && (
                                 <div>
                                     <InputLabel className="mb-1.5" htmlFor="box_id" value={"الصندوق"} />

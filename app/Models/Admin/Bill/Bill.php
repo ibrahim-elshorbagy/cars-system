@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin\Bill;
 
+use App\Models\Admin\Bill\Fees\ShippingExpens;
 use App\Models\Admin\Car\Car;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,5 +28,9 @@ class Bill extends Model
     public function paymentBills()
     {
         return $this->hasMany(PaymentBill::class);
+    }
+    public function shippingExpenses()
+    {
+        return $this->hasMany(ShippingExpens::class);
     }
 }

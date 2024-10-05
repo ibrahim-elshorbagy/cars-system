@@ -48,6 +48,22 @@ class CarStore extends FormRequest
             'won_price' => 'nullable|numeric|min:0',
             'shipping_cost' => 'nullable|numeric|min:0',
 
+
+            'shipping_expenses' => 'nullable|array',
+            'shipping_expenses.*.fee_id' => [
+                'nullable',
+                'exists:shipping_fee_types,id',
+            ],
+            'shipping_expenses.*.amount' => [
+                'required_with:shipping_expenses.*.fee_id',
+                'numeric',
+                'min:1',
+            ],
+            'shipping_expenses.*.created_at' => [
+                'required_with:shipping_expenses.*.fee_id',
+                'date',
+            ],
+
         ];
 
 

@@ -55,6 +55,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                 title: "البيانات",
                 permissions: ["read-vendor", "read-destination", "read-line", "read-terminal", "read-facility", "read-make", "read-model"],
                 links: [
+                    { text: "تكلفة الشحن (Shipping Fee)", href: "ShippingFee.index", permissions: ["read-ShippingFee"] },
                     { text: "المزادات (Vendors)", href: "vendor.index", permissions: ["read-vendor"] },
                     { text: "الوجهات (Destinations)", href: "destination.index", permissions: ["read-destination"] },
                     { text: "خطوط الملاحة (Lines)", href: "line.index", permissions: ["read-line"] },

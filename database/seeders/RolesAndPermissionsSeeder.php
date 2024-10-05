@@ -34,6 +34,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'facility',
             'make',
             'model',
+            'ShippingFee',
 
             'car',
             'billPayment',

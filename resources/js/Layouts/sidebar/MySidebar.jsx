@@ -86,7 +86,12 @@ const MySidebar = ({ user, site_settings }) => {
             title: "البيانات",
             icon: <FaDatabase  />,
             links: [
-
+                {
+                    text: "تكلفة الشحن (Shipping Fee)",
+                    href: "ShippingFee.index",
+                    icon: <FaGavel />,
+                    permissions: ["read-ShippingFee"],
+                },
                 {
                     text: "المزادات (Vendors)",
                     href: "vendor.index",

@@ -52,6 +52,29 @@ class CarUpdate extends FormRequest
             'won_price' => 'nullable|numeric|min:0',
             'ship_status' => 'nullable|string',
 
+            'shipping_expenses' => 'nullable|array',
+
+            'shipping_expenses.*.expense_id' => [
+                'nullable',
+                'integer',
+            ],
+            'shipping_expenses.*.fee_id' => [
+                'nullable',
+                'required_with:shipping_expenses.*.amount',
+                'exists:shipping_fee_types,id',
+            ],
+            'shipping_expenses.*.amount' => [
+                'required_with:shipping_expenses.*.fee_id',
+                'numeric',
+                'min:1',
+            ],
+            'shipping_expenses.*.created_at' => [
+                'date',
+            ],
+            'shipping_expenses.*.create_date' => [
+                'date',
+                'required_without:shipping_expenses.*.created_at',
+            ],
 
         ];
     }

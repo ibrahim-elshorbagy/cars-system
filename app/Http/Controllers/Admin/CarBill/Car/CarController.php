@@ -10,6 +10,8 @@ use App\Http\Resources\Admin\CarBill\Car\ShowCarResource;
 
 
 use App\Models\Admin\Bill\Bill;
+use App\Models\Admin\Bill\Fees\ShippingExpens;
+use App\Models\Admin\Bill\Fees\ShippingFeeType;
 use App\Models\Admin\Box\Box;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +30,7 @@ use App\Models\Admin\Transportation\Modell;
 use App\Models\Admin\Transportation\ShipStatus;
 use App\Models\Admin\Transportation\Terminal;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -41,7 +44,7 @@ class CarController extends Controller
     public function index()
     {
 
-        $query = Car::with('user.customer','bill')->orderBy("id", "desc");
+        $query = Car::with('user.customer','bill.shippingExpenses.shippingFeeType')->orderBy("id", "desc");
 
         if (request("chassis")) {
             $query->where("chassis", "like", "%" . request("chassis") . "%");
@@ -67,7 +70,12 @@ class CarController extends Controller
         $customers = User::role('customer')->select('id','name')->with('customer')->get();
         $boxeslist = Box::all();
 
-
+       $shippingFeeTypes = ShippingFeeType::all()->map(function ($feeType) {
+            return [
+                'id' => $feeType->id,
+                'name' => " $feeType->name ( $feeType->ar_name )",
+            ];
+        });
         return inertia("Admin/CarBill/Car/Index", [
 
             "cars" => ShowCarResource::collection($cars),
@@ -87,6 +95,7 @@ class CarController extends Controller
             'models'=>$models,
 
             'shipStatus'=>$shipStatus,
+            'shippingFeeTypes'=>$shippingFeeTypes,
 
             'ErrorAlert'=>session('ErrorAlert'),
         ]);
@@ -100,21 +109,42 @@ class CarController extends Controller
     }
 
     public function store(CarStore $request){
-
         DB::beginTransaction();
         $data = $request->validated();
+
         try {
             // Save the Car
             $data['created_by']=Auth::user()->id;
             $car = Car::create($data);
 
-            Bill::create([
+
+            $bill = Bill::create([
                 'car_id'=>$car->id,
                 'user_id'=>$data['user_id'],
                 'won_price'=>$data['won_price'] ?? 0,
-                'shipping_cost'=>$data['shipping_cost'] ?? 0,
+                'shipping_cost'=> 0,
                 'created_by'=>Auth::user()->id
             ]);
+
+
+            $totalAmount = 0;
+            if(!empty($data['shipping_expenses']))
+            {
+                foreach ($data['shipping_expenses'] as $expense) {
+
+                        $totalAmount += $expense['amount'];
+                        // Only create a StockReleaseRequest if the quantity is provided and valid
+                            ShippingExpens::create([
+                                'bill_id' => $bill->id,
+                                'shipping_fee_type_id' => $expense['fee_id'],
+                                'amount' => $expense['amount'],
+                                'created_by'=>Auth::user()->id,
+                                'created_at'=>$expense['created_at'],
+                            ]);
+                    }
+            }
+
+            $bill->update(['shipping_cost' => $totalAmount]);
 
             // Handle Carfax report upload
             if ($request->hasFile('carfax_report')) {
@@ -122,9 +152,12 @@ class CarController extends Controller
                 $car->update(['carfax_report' => $carfaxReportPath]);
             }
 
+
+
+
             // Handle images upload
-                $manager = new ImageManager(new Driver());
-                if ($request->hasFile('images')) {
+            $manager = new ImageManager(new Driver());
+            if ($request->hasFile('images')) {
 
                     foreach ($request->file('images') as $image) {
                             // Generate the directory path
@@ -155,7 +188,8 @@ class CarController extends Controller
                                 'image_url' => $imageUrl,
                             ]);
                     }
-                }
+            }
+
 
             DB::commit();
 
@@ -170,6 +204,7 @@ class CarController extends Controller
 
     public function update(CarUpdate $request, Car $car)
     {
+
         DB::beginTransaction();
         $data =$request->validated();
         $data['updated_by']=Auth::user()->id;
@@ -183,6 +218,54 @@ class CarController extends Controller
                 'updated_by'=>Auth::user()->id
 
             ]);
+
+            if (isset($data['shipping_expenses']) && is_array($data['shipping_expenses'])) {
+                $existingExpenseIds = $bill->shippingExpenses()->pluck('id')->toArray();
+                $processedExpenseIds = [];
+                $totalAmount = 0;
+                foreach ($data['shipping_expenses'] as $expense) {
+
+                    $totalAmount += $expense['amount'];
+
+                    if (!empty($expense['expense_id']) && in_array($expense['expense_id'], $existingExpenseIds)) {
+
+                        $existingExpense = ShippingExpens::find($expense['expense_id']);
+
+                        if ($existingExpense->amount != $expense['amount']) {
+                            $existingExpense->update([
+                                'amount'     => $expense['amount'],
+                                'updated_by' => Auth::user()->id,
+                            ]);
+                        }
+
+                        $processedExpenseIds[] = $existingExpense->id;
+                    } else {
+
+                        $newExpense = ShippingExpens::create([
+                            'bill_id'               => $bill->id,
+                            'shipping_fee_type_id'  => $expense['fee_id'],
+                            'amount'                => $expense['amount'],
+                            'created_by'            => Auth::user()->id,
+                            'created_at'            => $expense['create_date']
+                        ]);
+                        $processedExpenseIds[] = $newExpense->id;
+                    }
+                }
+                $bill->update(['shipping_cost' => $totalAmount]);
+                $bill->shippingExpenses()->whereNotIn('id', $processedExpenseIds)->delete();
+
+            } else {
+
+                $bill->shippingExpenses()->delete();
+                $bill->update(['shipping_cost' => 0]);
+            }
+
+
+
+
+
+
+
 
             // 1. Handle Carfax report upload
             if ($request->hasFile('carfax_report')) {
@@ -268,7 +351,7 @@ class CarController extends Controller
                         ]);
                     }
                 }
-        }
+            }
 
 
             // Commit the transaction

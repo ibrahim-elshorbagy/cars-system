@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DestinationSeeder::class);
         $this->call(TerminalSeeder::class);
         $this->call(LineSeeder::class);
+        $this->call(ShippingFeeTypesSeeder::class);
 
         //admin
         $user = User::factory()->create([

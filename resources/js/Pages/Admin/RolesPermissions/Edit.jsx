@@ -171,6 +171,65 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
 
 
 
+                        {/* Main CRUD Permissions for Shpping Fees */}
+                        <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">
+                        <th className="px-6 py-3 " colSpan="3">اذونات جداول تكلفة الشحن (Shipping Fee)</th>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">create-ShippingFee</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("create-ShippingFee")}
+                            onChange={() => handleCheckboxChange("create-ShippingFee")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">انشاء تكلفة شحن</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">read-ShippingFee</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("read-ShippingFee")}
+                            onChange={() => handleCheckboxChange("read-ShippingFee")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">عرض تكلفة شحن</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">update-ShippingFee</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("update-ShippingFee")}
+                            onChange={() => handleCheckboxChange("update-ShippingFee")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">تحديث تكلفة شحن</td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">delete-ShippingFee</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("delete-ShippingFee")}
+                            onChange={() => handleCheckboxChange("delete-ShippingFee")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">حذف تكلفة شحن</td>
+                        </tr>
+
+
+
+
+
+
+
+
+
+
+
 
                             {/* Main CRUD Permissions for المزادات (Vendors) */}
                         <tr className="border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-700">

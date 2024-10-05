@@ -50,10 +50,13 @@ const [selectedImage, setSelectedImage] = useState(null);
             <div className="p-6 text-gray-900 dark:text-gray-100">
                 <div className="mt-6">
                 <Tabs defaultValue="general" >
-                    <TabsList className="flex flex-row sm:inline-flex">
+                    <TabsList >
+                    <div>
                     <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="shipping">Shipping</TabsTrigger>
+                    <TabsTrigger value="shipping_fees">Shipping Fees</TabsTrigger>
                     <TabsTrigger value="photos">Photos</TabsTrigger>
+                    </div>
                     </TabsList>
 
                     {/* General Tab */}
@@ -198,7 +201,78 @@ const [selectedImage, setSelectedImage] = useState(null);
 
                         </tbody>
                     </table>
-                    </TabsContent>
+                                  </TabsContent>
+
+
+
+                                                      <TabsContent value="shipping_fees">
+
+                    <div className="w-[98%] mx-auto">
+                    {car.shipping_expenses.length === 0 ? (
+                        <div className="m-10 text-center text-gray-500 dark:text-gray-400">
+                        لم يتم اختيار اي تكاليف شحن
+                        </div>
+                    ) : (
+                        // Calculate the total shipping cost separately
+                        <>
+                        {/* Calculate the total amount separately */}
+                        {(() => {
+                            const totalShippingCost = car.shipping_expenses.reduce((total, fee) => total + parseFloat(fee.amount), 0);
+
+                            return (
+                            <table className="w-full text-gray-700 border-collapse dark:text-gray-100">
+                                <thead>
+                                <tr className="bg-gray-200 dark:bg-gray-600">
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">التكلفة</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">القيمة</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تاريخ الإنشاء</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تم الإنشاء بواسطة</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تاريخ التحديث</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تم التحديث بواسطة</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {/* Render each expense row */}
+                                {car.shipping_expenses.map((fee, index) => (
+                                    <tr
+                                    key={index}
+                                    className={`${
+                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                    } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+                                    >
+                                    <td className="p-2 text-xs border text-nowrap md:text-base dark:border-gray-700">{fee.name}</td>
+                                    <td className="p-2 border dark:border-gray-700">{parseFloat(fee.amount).toFixed(2)}</td>
+                                    <td className="p-2 text-xs border text-nowrap md:text-base dark:border-gray-700">{fee.created_at}</td>
+                                    <td className="p-2 text-xs border text-nowrap md:text-base dark:border-gray-700">
+                                        {fee.created_by_name || ""}
+                                    </td>
+                                    <td className="p-2 text-xs border text-nowrap md:text-base dark:border-gray-700">{fee.updated_at || ""}</td>
+                                    <td className="p-2 text-xs border text-nowrap md:text-base dark:border-gray-700">
+                                        {fee.updated_by_name || ""}
+                                    </td>
+                                    </tr>
+                                ))}
+                                {/* Total row */}
+                                <tr className="font-bold bg-gray-200 dark:bg-gray-600">
+                                    <td className="p-2 border dark:border-gray-700" colSpan="1">
+                                    مجموع التكاليف
+                                    </td>
+                                    <td className="p-2 border dark:border-gray-700" colSpan="5">
+                                    {totalShippingCost.toFixed(2)}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            );
+                        })()}
+                        </>
+                    )}
+                    </div>
+
+
+                                  </TabsContent>
+
+
                 {/* Photos Tab */}
                 <TabsContent value="photos">
                     {/* Images below the table */}
