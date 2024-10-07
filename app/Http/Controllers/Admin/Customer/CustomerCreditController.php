@@ -30,7 +30,7 @@ class CustomerCreditController extends Controller
                     $q->where("customer_company", "like", "%" . request("name") . "%");
                 });
             }
-            $records = $query->orderBy('created_at','desc')->paginate(25)->onEachSide(1);
+            $records = $query->orderBy('created_at','asc')->paginate(25)->onEachSide(1);
 
             return inertia("Admin/Customer/CustomerCredit/Index", [
                 "records" => CustomerCreditResource::collection($records),

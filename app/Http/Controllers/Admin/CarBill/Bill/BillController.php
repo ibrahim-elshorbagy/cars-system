@@ -138,6 +138,17 @@ class BillController extends Controller
 
             $customer_company = User::find($data['customer_id'])->customer->customer_company;
 
+
+            // Create a CustomerCredit for retun all credit then take the new value
+            CustomerCredit::create([
+                'user_id'=> $data['customer_id'],
+                'box_id' => $data['box_id'],
+                'added_credit' => $payment->total_amount,
+                'description' => ' تم اضافة الرصيد ' . $payment->total_amount . " $ ". ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
+                'created_by' => Auth::user()->id,
+            ]);
+
+            
             // Create a CustomerCredit used_credit he takes
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
@@ -149,14 +160,6 @@ class BillController extends Controller
             ]);
 
 
-            // Create a CustomerCredit for retun all credit then take the new value
-            CustomerCredit::create([
-                'user_id'=> $data['customer_id'],
-                'box_id' => $data['box_id'],
-                'added_credit' => $payment->total_amount,
-                'description' => ' تم اضافة الرصيد ' . $payment->total_amount . " $ ". ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
-                'created_by' => Auth::user()->id,
-            ]);
 
             // Update the payment total amount and box_id
             $data['updated_by']=Auth::user()->id;
