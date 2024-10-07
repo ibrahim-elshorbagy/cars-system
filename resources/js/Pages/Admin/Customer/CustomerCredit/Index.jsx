@@ -263,8 +263,8 @@ const {
                       <th className="p-3 text-xs text-nowrap md:text-base">ID</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">التاريخ</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الشركة</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة المضافه</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة المستخدمه</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة المضافة للرصيد</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">القيمة المدفوعة من الرصيد</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الرصيد</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الوصف</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الصندوق</th>

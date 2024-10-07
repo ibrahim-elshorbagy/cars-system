@@ -42,9 +42,11 @@ class CarUpdate extends FormRequest
             'date_won' => 'nullable|date',
             'estimate_arrival_date' => 'nullable|date',
             'arrival_date' => 'nullable|date',
+
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,gif',  // Validation for new images
             'old_images_url' => 'nullable|array', // Validate the old images as an array
             'old_images_url.*' => 'string', // Each old image URL must be a string
+
             'carfax_report' => $this->carfax_report_is_file() ? 'nullable|mimes:pdf' : 'nullable|string',
 
             'box_id'=>'nullable|exists:boxes,id',

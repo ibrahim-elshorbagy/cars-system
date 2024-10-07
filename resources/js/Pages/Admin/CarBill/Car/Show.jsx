@@ -34,12 +34,12 @@ export default function Show({ auth, site_settings, car }) {
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             معلومات السيارة
             </h2>
-            <Link
-                href={route("car.index")}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-400 "
-            >
-              الرجوع
-            </Link>
+                <button
+                onClick={() => window.history.back()}
+                className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-400"
+                >
+                الرجوع
+                </button>
 
         </div>
       }>
@@ -166,7 +166,7 @@ export default function Show({ auth, site_settings, car }) {
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Destination</td>
                         </tr>
                         <tr className="bg-white dark:bg-gray-800">
-                            <th className="px-3 py-3 ">{car.line_name}</th>
+                            <th className="px-3 py-3 "><a href={car.line_website}>{car.line_name}</a></th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Shipping Line</td>
                         </tr>
                         <tr className="bg-gray-100 dark:bg-gray-700">

@@ -43,6 +43,7 @@ class ShowCarResource extends JsonResource
             'destination_name' => $this->destination->name ?? null,
             'destination_id' => $this->destination->id ?? null,
             'line_name' => $this->line->name ?? null,
+            'line_website' => $this->line->line_website ?? null,
             'line_id' => $this->line->id ?? null,
             'terminal_name' => $this->terminal->name ?? null,
             'terminal_id' => $this->terminal->id ?? null,
