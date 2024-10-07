@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->decimal('total_amount', 10, 2);
-            $table->foreignId('box_id')->nullable()->constrained('boxes');
+            // $table->foreignId('box_id')->nullable()->constrained('boxes');
 
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

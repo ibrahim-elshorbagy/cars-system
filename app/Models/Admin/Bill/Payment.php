@@ -15,9 +15,7 @@ class Payment extends Model
     public function customer(){
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function box(){
-        return $this->belongsTo(Box::class, 'box_id');
-    }
+
 
     public function createdBy(){
         return $this->belongsTo(User::class, 'created_by');

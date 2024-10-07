@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/popover";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, site_settings, customers, payments, success,boxeslist ,danger }) {
+export default function Index({ auth, site_settings, customers, payments, success ,danger }) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -267,7 +267,6 @@ const handleCustomerSelect = (customer) => {
         setEditData({
           customer_id: customer.customer_id,
           payments: allBills,
-          box_id: payment.box_id,
           total_used: Number(payment.total_amount),
           _method: "PUT",
         });
@@ -415,7 +414,7 @@ const toggleShowModal = (payment = null) => {
                           <td className="px-3 py-2">{payment.id}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.customer_company}</td>
                           <td className="px-3 py-2 text-nowrap">{payment.total_amount}</td>
-                          {/* <td className="px-3 py-2 text-nowrap">{payment.box_name}</td> */}
+
                           {/* <td className="px-3 py-2 text-nowrap">{payment.created_by}</td> */}
                           {/* <td className="px-3 py-2 text-nowrap">{payment.updated_by}</td> */}
                           {/* <td className="px-3 py-2 text-nowrap">{payment.created_at}</td> */}
@@ -481,27 +480,6 @@ const toggleShowModal = (payment = null) => {
                             />
                         </div>
 
-
-                        <div className="col-span-1 mb-6">
-                            {!auth.user.roles.includes("Accountant") && boxeslist && boxeslist.length > 0 && (
-                            <div className="flex col-span-2 gap-5">
-                                <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="box_id" value={"الصندوق"} />
-                                <SelectInput
-                                    id="box_id"
-                                    name="box_id"
-                                    onChange={(e) => setCreateData("box_id", e.target.value)}
-                                >
-                                    <option value="">اختر</option>
-                                    {boxeslist.map((box) => (
-                                    <option value={box.id} key={box.id}>
-                                        {box.name}
-                                    </option>
-                                    ))}
-                                </SelectInput>
-
-                            </div>
-                            )}
-                        </div>
                     </div>
 
 
@@ -600,27 +578,6 @@ const toggleShowModal = (payment = null) => {
                     <div className="p-6">
 
 
-                        <div className="grid grid-cols-8 mb-6">
-                            {!auth.user.roles.includes("Accountant") && boxeslist && boxeslist.length > 0 && (
-                            <div className="flex col-span-2 gap-5">
-                                <InputLabel className="mt-1 text-xl text-nowrap" htmlFor="box_id" value={"الصندوق"} />
-                                <SelectInput
-                                    id="box_id"
-                                    name="box_id"
-                                          onChange={(e) => setEditData("box_id", e.target.value)}
-                                          value={editData.box_id || ""}
-                                >
-                                    <option value="">اختر</option>
-                                    {boxeslist.map((box) => (
-                                    <option value={box.id} key={box.id}>
-                                        {box.name}
-                                    </option>
-                                    ))}
-                                </SelectInput>
-
-                            </div>
-                            )}
-                        </div>
                         <div className="flex gap-5 m-6 text-gray-700 md:text-xl dark:text-white">
                             <span > رصيد العميل : {selectedCustomer.customer_balance} </span>
                             <span > رصيد مستخدم : {selectedCustomer.total_used || 0} </span>

@@ -25,12 +25,12 @@ class BillController extends Controller
     public function index()
     {
 
-        $query = Payment::with(['box','createdBy','updatedBy'])->orderBy("id", "desc");
+        $query = Payment::with(['createdBy','updatedBy'])->orderBy("id", "desc");
 
         // Paginate the results
         $payments = $query->paginate(25)->onEachSide(1);
 
-        // Load customers and boxes list
+        // Load customers and
        $customers = User::role('customer')
         ->select('id', 'name')
         ->with([
@@ -41,15 +41,12 @@ class BillController extends Controller
         ])
         ->get();
 
-        $boxeslist = Box::all();
-
         // Return data to the frontend
         return inertia("Admin/CarBill/Bill/Index", [
             'customers' => UserPaymentsResource::collection($customers),  //this for making new payment + see the customer full cars list
 
             "payments" => PaymentsResource::collection($payments), //this is for payment this what we display on the page
 
-            'boxeslist' => $boxeslist,
 
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -71,16 +68,13 @@ class BillController extends Controller
 
         $data['description'] = " تم خصم المبلغ " . $data['total_used'] . " $ " . " من العميل " . $customer_company ." نتيجه عملية تسديد ذمم ";
 
-        // If the user has the Accountant role, set their specific box_id
-            if (Auth::user()->hasRole('Accountant')) {
-                $data['box_id'] = Auth::user()->accountant->box_id;
-            }
+
 
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
                 'used_credit'=> $data['total_used'],
                 'description'=> $data['description'],
-                'box_id'=> $data['box_id'],
+                'box_id'=> null,
                 'created_by'=>Auth::user()->id,
             ]);
 
@@ -89,7 +83,6 @@ class BillController extends Controller
             $payment = Payment::create([
                 'user_id' => $data['customer_id'],
                 'total_amount' => $data['total_used'],
-                'box_id' => $data['box_id'],
                 'created_by'=>Auth::user()->id,
             ]);
 
@@ -124,10 +117,6 @@ class BillController extends Controller
     {
         $data = $request->validated();
 
-        // If the user has the Accountant role, set their specific box_id
-        if (Auth::user()->hasRole('Accountant')) {
-            $data['box_id'] = Auth::user()->accountant->box_id;
-        }
 
         // Start a transaction
         DB::beginTransaction();
@@ -142,17 +131,17 @@ class BillController extends Controller
             // Create a CustomerCredit for retun all credit then take the new value
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
-                'box_id' => $data['box_id'],
-                'added_credit' => $payment->total_amount,
+                'box_id' => null,
+                'added_credit' => $payment->total_amount, // Total amount here as we return the both shpping cost + won price then we take the amount for both of them on new payment
                 'description' => ' تم اضافة الرصيد ' . $payment->total_amount . " $ ". ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
             ]);
 
-            
+
             // Create a CustomerCredit used_credit he takes
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
-                'box_id' => $data['box_id'],
+                'box_id' => null,
                 'used_credit' => $data['total_used'],
                 'description' => 'تم خصم الرصيد ' . $data['total_used'] . " $ ". ' من العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
@@ -161,12 +150,11 @@ class BillController extends Controller
 
 
 
-            // Update the payment total amount and box_id
+            // Update the payment total amount
             $data['updated_by']=Auth::user()->id;
 
             $payment->update([
                 'total_amount' => $data['total_used'],
-                'box_id' => $data['box_id'],
                 'updated_by'=>Auth::user()->id,
             ]);
 
@@ -223,7 +211,7 @@ class BillController extends Controller
             $customer_company =User::find($payment->user_id)->customer->customer_company;
             CustomerCredit::create([
                 'user_id'=> $payment->user_id,
-                'box_id' => $payment->box_id,
+                'box_id' => null,
                 'added_credit' => $payment->total_amount,
                 'description' => ' تم ارجاع ' . $payment->total_amount. " $ " . ' الي العميل ' . $customer_company . " نتيجه عمليه حذف عملية تسديد  ",
             ]);

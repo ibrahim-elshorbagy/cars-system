@@ -32,10 +32,6 @@ class StorePaymentRequest extends FormRequest
             'total_used' => 'nullable|numeric|min:0',
         ];
 
-        // Conditional box_id validation based on role (nullable for admin)
-        if (!auth()->user()->hasRole('Accountant')) {
-            $rules['box_id'] = 'required|exists:boxes,id';
-        }
 
         return $rules;
     }
@@ -56,16 +52,7 @@ class StorePaymentRequest extends FormRequest
             }
         });
 
-        // Set the default box_id for Accountant role
-        if (auth()->user()->hasRole('Accountant') && !$this->filled('box_id')) {
-            $this->merge([
-                'box_id' => auth()->user()->accountant->box_id
-            ]);
 
-            if (!$this->input('box_id')) {
-                $validator->errors()->add('box_id', 'يجب أن يكون لديك صندوق محدد.');
-            }
-        }
     }
 
     protected function validateCustomerCredit($validator)

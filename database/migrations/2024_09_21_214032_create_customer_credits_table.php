@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('added_credit', 10, 2)->default(0.00);
             $table->decimal('used_credit', 10, 2)->default(0.00);
             $table->text('description')->nullable();
-            $table->foreignId('box_id')->constrained('boxes');
+            $table->foreignId('box_id')->nullable()->constrained('boxes');
 
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

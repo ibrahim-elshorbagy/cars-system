@@ -33,10 +33,7 @@ class UpdatePaymentRequest extends FormRequest
             'total_used' => 'nullable|numeric|min:0',
         ];
 
-        // Conditional box_id validation based on role (nullable for admin)
-        if (!auth()->user()->hasRole('Accountant')) {
-            $rules['box_id'] = 'required|exists:boxes,id';
-        }
+
 
         return $rules;
     }
@@ -55,19 +52,10 @@ class UpdatePaymentRequest extends FormRequest
             if ($totalPayments <= 0) {
                 $validator->errors()->add('payments', 'يجب إدخال مبلغ مدفوع على الأقل في واحدة من السيارات.');
             }
-            
+
         });
 
-        if (auth()->user()->hasRole('Accountant') && !$this->filled('box_id')) {
 
-            $this->merge([
-                'box_id' => auth()->user()->accountant->box_id
-            ]);
-
-            if (!$this->input('box_id')) {
-                $validator->errors()->add('box_id', 'يجب أن يكون لديك صندوق محدد.');
-            }
-        }
 
     }
 
