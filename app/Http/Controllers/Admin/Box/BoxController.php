@@ -60,6 +60,9 @@ class BoxController extends Controller
 
     public function destroy(Box $box)
     {
+            if($box->id ==1){
+                return back()->with('danger', 'لا يمكن حذف الصندوق الاساسي.');
+            }
             if ($box->transactions()->count() > 0) {
                 return back()->with('danger', 'لا يمكن حذف الصندوق لأنه مرتبط بمعاملات.');
             }

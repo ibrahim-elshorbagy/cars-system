@@ -3,14 +3,16 @@
 
 // use App\Http\Controllers\Product\ModelController;
 
-
+use App\Http\Controllers\Admin\Transportation\CityController;
 use App\Http\Controllers\Admin\Transportation\VendorController;
 use App\Http\Controllers\Admin\Transportation\DestinationController;
 use App\Http\Controllers\Admin\Transportation\LineController;
 use App\Http\Controllers\Admin\Transportation\FacilityController;
 use App\Http\Controllers\Admin\Transportation\MakeController;
 use App\Http\Controllers\Admin\Transportation\ModellController;
+use App\Http\Controllers\Admin\Transportation\PortController;
 use App\Http\Controllers\Admin\Transportation\ShippingFeeTypeController;
+use App\Http\Controllers\Admin\Transportation\ShippingPlanController;
 use App\Http\Controllers\Admin\Transportation\TerminalController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +59,55 @@ Route::group(['prefix' => 'admin/transportation'], function () {
     Route::group(['middleware' => ['permission:delete-destination']], function () {
         Route::delete('/destination/{destination}', [DestinationController::class, 'destroy'])->name('destination.destroy');
     });
+//---------------------------------------------------------------------------------------------
+    // Routes for Cities (المدن)
+
+    Route::group(['middleware' => ['permission:create-city']], function () {
+        Route::post('/city', [CityController::class, 'store'])->name('city.store');
+    });
+
+    Route::group(['middleware' => ['permission:read-city']], function () {
+        Route::get('/city', [CityController::class, 'index'])->name('city.index');
+    });
+
+    Route::group(['middleware' => ['permission:update-city']], function () {
+        Route::put('/city/{city}', [CityController::class, 'update'])->name('city.update');
+    });
+
+    Route::group(['middleware' => ['permission:delete-city']], function () {
+        Route::delete('/city/{city}', [CityController::class, 'destroy'])->name('city.destroy');
+    });
+//---------------------------------------------------------------------------------------------
+    // Routes for Ports (الموانئ)
+
+    Route::group(['middleware' => ['permission:create-port']], function () {
+        Route::post('/port', [PortController::class, 'store'])->name('port.store');
+    });
+
+    Route::group(['middleware' => ['permission:read-port']], function () {
+        Route::get('/port', [PortController::class, 'index'])->name('port.index');
+    });
+
+    Route::group(['middleware' => ['permission:update-port']], function () {
+        Route::put('/port/{port}', [PortController::class, 'update'])->name('port.update');
+    });
+
+    Route::group(['middleware' => ['permission:delete-port']], function () {
+        Route::delete('/port/{port}', [PortController::class, 'destroy'])->name('port.destroy');
+    });
+
+//---------------------------------------------------------------------------------------------
+    // Routes for Shippings Plan
+
+    Route::group(['middleware' => ['permission:shipping-price']], function () {
+        Route::get('/shipping-prices', [ShippingPlanController::class, 'index'])->name('shipping-prices.index');
+        Route::post('/shipping-prices/update', [ShippingPlanController::class, 'updateSingle'])->name('shipping-prices.update');
+    });
+
+
+
+
+
 
 //---------------------------------------------------------------------------------------------
     // Routes for Terminal (محطات الشحن)
@@ -172,3 +223,9 @@ Route::group(['prefix' => 'admin/transportation'], function () {
 });
 
 
+
+Route::group(['middleware' => ['permission:read-shipping-price']], function () {
+ //Routes for Shippings prices
+    Route::get('show/shipping-prices', [ShippingPlanController::class, 'show'])->name('show.shipping-prices');
+
+});

@@ -33,6 +33,9 @@ class StoreCustomerRequest extends FormRequest
             'phone'=>['nullable','string', 'regex:/^\+[1-9]\d{1,14}$/'],
             'whatsapp'=>["nullable",'string', 'regex:/^\+[1-9]\d{1,14}$/'],
             'customer_company'=>["nullable",'string'],
+
+            'added_credit' => ['nullable', 'numeric', 'min:0'],
+            'used_credit' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 }

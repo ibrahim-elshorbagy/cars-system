@@ -5,14 +5,15 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
+import SelectInput from "@/Components/SelectInput";
 
-export default function Index({site_settings, auth, makes, queryParams = null, success,danger }) {
+export default function Index({ auth, ports,site_settings ,queryParams = null, success,danger }) {
   queryParams = queryParams || {};
 
   // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingMake, setEditingMake] = useState(null);
+  const [editingPort, setEditingPort] = useState(null);
 
   // Toggle Create Modal
   const toggleCreateModal = () => {
@@ -20,16 +21,17 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
   };
 
   // Toggle Edit Modal
-    const toggleEditModal = (make = null) => {
-        if (make) {
-            setEditingMake(make);
+    const toggleEditModal = (port = null) => {
+        if (port) {
+            setEditingPort(port);
 
         setEditData({
-            name: make.name,
+            name: port.name,
+
             _method: "PUT",
         });
         } else {
-        setEditingMake(null);
+        setEditingPort(null);
         editReset();
         }
         setIsEditModalOpen(!isEditModalOpen);
@@ -44,7 +46,7 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
     }
       delete queryParams.page;
 
-    router.get(route("make.index"), queryParams);
+    router.get(route("port.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -66,7 +68,7 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
     }
     }, [success, operationPerformed]);
 
-        const [visibleDanger, setVisibleDanger] = useState(danger);
+    const [visibleDanger, setVisibleDanger] = useState(danger);
 
   useEffect(() => {
     if (danger) {
@@ -79,11 +81,11 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
   }, [danger]);
 
 
-  const deleteMake = (make) => {
-    if (!window.confirm("هل انت متأكد من حذف الماركه ؟ ")) {
+  const deletePort = (port) => {
+    if (!window.confirm("هل انت متأكد من حذف الميناء ؟ ")) {
       return;
     }
-    router.delete(route("make.destroy", make.id), {
+    router.delete(route("port.destroy", port.id), {
       onSuccess: (page) => {
             setVisibleSuccess(page.props.success);
         setOperationPerformed(true);
@@ -119,27 +121,27 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
   });
 
   // Handle Create
-  const handleCreateMake = (e) => {
+  const handleCreatePort = (e) => {
     e.preventDefault();
-    createPost(route("make.store"), {
-      onSuccess: () => {
+      createPost(route("port.store"), {
+        onSuccess: () => {
         createReset();
         toggleCreateModal();
         setOperationPerformed(true);
+
 
       },
     });
   };
 
   // Handle Edit
-  const handleEditMake = (e) => {
+  const handleEditPort = (e) => {
     e.preventDefault();
-    editPost(route("make.update", editingMake.id), {
-      onSuccess: () => {
+      editPost(route("port.update", editingPort.id), {
+        onSuccess: () => {
         editReset();
         toggleEditModal();
         setOperationPerformed(true);
-
       },
     });
   };
@@ -147,26 +149,26 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
 
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-          site_settings={site_settings}
+      <AuthenticatedLayout
+        site_settings={site_settings}
+      user={auth.user}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            المركات (Makes)
+            الموانئ (Ports)
           </h2>
-          {auth.user.permissions.includes("create-make") && (
+          {auth.user.permissions.includes("create-port") && (
             <button
               onClick={toggleCreateModal}
               className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
             >
-              إضافة ماركه
+              إضافة ميناء
             </button>
           )}
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"المركات (Makes)"} />
+      <Head title={site_settings.websiteName + " - " +"الموانئ (Ports)"} />
 
       <div className="">
         <div className="mx-auto ">
@@ -210,29 +212,29 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
                     </tr>
                   </thead>
                   <tbody>
-                    {makes && makes.data.length > 0 ? (
-                      makes.data.map((make,index) => (
+                    {ports && ports.data.length > 0 ? (
+                      ports.data.map((port,index) => (
                         <tr
                             className={`${
                                         index % 2 === 0 ? "bg-white" : "bg-gray-100"
                                         } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
-                          key={make.id}
+                          key={port.id}
                         >
-                          <td className="px-3 py-2">{make.id}</td>
-                          <th className="px-3 py-2 text-nowrap">{make.name}</th>
+                          <td className="px-3 py-2">{port.id}</td>
+                          <th className="px-3 py-2 text-nowrap">{port.name}</th>
 
                           <td className="px-3 py-2 text-nowrap">
-                            {auth.user.permissions.includes("update-make") && (
+                            {auth.user.permissions.includes("update-port") && (
                               <button
-                                 onClick={() => toggleEditModal(make)}
+                                 onClick={() => toggleEditModal(port)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                               >
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-make") && (
+                            {auth.user.permissions.includes("delete-port") && (
                               <button
-                                onClick={() => deleteMake(make)}
+                                onClick={() => deletePort(port)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                               >
                                 حذف
@@ -244,32 +246,32 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
                     ) : (
                       <tr>
                         <td colSpan="5" className="px-3 py-2 text-center">
-                          لا يوجد مركات (Makes)
+                          لا يوجد موانء (Ports)
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
-              {makes && <Pagination links={makes.meta.links} />}
+              {ports && <Pagination links={ports.meta.links} />}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal for adding a new make */}
+      {/* Modal for adding a new port */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة ماركه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة ميناء جديده</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleCreateMake}>
+              <form onSubmit={handleCreatePort}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="make_name" value={"اسم الماركه"} />
+                  <InputLabel htmlFor="port_name" value={"اسم الميناء "} />
                   <TextInput
-                    id="make_name"
+                    id="port_name"
                     type="text"
                     name="name"
                     value={createData.name}
@@ -300,19 +302,19 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
         </div>
       )}
 
-      {/* Modal for editing a make */}
+      {/* Modal for editing a port */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل الماركه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الميناء</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleEditMake}>
+              <form onSubmit={handleEditPort}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_make_name" value={"اسم الماركه"} />
+                  <InputLabel htmlFor="edit_port_name" value={"اسم الميناء"} />
                   <TextInput
-                    id="edit_make_name"
+                    id="edit_port_name"
                     type="text"
                     name="name"
                     value={editData.name}

@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 
 use App\Http\Resources\Admin\CarBill\Car\CustomerResource;
-
-
+use App\Http\Resources\Admin\Customer\CustomerCreditShowResource;
 
 class CustomerCreditController extends Controller
 {
@@ -43,16 +42,22 @@ class CustomerCreditController extends Controller
 
     }
 
-    public function show(CustomerCredit $record){
+    public function show(CustomerCredit $record)
+    {
+        // Load the user relation for the current record
+        $record->load('user');
 
-        $record->with('user');
-
-        return inertia("Admin/Customer/CustomerCredit/Show",
-            [
-                'record'=>new CustomerCreditResource($record),
-            ]
-        );
+        // Calculate the sum of `added_credit` and `used_credit` before the current record
+        $initialBalance = CustomerCredit::where('user_id', $record->user_id)
+            ->where('created_at', '<', $record->created_at)
+            ->selectRaw('SUM(added_credit) - SUM(used_credit) as balance')
+            ->value('balance') ?? 0;
+        // Pass the calculated balance to the resource
+        return inertia("Admin/Customer/CustomerCredit/Show", [
+            'record' => new CustomerCreditShowResource($record, $initialBalance),
+        ]);
     }
+
 
     public function store(Request $request) {
         // Validate the request

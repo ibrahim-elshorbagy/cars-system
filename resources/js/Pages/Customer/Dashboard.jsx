@@ -23,7 +23,7 @@ const Dashboard = ({ auth,site_settings,customer_balance,total_won_price,total_s
             <div className="">
                 <div >
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
-                        <div className="gap-4 p-6 text-gray-900 dark:text-gray-100">
+                        <div className="gap-4 p-3 md:p-3 text-gray-900 dark:text-gray-100">
                             <div className="grid grid-cols-1 gap-4 py-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
                                 {/* Customer Cars */}
                                 <Link href={route('customer-my-cars.index')}>

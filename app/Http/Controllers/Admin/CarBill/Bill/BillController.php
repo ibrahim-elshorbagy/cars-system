@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\Box\BoxTransaction;
+use Carbon\Carbon;
 
 class BillController extends Controller
 {
@@ -126,15 +127,18 @@ class BillController extends Controller
             // Get the name of the customer new credit is being Return And then take from him
 
             $customer_company = User::find($data['customer_id'])->customer->customer_company;
+            $currentTimestamp = Carbon::now();
 
 
             // Create a CustomerCredit for retun all credit then take the new value
+            //the index order the oldest first so the oldest we give hime money then take from him
             CustomerCredit::create([
                 'user_id'=> $data['customer_id'],
                 'box_id' => null,
                 'added_credit' => $payment->total_amount, // Total amount here as we return the both shpping cost + won price then we take the amount for both of them on new payment
                 'description' => ' تم اضافة الرصيد ' . $payment->total_amount . " $ ". ' إلى العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
+                'created_at' => $currentTimestamp,
             ]);
 
 
@@ -145,6 +149,8 @@ class BillController extends Controller
                 'used_credit' => $data['total_used'],
                 'description' => 'تم خصم الرصيد ' . $data['total_used'] . " $ ". ' من العميل ' . $customer_company . " نتيجة عملية تعديل تسديد ذمم  ",
                 'created_by' => Auth::user()->id,
+                'created_at' => $currentTimestamp->copy()->addSecond(),
+
 
             ]);
 

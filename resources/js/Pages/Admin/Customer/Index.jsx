@@ -214,21 +214,21 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         </div>
                   )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">اسم الشركه</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">اسم الاتصال</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">اسم الدخول</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الاضافة</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">التحديث</td>
-                      <th className="p-3 text-xs text-nowrap md:text-base">الإجراءات</th>
+                      <td className="p-3 text-xs text-nowrap md:text-base ">Id</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الشركه</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الاتصال</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الدخول</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">البريد الإلكتروني</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الهاتف</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">whatsapp</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الاضافة</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">التحديث</td>
+                      <th className="p-3 text-xs text-nowrap md:text-base min-w-36">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -298,11 +298,11 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           key={user.id}
                         >
                               <td className="px-3 py-2">{user.id}</td>
-                          <td className="px-3 py-2">{user.customer_company}</td>
+                          <td className="px-3 py-2 text-nowrap">{user.customer_company}</td>
                           <th className="px-3 py-2 text-nowrap">{user.name}</th>
                           <th className="px-3 py-2 text-nowrap">{user.user_name}</th>
-                          <td className="px-3 py-2">{user.email}</td>
-                          <td className="px-3 py-2">{user.phone ? user.phone : "No Phone"}</td>
+                          <td className="px-3 py-2 text-nowrap">{user.email}</td>
+                          <td className="px-3 py-2 text-nowrap">{user.phone ? user.phone : "No Phone"}</td>
                             <td className="px-3 py-2">
                             {user.whatsapp ? (
                                 <a
@@ -368,16 +368,16 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
       {/* Modal for adding a new user */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50 ">
+          <div className="duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg overflow-autotransition-all sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold text-gray-700 dark:text-white">إضافة عميل جديد</h2>
             </div>
-            <div className="p-6">
-            <form onSubmit={handleCreateUser}>
+            <div className="p-2 md:p-6">
+            <form onSubmit={handleCreateUser} >
 
                 <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
 
 
                               <div className="mb-4">
@@ -387,9 +387,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             type="text"
                             name="name"
                             value={createData.name}
-
-                            className="block w-full mt-1"
                             isFocused={true}
+                            className="block w-full mt-1"
+
                             onChange={(e) => setCreateData("name", e.target.value)}
                         />
                         <InputError message={createErrors.name} className="mt-2" />
@@ -405,7 +405,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                             value={createData.customer_company}
 
                             className="block w-full mt-1"
-                            isFocused={true}
+
                             onChange={(e) => setCreateData("customer_company", e.target.value)}
                         />
                         <InputError message={createErrors.customer_company} className="mt-2" />
@@ -444,10 +444,35 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     />
                     <InputError message={createErrors.whatsapp} className="mt-2" />
                     </div>
+                    <div className="mb-4">
+                        <InputLabel htmlFor="added_credit" value={"دائن بقيمة"} />
+                        <TextInput
+                        id="added_credit"
+                        type="number"
+                        name="name"
+                        value={createData.added_credit || ""}
+                        className="block w-full mt-1"
+                        onChange={(e) => setCreateData("added_credit", e.target.value)}
+                        />
+                        <InputError message={createErrors.added_credit} className="mt-2" />
+                    </div>
+                    <div className="mb-4">
+                        <InputLabel htmlFor="used_credit" value={"مدين بقيمة"} />
+                        <TextInput
+                        id="used_credit"
+                        type="number"
+                        name="name"
+                        value={createData.used_credit || ""}
+                        className="block w-full mt-1"
+                        onChange={(e) => setCreateData("used_credit", e.target.value)}
+                        />
+                        <InputError message={createErrors.used_credit} className="mt-2" />
+                    </div>
+
                 </div>
 
                 <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
                         <div className="mb-4">
                         <InputLabel htmlFor="user_name" value={"اسم المستخدم"} />
                         <TextInput
@@ -456,7 +481,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             name="user_name"
                             value={createData.user_name}
                             className="block w-full mt-1"
-                            isFocused={true}
+
                             onChange={(e) => setCreateData("user_name", e.target.value)}
                         />
                         <InputError message={createErrors.user_name} className="mt-2" />
@@ -513,18 +538,18 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
       {/* Modal for editing a user */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
               <h2 className="text-lg font-semibold text-gray-700 dark:text-white">تعديل عميل</h2>
             </div>
-            <div className="p-6">
+            <div className="p-2 md:p-6">
                           <form onSubmit={handleEditUser}>
 
 
             <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
 
                               <div className="mb-4">
                     <InputLabel htmlFor="edit_name" value={"شخص الاتصال"} />
@@ -534,7 +559,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                         name="name"
                         value={editData.name}
                         className="block w-full mt-1"
-                        isFocused={true}
+
                         onChange={(e) => setEditData("name", e.target.value)}
                     />
                     <InputError message={editErrors.name} className="mt-2" />
@@ -547,7 +572,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                         name="customer_company"
                         value={editData.customer_company}
                         className="block w-full mt-1"
-                        isFocused={true}
+
                         onChange={(e) => setEditData("customer_company", e.target.value)}
                     />
                     <InputError message={editErrors.customer_company} className="mt-2" />
@@ -591,7 +616,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
 
                         <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات الدخول</div>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
 
                         <div className="mb-4">
                         <InputLabel htmlFor="edit_user_name" value={"اسم المستخدم"} />
@@ -601,7 +626,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             name="user_name"
                             value={editData.user_name}
                             className="block w-full mt-1"
-                            isFocused={true}
+
                             onChange={(e) => setEditData("user_name", e.target.value)}
                         />
                         <InputError message={editErrors.user_name} className="mt-2" />

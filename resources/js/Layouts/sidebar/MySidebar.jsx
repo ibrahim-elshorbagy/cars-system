@@ -12,6 +12,10 @@ import { TbReportMoney } from "react-icons/tb";
 import { RiBillFill } from "react-icons/ri";
 import { PiBagSimpleFill } from "react-icons/pi";
 import { TbReceiptTax } from "react-icons/tb";
+import { PiCityDuotone } from "react-icons/pi";
+import { SiHarbor } from "react-icons/si";
+import { IoPricetags } from "react-icons/io5";
+import { MdPayments } from "react-icons/md";
 
 const MySidebar = ({ user, site_settings }) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -41,6 +45,12 @@ const MySidebar = ({ user, site_settings }) => {
                     href: "car.index",
                     icon: <FaCar />,
                     permissions: ["read-car"],
+                },
+                {
+                    text: "اسعار الشحن",
+                    href: "shipping-prices.index",
+                    icon: <IoPricetags />,
+                    permissions: ['shipping-price'],
                 },
             ],
         },
@@ -89,20 +99,38 @@ const MySidebar = ({ user, site_settings }) => {
                 {
                     text: "تكلفة الشحن (Shipping Fee)",
                     href: "ShippingFee.index",
-                    icon: <FaGavel />,
+                    icon: <MdPayments />,
                     permissions: ["read-ShippingFee"],
                 },
                 {
-                    text: "المزادات (Vendors)",
-                    href: "vendor.index",
-                    icon: <FaGavel />,
-                    permissions: ["read-vendor"],
+                    text: "اسعار الشحن (Shipping Prices)",
+                    href: "show.shipping-prices",
+                    icon: <IoPricetags />,
+                    permissions: ['read-shipping-price'],
                 },
                 {
                     text: "الوجهات (Destinations)",
                     href: "destination.index",
                     icon: <FaMapMarkerAlt />,
                     permissions: ["read-destination"],
+                },
+                {
+                    text: "الموانئ (Ports)",
+                    href: "port.index",
+                    icon: <SiHarbor />,
+                    permissions: ["read-port"],
+                },
+                {
+                    text: "المدن (Cities)",
+                    href: "city.index",
+                    icon: <PiCityDuotone />,
+                    permissions: ["read-city"],
+                },
+                {
+                    text: "المزادات (Vendors)",
+                    href: "vendor.index",
+                    icon: <FaGavel />,
+                    permissions: ["read-vendor"],
                 },
                 {
                     text: "خطوط الملاحة (Lines)",
@@ -202,6 +230,12 @@ const MySidebar = ({ user, site_settings }) => {
                     icon: <TbReceiptTax />,
                     permissions: ["read-my-bills"],
                 },
+                {
+                    text: "اسعار الشحن",
+                    href: "show.shipping-prices",
+                    icon: <IoPricetags />,
+                    permissions: ["read-shipping-price"],
+                },
             ],
         },
 
@@ -214,9 +248,13 @@ const MySidebar = ({ user, site_settings }) => {
     const filteredMenuItems = menuItems
         .filter((item) => {
             if (item.type === "link") {
-                return item.permissions.some((permission) => user.permissions.includes(permission));
+                return (
+                    item.permissions.length === 0 ||
+                    item.permissions.some((permission) => user.permissions.includes(permission))
+                );
             } else if (item.type === "section") {
                 const filteredLinks = item.links.filter((link) =>
+                    link.permissions.length === 0 ||
                     link.permissions.some((permission) => user.permissions.includes(permission))
                 );
                 return filteredLinks.length > 0 && (!item.permissions || item.permissions.every((permission) => user.permissions.includes(permission)));
@@ -228,6 +266,7 @@ const MySidebar = ({ user, site_settings }) => {
                 return {
                     ...item,
                     links: item.links.filter((link) =>
+                        link.permissions.length === 0 ||
                         link.permissions.some((permission) => user.permissions.includes(permission))
                     ),
                 };

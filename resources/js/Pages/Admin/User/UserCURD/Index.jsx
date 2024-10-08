@@ -210,20 +210,20 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-6 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td>Id</td>
-                      <td>اسم المستخدم</td>
-                      <td>الاسم</td>
-                      <td>البريد الإلكتروني</td>
-                      <td>الهاتف</td>
-                      <td>whatsapp</td>
-                      <td>الدور</td>
-                      <td>تاريخ الإنشاء</td>
-                      <th className="p-3">الإجراءات</th>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم المستخدم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الاسم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">البريد الإلكتروني</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الهاتف</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">whatsapp</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الدور</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">تاريخ الإنشاء</td>
+                      <th className="p-3 text-xs text-nowrap md:text-base min-w-36">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -328,7 +328,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">إضافة مستخدم جديد</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة مستخدم جديد</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateUser}>
@@ -387,7 +387,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                 name="name"
                                 value={createData.name}
                                 className="block w-full mt-1"
-                                isFocused={true}
+
                                 onChange={(e) => setCreateData("name", e.target.value)}
                             />
                             <InputError message={createErrors.name} className="mt-2" />
@@ -452,7 +452,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       placeholder="+962799504930"
 
                           className="block w-full mt-1"
-                          isFocused={true}
+
                           onChange={(e) => setCreateData("phone", e.target.value)}
                       />
                       <InputError message={createErrors.phone} className="mt-2" />
@@ -468,7 +468,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       placeholder="+962799504930"
 
                       className="block w-full mt-1"
-                      isFocused={true}
+
                       onChange={(e) => setCreateData("whatsapp", e.target.value)}
                   />
                   <InputError message={createErrors.whatsapp} className="mt-2" />
@@ -501,7 +501,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">تعديل المستخدم</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل المستخدم</h2>
             </div>
             <div className="p-6">
                           <form onSubmit={handleEditUser}>
@@ -516,7 +516,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     name="name"
                     value={editData.user_name}
                     className="block w-full mt-1"
-                    isFocused={true}
+
                     onChange={(e) => setEditData("user_name", e.target.value)}
                   />
                         <InputError message={editErrors.user_name} className="mt-2" />
@@ -560,7 +560,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                             name="name"
                             value={editData.name}
                             className="block w-full mt-1"
-                            isFocused={true}
+
                             onChange={(e) => setEditData("name", e.target.value)}
                         />
                                 <InputError message={editErrors.name} className="mt-2" />
@@ -626,7 +626,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       placeholder="+962799504930"
 
                           className="block w-full mt-1"
-                          isFocused={true}
+
                           onChange={(e) => setEditData("phone", e.target.value)}
                       />
                       <InputError message={editErrors.phone} className="mt-2" />
@@ -642,7 +642,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                       placeholder="+962799504930"
 
                       className="block w-full mt-1"
-                      isFocused={true}
+
                       onChange={(e) => setEditData("whatsapp", e.target.value)}
                   />
                   <InputError message={editErrors.whatsapp} className="mt-2" />

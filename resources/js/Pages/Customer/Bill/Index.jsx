@@ -54,7 +54,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-                      <div className="p-6 text-gray-900 dark:text-gray-100">
+                      <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
                           <div>
                               <div className="grid grid-cols-1 gap-4 py-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
                                     {/* Customer Balance */}

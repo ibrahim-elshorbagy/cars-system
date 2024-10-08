@@ -29,6 +29,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
             'vendor',
             'destination',
+            'city',
+            'port',
             'terminal',
             'line',
             'facility',
@@ -62,6 +64,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
             //Reports
             'read-box-transaction', //موجودات الصندوق
+            "shipping-price", //Shipping prices for administration
+            "read-shipping-price", //Shipping prices for customers
 
             //Site settings
             'for-SystemAdmin-manage-site-settings',

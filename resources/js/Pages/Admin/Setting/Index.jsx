@@ -88,7 +88,7 @@ export default function SettingsPage({ auth, site_settings,settings, success }) 
                         </div>
                     )}
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                        <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
                             {/* Displaying settings in sections */}
                             <section className="mb-6">
                                 <h3 className="text-lg font-semibold">معلومات الموقع</h3>

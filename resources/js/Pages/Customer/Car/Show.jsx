@@ -47,7 +47,7 @@ const [selectedImage, setSelectedImage] = useState(null);
     <div>
         <div className="mx-auto">
             <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
+            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
                 <div className="mt-6">
                 <Tabs defaultValue="general" >
                     <TabsList >

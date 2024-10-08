@@ -36,6 +36,8 @@ export default function Authenticated({ user,site_settings,header, children }) {
                 links: [
                     { text: "العملاء", href: "customer.index", permissions: ["read-customer"] },
                     { text: "السيارات", href: "car.index", permissions: ["read-car"] },
+                    { text: "اسعار الشحن", href: "shipping-prices.index", permissions: ["shipping-price"] },
+
                 ],
             },
             {
@@ -56,8 +58,11 @@ export default function Authenticated({ user,site_settings,header, children }) {
                 permissions: ["read-vendor", "read-destination", "read-line", "read-terminal", "read-facility", "read-make", "read-model"],
                 links: [
                     { text: "تكلفة الشحن (Shipping Fee)", href: "ShippingFee.index", permissions: ["read-ShippingFee"] },
-                    { text: "المزادات (Vendors)", href: "vendor.index", permissions: ["read-vendor"] },
+                    { text: "اسعار الشحن (Shipping Prices)", href: "show.shipping-prices", permissions: ["read-shipping-price"] },
                     { text: "الوجهات (Destinations)", href: "destination.index", permissions: ["read-destination"] },
+                    { text: "الموانئ (Ports)", href: "port.index", permissions: ["read-port"] },
+                    { text: "المدن (Cities)", href: "city.index", permissions: ["read-city"] },
+                    { text: "المزادات (Vendors)", href: "vendor.index", permissions: ["read-vendor"] },
                     { text: "خطوط الملاحة (Lines)", href: "line.index", permissions: ["read-line"] },
                     { text: "المحطات (Terminals)", href: "terminal.index", permissions: ["read-terminal"] },
                     { text: "المرافق (Facilities)", href: "facility.index", permissions: ["read-facility"] },
@@ -85,6 +90,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                     { text: "سياراتي", href: "customer-my-cars.index", permissions: ["read-my-cars"] },
                     { text: "المحاسبة", href: "customer-my-credits.index", permissions: ["read-my-credits"] },
                     { text: "الذمم", href: "customer-my-bills.index", permissions: ["read-my-bills"] },
+                    { text: "اسعار الشحن", href: "show.shipping-prices", permissions: ['read-shipping-price'] },
                 ],
             },
         ];
@@ -186,7 +192,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                             </div>
                         </div>
 
-                        <div className="flex items-center ml-5 sm:hidden">
+                        <div className="flex items-center sm:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
                                 className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"

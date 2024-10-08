@@ -183,7 +183,7 @@ export default function Index({ auth,site_settings, terminals, queryParams = nul
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
+            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

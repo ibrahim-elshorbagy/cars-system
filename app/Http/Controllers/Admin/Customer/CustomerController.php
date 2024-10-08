@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Customer\StoreCustomerRequest;
 use App\Http\Requests\Admin\Customer\UpdateCustomerRequest;
 use App\Http\Resources\Admin\Customer\CustomerResource;
+use App\Models\Admin\Box\BoxTransaction;
 use App\Models\Admin\Customer\Customer;
+use App\Models\Admin\Customer\CustomerCredit;
 use App\Models\Admin\SiteSetting\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -86,6 +90,51 @@ Full opertions For Customers (add,delete ,update)
 
         $whatsappNumber = $data['whatsapp'];
         $message = "عميلنا العزيز، يمكنك الدخول لنظام \"{$site_name}\" عن طريق الرابط \"{$site_url}\" باستخدام معلومات الدخول التالية: اسم المستخدم \"{$user->user_name}\" وكلمة المرور \"{$request->password}\"، علماً بأن البريد الإلكتروني المعتمد هو \"{$user->email}\".";
+
+
+
+
+        $customer_company = $data['customer_company'];
+
+        //دائن ومدين
+        $currentTimestamp = Carbon::now();
+
+        if($data['added_credit'] != 0){
+
+            CustomerCredit::create([
+                'user_id'=> $user->id,
+                'box_id' => 1,
+                'added_credit' => $data['added_credit'],
+                'description' => ' رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customer_company . " بتاريخ " . date('Y-m-d'),
+                'created_by' => Auth::user()->id,
+                'created_at' => $currentTimestamp
+            ]);
+            BoxTransaction::create([
+                    'box_id' => 1,
+                    'income' => $data['added_credit'],
+                    'description' => ' رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customer_company . " بتاريخ " . date('Y-m-d'),
+                    'created_by' => Auth::id(),
+                ]);
+        }
+
+
+        if($data['used_credit'] != 0){
+            CustomerCredit::create([
+                'user_id'=> $user->id,
+                'box_id' => null,
+                'used_credit' => $data['used_credit'],
+                'description' => ' رصيد افتتاحي مدين بقيمة ' . $data['used_credit'] . " $ ". ' من العميل ' . $customer_company . " بتاريخ " . date('Y-m-d'),
+                'created_by' => Auth::user()->id,
+                'created_at' => $currentTimestamp->copy()->addSecond(),
+
+            ]);
+
+        }
+
+
+
+
+
 
         DB::commit();
 

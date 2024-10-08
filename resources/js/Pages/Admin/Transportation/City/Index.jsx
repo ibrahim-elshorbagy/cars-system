@@ -5,14 +5,30 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
+import SelectInput from "@/Components/SelectInput";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { ChevronsUpDown, Check } from "lucide-react";
 
-export default function Index({site_settings, auth, makes, queryParams = null, success,danger }) {
+export default function Index({ auth, cities,ports,site_settings ,queryParams = null, success,danger }) {
   queryParams = queryParams || {};
 
   // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingMake, setEditingMake] = useState(null);
+  const [editingCity, setEditingCity] = useState(null);
 
   // Toggle Create Modal
   const toggleCreateModal = () => {
@@ -20,16 +36,19 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
   };
 
   // Toggle Edit Modal
-    const toggleEditModal = (make = null) => {
-        if (make) {
-            setEditingMake(make);
+    const toggleEditModal = (city = null) => {
+        if (city) {
+            setEditingCity(city);
 
         setEditData({
-            name: make.name,
+            name: city.name,
+            code: city.code,
+            port_id: city.port_id,
+
             _method: "PUT",
         });
         } else {
-        setEditingMake(null);
+        setEditingCity(null);
         editReset();
         }
         setIsEditModalOpen(!isEditModalOpen);
@@ -44,7 +63,7 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
     }
       delete queryParams.page;
 
-    router.get(route("make.index"), queryParams);
+    router.get(route("city.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -66,7 +85,7 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
     }
     }, [success, operationPerformed]);
 
-        const [visibleDanger, setVisibleDanger] = useState(danger);
+    const [visibleDanger, setVisibleDanger] = useState(danger);
 
   useEffect(() => {
     if (danger) {
@@ -79,11 +98,11 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
   }, [danger]);
 
 
-  const deleteMake = (make) => {
-    if (!window.confirm("هل انت متأكد من حذف الماركه ؟ ")) {
+  const deleteCity = (city) => {
+    if (!window.confirm("هل انت متأكد من حذف المدينة ؟ ")) {
       return;
     }
-    router.delete(route("make.destroy", make.id), {
+    router.delete(route("city.destroy", city.id), {
       onSuccess: (page) => {
             setVisibleSuccess(page.props.success);
         setOperationPerformed(true);
@@ -101,8 +120,6 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
     reset: createReset,
   } = useForm({
     name: "",
-    email: "",
-    password: "",
   });
 
   const {
@@ -113,33 +130,31 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
     reset: editReset,
   } = useForm({
     name: "",
-    email: "",
-    password: "",
     _method: "PUT",
   });
 
   // Handle Create
-  const handleCreateMake = (e) => {
+  const handleCreateCity = (e) => {
     e.preventDefault();
-    createPost(route("make.store"), {
-      onSuccess: () => {
+      createPost(route("city.store"), {
+        onSuccess: () => {
         createReset();
         toggleCreateModal();
         setOperationPerformed(true);
+
 
       },
     });
   };
 
   // Handle Edit
-  const handleEditMake = (e) => {
+  const handleEditCity = (e) => {
     e.preventDefault();
-    editPost(route("make.update", editingMake.id), {
-      onSuccess: () => {
+      editPost(route("city.update", editingCity.id), {
+        onSuccess: () => {
         editReset();
         toggleEditModal();
         setOperationPerformed(true);
-
       },
     });
   };
@@ -147,26 +162,26 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
 
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-          site_settings={site_settings}
+      <AuthenticatedLayout
+        site_settings={site_settings}
+      user={auth.user}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            المركات (Makes)
+            المدن (Cities)
           </h2>
-          {auth.user.permissions.includes("create-make") && (
+          {auth.user.permissions.includes("create-city") && (
             <button
               onClick={toggleCreateModal}
               className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
             >
-              إضافة ماركه
+              إضافة مدينة
             </button>
           )}
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"المركات (Makes)"} />
+      <Head title={site_settings.websiteName + " - " +"المدن (Cities)"} />
 
       <div className="">
         <div className="mx-auto ">
@@ -187,6 +202,9 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
                     <tr className="text-nowrap">
                       <td>Id</td>
                       <td>الاسم</td>
+                      <th className="p-3">كود المدينة</th>
+                      <th className="p-3">الميناء</th>
+
 
                       <th className="p-3">الإجراءات</th>
                     </tr>
@@ -207,32 +225,36 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
                                           </th>
 
                       <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {makes && makes.data.length > 0 ? (
-                      makes.data.map((make,index) => (
+                    {cities && cities.data.length > 0 ? (
+                      cities.data.map((city,index) => (
                         <tr
                             className={`${
                                         index % 2 === 0 ? "bg-white" : "bg-gray-100"
                                         } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
-                          key={make.id}
+                          key={city.id}
                         >
-                          <td className="px-3 py-2">{make.id}</td>
-                          <th className="px-3 py-2 text-nowrap">{make.name}</th>
+                          <td className="px-3 py-2">{city.id}</td>
+                          <th className="px-3 py-2 text-nowrap">{city.name}</th>
+                          <th className="px-3 py-2 text-nowrap">{city.code}</th>
+                          <th className="px-3 py-2 text-nowrap">{city.port_name}</th>
 
                           <td className="px-3 py-2 text-nowrap">
-                            {auth.user.permissions.includes("update-make") && (
+                            {auth.user.permissions.includes("update-city") && (
                               <button
-                                 onClick={() => toggleEditModal(make)}
+                                 onClick={() => toggleEditModal(city)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                               >
                                 تعديل
                               </button>
                             )}
-                            {auth.user.permissions.includes("delete-make") && (
+                            {auth.user.permissions.includes("delete-city") && (
                               <button
-                                onClick={() => deleteMake(make)}
+                                onClick={() => deleteCity(city)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                               >
                                 حذف
@@ -244,41 +266,65 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
                     ) : (
                       <tr>
                         <td colSpan="5" className="px-3 py-2 text-center">
-                          لا يوجد مركات (Makes)
+                          لا يوجد مدن (Cities)
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
-              {makes && <Pagination links={makes.meta.links} />}
+              {cities && <Pagination links={cities.meta.links} />}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal for adding a new make */}
+      {/* Modal for adding a new city */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة ماركه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة مدينة جديده</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleCreateMake}>
+                          <form onSubmit={handleCreateCity}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="make_name" value={"اسم الماركه"} />
+                        <InputLabel htmlFor="port_id mb-1" value={"الميناء"} />
+                        <ComboboxMakes
+                            items={ports.data}
+                            onItemSelect={(item) => setCreateData("port_id", item.id)}
+                            placeholder="اختر الميناء"
+                            emptyMessage="لا توجد موانئ"
+                        />
+                        <InputError message={createErrors.port_id} className="mt-2" />
+                </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="city_name" value={"اسم المدينة "} />
                   <TextInput
-                    id="make_name"
+                    id="city_name"
                     type="text"
                     name="name"
                     value={createData.name}
                     className="block w-full mt-1"
                     isFocused={true}
                     onChange={(e) => setCreateData("name", e.target.value)}
-                  />
-                  <InputError message={createErrors.name} className="mt-2" />
+                    />
+                    <InputError message={createErrors.name} className="mt-2" />
+                              </div>
+                 <div className="mb-4">
+                  <InputLabel htmlFor="code" value={"كود المدينة "} />
+                  <TextInput
+                    id="code"
+                    type="text"
+                    name="name"
+                    value={createData.code}
+                    className="block w-full mt-1"
+                    isFocused={true}
+                    onChange={(e) => setCreateData("code", e.target.value)}
+                    />
+                    <InputError message={createErrors.code} className="mt-2" />
                     </div>
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
@@ -300,19 +346,31 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
         </div>
       )}
 
-      {/* Modal for editing a make */}
+      {/* Modal for editing a city */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل الماركه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل المدينة</h2>
             </div>
             <div className="p-6">
-              <form onSubmit={handleEditMake}>
+            <form onSubmit={handleEditCity}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_make_name" value={"اسم الماركه"} />
+                    <InputLabel className="mb-1" htmlFor="edit_port_id" value={"الميناء"} />
+                    <ComboboxMakes
+                      items={ports.data}
+                      selectedMakeId={editData.port_id}
+                      onItemSelect={(item) => setEditData("port_id", item.id)}
+                      placeholder="اختر الميناء"
+                      emptyMessage="لا توجد موانئ"
+
+                    />
+                          <InputError message={editErrors.port_id} className="mt-2" />
+                </div>
+                <div className="mb-4">
+                  <InputLabel htmlFor="edit_city_name" value={"اسم المدينة"} />
                   <TextInput
-                    id="edit_make_name"
+                    id="edit_city_name"
                     type="text"
                     name="name"
                     value={editData.name}
@@ -321,7 +379,21 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
                     onChange={(e) => setEditData("name", e.target.value)}
                   />
                   <InputError message={editErrors.name} className="mt-2" />
+                  </div>
+                  <div className="mb-4">
+                  <InputLabel htmlFor="edit_code" value={"اسم المدينة"} />
+                  <TextInput
+                    id="edit_code"
+                    type="text"
+                    name="code"
+                    value={editData.code}
+                    className="block w-full mt-1"
+                    isFocused={true}
+                    onChange={(e) => setEditData("code", e.target.value)}
+                  />
+                  <InputError message={editErrors.code} className="mt-2" />
                 </div>
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
@@ -344,5 +416,65 @@ export default function Index({site_settings, auth, makes, queryParams = null, s
       )}
 
     </AuthenticatedLayout>
+  );
+}
+
+
+function ComboboxMakes({ items, onItemSelect, placeholder, selectedMakeId, emptyMessage }) {
+  const [open, setOpen] = useState(false);
+  const [selectedMake, setSelectedMake] = useState(null);
+
+  useEffect(() => {
+    if (selectedMakeId) {
+      const make = items.find((item) => String(item.id) === String(selectedMakeId));
+      setSelectedMake(make || null);
+    }
+  }, [selectedMakeId, items]);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="justify-between w-full"
+        >
+          {selectedMake ? selectedMake.name : placeholder}
+          <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="" />
+          <CommandList>
+            {items && items.length === 0 ? (
+              <CommandEmpty>{emptyMessage}</CommandEmpty>
+            ) : (
+              <CommandGroup>
+                {items && items.map((item) => (
+                  <CommandItem
+                    key={item.id}
+                    value={item.name}
+                    onSelect={() => {
+                      setSelectedMake(item);
+                      onItemSelect(item);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={`mr-2 h-4 w-4 ${
+                        selectedMake?.id === item.id ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                    {item.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
