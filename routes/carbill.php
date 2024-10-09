@@ -61,6 +61,7 @@ Route::group(['prefix' => 'admin/bills'], function () {
 
         Route::get('/report/customers-bills/', [BillController::class, 'CustomersBills'])->name('customers-bills.index');
         Route::get('/report/customers-bills/{user}/Details', [BillController::class, 'BillsDetails'])->name('customers-bills.details');
+        Route::get('/report/customers-bills/{user}/Details/print', [BillController::class, 'BillsDetailsPrint'])->name('customers-bills.details-print');
 
     });
 });

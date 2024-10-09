@@ -21,7 +21,7 @@ export default function Index({ auth, site_settings, record }) {
             onClick={handlePrint}
             className="px-2 py-1 text-sm text-white bg-blue-500 rounded-md sm:text-base sm:px-4 sm:py-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
           >
-            Print
+            طباعة
           </button>
         </div>
       }

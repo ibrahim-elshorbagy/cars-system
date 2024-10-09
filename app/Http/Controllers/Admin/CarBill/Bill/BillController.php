@@ -270,14 +270,36 @@ class BillController extends Controller
 
             $bills = $user->load([
                 'cars' => function ($query) {
-                    $query->select('id', 'chassis', 'user_id');
+                    $query->select('id', 'chassis', 'user_id','model_id','make_id','year');
                 },
-                'cars.bill.paymentBills.payment'
+                'cars.bill.paymentBills.payment',
+                'cars.make',
+                'cars.model',
             ]);
+
 
             return inertia("Admin/CarBill/Bill/Reports/BillsDetails", [
                 "bills" => new BillsDetailsResource($bills),
+                'customer' => $user,
             ]);
 
+    }
+
+    public function BillsDetailsPrint(User $user)
+    {
+        $bills = $user->load([
+            'cars' => function ($query) {
+                    $query->select('id', 'chassis', 'user_id','model_id','make_id','year');
+            },
+            'cars.bill.paymentBills.payment',
+            'cars.make',
+            'cars.model',
+        ]);
+        $user->load('customer');
+        return inertia("Admin/CarBill/Bill/Reports/BillsDetailsReport", [
+            "bills" => new BillsDetailsResource($bills),
+            'customer' => $user,
+
+        ]);
     }
 }

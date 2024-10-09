@@ -7,8 +7,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Link } from '@inertiajs/react';
 
-export default function Index({ auth,site_settings, bills }) {
+export default function Index({ auth,site_settings, bills,customer }) {
 
 
 
@@ -21,7 +22,12 @@ export default function Index({ auth,site_settings, bills }) {
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
             تقرير ذمم العميل
         </h2>
-
+            <Link
+                href={route("customers-bills.details-print", customer.id)}
+                className="px-2 py-1 text-sm text-white rounded-md bg-emerald-500 sm:text-base sm:px-4 sm:py-2 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            >
+            طباعة كشف الحساب
+            </Link>
         </div>
       }
     >
@@ -41,9 +47,10 @@ export default function Index({ auth,site_settings, bills }) {
                             {/* Show Full Details on Medium and Larger Screens */}
                                 <AccordionTrigger className="p-2 text-xs font-semibold text-white rounded-t-lg lg:text-lg lg:p-4 lg:flex bg-indigoBlue dark:bg-indigoBlue">
                                         <div className="text-right">
-                                        <div className="text-xl">
-                                        {bill.car_chassis}
+                                        <div dir="ltr" className="text-xl font-bold text-white ">
+                                            {bill.car_year} {bill.car_make} {bill.car_model} - Chassis : <span className="">{bill.car_chassis}</span>
                                         </div>
+
                                         <table className="w-full">
                                             <tbody>
                                                 <tr >

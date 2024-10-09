@@ -19,7 +19,16 @@ class BillsDetailsResource extends JsonResource
             $totalShippingCostPaid = $bill->paymentBills->where('shipping_cost_amount', '>', 0)->sum('shipping_cost_amount');
 
             return [
+
+                'customer_name' =>$this->name,
+                'customer_company' =>$this->customer->customer_company,
                 'car_chassis' => $car->chassis,
+                'car_year' =>$car->year ,
+
+                'model_id' => $car->model_id,
+                'make_id' => $car->make_id,
+                'car_make' => $car->make->name ,
+                'car_model' =>$car->model->name ,
                 'won_price' => [
                     'amount' => $bill->won_price,
                     'total_paid' => $totalWonPricePaid,
