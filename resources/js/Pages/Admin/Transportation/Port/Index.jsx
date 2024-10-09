@@ -182,7 +182,7 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -264,12 +264,12 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة ميناء جديده</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة ميناء جديد (ولاية)</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreatePort}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="port_name" value={"اسم الميناء "} />
+                  <InputLabel htmlFor="port_name" value={"اسم الميناء (الولاية) "} />
                   <TextInput
                     id="port_name"
                     type="text"
@@ -312,7 +312,7 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
             <div className="p-6">
               <form onSubmit={handleEditPort}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_port_name" value={"اسم الميناء"} />
+                  <InputLabel htmlFor="edit_port_name" value={"اسم الميناء (الولاية)"} />
                   <TextInput
                     id="edit_port_name"
                     type="text"

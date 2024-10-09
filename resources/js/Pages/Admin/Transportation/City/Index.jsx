@@ -173,7 +173,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
           {auth.user.permissions.includes("create-city") && (
             <button
               onClick={toggleCreateModal}
-              className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
+              className="p-3 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
             >
               إضافة مدينة
             </button>
@@ -195,36 +195,38 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <td>Id</td>
-                      <td>الاسم</td>
-                      <th className="p-3">كود المدينة</th>
-                      <th className="p-3">الميناء</th>
+                    <td>Id</td>
+                      <th className="w-32 p-3">كود </th>
+                      <td className="p-3 w-96">المدينة</td>
+                      <th className="w-64 p-3">الميناء</th>
+                      <th className="p-3 text-center">االاجراءات</th>
 
 
-                      <th className="p-3">الإجراءات</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <th className="p-3"></th>
-                      <th className="p-3">
+
+
+                        <th className="p-3"></th>
+                        <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
                           placeholder={"الاسم"}
-                          onBlur={(e) =>
+                          isFocused
+                          onChange={(e) =>
                             searchFieldChanged("name", e.target.value)
                           }
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                                           </th>
-
-                      <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                     </tr>
@@ -237,13 +239,14 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
                                         index % 2 === 0 ? "bg-white" : "bg-gray-100"
                                         } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
                           key={city.id}
-                        >
-                          <td className="px-3 py-2">{city.id}</td>
-                          <th className="px-3 py-2 text-nowrap">{city.name}</th>
-                          <th className="px-3 py-2 text-nowrap">{city.code}</th>
-                          <th className="px-3 py-2 text-nowrap">{city.port_name}</th>
+                          >
+                              <td className="p-3">{city.id}</td>
+                          <th className="p-3 text-xs text-nowrap w-fit md:text-base">{city.code}</th>
 
-                          <td className="px-3 py-2 text-nowrap">
+                          <th className="p-3 text-xs text-nowrap w-fit md:text-base">{city.name}</th>
+                          <th className="p-3 text-xs text-nowrap w-fit md:text-base">{city.port_name}</th>
+
+                              <td className="p-3 text-center text-nowrap">
                             {auth.user.permissions.includes("update-city") && (
                               <button
                                  onClick={() => toggleEditModal(city)}
@@ -265,7 +268,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="px-3 py-2 text-center">
+                        <td colSpan="5" className="p-3 text-center">
                           لا يوجد مدن (Cities)
                         </td>
                       </tr>
@@ -284,12 +287,12 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة مدينة جديده</h2>
+              <h2 className="text-lg font-semibold dark:text-white">اضافة مدينة جديدة</h2>
             </div>
             <div className="p-6">
                           <form onSubmit={handleCreateCity}>
                 <div className="mb-4">
-                        <InputLabel htmlFor="port_id mb-1" value={"الميناء"} />
+                        <InputLabel className="mb-1" htmlFor="port_id " value={"الميناء (الولاية)"} />
                         <ComboboxMakes
                             items={ports.data}
                             onItemSelect={(item) => setCreateData("port_id", item.id)}
@@ -356,7 +359,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
             <div className="p-6">
             <form onSubmit={handleEditCity}>
                 <div className="mb-4">
-                    <InputLabel className="mb-1" htmlFor="edit_port_id" value={"الميناء"} />
+                    <InputLabel className="mb-1" htmlFor="edit_port_id" value={"الميناء (الولاية)"} />
                     <ComboboxMakes
                       items={ports.data}
                       selectedMakeId={editData.port_id}

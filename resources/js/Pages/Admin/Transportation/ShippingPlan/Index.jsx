@@ -158,17 +158,26 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
 
                     {/* Shipping Plans Card */}
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-900 sm:rounded-lg">
-                        <div className="p-3 ">
+                        <div className="px-3 py-4 ">
                             <form onSubmit={handleSaveClick}>
                                 {/* Tabs for Destinations */}
                                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                                    <TabsList className="inline-block ">
-                                        {destinations.map((destination) => (
-                                            <TabsTrigger className="text-xs md:text-base" key={destination.id} value={destination.name}>
-                                                {destination.name}
-                                            </TabsTrigger>
-                                        ))}
-                                    </TabsList>
+                                    {/* <div className='mb-4 text-2xl font-bold text-center text-gray-900 dark:text-white'>Destinations</div> */}
+                                    <div className='relative'>
+                                        <div className="absolute -top-3 left-5 px-3 py-0.5 bg-indigo-500 text-white text-sm font-semibold rounded-full">Destinations</div>
+                                        <TabsList className="inline-block gap-4 p-5 rounded-lg shadow-lg bg-gradient-to-r from-indigo-200 to-purple-300 dark:from-gray-800 dark:to-gray-700">
+                                            {destinations.map((destination) => (
+                                                <TabsTrigger
+                                                    className="px-4 py-2 m-1 text-xs font-bold text-indigo-600 transition-all bg-white border border-indigo-300 rounded-lg md:text-xl dark:bg-gray-800 dark:text-white dark:border-gray-600 hover:bg-indigo-100 dark:hover:bg-indigo-900"
+                                                    key={destination.id}
+                                                    value={destination.name}
+                                                >
+                                                    {destination.name}
+                                                </TabsTrigger>
+                                            ))}
+                                        </TabsList>
+                                    </div>
+
 
                                     {/* Tabs Content for Each Destination */}
                                     {destinations.map((destination) => (
@@ -177,15 +186,15 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                             <Accordion
                                                 type="multiple"
                                                 defaultValue={destination.ports.map(port => `item-${port.id}`)}
-                                                className="w-full mt-4"
+                                                className="w-full mt-4 "
                                             >
-                                                <div  className="dark:text-white">
-                                                    <span className="font-bold">{destination.name}</span>
+                                                <div  className="my-2 text-left dark:text-white">
+                                                    <span className="font-bold ">Destination : {destination.name}</span>
                                                 </div>
 
                                                 {destination.ports.map((port) => (
                                                     <AccordionItem key={port.id} value={`item-${port.id}`}>
-                                                        <AccordionTrigger className="dark:text-white">{port.name}</AccordionTrigger>
+                                                        <AccordionTrigger className="justify-end gap-2 bg-blue-100 rounded-sm dark:bg-indigo-600 dark:text-white">Port : {port.name}</AccordionTrigger>
                                                         <AccordionContent>
                                                             {/* Filter Input for City Name */}
                                                             <div className="mb-4">
@@ -196,7 +205,7 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                                                     value={cityNameFilters[port.id] || ''}
                                                                     placeholder="بحث بالاسم" // "Search by name"
                                                                     onChange={(e) => handleFilterChange(port.id, e.target.value)}
-                                                                    className="block w-64 mt-1" // Smaller width (8rem)
+                                                                    className="block w-64 mt-2" // Smaller width (8rem)
                                                                 />
                                                                 {/* Optional: Display validation error if any */}
                                                                 {saveErrors.city_name_filter && (
@@ -209,10 +218,10 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                                             <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                                                                 <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                                     <tr>
-                                                                        <th className="p-3 text-xs text-nowrap md:text-base">ID</th>
-                                                                        <th className="p-3 text-xs text-nowrap md:text-base">City</th>
-                                                                        <th className="p-3 text-xs text-nowrap md:text-base">Code</th>
-                                                                        <th className="p-3 text-xs text-nowrap md:text-base">Shipping Fee ($)</th>
+                                                                        <th className="p-3 text-xs w-fit text-nowrap md:text-base">ID</th>
+                                                                        <th className="p-3 text-xs text-nowrap md:text-base md:w-96">Shipping Price USD</th>
+                                                                        <th className="p-3 text-xs text-nowrap md:text-base md:w-32">Code</th>
+                                                                        <th className="p-3 text-xs text-right text-nowrap md:text-base min-w-28 md:w-96">City</th>
                                                                         <th className="p-3 text-xs text-nowrap md:text-base">Actions</th>
                                                                     </tr>
                                                                 </thead>
@@ -233,8 +242,6 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                                                                         } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}>
 
                                                                                     <td className="p-3 text-xs text-nowrap md:text-base">{city.id}</td>
-                                                                                    <td className="p-3 text-xs text-nowrap md:text-base">{city.name}</td>
-                                                                                    <td className="p-3 text-xs text-nowrap md:text-base">{city.code}</td>
                                                                                     <td className="p-3 text-xs text-nowrap md:text-base">
                                                                                         {isEditing ? (
                                                                                             <>
@@ -253,6 +260,9 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                                                                             <span>{Number(city.shipping_fee).toFixed(2)}</span>
                                                                                         )}
                                                                                     </td>
+                                                                                    <td className="p-3 text-xs text-nowrap md:text-base">{city.code}</td>
+                                                                                    <td className="p-3 text-xs text-right text-nowrap md:text-base">{city.name}</td>
+
                                                                                     <td className="p-3 text-xs text-nowrap md:text-base" >
                                                                                         {isEditing ? (
                                                                                             <div className='flex justify-end gap-2'>

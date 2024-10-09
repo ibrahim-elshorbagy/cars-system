@@ -156,14 +156,14 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            انواع تكلفة الشحن (Shpping Fee Types)
-          </h2>
+                  انواع تكاليف الشحن (Shipping Fees Types)
+            </h2>
           {auth.user.permissions.includes("create-ShippingFee") && (
             <button
               onClick={toggleCreateModal}
               className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
             >
-            إضافة تكلفه
+            اضافة تكلفة
             </button>
           )}
         </div>
@@ -183,7 +183,7 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
             </div>
           )}
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

@@ -97,13 +97,25 @@ const MySidebar = ({ user, site_settings }) => {
             icon: <FaDatabase  />,
             links: [
                 {
-                    text: "تكلفة الشحن (Shipping Fee)",
+                    text:
+                        (<>
+                            تكلفة الشحن
+                            <br />
+                            (Shipping Fee)
+                        </>)
+                    ,
                     href: "ShippingFee.index",
                     icon: <MdPayments />,
                     permissions: ["read-ShippingFee"],
                 },
                 {
-                    text: "اسعار الشحن (Shipping Prices)",
+                    text:
+                        (<>
+                            اسعار الشحن
+                            <br />
+                            (Shipping Prices)
+                        </>),
+
                     href: "show.shipping-prices",
                     icon: <IoPricetags />,
                     permissions: ['read-shipping-price'],
@@ -305,45 +317,51 @@ const MySidebar = ({ user, site_settings }) => {
                 <div className="px-6 pt-2">
                     <hr className="border-gray-300 dark:border-gray-500" />
                 </div>
-                <Menu iconShape="square" className="pt-2 text-white dark:text-white">
-                    {filteredMenuItems.map((item, index) => {
-                        if (item.type === "link") {
-                            return (
-                                <MenuItem
-                                    key={`link-${index}`}
-                                    icon={item.icon}
-                                    component={<Link href={route(item.href)} />}
-                                    className="py-2 my-2 "
-                                >
-                                    {item.text}
-                                </MenuItem>
-                            );
-                        } else if (item.type === "section") {
-                            return (
-                                <SubMenu
-                                    key={`section-${index}`}
-                                    icon={item.icon}
-                                    label={item.title}
-                                    className="py-2 my-2 dark:bg-gray-900 hover:bg-transparent hover:text-black dark:hover:text-indigoBlue dark:hover:bg-transparent bg-indigoBlue dark:text-white"
-                                    open
+            <Menu iconShape="square" className="pt-2 text-white dark:text-white">
+            {filteredMenuItems.map((item, index) => {
+                if (item.type === 'link') {
+                const isActive = route().current(item.href);
 
-                                >
-                                    {item.links.map((link, idx) => (
-                                        <SideNavLink
-                                            key={`${idx}-${link.href}`}
-                                            href={route(link.href)}
-                                            active={link.href === route().current()}
-                                            open
-                                        >
-                                                {link.icon}
-                                                {link.text}
-                                        </SideNavLink>
-                                    ))}
-                                </SubMenu>
-                            );
-                        }
-                    })}
-                </Menu>
+                return (
+                    <MenuItem
+                    key={`link-${index}`}
+                    icon={item.icon}
+                    component={<Link href={route(item.href)} />}
+                    className={`flex items-center   my-2 text-base text-white bg-indigoBlue dark:bg-gray-900 dark:text-white hover:bg-indigo-300 hover:text-indigo-700 dark:hover:bg-indigo-300 dark:hover:text-indigo-700 ${
+                        isActive
+                        ? 'dark:border-white text-gray-900 dark:text-gray-100 bg-indigo-600 dark:bg-indigo-600'
+                        : ''
+                    }`}
+                    >
+                    {item.text}
+                    </MenuItem>
+                );
+                } else if (item.type === 'section') {
+                return (
+                    <SubMenu
+                    key={`section-${index}`}
+                    icon={item.icon}
+                    label={item.title}
+                    className="py-2 my-2 dark:bg-gray-900 hover:bg-transparent hover:text-black dark:hover:text-indigoBlue dark:hover:bg-transparent bg-indigoBlue dark:text-white"
+                    open
+                    >
+                    {item.links.map((link, idx) => (
+                        <SideNavLink
+                        key={`${idx}-${link.href}`}
+                        href={route(link.href)}
+                        active={link.href === route().current()} // Check if this link is active
+                        open
+                        >
+                        {link.icon}
+                        {link.text}
+                        </SideNavLink>
+                    ))}
+                    </SubMenu>
+                );
+                }
+            })}
+            </Menu>
+
                 <div className="px-6 pb-8">
                     <hr className="border-gray-300 dark:border-gray-900" />
                 </div>

@@ -13,6 +13,7 @@ use Database\Seeders\Admin\Transportation\VendorSeeder;
 use Database\Seeders\Admin\Transportation\DestinationSeeder;
 use Database\Seeders\Admin\Transportation\TerminalSeeder;
 use Database\Seeders\Admin\Transportation\LineSeeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -90,5 +91,24 @@ class DatabaseSeeder extends Seeder
         foreach ($statuses as $status) {
             ShipStatus::updateOrCreate(['id' => $status['id']], $status);
         }
+
+
+        $ports = [
+            ['name' => 'Port of Alexandria'],
+            ['name' => 'Port of Suez'],
+            ['name' => 'Port of Damietta'],
+        ];
+
+        DB::table('ports')->insert($ports);
+
+        // Insert Cities with corresponding Port IDs
+        $cities = [
+            ['name' => 'Alexandria', 'code' => 'ALX', 'port_id' => 1],
+            ['name' => 'Suez', 'code' => 'SUZ', 'port_id' => 2],
+            ['name' => 'Damietta', 'code' => 'DAM', 'port_id' => 3],
+        ];
+
+        DB::table('cities')->insert($cities);
+
     }
 }
