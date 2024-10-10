@@ -5,15 +5,30 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { useState, useEffect } from "react";
+import { toast } from 'sonner';
 
 export default function Index({ auth, site_settings, boxes, queryParams = null, success, danger }) {
-
+    // ----------------------------------------------------------------------------- Page + search
   queryParams = queryParams || {};
+  const searchFieldChanged = (name, value) => {
+    if (value) {
+      queryParams[name] = value;
+    } else {
+      delete queryParams[name];
+    }
+    router.get(route("box.index"), queryParams);
+  };
+
+  const onKeyPress = (name, e) => {
+    if (e.key !== "Enter") return;
+    searchFieldChanged(name, e.target.value);
+  };
+
+    // -----------------------------------------------------------------------------
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingBox, setEditingBox] = useState(null);
-  const [operationPerformed, setOperationPerformed] = useState(false);
 
   const toggleCreateModal = () => {
     setIsCreateModalOpen(!isCreateModalOpen);
@@ -59,42 +74,8 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
     }
   }, [editingBox]);
 
-  const searchFieldChanged = (name, value) => {
-    if (value) {
-      queryParams[name] = value;
-    } else {
-      delete queryParams[name];
-    }
-    router.get(route("box.index"), queryParams);
-  };
 
-  const onKeyPress = (name, e) => {
-    if (e.key !== "Enter") return;
-    searchFieldChanged(name, e.target.value);
-  };
 
-  const [visibleSuccess, setVisibleSuccess] = useState(success);
-  const [visibleDanger, setVisibleDanger] = useState(danger);
-
-  useEffect(() => {
-    if (success && operationPerformed) {
-      setVisibleSuccess(success);
-      const timer = setTimeout(() => {
-        setVisibleSuccess(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [success]);
-
-  useEffect(() => {
-    if (danger) {
-      setVisibleDanger(danger);
-      const timer = setTimeout(() => {
-        setVisibleDanger(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [danger]);
 
   const deleteBox = (box) => {
     if (!window.confirm("هل انت متاكد من حذف الصندوق ؟ ")) {
@@ -103,9 +84,6 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
       router.delete(route("box.destroy", box), {
 
         onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
-              setVisibleDanger(page.props.danger);
-        setOperationPerformed(true);
 
       }
     });
@@ -115,6 +93,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
+          success={success} danger={danger}
       header={
         <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -147,18 +126,9 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
 
       <div className="">
         <div className="mx-auto ">
-          {visibleSuccess && (
-            <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
-              {visibleSuccess}
-            </div>
-          )}
-          {visibleDanger && (
-            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
-              {visibleDanger}
-            </div>
-          )}
+
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

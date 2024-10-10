@@ -7,6 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { Button } from "@/components/ui/button";
 import SelectInput from "@/Components/SelectInput";
+import { toast } from 'sonner';
 
 export default function Index({ auth, site_settings, transfers, boxes,boxList, queryParams = null, success, danger }) {
   queryParams = queryParams || {};
@@ -14,32 +15,7 @@ export default function Index({ auth, site_settings, transfers, boxes,boxList, q
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingTransfer, setEditingTransfer] = useState(null);
-  const [visibleSuccess, setVisibleSuccess] = useState(success);
-  const [operationPerformed, setOperationPerformed] = useState(false);
 
-    useEffect(() => {
-    if (success && operationPerformed) {
-        setVisibleSuccess(success);
-        const timer = setTimeout(() => {
-        setVisibleSuccess(null);
-        setOperationPerformed(false);
-        }, 3000);
-        return () => clearTimeout(timer);
-    }
-    }, [success, operationPerformed]);
-
-
-  const [visibleDanger, setVisibleDanger] = useState(danger);
-
-  useEffect(() => {
-    if (danger) {
-      setVisibleDanger(danger);
-      const timer = setTimeout(() => {
-        setVisibleDanger(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [danger, operationPerformed]);
 
   // Form data for creating and editing transfers
   const { data: createData, setData: setCreateData, post: createPost, errors: createErrors, reset: createReset } = useForm({
@@ -112,7 +88,7 @@ useEffect(() => {
       onSuccess: () => {
         editReset();
             toggleEditModal();
-        setOperationPerformed(true);
+
 
       },
     });
@@ -145,7 +121,7 @@ useEffect(() => {
       onSuccess: () => {
         createReset();
             toggleCreateModal();
-        setOperationPerformed(true);
+
 
       },
     });
@@ -159,9 +135,6 @@ useEffect(() => {
       router.delete(route("box-transfer.destroy", record), {
 
         onSuccess: (page) => {
-            setOperationPerformed(true);
-            setVisibleSuccess(page.props.success);
-            setVisibleDanger(page.props.danger);
       }
     });
       };
@@ -169,7 +142,7 @@ useEffect(() => {
     //---------------------------------------------------------
 
   return (
-      <AuthenticatedLayout user={auth.user} site_settings={site_settings}
+      <AuthenticatedLayout user={auth.user} site_settings={site_settings} success={success} danger={danger}
             header={
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
@@ -189,18 +162,9 @@ useEffect(() => {
 
       <div className="">
         <div className="mx-auto ">
-          {visibleSuccess && (
-            <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
-              {visibleSuccess}
-            </div>
-          )}
-                    {visibleDanger && (
-            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
-              {visibleDanger}
-            </div>
-          )}
+
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
 
 
               <div className="mt-6 overflow-auto">

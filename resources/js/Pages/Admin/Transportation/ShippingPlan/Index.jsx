@@ -12,36 +12,8 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
     // State for active Destination Tab
     const [activeTab, setActiveTab] = useState(destinations.length > 0 ? destinations[0].name : '');
 
-    // State for Success and Danger Messages
-    const [visibleSuccess, setVisibleSuccess] = useState(success);
-    const [visibleDanger, setVisibleDanger] = useState(danger);
-    const [operationPerformed, setOperationPerformed] = useState(false);
 
-    // Handle Success Message Visibility
-    useEffect(() => {
-        if (success && operationPerformed) {
-            setVisibleSuccess(success);
-            const timer = setTimeout(() => {
-                setVisibleSuccess(null);
-                setOperationPerformed(false);
 
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [success,operationPerformed]);
-
-    // Handle Danger Message Visibility
-    useEffect(() => {
-        if (danger) {
-            setVisibleDanger(danger);
-            const timer = setTimeout(() => {
-                setVisibleDanger(null);
-                setOperationPerformed(false);
-
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [danger]);
 
     //-----------------------------------------------------------------------------------
 
@@ -112,7 +84,7 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                 setVisibleSuccess('تم الحفظ بنجاح');
                 setEditingRowKey(null);
                 saveReset();
-                setOperationPerformed(true);
+
 
             },
             onError: () => {
@@ -137,24 +109,12 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
     return (
         <AuthenticatedLayout
             user={auth.user}
+            success={success} danger={danger}
             site_settings={site_settings}
             header={<h2 className="text-xl font-semibold">اسعار الشحن (Shipping Prices)</h2>}
         >
             <div className="py-2">
                 <div className="px-2 mx-auto">
-                    {/* Success Message */}
-                    {visibleSuccess && (
-                        <div className="p-4 mb-4 text-green-700 bg-green-100 rounded">
-                            {visibleSuccess}
-                        </div>
-                    )}
-
-                    {/* Danger Message */}
-                    {visibleDanger && (
-                        <div className="p-4 mb-4 text-red-700 bg-red-100 rounded">
-                            {visibleDanger}
-                        </div>
-                    )}
 
                     {/* Shipping Plans Card */}
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-900 sm:rounded-lg">

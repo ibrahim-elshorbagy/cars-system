@@ -106,7 +106,7 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
                             </p>
                             <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
                                                 {Number(box.data.total_income).toFixed(2) }
-                                                  
+
                             </p>
                         </div>
                         <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">
@@ -143,7 +143,7 @@ export default function Index({ auth, site_settings, boxeslist, box, queryParams
                             </p>
                             <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
                                 {Number(box.data.total_balance).toFixed(2) }
- 
+
                             </p>
                         </div>
                         <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">

@@ -54,31 +54,7 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
     searchFieldChanged(name, e.target.value);
   };
 
-  const [visibleSuccess, setVisibleSuccess] = useState(success);
-  const [operationPerformed, setOperationPerformed] = useState(false);
 
-    useEffect(() => {
-    if (success && operationPerformed) {
-        setVisibleSuccess(success);
-        const timer = setTimeout(() => {
-        setVisibleSuccess(null);
-        setOperationPerformed(false);
-        }, 3000);
-        return () => clearTimeout(timer);
-    }
-    }, [success, operationPerformed]);
-
-    const [visibleDanger, setVisibleDanger] = useState(danger);
-
-  useEffect(() => {
-    if (danger) {
-      setVisibleDanger(danger);
-      const timer = setTimeout(() => {
-        setVisibleDanger(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [danger]);
 
 
   const deletePort = (port) => {
@@ -87,8 +63,8 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
     }
     router.delete(route("port.destroy", port.id), {
       onSuccess: (page) => {
-            setVisibleSuccess(page.props.success);
-        setOperationPerformed(true);
+
+
 
       },
     });
@@ -127,7 +103,7 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
         onSuccess: () => {
         createReset();
         toggleCreateModal();
-        setOperationPerformed(true);
+
 
 
       },
@@ -141,7 +117,7 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
         onSuccess: () => {
         editReset();
         toggleEditModal();
-        setOperationPerformed(true);
+
       },
     });
   };
@@ -151,7 +127,8 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
   return (
       <AuthenticatedLayout
         site_settings={site_settings}
-      user={auth.user}
+          user={auth.user}
+          success={success} danger={danger}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -172,15 +149,7 @@ export default function Index({ auth, ports,site_settings ,queryParams = null, s
 
       <div className="">
         <div className="mx-auto ">
-          {visibleSuccess && (
-            <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
-              {visibleSuccess}
-            </div>
-          )}                    {visibleDanger && (
-            <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
-              {visibleDanger}
-            </div>
-          )}
+
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
             <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">

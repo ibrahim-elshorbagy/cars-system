@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
@@ -9,6 +9,7 @@ import { FaBars } from "react-icons/fa6";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { FaWhatsapp } from 'react-icons/fa';
 import { router } from '@inertiajs/react';
+import { Toaster, toast } from 'sonner';
 
 import {
   Accordion,
@@ -17,7 +18,7 @@ import {
   AccordionTrigger,
 } from "@/Components/ui/accordion"
 
-export default function Authenticated({ user,site_settings,header, children }) {
+export default function Authenticated({ user,site_settings,header, children ,success,danger}) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     document.documentElement.dir = "rtl";
@@ -102,6 +103,21 @@ export default function Authenticated({ user,site_settings,header, children }) {
         };
 
 
+
+    useEffect(() => {
+        if (success) {
+                toast.success("تم بنجاح!", {
+                    description: success,
+                    duration: 3000,
+                });
+            }
+            if(danger){
+                toast.error("حدث مشكلة!", {
+                    description: danger,
+                    duration: 3000,
+                });
+            }
+        }, [success,danger]);
 
 
 
@@ -287,6 +303,8 @@ export default function Authenticated({ user,site_settings,header, children }) {
             <main className="flex flex-col flex-1 bg-white dark:bg-gray-800">{children}</main>
             </div>
         </div>
+
+            <Toaster richColors  />
 
         <footer dir="ltr" className="py-6 text-white bg-gray-950">
             <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
