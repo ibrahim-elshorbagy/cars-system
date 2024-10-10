@@ -221,8 +221,8 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                                                         <th className="p-3 text-xs w-fit text-nowrap md:text-base">ID</th>
                                                                         <th className="p-3 text-xs text-nowrap md:text-base md:w-96">Shipping Price USD</th>
                                                                         <th className="p-3 text-xs text-nowrap md:text-base md:w-32">Code</th>
-                                                                        <th className="p-3 text-xs text-right text-nowrap md:text-base min-w-28 md:w-96">City</th>
-                                                                        <th className="p-3 text-xs text-nowrap md:text-base">Actions</th>
+                                                                        <th className="p-3 text-xs text-left text-nowrap md:text-base min-w-28 md:w-96">City</th>
+                                                                        <th className="p-3 text-xs text-left text-nowrap md:text-base">Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -261,9 +261,9 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
                                                                                         )}
                                                                                     </td>
                                                                                     <td className="p-3 text-xs text-nowrap md:text-base">{city.code}</td>
-                                                                                    <td className="p-3 text-xs text-right text-nowrap md:text-base">{city.name}</td>
+                                                                                    <td className="p-3 text-xs text-left text-nowrap md:text-base">{city.name}</td>
 
-                                                                                    <td className="p-3 text-xs text-nowrap md:text-base" >
+                                                                                    <td className="p-3 text-xs text-left text-nowrap md:text-base" >
                                                                                         {isEditing ? (
                                                                                             <div className='flex justify-end gap-2'>
                                                                                                 <button

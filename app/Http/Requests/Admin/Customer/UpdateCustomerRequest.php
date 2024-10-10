@@ -44,6 +44,11 @@ class UpdateCustomerRequest extends FormRequest
             'whatsapp'=>["nullable",'string', 'regex:/^\+[1-9]\d{1,14}$/'],
             'customer_company'=>["nullable",'string'],
 
+            'added_credit_id' => ['nullable', 'exists:customer_credits,id'],
+            'added_credit' => ['nullable', 'numeric', 'min:0'],
+            'used_credit_id' => ['nullable', 'exists:customer_credits,id'],
+            'used_credit' => ['nullable', 'numeric', 'min:0'],
+
         ];
     }
 }

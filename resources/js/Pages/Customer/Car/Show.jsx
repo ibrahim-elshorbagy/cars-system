@@ -47,7 +47,7 @@ const [selectedImage, setSelectedImage] = useState(null);
     <div>
         <div className="mx-auto">
             <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
                 <div className="mt-6">
                 <Tabs defaultValue="general" >
                     <TabsList >
@@ -165,7 +165,7 @@ const [selectedImage, setSelectedImage] = useState(null);
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Destination</td>
                         </tr>
                         <tr className="bg-white dark:bg-gray-800">
-                            <th className="px-3 py-3 "><a href={car.line_website}>{car.line_name}</a></th>
+                            <th className="px-3 py-3 text-blue-600"><a href={car.line_website}>{car.line_name}</a></th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Shipping Line</td>
                         </tr>
                         <tr className="bg-gray-100 dark:bg-gray-700">

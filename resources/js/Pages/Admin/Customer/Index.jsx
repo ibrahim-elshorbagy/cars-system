@@ -6,6 +6,13 @@ import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/Components/ui/hover-card"
+import { MdMarkEmailUnread } from "react-icons/md";
+import { FaUserLarge } from "react-icons/fa6";
 
 export default function Index({ auth,site_settings, users, queryParams = null, success ,danger,whatsapp_redirect }) {
   queryParams = queryParams || {};
@@ -33,14 +40,18 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     const toggleEditModal = (user = null) => {
         if (user) {
             setEditingUser(user);
-
         setEditData({
             name: user.name,
             user_name: user.user_name,
             email: user.email,
-            phone: user.phone,
-            whatsapp: user.whatsapp,
+            phone: user.phone || "",
+            whatsapp: user.whatsapp || "",
             customer_company: user.customer_company,
+
+            added_credit_id: user.added_credit_id || null,
+            added_credit: user.added_credit || 0,
+            used_credit_id: user.used_credit_id || null,
+            used_credit: user.used_credit || 0,
 
             _method: "PUT",
         });
@@ -220,14 +231,12 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td className="p-3 text-xs text-nowrap md:text-base ">Id</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الشركه</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الشركة</td>
                       <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الاتصال</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الدخول</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">البريد الإلكتروني</td>
+                      <td className="text-xs text-nowrap md:text-base w-fit">اسم الدخول</td>
+                      <td className="w-5 text-xs text-nowrap md:text-base base ">البريد </td>
                       <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الهاتف</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">whatsapp</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الاضافة</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">التحديث</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base min-w-36">التاريخ</td>
                       <th className="p-3 text-xs text-nowrap md:text-base min-w-36">الإجراءات</th>
                     </tr>
                   </thead>
@@ -238,7 +247,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                                               <TextInput
                           className="w-full"
                           defaultValue={queryParams.customer_company}
-                          placeholder={"اسم الشركه"}
+                          placeholder={"اسم الشركة"}
                           onBlur={(e) =>
                             searchFieldChanged("customer_company", e.target.value)
                           }
@@ -257,7 +266,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                         </th>
-                        <th className="p-3">
+                        {/* <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.user_name}
@@ -267,9 +276,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           }
                           onKeyPress={(e) => onKeyPress("user_name", e)}
                         />
-                      </th>
+                      </th> */}
 
-                      <th className="p-3">
+                      {/* <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.email}
@@ -279,9 +288,9 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           }
                           onKeyPress={(e) => onKeyPress("email", e)}
                         />
-                      </th>
-                      <th className="p-3"></th>
-                      <th className="p-3"></th>
+                      </th> */}
+                      <th className=""></th>
+                      <th className=""></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
@@ -300,35 +309,55 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                               <td className="px-3 py-2">{user.id}</td>
                           <td className="px-3 py-2 text-nowrap">{user.customer_company}</td>
                           <th className="px-3 py-2 text-nowrap">{user.name}</th>
-                          <th className="px-3 py-2 text-nowrap">{user.user_name}</th>
-                          <td className="px-3 py-2 text-nowrap">{user.email}</td>
-                          <td className="px-3 py-2 text-nowrap">{user.phone ? user.phone : "No Phone"}</td>
-                            <td className="px-3 py-2">
-                            {user.whatsapp ? (
-                                <a
-                                href={`https://wa.me/${user.whatsapp}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-500 hover:underline"
-                                >
-                                {user.whatsapp}
-                                </a>
-                            ) : (
-                                "No WhatsApp"
-                            )}
+                          {/* <th className="px-3 py-2 text-nowrap">{user.user_name}</th> */}
+                            <td className="text-center text-nowrap base">
+                                  <HoverCard>
+                                    <HoverCardTrigger><FaUserLarge className="text-blue-700" /></HoverCardTrigger>
+                                    <HoverCardContent>
+                                        {user.user_name}
+                                    </HoverCardContent>
+                                </HoverCard>
+
+                              </td>
+                                                          <td className="text-center text-nowrap base">
+                                  <HoverCard className="">
+                                    <HoverCardTrigger><MdMarkEmailUnread className="text-blue-700" /></HoverCardTrigger>
+                                    <HoverCardContent>
+                                        {user.email}
+                                    </HoverCardContent>
+                                </HoverCard>
+
+                          </td>
+                          <td className="px-3 py-2">
+                              <span className="flex flex-col gap-2">
+                                <span>{user.phone ? user.phone : "No Phone"}</span>
+                                <span className="text-xs">{user.whatsapp ? (
+                                        <a
+                                        href={`https://wa.me/${user.whatsapp}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-500 hover:underline"
+                                        >
+                                        {user.whatsapp}
+                                        </a>
+                                    ) : (
+                                        "No WhatsApp"
+                                    )}</span>
+                                </span>
+
+
                             </td>
                             <td className="px-3 py-2">
                             <span className="flex flex-col gap-2">
                                 <span>{user.created_by}</span>
                                 <span className="text-xs">{user.created_at}</span>
-                            </span>
-                            </td>
-                            <td className="px-3 py-2">
-                            <span className="flex flex-col gap-2">
+
                                 <span>{user.updated_by}</span>
                                 <span className="text-xs">{user.updated_at}</span>
+
                             </span>
                             </td>
+
 
                           <td className="px-3 py-2 text-nowrap">
                             {auth.user.permissions.includes("update-customer") && (user.id !=1) && (
@@ -376,7 +405,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
             <div className="p-2 md:p-6">
             <form onSubmit={handleCreateUser} >
 
-                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
+                <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافية</div>
                     <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
 
 
@@ -397,7 +426,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
 
 
                         <div className="mb-4">
-                        <InputLabel htmlFor="name" value={"اسم الشركه"} />
+                        <InputLabel htmlFor="name" value={"اسم الشركة"} />
                         <TextInput
                             id="customer_company"
                             type="text"
@@ -444,30 +473,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     />
                     <InputError message={createErrors.whatsapp} className="mt-2" />
                     </div>
-                    <div className="mb-4">
-                        <InputLabel htmlFor="added_credit" value={"دائن بقيمة"} />
-                        <TextInput
-                        id="added_credit"
-                        type="number"
-                        name="name"
-                        value={createData.added_credit || ""}
-                        className="block w-full mt-1"
-                        onChange={(e) => setCreateData("added_credit", e.target.value)}
-                        />
-                        <InputError message={createErrors.added_credit} className="mt-2" />
-                    </div>
-                    <div className="mb-4">
-                        <InputLabel htmlFor="used_credit" value={"مدين بقيمة"} />
-                        <TextInput
-                        id="used_credit"
-                        type="number"
-                        name="name"
-                        value={createData.used_credit || ""}
-                        className="block w-full mt-1"
-                        onChange={(e) => setCreateData("used_credit", e.target.value)}
-                        />
-                        <InputError message={createErrors.used_credit} className="mt-2" />
-                    </div>
+
 
                 </div>
 
@@ -515,6 +521,37 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                               </div>
 
 
+
+                <div className="mb-4 text-lg text-gray-700 dark:text-white">قيمة الرصيد الافتتاحي</div>
+
+                <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
+                    <div className="mb-4">
+                            <InputLabel htmlFor="added_credit" value={"دائن بقيمة"} />
+                            <TextInput
+                            id="added_credit"
+                            type="number"
+                            name="name"
+                            value={createData.added_credit || ""}
+                            className="block w-full mt-1"
+                            onChange={(e) => setCreateData("added_credit", e.target.value)}
+                            />
+                            <InputError message={createErrors.added_credit} className="mt-2" />
+                        </div>
+                        <div className="mb-4">
+                            <InputLabel htmlFor="used_credit" value={"مدين بقيمة"} />
+                            <TextInput
+                            id="used_credit"
+                            type="number"
+                            name="name"
+                            value={createData.used_credit || ""}
+                            className="block w-full mt-1"
+                            onChange={(e) => setCreateData("used_credit", e.target.value)}
+                            />
+                            <InputError message={createErrors.used_credit} className="mt-2" />
+                    </div>
+                </div>
+
+
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
@@ -547,7 +584,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                           <form onSubmit={handleEditUser}>
 
 
-            <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافيه</div>
+            <div className="mb-4 text-lg text-gray-700 dark:text-white">معلومات اضافية</div>
 
                 <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
 
@@ -565,7 +602,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                     <InputError message={editErrors.name} className="mt-2" />
                                 </div>
                     <div className="mb-4">
-                    <InputLabel htmlFor="edit_customer_company" value={"اسم الشركه "} />
+                    <InputLabel htmlFor="edit_customer_company" value={"اسم الشركة "} />
                     <TextInput
                         id="edit_customer_company"
                         type="text"
@@ -659,6 +696,34 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   <InputError message={editErrors.password} className="mt-2" />
                               </div>
 
+                <div className="mb-4 text-lg text-gray-700 dark:text-white">قيمة الرصيد الافتتاحي</div>
+
+                <div className="grid grid-cols-1 md:gap-6 md:grid-cols-2">
+                    <div className="mb-4">
+                            <InputLabel htmlFor="added_credit" value={"دائن بقيمة"} />
+                            <TextInput
+                            id="added_credit"
+                            type="number"
+                            name="name"
+                            value={editData.added_credit || ""}
+                            className="block w-full mt-1"
+                            onChange={(e) => setEditData("added_credit", e.target.value)}
+                            />
+                            <InputError message={editErrors.added_credit} className="mt-2" />
+                        </div>
+                        <div className="mb-4">
+                            <InputLabel htmlFor="used_credit" value={"مدين بقيمة"} />
+                            <TextInput
+                            id="used_credit"
+                            type="number"
+                            name="name"
+                            value={editData.used_credit || ""}
+                            className="block w-full mt-1"
+                            onChange={(e) => setEditData("used_credit", e.target.value)}
+                            />
+                            <InputError message={editErrors.used_credit} className="mt-2" />
+                    </div>
+                </div>
 
                 <div className="flex justify-end gap-2">
                   <button
