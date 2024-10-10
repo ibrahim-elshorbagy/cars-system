@@ -10,6 +10,7 @@ import { IoChevronDownOutline } from "react-icons/io5";
 import { FaWhatsapp } from 'react-icons/fa';
 import { router } from '@inertiajs/react';
 import { Toaster, toast } from 'sonner';
+import BackToTop from "@/Components/BackToTop";
 
 import {
   Accordion,
@@ -303,7 +304,9 @@ export default function Authenticated({ user,site_settings,header, children ,suc
             </div>
         </div>
 
-            <Toaster richColors  />
+            <Toaster richColors />
+                  <BackToTop />
+
 
         <footer dir="ltr" className="py-6 text-white bg-gray-950">
             <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">

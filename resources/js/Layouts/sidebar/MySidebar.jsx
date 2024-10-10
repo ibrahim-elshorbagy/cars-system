@@ -349,7 +349,7 @@ const MySidebar = ({ user, site_settings }) => {
                         <SideNavLink
                         key={`${idx}-${link.href}`}
                         href={route(link.href)}
-                        active={link.href === route().current()} // Check if this link is active
+                        active={link.href === route().current()}
                         open
                         >
                         {link.icon}

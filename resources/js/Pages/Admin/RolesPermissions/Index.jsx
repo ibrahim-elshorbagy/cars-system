@@ -6,16 +6,21 @@ export default function Index({ auth, roles,site_settings}) {
 
 
   return (
-    <AuthenticatedLayout user={auth.user} site_settings={site_settings}  >
+      <AuthenticatedLayout user={auth.user} site_settings={site_settings}
+          header={
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                        الصلاحيات
+                    </h2>
+                </div>
+            }>
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
 
       <div className="">
         <div className="mx-auto max-w-7xl ">
 
           <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
-            <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-              الصلاحيات
-            </h2>
+
 
             <div className="mt-6 overflow-auto">
 

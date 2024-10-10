@@ -19,19 +19,24 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
   };
 
   return (
-    <AuthenticatedLayout user={auth.user} site_settings={site_settings}>
+      <AuthenticatedLayout user={auth.user} site_settings={site_settings}
+
+            header={
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                        الصلاحيات
+                    </h2>
+                </div>
+            }
+
+      >
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
       <div className="">
         <div className="mx-auto max-w-7xl ">
           <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800">
-            <h2 className="text-xl font-semibold dark:text-gray-200">
-              صلاحيات : {role.name}
-            </h2>
+
             <form onSubmit={handleSubmit} className="mt-6">
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                  صلاحيات
-                </h3>
                 <div className="overflow-auto">
                   <table className="w-full mt-4 text-sm text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

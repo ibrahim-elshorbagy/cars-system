@@ -201,8 +201,7 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
                       <td className="p-3 text-xs text-nowrap md:text-base ">Id</td>
                       <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الشركة</td>
                       <td className="p-3 text-xs text-nowrap md:text-base min-w-36">اسم الاتصال</td>
-                      <td className="text-xs text-nowrap md:text-base w-fit">اسم الدخول</td>
-                      <td className="w-5 text-xs text-nowrap md:text-base base ">البريد </td>
+                      <td className="text-xs text-nowrap md:text-base w-fit">معلومات</td>
                       <td className="p-3 text-xs text-nowrap md:text-base min-w-36">الهاتف</td>
                       <td className="p-3 text-xs text-nowrap md:text-base min-w-36">التاريخ</td>
                       <th className="p-3 text-xs text-nowrap md:text-base min-w-36">الإجراءات</th>
@@ -261,7 +260,6 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
                       <th className=""></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
-                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -279,23 +277,23 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
                           <th className="px-3 py-2 text-nowrap">{user.name}</th>
                           {/* <th className="px-3 py-2 text-nowrap">{user.user_name}</th> */}
                             <td className="text-center text-nowrap base">
-                                  <HoverCard>
+                                  <div className="flex items-center gap-2">
+                                      <HoverCard>
                                     <HoverCardTrigger><FaUserLarge className="text-blue-700" /></HoverCardTrigger>
                                     <HoverCardContent>
                                         {user.user_name}
                                     </HoverCardContent>
                                 </HoverCard>
 
-                              </td>
-                                                          <td className="text-center text-nowrap base">
                                   <HoverCard className="">
                                     <HoverCardTrigger><MdMarkEmailUnread className="text-blue-700" /></HoverCardTrigger>
                                     <HoverCardContent>
                                         {user.email}
                                     </HoverCardContent>
                                 </HoverCard>
+                                </div>
+                              </td>
 
-                          </td>
                           <td className="px-3 py-2">
                               <span className="flex flex-col gap-2">
                                 <span>{user.phone ? user.phone : "No Phone"}</span>
