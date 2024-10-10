@@ -27,8 +27,8 @@ class CityController extends Controller
             "cities" => CityResource::collection($cities),
             "ports" => PortResource::collection($ports),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

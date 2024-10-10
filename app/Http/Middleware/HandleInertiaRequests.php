@@ -78,6 +78,10 @@ class HandleInertiaRequests extends Middleware
                 'phone' => $phone ,
                 'email' => $email ,
             ],
+            'flash'=>[
+                'success'=>session('success'),
+
+            ]
 
 
         ];

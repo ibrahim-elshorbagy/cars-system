@@ -41,8 +41,8 @@ class BoxTransactionController extends Controller
             "box" => new BoxTransactionResource($box, $paginatedTransactions), // Pass the resource
             'boxeslist' => $boxeslist,
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

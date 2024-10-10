@@ -17,8 +17,8 @@ class RolesPermissionsController extends Controller
 
         return inertia('Admin/RolesPermissions/Index', [
             'roles' => $roles,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+            
         ]);
     }
 

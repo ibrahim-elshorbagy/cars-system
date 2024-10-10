@@ -80,8 +80,8 @@ class CarController extends Controller
 
             "cars" => ShowCarResource::collection($cars),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
 
             'customers'=>CustomerResource::collection($customers),
             'boxeslist' => $boxeslist,

@@ -24,8 +24,8 @@ class TerminalController extends Controller
         return inertia("Admin/Transportation/Terminal/Index", [
             "terminals" => TerminalResource::collection($terminals),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

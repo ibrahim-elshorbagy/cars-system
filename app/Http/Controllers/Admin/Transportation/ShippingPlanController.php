@@ -66,8 +66,8 @@ class ShippingPlanController extends Controller
         });
         return inertia('Admin/Transportation/ShippingPlan/Index', [
             'destinations' => $structuredData,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 
@@ -160,8 +160,8 @@ class ShippingPlanController extends Controller
 
         return inertia('Customer/Transportation/ShippingPlan/Index', [ // Note the different path
             'destinations' => $structuredData,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

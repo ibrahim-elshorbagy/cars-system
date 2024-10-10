@@ -23,8 +23,8 @@ class FacilityController extends Controller
         return inertia("Admin/Transportation/Facility/Index", [
             "facilities" => FacilityResource::collection($facilities),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

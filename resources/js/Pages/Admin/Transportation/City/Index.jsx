@@ -22,7 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown, Check } from "lucide-react";
 
-export default function Index({ auth, cities,ports,site_settings ,queryParams = null, success,danger }) {
+export default function Index({ auth, cities,ports,site_settings ,queryParams = null }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -140,7 +140,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
   return (
       <AuthenticatedLayout
           site_settings={site_settings}
-          success={success} danger={danger}
+
       user={auth.user}
       header={
         <div className="flex items-center justify-between">

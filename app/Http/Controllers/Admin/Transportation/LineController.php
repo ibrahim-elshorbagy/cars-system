@@ -24,8 +24,8 @@ class LineController extends Controller
         return inertia("Admin/Transportation/Line/Index", [
             "lines" => LineResource::collection($lines),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

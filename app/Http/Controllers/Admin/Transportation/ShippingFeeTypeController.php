@@ -28,8 +28,8 @@ class ShippingFeeTypeController extends Controller
         return inertia("Admin/Transportation/ShippingFeeType/Index", [
             "feeTypes" => ShippingFeeTypeResource::collection($feeTypes),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

@@ -8,7 +8,7 @@ import TextInput from '@/Components/TextInput';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
-export default function ShippingPlanIndex({ site_settings, auth, destinations, success, danger }) {
+export default function ShippingPlanIndex({ site_settings, auth, destinations }) {
     // State for active Destination Tab
     const [activeTab, setActiveTab] = useState(destinations.length > 0 ? destinations[0].name : '');
 
@@ -81,14 +81,12 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
         // Submit the form data to 'update-single' route
         savePost(route('shipping-prices.update'), {
             onSuccess: () => {
-                setVisibleSuccess('تم الحفظ بنجاح');
                 setEditingRowKey(null);
                 saveReset();
 
 
             },
             onError: () => {
-                setVisibleDanger('حدث خطاء اثناء الحفظ');
             },
         });
     };
@@ -109,7 +107,7 @@ export default function ShippingPlanIndex({ site_settings, auth, destinations, s
     return (
         <AuthenticatedLayout
             user={auth.user}
-            success={success} danger={danger}
+
             site_settings={site_settings}
             header={<h2 className="text-xl font-semibold">اسعار الشحن (Shipping Prices)</h2>}
         >

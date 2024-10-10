@@ -156,7 +156,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

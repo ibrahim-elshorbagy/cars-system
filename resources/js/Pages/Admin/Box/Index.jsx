@@ -5,9 +5,8 @@ import { Head, Link, router, useForm } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { useState, useEffect } from "react";
-import { toast } from 'sonner';
 
-export default function Index({ auth, site_settings, boxes, queryParams = null, success, danger }) {
+export default function Index({ auth, site_settings, boxes, queryParams = null }) {
     // ----------------------------------------------------------------------------- Page + search
   queryParams = queryParams || {};
   const searchFieldChanged = (name, value) => {
@@ -93,7 +92,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null, 
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

@@ -7,7 +7,7 @@ import InputError from "@/Components/InputError";
 import { Button } from "@/components/ui/button";
 import Input from "@/Components/ui/input";
 
-export default function SettingsPage({ auth, site_settings,settings, success }) {
+export default function SettingsPage({ auth, site_settings,settings }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 
@@ -52,7 +52,7 @@ export default function SettingsPage({ auth, site_settings,settings, success }) 
         <AuthenticatedLayout
             user={auth.user}
             site_settings={site_settings}
-            success={success}
+
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

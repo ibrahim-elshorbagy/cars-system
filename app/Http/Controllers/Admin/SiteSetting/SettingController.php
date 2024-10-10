@@ -16,7 +16,7 @@ class SettingController extends Controller
         $settings = Setting::all();
 
         return inertia("Admin/Setting/Index", [
-            'success' => session('success'),
+
             'settings' => $settings,
 
         ]);

@@ -7,9 +7,8 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import { Button } from "@/components/ui/button";
 import SelectInput from "@/Components/SelectInput";
-import { toast } from 'sonner';
 
-export default function Index({ auth, site_settings, transfers, boxes,boxList, queryParams = null, success, danger }) {
+export default function Index({ auth, site_settings, transfers, boxes,boxList, queryParams = null }) {
   queryParams = queryParams || {};
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -142,7 +141,7 @@ useEffect(() => {
     //---------------------------------------------------------
 
   return (
-      <AuthenticatedLayout user={auth.user} site_settings={site_settings} success={success} danger={danger}
+      <AuthenticatedLayout user={auth.user} site_settings={site_settings}
             header={
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
@@ -344,7 +343,7 @@ useEffect(() => {
                     </div>
 
                     {/* To Box Dropdown (Edit Form) */}
-                    <div className="my-4">
+                    <div className="">
                     <InputLabel className="mb-3" htmlFor="to_box_id" value={"إلى الصندوق"} />
                     <SelectInput
                         id="to_box_id"

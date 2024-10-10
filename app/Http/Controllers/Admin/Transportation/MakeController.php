@@ -24,8 +24,8 @@ class MakeController extends Controller
         return inertia("Admin/Transportation/Make/Index", [
             "makes" => MakeResource::collection($makes),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

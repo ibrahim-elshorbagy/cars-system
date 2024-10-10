@@ -19,7 +19,7 @@ import { PiBagSimpleDuotone } from "react-icons/pi";
 import SelectInput from "@/Components/SelectInput";
 import InputLabel from "@/Components/InputLabel";
 
-const Dashboard = ({ auth, site_settings, carStatusCounts,total_income, total_outcome, net_balance, box_name, boxes}) => {
+const Dashboard = ({ auth, site_settings, carStatusCounts, boxes}) => {
   // Define default values in case carStatusCounts is missing or some statuses have zero counts
   const defaultStatusCounts = {
     Purchased: 0,
@@ -133,7 +133,7 @@ const Dashboard = ({ auth, site_settings, carStatusCounts,total_income, total_ou
                                             </p>
                                             <p className="text-lg font-bold text-gray-900 md:text-2xl dark:text-white">
                                                           {Number(selectedBox.net_balance).toFixed(2)}
-                                                          
+
                                             </p>
                                         </div>
                                         <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full md:w-12 md:h-12 dark:bg-gray-800">

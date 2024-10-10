@@ -21,7 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export default function Index({ auth,site_settings, models, makes, queryParams = null, success ,danger}) {
+export default function Index({ auth,site_settings, models, makes, queryParams = null}) {
   queryParams = queryParams || {};
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -137,7 +137,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

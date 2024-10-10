@@ -60,14 +60,12 @@ Full opertions For Customers (add,delete ,update)
             'customer.updatedBy'
         ])->paginate(25)->onEachSide(1);
 
-        // dd($users->toArray(request()));
-        // dd(CustomerResource::collection($users)->toArray(request()));
 
         return inertia("Admin/Customer/Index", [
             "users" => CustomerResource::collection($users),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger'=>session('danger'),
+
+            
             'whatsapp_redirect' => session('whatsapp_redirect'),
 
         ]);

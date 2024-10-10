@@ -1,12 +1,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
-export default function Index({ auth, roles,site_settings, success ,danger}) {
+export default function Index({ auth, roles,site_settings}) {
 
 
 
   return (
-    <AuthenticatedLayout user={auth.user} site_settings={site_settings} success={success} danger={danger}>
+    <AuthenticatedLayout user={auth.user} site_settings={site_settings}  >
       <Head title={site_settings.websiteName + " - " +"الصلاحيات"} />
 
       <div className="">

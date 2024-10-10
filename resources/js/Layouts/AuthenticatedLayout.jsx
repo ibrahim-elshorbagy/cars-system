@@ -2,7 +2,7 @@ import { useState , useEffect} from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { Link,usePage } from "@inertiajs/react";
 import MySidebar from "./sidebar/MySidebar";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 import { FaBars } from "react-icons/fa6";
@@ -102,23 +102,22 @@ export default function Authenticated({ user,site_settings,header, children ,suc
             return sectionPermissions.some(permission => user.permissions.includes(permission));
         };
 
-
-
+    const pageFlash = usePage().props.flash
     useEffect(() => {
-        if (success) {
+        if (pageFlash.success) {
                 toast.success("تم بنجاح!", {
-                    description: success,
+                    description: pageFlash.success,
                     duration: 3000,
                 });
             }
-            if(danger){
-                toast.error("حدث مشكلة!", {
-                    description: danger,
-                    duration: 3000,
-                });
-            }
-        }, [success,danger]);
 
+        if(pageFlash.danger){
+                toast.error("حدث مشكلة!", {
+                    description: pageFlash.danger,
+                    duration: 3000,
+                });
+            }
+        }, [pageFlash]);
 
 
 

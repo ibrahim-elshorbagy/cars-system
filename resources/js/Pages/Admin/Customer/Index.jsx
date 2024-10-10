@@ -13,9 +13,8 @@ import {
 } from "@/Components/ui/hover-card"
 import { MdMarkEmailUnread } from "react-icons/md";
 import { FaUserLarge } from "react-icons/fa6";
-import { toast } from 'sonner';
 
-export default function Index({ auth,site_settings, users, queryParams = null, success ,danger,whatsapp_redirect }) {
+export default function Index({ auth,site_settings, users, queryParams = null,whatsapp_redirect }) {
     queryParams = queryParams || {};
 
 
@@ -171,7 +170,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

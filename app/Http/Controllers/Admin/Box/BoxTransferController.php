@@ -66,8 +66,8 @@ class BoxTransferController extends Controller
             'boxes' => $boxesWithBalances,
             'boxList' => $boxList,
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
 
         ]);
     }

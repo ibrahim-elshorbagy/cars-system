@@ -28,8 +28,8 @@ class ModellController extends Controller
             "models" => ModellResource::collection($models),
             "makes" => MakeResource::collection($makes),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

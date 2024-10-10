@@ -57,8 +57,8 @@ class CustomerCreditController extends Controller
                 "records" => CustomerCreditResource::collection($records),
                 'customer'=>$customer,
                 'boxes'=>$boxes,
-                'success' => session('success'),
-                'danger'=>session('danger'),
+
+
 
         ]);
 

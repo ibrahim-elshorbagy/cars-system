@@ -24,8 +24,8 @@ class DestinationController extends Controller
         return inertia("Admin/Transportation/Destination/Index", [
             "destinations" => DestinationResource::collection($destinations),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

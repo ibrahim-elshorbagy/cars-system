@@ -20,9 +20,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import SelectInput from "@/Components/SelectInput";
-import { toast } from 'sonner';
 
-export default function Index({ auth, site_settings, customers, payments, success ,danger }) {
+
+export default function Index({ auth, site_settings, customers, payments }) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -79,7 +79,6 @@ const handleCustomerSelect = (customer) => {
     const filteredBills = customer.bills.filter(
     (bill) => Number(bill.won_price) !== Number(bill.won_price_paid_amount) || Number(bill.shipping_cost) !== Number(bill.shipping_cost_paid_amount)
     );
-    console.log('filteredBills:', filteredBills)
     // Map the filtered bills to the initial payments structure
     const initialPayments = filteredBills.map((bill) => ({
         bill_id: bill.bill_id,
@@ -333,7 +332,7 @@ const toggleShowModal = (payment = null) => {
     <AuthenticatedLayout
       user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

@@ -24,8 +24,8 @@ class BoxController extends Controller
         return inertia("Admin/Box/Index", [
             "boxes" => BoxResource::collection($boxes),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 

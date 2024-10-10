@@ -50,8 +50,8 @@ class BillController extends Controller
 
 
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 
@@ -59,6 +59,7 @@ class BillController extends Controller
     public function store(StorePaymentRequest $request) {
         // Validate the request
         $data = $request->validated();
+
 
         // Begin the transaction
         DB::beginTransaction();
@@ -90,14 +91,14 @@ class BillController extends Controller
             // Store individual bill payments in `bill_payments`
             foreach ($data['payments'] as $paymentData) {
                 // If there's a won_price_payment, add it to the payment_bills table
-                if ($paymentData['won_price_payment'] > 0) {
+
                     PaymentBill::create([
                         'bill_id' => $paymentData['bill_id'],
                         'payment_id' => $payment->id,
                         'won_price_amount' => $paymentData['won_price_payment'],
                         'shipping_cost_amount' =>  $paymentData['shipping_cost_payment'],
                     ]);
-                }
+
             }
 
             // Commit the transaction

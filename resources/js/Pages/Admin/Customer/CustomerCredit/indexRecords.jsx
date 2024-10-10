@@ -23,9 +23,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@headlessui/react";
-import { toast } from 'sonner';
 
-export default function Index({ auth,site_settings, records, customer,boxes, success,danger }) {
+export default function Index({ auth,site_settings, records, customer,boxes }) {
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isReverseModalOpen, setIsReverseModalOpen] = useState(false);
@@ -101,7 +100,7 @@ export default function Index({ auth,site_settings, records, customer,boxes, suc
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">

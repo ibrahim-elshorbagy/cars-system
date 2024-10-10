@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth, facilities,site_settings, queryParams = null, success,danger }) {
+export default function Index({ auth, facilities,site_settings, queryParams = null }) {
   queryParams = queryParams || {};
 
   // Modal state
@@ -130,7 +130,7 @@ export default function Index({ auth, facilities,site_settings, queryParams = nu
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">

@@ -34,10 +34,9 @@ import {
   TabsTrigger,
 } from "@/Components/ui/tabs"
 import { BsClipboardPlus } from "react-icons/bs";
-import { toast } from 'sonner';
 
 
-export default function Index({ auth,site_settings, cars,customers, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null, success,ErrorAlert,danger,shippingFeeTypes }) {
+export default function Index({ auth,site_settings, cars,customers, makes,models,vendors,destinations,lines,facilities,terminals,shipStatus, queryParams = null,ErrorAlert,shippingFeeTypes }) {
 
 
 
@@ -565,7 +564,7 @@ const handleEditVinBlur = () => {
     <AuthenticatedLayout
           user={auth.user}
           site_settings={site_settings}
-          success={success} danger={danger}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">

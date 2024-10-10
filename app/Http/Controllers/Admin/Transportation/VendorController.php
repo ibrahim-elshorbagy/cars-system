@@ -24,8 +24,8 @@ class VendorController extends Controller
         return inertia("Admin/Transportation/Vendor/Index", [
             "vendors" => VendorResource::collection($vendors),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 
@@ -62,7 +62,7 @@ class VendorController extends Controller
         if ($vendor->cars()->count() > 0) {
         return back()->with('danger', 'لا يمكن حذف المزاد لأنها مرتبطة بسيارات');
         }
-        
+
         $vendor->delete();
         return back()->with('success', "تم حذف المزاد بنجاح");
 

@@ -42,11 +42,11 @@ class UserCRUDController extends Controller
         return inertia("Admin/User/UserCURD/Index", [
             "users" => UserCRUDResource::collection($users),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
+
             'roles' => $roles,
             'boxes' => $boxes,
-            'danger' => session('danger'),
-            'success' => session('success'),
+
+
             'whatsapp_redirect' => session('whatsapp_redirect'),
 
 

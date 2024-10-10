@@ -24,8 +24,8 @@ class PortController extends Controller
         return inertia("Admin/Transportation/Port/Index", [
             "ports" => PortResource::collection($ports),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-            'danger' => session('danger'),
+
+
         ]);
     }
 
