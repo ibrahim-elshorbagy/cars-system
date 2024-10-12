@@ -442,7 +442,17 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
                         <td className="px-6 py-4">مشاهدة اسعار الشحن</td>
                         </tr>
 
-
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">customer-read-shipping-price</td>
+                        <td className="px-6 py-4">
+                            <input
+                            type="checkbox"
+                            checked={data.permissions.includes("customer-read-shipping-price")}
+                            onChange={() => handleCheckboxChange("customer-read-shipping-price")}
+                            />
+                        </td>
+                        <td className="px-6 py-4">مشاهدة اسعار الشحن للعميل</td>
+                        </tr>
 
 
 

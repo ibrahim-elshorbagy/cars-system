@@ -80,6 +80,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash'=>[
                 'success'=>session('success'),
+                'danger'=>session('danger'),
 
             ]
 

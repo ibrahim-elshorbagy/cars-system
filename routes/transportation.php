@@ -226,6 +226,11 @@ Route::group(['prefix' => 'admin/transportation'], function () {
 
 Route::group(['middleware' => ['permission:read-shipping-price']], function () {
  //Routes for Shippings prices
-    Route::get('show/shipping-prices', [ShippingPlanController::class, 'show'])->name('show.shipping-prices');
+    Route::get('admin/show/shipping-prices', [ShippingPlanController::class, 'show'])->name('show.shipping-prices');
+
+});
+Route::group(['middleware' => ['permission:customer-read-shipping-price']], function () {
+ //Routes for Shippings prices
+    Route::get('customers/show/shipping-prices', [ShippingPlanController::class, 'show'])->name('customer.show.shipping-prices');
 
 });

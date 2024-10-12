@@ -130,20 +130,30 @@ export default function Index({site_settings, auth, makes, queryParams = null })
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            المركات (Makes)
+            ماركات السيارات Makes
           </h2>
-          {auth.user.permissions.includes("create-make") && (
-            <button
-              onClick={toggleCreateModal}
-              className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
-            >
-              إضافة ماركه
-            </button>
-          )}
+              <div className="flex gap-4">
+                    {auth.user.permissions.includes("create-make") && (
+                        <button
+                        onClick={toggleCreateModal}
+                        className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
+                        >
+                        اضافة ماركة
+                        </button>
+                        )}
+                        {auth.user.permissions.includes("create-model") && (
+                        <Link
+                        href={route("model.index")}
+                        className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-emerald-400"
+                        >
+                        موديلات السيارات
+                        </Link>
+                    )}
+                </div>
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"المركات (Makes)"} />
+      <Head title={site_settings.websiteName + " - " +"ماركات السيارات Makes"} />
 
       <div className="">
         <div className="mx-auto ">
@@ -231,12 +241,12 @@ export default function Index({site_settings, auth, makes, queryParams = null })
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة ماركه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">إضافة ماركة</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateMake}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="make_name" value={"اسم الماركه"} />
+                  <InputLabel htmlFor="make_name" value={"اسم الماركة"} />
                   <TextInput
                     id="make_name"
                     type="text"
@@ -274,12 +284,12 @@ export default function Index({site_settings, auth, makes, queryParams = null })
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل الماركه</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الماركة</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditMake}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_make_name" value={"اسم الماركه"} />
+                  <InputLabel htmlFor="edit_make_name" value={"اسم الماركة"} />
                   <TextInput
                     id="edit_make_name"
                     type="text"

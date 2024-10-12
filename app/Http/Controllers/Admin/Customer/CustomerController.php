@@ -40,9 +40,7 @@ Full opertions For Customers (add,delete ,update)
             $query->where("name", "like", "%" . request("name") . "%");
         }
 
-        // if (request("email")) {
-        //     $query->where("email", "like", "%" . request("email") . "%");
-        // }
+
 
         if (request("customer_company")) {
                 $query->whereHas('customer', function($q) {
@@ -65,7 +63,7 @@ Full opertions For Customers (add,delete ,update)
             "users" => CustomerResource::collection($users),
             'queryParams' => request()->query() ?: null,
 
-            
+
             'whatsapp_redirect' => session('whatsapp_redirect'),
 
         ]);
@@ -109,8 +107,7 @@ Full opertions For Customers (add,delete ,update)
         //دائن ومدين
         $currentTimestamp = Carbon::now();
 
-        if($data['added_credit'] != 0){
-
+        if(isset($data['added_credit']) && $data['added_credit'] != 0){
             CustomerCredit::create([
                 'user_id'=> $user->id,
                 'box_id' => 1,
@@ -119,19 +116,22 @@ Full opertions For Customers (add,delete ,update)
                 'created_by' => Auth::user()->id,
                 'created_at' => $currentTimestamp
             ]);
+
             BoxTransaction::create([
                     'box_id' => 1,
                     'income' => $data['added_credit'],
                     'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customer_company . " بتاريخ " . date('Y-m-d'),
                     'created_by' => Auth::id(),
                 ]);
+
         }
 
 
-        if($data['used_credit'] != 0){
+        if(isset($data['used_credit']) && $data['used_credit'] != 0){
+
             CustomerCredit::create([
                 'user_id'=> $user->id,
-                'box_id' => null,
+                'box_id' => 1,
                 'used_credit' => $data['used_credit'],
                 'description' => 'رصيد افتتاحي مدين بقيمة ' . $data['used_credit'] . " $ ". ' من العميل ' . $customer_company . " بتاريخ " . date('Y-m-d'),
                 'created_by' => Auth::user()->id,
@@ -140,7 +140,6 @@ Full opertions For Customers (add,delete ,update)
             ]);
 
         }
-
 
 
 
@@ -166,163 +165,173 @@ Full opertions For Customers (add,delete ,update)
     public function update(UpdateCustomerRequest $request, User $customer)
     {
         $data = $request->validated();
-
         DB::beginTransaction();
         try {
+            // Handle WhatsApp message redirection only if the password is updated
+            $whatsapp_redirect = null;
 
-        // Handle WhatsApp message redirection only if the password is updated
-        $whatsapp_redirect = null;
+            // Check if the password is being updated
+            if (isset($data['password']) && $data['password']) {
+                $data['password'] = bcrypt($data['password']);
 
-        // Check if the password is being updated
-        if (isset($data['password']) && $data['password']) {
-            $data['password'] = bcrypt($data['password']);
+                $site_name = Setting::where('name', 'site_name')->value('value');
+                $site_url = url('/');
+                $message = "مرحباً، يمكنك الدخول لنظام \"{$site_name}\" عن طريق الرابط \"{$site_url}\" باستخدام معلومات الدخول التالية: اسم المستخدم \"{$customer->user_name}\" وكلمة المرور \"{$request->password}\"، علماً بأن البريد الإلكتروني المعتمد هو \"{$customer->email}\".";
 
-            $site_name = Setting::where('name', 'site_name')->value('value');
-            $site_url = url('/');
-            $message = "مرحباً، يمكنك الدخول لنظام \"{$site_name}\" عن طريق الرابط \"{$site_url}\" باستخدام معلومات الدخول التالية: اسم المستخدم \"{$customer->user_name}\" وكلمة المرور \"{$request->password}\"، علماً بأن البريد الإلكتروني المعتمد هو \"{$customer->email}\".";
-
-            // Create the WhatsApp message redirect URL
-            $whatsapp_redirect = 'https://wa.me/' . $customer->whatsapp . '?text=' . urlencode($message);
-        } else {
-            unset($data['password']);
-        }
-
-        // Handle role change if provided
-        if (isset($data['role'])) {
-            $role = Role::findById($data['role']);
-            $customer->syncRoles([$role]);
-        }
-
-        // Update the customer details
-        $customer->update($data);
-        if(isset($data['customer_company'])){
-        $customer->customer()->update([
-
-                'customer_company'=>$data['customer_company'],
-                'updated_by' => Auth()->user()->id
-
-            ]);
-        }
-
-
-
-
-        $customerCompany = $data['customer_company'];
-
-        $currentTimestamp = Carbon::now();  // Starting timestamp for the transactions
-
-        // Retrieve the existing records if the IDs are provided
-        $existingAddedCredit = $customer->credits->where('id', $data['added_credit_id'])->first();
-        $existingUsedCredit = $customer->credits->where('id', $data['used_credit_id'])->first();
-
-        // Handle added credit
-        if ($data['added_credit'] !== null) {
-
-            if ($existingAddedCredit) {
-                // Existing record found, perform an update
-                // Create a new BoxTransaction to reflect the removal of the old credit value
-                BoxTransaction::create([
-                    'box_id' => 1,
-                    'outcome' => $existingAddedCredit->added_credit,
-                    'description' => ' تم إزالة القيمة ' . $existingAddedCredit->added_credit . " $ " . ' من العميل ' . $customerCompany . " بتاريخ " . $existingAddedCredit->created_at->format('Y-m-d') . " نتيجه تعديل رصيد افتتاحي",
-                    'created_by' => Auth::id(),
-                    'created_at' => $currentTimestamp
-                ]);
-                $currentTimestamp = $currentTimestamp->copy()->addSecond();
-
-
-                // Update the existing added credit record with the new value
-                $existingAddedCredit->update([
-                    'added_credit' => $data['added_credit'],
-                    'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
-                    'updated_by' => Auth::id(),
-                    'updated_at' => $currentTimestamp
-                ]);
-
-                // **New Transaction**: Reflect the modification of the existing credit in the box
-                BoxTransaction::create([
-                    'box_id' => 1,
-                    'income' => $data['added_credit'],
-                    'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d') . " نتيجة تعديل رصيد افتتاحي",
-                    'created_by' => Auth::id(),
-                    'created_at' => $currentTimestamp
-                ]);
-
-                $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                // Create the WhatsApp message redirect URL
+                $whatsapp_redirect = 'https://wa.me/' . $customer->whatsapp . '?text=' . urlencode($message);
             } else {
-                // No existing record, perform a create operation
-                $newCredit = CustomerCredit::create([
-                    'user_id' => $customer->id,
-                    'box_id' => 1,
-                    'added_credit' => $data['added_credit'],
-                    'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
-                    'created_by' => Auth::id(),
-                    'created_at' => $currentTimestamp
-                ]);
-
-                // Create a new BoxTransaction for the added credit
-                BoxTransaction::create([
-                    'box_id' => 1,
-                    'income' => $data['added_credit'],
-                    'description' => 'رصيد افتتاحي دائن بقيمة  ' . $data['added_credit'] . " $ " . ' إلى  لعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
-                    'created_by' => Auth::id(),
-                    'created_at' => $currentTimestamp->copy()->addSecond()
-                ]);
-                $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                unset($data['password']);
             }
-        }
 
-        // Handle used credit
-        if ($data['used_credit'] !== null) {
-            if ($existingUsedCredit) {
-                // Existing record found, perform an update
-                $existingUsedCredit->update([
-                    'used_credit' => $data['used_credit'],
-                    'description' => 'رصيد افتتاحي مدين بقيمة ' . $data['used_credit'] . " $ " . ' من العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d') . " نتيجة تعديل رصيد افتتاحي",
-                    'updated_by' => Auth::id(),
-                    'updated_at' => $currentTimestamp
+            // Handle role change if provided
+            if (isset($data['role'])) {
+                $role = Role::findById($data['role']);
+                $customer->syncRoles([$role]);
+            }
+
+            // Update the customer details
+            $customer->update($data);
+
+            if (isset($data['customer_company'])) {
+                $customer->customer()->update([
+                    'customer_company' => $data['customer_company'],
+                    'updated_by' => Auth()->user()->id
                 ]);
-                $currentTimestamp = $currentTimestamp->copy()->addSecond();
+            }
+
+            $customerCompany = $data['customer_company'] ?? $customer->customer_company;
+            $currentTimestamp = Carbon::now(); // Starting timestamp for the transactions
+
+            // Retrieve the existing records if the IDs are provided
+            $existingAddedCredit = $customer->credits->where('id', $data['added_credit_id'] ?? null)->first();
+            $existingUsedCredit = $customer->credits->where('id', $data['used_credit_id'] ?? null)->first();
+
+            // Handle added credit
+            if ($data['added_credit'] == 0) {
+                if ($existingAddedCredit) {
+                    // Reverse the old credit amount in the box
+                    BoxTransaction::create([
+                        'box_id' => 1,
+                        'outcome' => $existingAddedCredit->added_credit,
+                        'description' => 'تم حذف رصيد افتتاحي دائن بقيمة ' . $existingAddedCredit->added_credit . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . $existingAddedCredit->created_at->format('Y-m-d'),
+                        'created_by' => Auth::id(),
+                        'created_at' => $currentTimestamp
+                    ]);
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
+
+                    // Delete the existing added credit record
+                    $existingAddedCredit->delete();
+                }
             } else {
-                // No existing record, perform a create operation
-                CustomerCredit::create([
-                    'user_id' => $customer->id,
-                    'box_id' => null,
-                    'used_credit' => $data['used_credit'],
-                    'description' => 'رصيد افتتاحي مدين بقيمة ' . $data['used_credit'] . " $ " . ' من العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
-                    'created_by' => Auth::id(),
-                    'created_at' => $currentTimestamp
-                ]);
-                $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                if ($existingAddedCredit) {
+                    // Reverse the old credit amount in the box
+                    BoxTransaction::create([
+                        'box_id' => 1,
+                        'outcome' => $existingAddedCredit->added_credit,
+                        'description' => 'تم تعديل رصيد افتتاحي دائن بقيمة ' . $existingAddedCredit->added_credit . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . $existingAddedCredit->created_at->format('Y-m-d'),
+                        'created_by' => Auth::id(),
+                        'created_at' => $currentTimestamp
+                    ]);
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
+
+                    // Update the existing added credit record with the new value
+                    $existingAddedCredit->update([
+                        'added_credit' => $data['added_credit'],
+                        'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
+                        'updated_by' => Auth::id(),
+                        'updated_at' => $currentTimestamp
+                    ]);
+
+                    // Reflect the new credit amount in the box
+                    BoxTransaction::create([
+                        'box_id' => 1,
+                        'income' => $data['added_credit'],
+                        'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
+                        'created_by' => Auth::id(),
+                        'created_at' => $currentTimestamp
+                    ]);
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                } else {
+                    // No existing record, create a new one
+                    CustomerCredit::create([
+                        'user_id' => $customer->id,
+                        'box_id' => 1,
+                        'added_credit' => $data['added_credit'],
+                        'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
+                        'created_by' => Auth::id(),
+                        'created_at' => $currentTimestamp
+                    ]);
+
+                    // Reflect the new credit amount in the box
+                    BoxTransaction::create([
+                        'box_id' => 1,
+                        'income' => $data['added_credit'],
+                        'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
+                        'created_by' => Auth::id(),
+                        'created_at' => $currentTimestamp->copy()->addSecond()
+                    ]);
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                }
             }
-        }
 
+            // Handle used credit
+            if ($data['used_credit'] == 0) {
+                if ($existingUsedCredit) {
+                    // Reverse the old used credit amount in the box
 
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
 
+                    // Delete the existing used credit record
+                    $existingUsedCredit->delete();
+                }
+            } else {
+                if ($existingUsedCredit) {
+                    // Reverse the old used credit amount in the box
 
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
 
+                    // Update the existing used credit record with the new value
+                    $existingUsedCredit->update([
+                        'used_credit' => $data['used_credit'],
+                        'description' => 'رصيد افتتاحي مدين بقيمة ' . $data['used_credit'] . " $ " . ' من العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
+                        'updated_by' => Auth::id(),
+                        'updated_at' => $currentTimestamp
+                    ]);
 
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                } else {
+                    // No existing record, create a new one
+                    CustomerCredit::create([
+                        'user_id' => $customer->id,
+                        'box_id' => 1,
+                        'used_credit' => $data['used_credit'],
+                        'description' => 'رصيد افتتاحي مدين بقيمة ' . $data['used_credit'] . " $ " . ' من العميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
+                        'created_by' => Auth::id(),
+                        'created_at' => $currentTimestamp
+                    ]);
 
+                    $currentTimestamp = $currentTimestamp->copy()->addSecond();
+                }
+            }
 
+            // If password was updated, include the WhatsApp redirect in the response
+            if ($whatsapp_redirect) {
+                DB::commit();
+                return back()->with('success', 'تم تحديث العميل بنجاح')
+                    ->with('whatsapp_redirect', $whatsapp_redirect);
+            }
 
-
-        // If password was updated, include the WhatsApp redirect in the response
-        if ($whatsapp_redirect) {
-            return back()->with('success', 'تم تحديث العميل بنجاح')
-                ->with('whatsapp_redirect', $whatsapp_redirect);
-        }
             DB::commit();
 
-        // Return success message without WhatsApp redirect for other updates
-        return back()->with('success', 'تم تحديث العميل بنجاح');
-
-          } catch (\Exception $e) {
-
+            // Return success message without WhatsApp redirect for other updates
+            return back()->with('success', 'تم تحديث العميل بنجاح');
+        } catch (\Exception $e) {
             DB::rollBack();
-
             return back()->with('danger', 'حدث خطأ : ' . $e->getMessage());
         }
     }
+
 
 
 

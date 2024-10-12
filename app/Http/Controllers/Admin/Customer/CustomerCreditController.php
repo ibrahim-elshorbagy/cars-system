@@ -47,22 +47,24 @@ class CustomerCreditController extends Controller
 
     public function indexRecords(User $customer){
 
-            $customer->select('id','name')->with('customer')->get();
+
+            $customer = User::select('id', 'name')
+                        ->with('customer')
+                        ->withSum('credits as added_credit', 'added_credit')
+                        ->withSum('credits as used_credit', 'used_credit')
+                        ->find($customer->id);
+
             $boxes = Box::all();
             $query = CustomerCredit::query()->where('user_id', $customer->id)->with('user');
 
-            $records = $query->orderBy('created_at','asc')->paginate(25)->onEachSide(1);
+            $records = $query->orderBy('created_at', 'asc')->paginate(25)->onEachSide(1);
 
             return inertia("Admin/Customer/CustomerCredit/indexRecords", [
                 "records" => CustomerCreditResource::collection($records),
-                'customer'=>$customer,
-                'boxes'=>$boxes,
-
-
-
-        ]);
-
-    }
+                'customer' => CustomerBalanceIndexResource::make($customer),
+                'boxes' => $boxes,
+            ]);
+        }
 
     public function show(CustomerCredit $record)
     {
@@ -151,7 +153,8 @@ class CustomerCreditController extends Controller
 
         $data = $request->validate($rules);
         // Prepare the description field
-
+        $data['description'] = $data['description'] ?? '';
+        
         // If the user has the Accountant role, set their specific box_id
         if (Auth::user()->hasRole('Accountant')) {
             $data['box_id'] = Auth::user()->accountant->box_id;

@@ -134,7 +134,7 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-                  انواع تكاليف الشحن (Shipping Fees Types)
+                   انواع كُلَف الشحن (Shipping Fees Types)
             </h2>
           {auth.user.permissions.includes("create-ShippingFee") && (
             <button
@@ -147,7 +147,7 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +" انواع تكلفة الشحن (FeeTypes)"} />
+      <Head title={site_settings.websiteName + " - " +" انواع  كُلَف الشحن (FeeTypes)"} />
 
       <div className="">
         <div className="mx-auto ">
@@ -247,12 +247,12 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">إضافة وجهة جديده</h2>
+              <h2 className="text-lg font-semibold dark:text-white">اضافة كلفة جديدة</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleCreateFeeType}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="feeType_name" value={"اسم التكلفة "} />
+                  <InputLabel htmlFor="feeType_name" value={"اسم الكلفة بالانجليزية"} />
                   <TextInput
                     id="feeType_name"
                     type="text"
@@ -265,7 +265,7 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
                   <InputError message={createErrors.name} className="mt-2" />
                               </div>
                   <div className="mb-4">
-                  <InputLabel htmlFor="ar_name" value={" اسم التكلفة  بالعربي"} />
+                  <InputLabel htmlFor="ar_name" value={" اسم الكلفة بالعربية"} />
                   <TextInput
                     id="ar_name"
                     type="text"
@@ -303,12 +303,12 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="transition-all duration-300 ease-in-out transform scale-95 bg-white rounded-lg shadow-lg sm:w-1/2 dark:bg-gray-800 animate-in">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold dark:text-white">تعديل التكلفة</h2>
+              <h2 className="text-lg font-semibold dark:text-white">تعديل الكلفة</h2>
             </div>
             <div className="p-6">
               <form onSubmit={handleEditFeeType}>
                 <div className="mb-4">
-                  <InputLabel htmlFor="edit_feeType_name" value={"اسم التكلفة"} />
+                  <InputLabel htmlFor="edit_feeType_name" value={"اسم الكلفة بالانجليزية"} />
                   <TextInput
                     id="edit_feeType_name"
                     type="text"
@@ -321,7 +321,7 @@ export default function Index({ auth, feeTypes,site_settings ,queryParams = null
                   <InputError message={editErrors.name} className="mt-2" />
                   </div>
                   <div className="mb-4">
-                  <InputLabel htmlFor="ar_name" value={"اسم التكلفة بالعربي"} />
+                  <InputLabel htmlFor="ar_name" value={"اسم الكلفة بالعربية"} />
                   <TextInput
                     id="ar_name"
                     type="text"

@@ -19,7 +19,7 @@ import {
   AccordionTrigger,
 } from "@/Components/ui/accordion"
 
-export default function Authenticated({ user,site_settings,header, children ,success,danger}) {
+export default function Authenticated({ user,site_settings,header, children }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     document.documentElement.dir = "rtl";
@@ -92,7 +92,7 @@ export default function Authenticated({ user,site_settings,header, children ,suc
                     { text: "سياراتي", href: "customer-my-cars.index", permissions: ["read-my-cars"] },
                     { text: "المحاسبة", href: "customer-my-credits.index", permissions: ["read-my-credits"] },
                     { text: "الذمم", href: "customer-my-bills.index", permissions: ["read-my-bills"] },
-                    { text: "اسعار الشحن", href: "show.shipping-prices", permissions: ['read-shipping-price'] },
+                    { text: "اسعار الشحن", href: "customer.show.shipping-prices", permissions: ['customer-read-shipping-price'] },
                 ],
             },
         ];
@@ -296,7 +296,7 @@ export default function Authenticated({ user,site_settings,header, children ,suc
             {header && (
                 <header className="bg-indigoBlue dark:bg-gray-900">
                 <div className="px-4 py-6 mx-auto text-red-50 sm:px-6 lg:px-14">
-                    {header}
+                                {header}
                 </div>
                 </header>
             )}
@@ -304,7 +304,7 @@ export default function Authenticated({ user,site_settings,header, children ,suc
             </div>
         </div>
 
-            <Toaster richColors />
+            <Toaster richColors position="top-center" />
                   <BackToTop />
 
 

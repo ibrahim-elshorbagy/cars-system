@@ -49,7 +49,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
         errors: ReverseErrors,
         reset: ReverseReset,
     } = useForm({
-        'user_id': customer.id,
+        'user_id': customer.data.id,
     });
 
     const handleReverseRecord = (e) => {
@@ -79,7 +79,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
     errors: createErrors,
     reset: createReset,
   } = useForm({
-        'user_id': customer.id,
+        'user_id': customer.data.id,
 
   });
 
@@ -104,7 +104,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
-            ارصده العملاء
+                {customer.data.customer_company}  -  {customer.data.balance} $
               </h2>
               <div className="flex gap-3">
                 {auth.user.permissions.includes("create-customer-credit") && (
@@ -127,8 +127,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
         </div>
       }
     >
-          <Head title={site_settings.websiteName + " - " + "ارصده العملاء"} />
-
+          <Head title={site_settings.websiteName + " - " + "رصيد العميل"} />
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
@@ -167,14 +166,13 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                           <td className="px-3 py-2 text-xs md:text-base min-w-44 max-w-44">{record.description}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.box_name}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{record.created_by}</td>
-
                             <td className="px-3 py-2 text-xs text-nowrap md:text-base">
-                                <Link
+                            {record.show &&(    <Link
                                 href={route("customer-credit.show", record.id)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                             >
                             مشاهدة
-                            </Link>
+                            </Link>)}
                           </td>
                         </tr>
                       ))

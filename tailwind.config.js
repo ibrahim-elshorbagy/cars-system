@@ -67,7 +67,10 @@ module.exports = {
     			indigoBlue: '#244082',
     			burntOrange: '#E27826',
     			burntOrangeHover: '##8a4006'
-    		}
+            },
+            fontFamily: {
+            tajawal: ['Tajawal'],
+        },
     	}
     },
     plugins: [require("tailwindcss-animate"), forms],

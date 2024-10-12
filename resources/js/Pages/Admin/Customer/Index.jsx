@@ -54,8 +54,8 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
   const [editingUser, setEditingUser] = useState(null);
 
   // Toggle Create Modal
-  const toggleCreateModal = () => {
-    setIsCreateModalOpen(!isCreateModalOpen);
+    const toggleCreateModal = () => {
+      setIsCreateModalOpen(!isCreateModalOpen);
   };
 
   // Toggle Edit Modal
@@ -118,7 +118,6 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
     password: "",
     phone: "",
     whatsapp: "",
-
   });
 
   const {
@@ -314,14 +313,11 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
 
                             </td>
                             <td className="px-3 py-2">
-                            <span className="flex flex-col gap-2">
-                                <span>{user.created_by}</span>
-                                <span className="text-xs">{user.created_at}</span>
+                                  <div className="flex flex-col gap-2 text-xs">
+                                      <div className="flex gap-2"><span>{user.created_at}</span><span>{user.created_by}</span></div>
+                                      <div className="flex gap-2"><span>{user.updated_at}</span><span>{user.updated_by}</span></div>
 
-                                <span>{user.updated_by}</span>
-                                <span className="text-xs">{user.updated_at}</span>
-
-                            </span>
+                            </div>
                             </td>
 
 
@@ -497,9 +493,11 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
                             id="added_credit"
                             type="number"
                             name="name"
-                            value={createData.added_credit || ""}
+                            value={createData.added_credit || 0}
                             className="block w-full mt-1"
                             onChange={(e) => setCreateData("added_credit", e.target.value)}
+
+
                             />
                             <InputError message={createErrors.added_credit} className="mt-2" />
                         </div>
@@ -509,7 +507,7 @@ export default function Index({ auth,site_settings, users, queryParams = null,wh
                             id="used_credit"
                             type="number"
                             name="name"
-                            value={createData.used_credit || ""}
+                            value={createData.used_credit || 0}
                             className="block w-full mt-1"
                             onChange={(e) => setCreateData("used_credit", e.target.value)}
                             />

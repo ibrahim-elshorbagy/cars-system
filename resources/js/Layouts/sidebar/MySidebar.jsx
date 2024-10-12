@@ -99,9 +99,10 @@ const MySidebar = ({ user, site_settings }) => {
                 {
                     text:
                         (<>
-                            تكلفة الشحن
+
+                            كُلَف الشحن
                             <br />
-                            (Shipping Fee)
+                            (Shipping fees)
                         </>)
                     ,
                     href: "ShippingFee.index",
@@ -244,9 +245,9 @@ const MySidebar = ({ user, site_settings }) => {
                 },
                 {
                     text: "اسعار الشحن",
-                    href: "show.shipping-prices",
+                    href: "customer.show.shipping-prices",
                     icon: <IoPricetags />,
-                    permissions: ["read-shipping-price"],
+                    permissions: ["customer-read-shipping-price"],
                 },
             ],
         },

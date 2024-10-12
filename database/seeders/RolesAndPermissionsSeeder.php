@@ -65,7 +65,8 @@ class RolesAndPermissionsSeeder extends Seeder
             //Reports
             'read-box-transaction', //موجودات الصندوق
             "shipping-price", //Shipping prices for administration
-            "read-shipping-price", //Shipping prices for customers
+            "read-shipping-price", //Shipping prices for users
+            "customer-read-shipping-price", //Shipping prices for users
 
             //Site settings
             'for-SystemAdmin-manage-site-settings',
@@ -140,7 +141,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'read-my-cars',
             'read-my-credits',
             'read-my-bills',
-
+            "customer-read-shipping-price",
 
         ];
         $customerRole->syncPermissions($customerPermissions);

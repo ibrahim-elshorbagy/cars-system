@@ -141,7 +141,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            الموديل (Models)
+            موديلات السيارات (Models)
           </h2>
           {auth.user.permissions.includes("create-model") && (
             <button
@@ -154,7 +154,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"الموديلات"} />
+      <Head title={site_settings.websiteName + " - " +"موديلات السيارات (Models) "} />
 
       <div className="">
         <div className="mx-auto ">

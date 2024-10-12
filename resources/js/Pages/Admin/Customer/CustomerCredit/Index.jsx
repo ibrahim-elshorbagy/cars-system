@@ -95,7 +95,7 @@ export default function Index({ auth,site_settings, customers,queryParams = null
                                 href={route("customer-credit-records.index", customer)}
                                 className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
                             >
-                            مشاهدة
+                            حركات الرصيد
                             </Link>
                           </td>
                         </tr>

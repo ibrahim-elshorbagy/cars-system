@@ -34,6 +34,7 @@ class CustomerCreditResource extends JsonResource
                 'used_credit' => $this->used_credit,
                 'balance' => $balance,
                 'description' => $this->description,
+                'show' => str_contains($this->description, 'تم اضافه') ? true : false,
                 'box_id' => $this->box_id,
                 'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
                 'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
