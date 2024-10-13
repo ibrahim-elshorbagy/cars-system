@@ -18,16 +18,7 @@ use App\Models\Admin\Car\Car;
 class DashboardController extends Controller
 {
 
-    // public function markAsRead($id,$order)
-    // {
-    //     $user = Auth::user();
 
-    //     $notification= $user->notifications()->where('id', $id)->first();
-
-    //     $notification->markAsRead();
-
-    //     return to_route('admin.show.order',$order);
-    // }
 
 
 

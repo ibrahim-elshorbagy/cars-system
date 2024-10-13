@@ -61,12 +61,10 @@ class HandleInertiaRequests extends Middleware
                         'box_id'=> $user->accountant?->box_id ?? null,
                         'box_name'=> $user->accountant?->box->name ?? null,
 
-                        // 'phone' => $user->customer?->phone ?? null,
-                        // 'address' => $user->customer?->address ?? null,
+
                         'roles' => $user->getRoleNames(),
                         'permissions' => $user->getAllPermissions()->pluck('name'),
                         'profile_photo_url'=> $user->profile_photo_url ?? 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
-                        // 'notifications' => $user->unreadNotifications ?? [],
 
                     ] : null;
                 },

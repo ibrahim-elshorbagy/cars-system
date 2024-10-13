@@ -14,7 +14,7 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
             DB::table('settings')->insert([
-            ['name' => 'site_name', 'value' => 'My Website'],
+            ['name' => 'site_name', 'value' => 'ShipMaster'],
             ['name' => 'company_logo', 'value' => 'https://cdn-icons-png.flaticon.com/512/1023/1023757.png'],
             ['name' => 'support_email', 'value' => 'support@mywebsite.com'],
             ['name' => 'support_phone', 'value' => '+1234567890'],

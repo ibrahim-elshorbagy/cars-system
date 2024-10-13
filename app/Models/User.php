@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(CustomerCredit::class, 'user_id');
     }
 
+    public function BoxTransactions(){
+
+        return $this->hasMany(BoxTransaction::class, 'user_id');
+    }
+
     public function bills(){
 
         return $this->hasMany(Bill::class, 'user_id');

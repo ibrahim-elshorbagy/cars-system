@@ -39,7 +39,6 @@ Route::get('customers/dashboard', [DashboardController::class, 'CustomerDashboar
 });
 
 
-// Route::post('/notifications/{id}/markAsRead/{order}', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
 
 
 //--------------------------------------------------------------------------------------------- Top permissions

@@ -49,7 +49,9 @@ class CarController extends Controller
         if (request("chassis")) {
             $query->where("chassis", "like", "%" . request("chassis") . "%");
         }
-
+        if (request("ship_status")) {
+            $query->where('ship_status', request("ship_status"));
+        }
 
         if (request("customer_company")) {
             $query->whereHas('user.customer', function($q) {

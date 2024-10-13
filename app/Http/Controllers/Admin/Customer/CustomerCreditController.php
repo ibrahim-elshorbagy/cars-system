@@ -117,6 +117,7 @@ class CustomerCreditController extends Controller
 
             // Create a BoxTransaction record
             BoxTransaction::create([
+                'user_id' => $data['user_id'],
                 'box_id' => $data['box_id'],
                 'income' => $data['added_credit'],
                 'description' => 'تم اضافه رصيد ' . $data['added_credit'] . " $ ". ' الي العميل ' . $customer_company,
@@ -154,7 +155,7 @@ class CustomerCreditController extends Controller
         $data = $request->validate($rules);
         // Prepare the description field
         $data['description'] = $data['description'] ?? '';
-        
+
         // If the user has the Accountant role, set their specific box_id
         if (Auth::user()->hasRole('Accountant')) {
             $data['box_id'] = Auth::user()->accountant->box_id;
@@ -185,6 +186,7 @@ class CustomerCreditController extends Controller
             CustomerCredit::create($data);
 
             BoxTransaction::create([
+                'user_id' => $data['user_id'],
                 'box_id' => $data['box_id'],
                 'outcome' => $data['used_credit'],
                 'description' => 'تم خصم ' . $data['used_credit']. " $ " . ' من ' . $customer_company . ' نتيجه عمليه رصيد عكسيه ' . " , " . $data['description'],

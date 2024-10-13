@@ -47,7 +47,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -96,7 +96,7 @@ export default function Index({ auth,site_settings, cars, queryParams = null, su
                             <td className="p-3 text-xs text-nowrap md:text-base">
                                     <div className="flex flex-col items-start">
                                         {/* VIN Name */}
-                                        <span className="text-lg ">{car.chassis}</span>
+                                        <span className="text-lg text-black dark:text-white">{car.chassis}</span>
 
                                         {/* Car Details */}
                                         <div className="text-sm lg:text-base">

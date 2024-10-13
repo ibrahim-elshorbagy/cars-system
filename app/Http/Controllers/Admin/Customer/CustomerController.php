@@ -118,6 +118,8 @@ Full opertions For Customers (add,delete ,update)
             ]);
 
             BoxTransaction::create([
+                    'user_id'=> $user->id,
+
                     'box_id' => 1,
                     'income' => $data['added_credit'],
                     'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' إلى العميل ' . $customer_company . " بتاريخ " . date('Y-m-d'),
@@ -212,6 +214,7 @@ Full opertions For Customers (add,delete ,update)
                 if ($existingAddedCredit) {
                     // Reverse the old credit amount in the box
                     BoxTransaction::create([
+                        'user_id' => $customer->id,
                         'box_id' => 1,
                         'outcome' => $existingAddedCredit->added_credit,
                         'description' => 'تم حذف رصيد افتتاحي دائن بقيمة ' . $existingAddedCredit->added_credit . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . $existingAddedCredit->created_at->format('Y-m-d'),
@@ -227,6 +230,7 @@ Full opertions For Customers (add,delete ,update)
                 if ($existingAddedCredit) {
                     // Reverse the old credit amount in the box
                     BoxTransaction::create([
+                        'user_id' => $customer->id,
                         'box_id' => 1,
                         'outcome' => $existingAddedCredit->added_credit,
                         'description' => 'تم تعديل رصيد افتتاحي دائن بقيمة ' . $existingAddedCredit->added_credit . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . $existingAddedCredit->created_at->format('Y-m-d'),
@@ -245,6 +249,7 @@ Full opertions For Customers (add,delete ,update)
 
                     // Reflect the new credit amount in the box
                     BoxTransaction::create([
+                        'user_id' => $customer->id,
                         'box_id' => 1,
                         'income' => $data['added_credit'],
                         'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
@@ -265,6 +270,7 @@ Full opertions For Customers (add,delete ,update)
 
                     // Reflect the new credit amount in the box
                     BoxTransaction::create([
+                        'user_id' => $customer->id,
                         'box_id' => 1,
                         'income' => $data['added_credit'],
                         'description' => 'رصيد افتتاحي دائن بقيمة ' . $data['added_credit'] . " $ " . ' للعميل ' . $customerCompany . " بتاريخ " . date('Y-m-d'),
@@ -354,6 +360,9 @@ Full opertions For Customers (add,delete ,update)
             return back()->with('danger', 'لا يمكن حذف العميل لأنه مرتبط بأرصدة.');
         }
 
+        if ($customer->credits()->count() == 0 && $customer->BoxTransactions()->count() > 0) {
+            $customer->BoxTransactions()->delete();
+        }
         $customer->delete();
 
 

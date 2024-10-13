@@ -616,17 +616,33 @@ const handleEditVinBlur = () => {
                         </th>
                         <th className="p-3">
                         <TextInput
-                          className="w-full"
-                          defaultValue={queryParams.chassis}
-                          placeholder={"VIN"}
-                          onBlur={(e) => searchFieldChanged("chassis", e.target.value)}
-                          onKeyPress={(e) => onKeyPress("chassis", e)}
+                            className="w-full"
+                            defaultValue={queryParams.chassis}
+                            placeholder={"VIN"}
+                            onBlur={(e) => searchFieldChanged("chassis", e.target.value)}
+                            onKeyPress={(e) => onKeyPress("chassis", e)}
                         />
-                      </th>
+                        </th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
-                      <th className="p-3"></th>
+                        <th className="p-3">
+                        <SelectInput
+                            className="w-full"
+                            defaultValue={queryParams.ship_status}
+                            onChange={(e) => searchFieldChanged("ship_status", e.target.value)}
+                            onKeyPress={(e) => onKeyPress("ship_status", e)}
+                        >
+                            <option value="">اختر</option>
+
+                            {shipStatus.map((box) => (
+                            <option value={box.name} key={box.id}>
+                                {box.name}
+                            </option>
+                            ))}
+
+                        </SelectInput>
+                        </th>
                       <th className="p-3"></th>
                     </tr>
                   </thead>
@@ -644,7 +660,7 @@ const handleEditVinBlur = () => {
                               <td className="px-3 py-2 text-nowrap">
                                   <div className="flex flex-col items-start">
                                         {/* VIN Name */}
-                                        <span className="text-lg ">{car.chassis}</span>
+                                        <span className="text-lg text-black dark:text-white">{car.chassis}</span>
 
                                         {/* Car Details */}
                                         <div className="text-sm lg:text-base">
@@ -689,7 +705,7 @@ const handleEditVinBlur = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="4" className="px-3 py-2 text-center">
+                        <td colSpan="8" className="px-3 py-2 text-center">
                           لا يوجد سيارات
                         </td>
                       </tr>
