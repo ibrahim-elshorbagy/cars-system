@@ -10,4 +10,3 @@
 5. Run `npm install` to install the frontend dependencies
 6. Run `npm run dev`
 7. Run `php artisan serve`
-8. Generate a new application key with `php artisan key:generate`
