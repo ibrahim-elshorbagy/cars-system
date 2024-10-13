@@ -304,7 +304,7 @@ const MySidebar = ({ user, site_settings }) => {
                             collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
                         }`}
                     >
-                        <span className="pt-1">{site_settings.websiteName}</span>
+                        <span className="pt-1">ShipMaster</span>
                     </h1>
                     <button
                         onClick={() => setCollapsed(!collapsed)}
