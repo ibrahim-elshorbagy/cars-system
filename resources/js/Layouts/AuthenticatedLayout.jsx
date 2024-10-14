@@ -151,11 +151,11 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                 )}
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div className="flex items-center mr-2 ">
                                 {user.permissions.includes("view-admin-dashboard") && (
                                     <NavLink
                                         href={route("admin.dashboard")}
-                                        active={route().current("admin.dashboard")}
+                                        className="text-gray-900 border-transparent hover:border-transparent dark:text-gray-100 focus:border-transparent"
                                     >
                                         { site_settings.websiteName}
                                     </NavLink>
@@ -163,7 +163,8 @@ export default function Authenticated({ user,site_settings,header, children }) {
                                 {user.permissions.includes("for-customer-view-dashboard") && (
                                     <NavLink
                                         href={route("customer.dashboard")}
-                                        active={route().current("customer.dashboard")}
+                                        className="text-gray-900 border-transparent hover:border-transparent dark:text-gray-100 focus:border-transparent"
+
                                     >
                                         { site_settings.websiteName}
                                     </NavLink>
