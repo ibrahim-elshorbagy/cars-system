@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 
-export default function Index({ auth,site_settings, customers,queryParams = null }) {
+export default function Index({ auth,site_settings, customers,queryParams = null,totalBalance }) {
 
 // ---------------------------------------------------------------------------- search
 
@@ -39,13 +39,13 @@ export default function Index({ auth,site_settings, customers,queryParams = null
         <div className="flex items-center justify-between">
 
             <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
-            ارصده العملاء
+            ارصدة العملاء (الارصدة الدائنة)
             </h2>
 
         </div>
     }
     >
-    <Head title={site_settings.websiteName + " - " +"ارصده العملاء"} />
+    <Head title={site_settings.websiteName + " - " +"الارصدة الدائنة"} />
       <div className="">
         <div className="mx-auto ">
 
@@ -57,7 +57,7 @@ export default function Index({ auth,site_settings, customers,queryParams = null
                     <tr className="text-nowrap">
                       <th className="p-3 text-xs text-nowrap md:text-base">ID</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">الشركة</th>
-                      <th className="p-3 text-xs text-nowrap md:text-base">الرصيد</th>
+                      <th className="p-3 text-xs text-nowrap md:text-base">رصيد العميل</th>
                       <th className="p-3 text-xs text-nowrap md:text-base">اجراءات</th>
                     </tr>
                   </thead>
@@ -88,7 +88,7 @@ export default function Index({ auth,site_settings, customers,queryParams = null
                         >
                           <td className="px-3 py-2">{customer.id}</td>
                           <td className="px-3 py-2 text-xs text-nowrap md:text-base">{customer.customer_company}</td>
-                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{customer.balance}</td>
+                          <td className="px-3 py-2 text-xs text-nowrap md:text-base">{customer.balance} $</td>
 
                             <td className="px-3 py-2 text-xs text-nowrap md:text-base">
                                 <Link
@@ -106,7 +106,11 @@ export default function Index({ auth,site_settings, customers,queryParams = null
                           لا يوجد ارصده
                         </td>
                       </tr>
-                    )}
+                        )}
+                            <tr className="border-b">
+                            <td className="px-3 py-2 text-xs text-nowrap md:text-base" colSpan={2}>مجموع الرصيد</td>
+                                          <td className="px-3 py-2 text-xs text-nowrap md:text-base" colSpan={2}>{ parseFloat(totalBalance)} $</td>
+                        </tr>
                   </tbody>
                 </table>
               </div>

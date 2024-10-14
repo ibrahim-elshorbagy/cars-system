@@ -48,23 +48,34 @@ export default function Index({ auth,site_settings, bills,customer }) {
                                 <AccordionTrigger className="p-2 text-xs font-semibold text-white rounded-t-lg lg:text-lg lg:p-4 lg:flex bg-indigoBlue dark:bg-indigoBlue">
                                         <div className="text-right">
                                         <div dir="ltr" className="text-xl font-bold text-white ">
-                                            {bill.car_year} {bill.car_make} {bill.car_model} - Chassis : <span className="">{bill.car_chassis}</span>
+                                        <span dir="rtl" className="mx-10 text-base">تاريخ الشراء - {bill.car_created_at}</span> <span>  {bill.car_year} {bill.car_make} {bill.car_model} </span>  - Chassis : <span className="">{bill.car_chassis}</span>
                                         </div>
 
                                         <table className="w-full">
                                             <tbody>
                                                 <tr >
-                                                <td className="text-right lg:py-2 ">سعر الشراء : ${bill.won_price.amount}</td>
-                                                <td className="text-right lg:py-2 lg:px-4">مدفوع : ${bill.won_price.total_paid}</td>
+                                                <td className="text-right lg:py-2 ">سعر الشراء : ${parseFloat(bill.won_price.amount)}</td>
+                                                <td className="text-right lg:py-2 lg:px-4">مدفوع : ${parseFloat(bill.won_price.total_paid)}</td>
+                                                <td className="text-right lg:py-2 lg:px-4">الباقي : ${ (parseFloat(bill.won_price.amount) ) -  (parseFloat(bill.won_price.total_paid))}</td>
                                                 </tr>
                                                 <tr >
-                                                <td className="text-right lg:py-2 ">سعر الشحن : ${bill.shipping_cost.amount}</td>
-                                                <td className="text-right lg:py-2 lg:px-4">مدفوع : ${bill.shipping_cost.total_paid}</td>
-                                                <td className="text-left lg:py-2 lg:px-4">
+                                                <td className="text-right lg:py-2 ">سعر الشحن : ${parseFloat(bill.shipping_cost.amount)}</td>
+                                                <td className="text-right lg:py-2 lg:px-4">مدفوع : ${parseFloat(bill.shipping_cost.total_paid)}</td>
+                                                <td className="text-right lg:py-2 lg:px-4">الباقي : ${ (parseFloat(bill.shipping_cost.amount) ) -  (parseFloat(bill.shipping_cost.total_paid))}</td>
+                                                </tr>
+
+                                                <td className="text-right lg:py-2 ">
+                                                المجموع : ${    (parseFloat(bill.won_price.amount) + parseFloat(bill.shipping_cost.amount))}
+                                                </td>
+
+                                                <td className="text-right lg:py-2 lg:px-4">
+                                                المجموع : ${(parseFloat(bill.won_price.total_paid) + parseFloat(bill.shipping_cost.total_paid))}
+                                                </td>
+
+                                                <td className="text-right lg:py-2 lg:px-4">
                                                 مجموع الذمم : ${ (parseFloat(bill.won_price.amount) + parseFloat(bill.shipping_cost.amount)) -  (parseFloat(bill.won_price.total_paid) + parseFloat(bill.shipping_cost.total_paid))}
                                                 </td>
 
-                                                </tr>
                                             </tbody>
                                         </table>
 

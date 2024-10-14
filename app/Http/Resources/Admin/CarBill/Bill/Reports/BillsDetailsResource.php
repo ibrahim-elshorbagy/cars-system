@@ -24,6 +24,7 @@ class BillsDetailsResource extends JsonResource
                 'customer_company' =>$this->customer->customer_company,
                 'car_chassis' => $car->chassis,
                 'car_year' =>$car->year ,
+                'car_created_at' =>(new Carbon($car->created_at))->format('Y-m-d') ,
 
                 'model_id' => $car->model_id,
                 'make_id' => $car->make_id,

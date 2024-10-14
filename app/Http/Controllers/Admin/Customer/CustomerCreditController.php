@@ -34,6 +34,10 @@ class CustomerCreditController extends Controller
             });
         }
 
+        $totalBalance = CustomerCredit::whereHas('user', function ($q) {$q->role('customer');})
+            ->select(DB::raw('SUM(added_credit) - SUM(used_credit) as balance'))
+            ->value('balance') ?? 0;
+
         // Execute the query with pagination
         $customers = $query->paginate(25)->onEachSide(1);
 
@@ -41,6 +45,7 @@ class CustomerCreditController extends Controller
         return inertia("Admin/Customer/CustomerCredit/Index", [
             'customers' => CustomerBalanceIndexResource::collection($customers),
             'queryParams' => request()->query() ?: null,
+            'totalBalance' => $totalBalance,
 
         ]);
     }

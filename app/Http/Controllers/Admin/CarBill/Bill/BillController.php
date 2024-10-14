@@ -256,10 +256,19 @@ class BillController extends Controller
             $customers = $query->with('credits', 'bills.paymentBills', 'customer')->paginate(25)->onEachSide(1);
 
 
+
+            //  Calculate Total Dues (Sum of shipping_cost + won_price for all bills)
+            $totalDues = Bill::sum(DB::raw('shipping_cost + won_price'));
+
+            //  Calculate Total Paid Amount (Sum of won_price_amount + shipping_cost_amount for all payment_bills)
+            $paidAmount = PaymentBill::sum(DB::raw('won_price_amount + shipping_cost_amount'));
+
+            $credit = $totalDues - $paidAmount;
+
             return inertia("Admin/CarBill/Bill/Reports/CustomersBills", [
                 "users" => CustomersBillsResource::collection($customers),
                 'queryParams' => request()->query() ?: null,
-
+                'credit' => $credit,
             ]);
 
 

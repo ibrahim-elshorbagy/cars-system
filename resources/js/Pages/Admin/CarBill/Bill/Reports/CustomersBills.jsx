@@ -2,12 +2,9 @@ import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, useForm } from "@inertiajs/react";
-import { useState, useEffect } from "react";
-import InputLabel from "@/Components/InputLabel";
-import InputError from "@/Components/InputError";
-import SelectInput from "@/Components/SelectInput";
 
-export default function Index({ auth,site_settings, users, queryParams = null }) {
+
+export default function Index({ auth,site_settings, users,credit, queryParams = null }) {
   queryParams = queryParams || {};
 
 
@@ -51,7 +48,7 @@ export default function Index({ auth,site_settings, users, queryParams = null })
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
-            <div className="p-3 md:p-3 text-gray-900 dark:text-gray-100">
+            <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -59,12 +56,12 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                       <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الشركه</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الهاتف</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الرصيد</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">رصيد العميل</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">عدد الذمم</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الذمم</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">المدفوع</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الرصيد</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الاجراءات</td>
                     </tr>
                   </thead>
@@ -93,13 +90,13 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                           onKeyPress={(e) => onKeyPress("email", e)}
                         />
                                           </th>
-                      <th ></th>
-                      <th ></th>
-                      <th ></th>
-                      <th ></th>
-                      <th ></th>
-                      <th ></th>
-                      <th ></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3">  مجموع الرصيد</th>
+                      <th className="p-3">{credit}</th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -114,12 +111,16 @@ export default function Index({ auth,site_settings, users, queryParams = null })
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.id}</td>
                           <th className="p-3 text-xs text-nowrap md:text-base">{user.customer_company}</th>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.email}</td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{user.phone}</td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{user.whatsapp}</td>
+                            <td className="p-3 text-xs text-blue-700 text-nowrap md:text-base">
+                            <a href={`https://wa.me/${user.whatsapp}`} target="_blank" rel="noopener noreferrer">
+                                {user.whatsapp}
+                            </a>
+                            </td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.balance}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.total_bills_count}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.total_dues}</td>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.paid_amount}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{Number(user.total_dues) - Number(user.paid_amount)}</td>
                               <td className="p-3 text-xs text-nowrap md:text-base">
                                 <Link
                                     href={route("customers-bills.details", user.id)}

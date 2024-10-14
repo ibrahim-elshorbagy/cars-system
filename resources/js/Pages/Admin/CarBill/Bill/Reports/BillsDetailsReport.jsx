@@ -65,12 +65,12 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
               {/* Car Details */}
               <h3  className="mb-2 text-sm font-bold text-right text-gray-800 md:text-lg dark:text-white">
                     <div dir="ltr" className="font-bold dark:text-white">
-                        {bill.car_year} {bill.car_make} {bill.car_model} - Chassis : <span className="">{bill.car_chassis}</span>
+                                        <span dir="rtl" className="mx-10 text-base">تاريخ الشراء - {bill.car_created_at}</span> <span>  {bill.car_year} {bill.car_make} {bill.car_model} </span>  - Chassis : <span className="">{bill.car_chassis}</span>
                     </div>
               </h3>
               <table className="w-full mb-4 border-collapse print:border-none dark:text-white">
                 <thead>
-                  <tr className="bg-gray-200 dark:bg-gray-700">
+                  <tr className="bg-blue-100 dark:bg-blue-700">
                     <th className="p-2 text-xs text-right border dark:border-gray-600 text-nowrap md:text-base">
                       سعر الشراء
                     </th>
@@ -159,7 +159,7 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
               {bill.shipping_cost.payments.length > 0 ? (
                 <table className="w-full mb-4 border-collapse print:border-none dark:text-white">
                   <thead>
-                    <tr className="bg-gray-200 dark:bg-gray-700">
+                    <tr className="bg-blue-100 dark:bg-blue-700">
                       <th className="p-2 text-xs text-right border dark:border-gray-600 text-nowrap md:text-base">
                         رقم الدفع
                       </th>
