@@ -108,8 +108,8 @@ export default function Index({ auth,site_settings, customers,queryParams = null
                       </tr>
                         )}
                             <tr className="border-b">
-                            <td className="px-3 py-2 text-xs text-nowrap md:text-base" colSpan={2}>مجموع الرصيد</td>
-                                          <td className="px-3 py-2 text-xs text-nowrap md:text-base" colSpan={2}>{ parseFloat(totalBalance)} $</td>
+                            <td className="px-3 py-2 text-xs text-nowrap md:text-lg" colSpan={2}>اجمالي ارصدة العملاء</td>
+                            <td className="px-3 py-2 text-xs text-nowrap md:text-lg " colSpan={2}>{ parseFloat(totalBalance)} $</td>
                         </tr>
                   </tbody>
                 </table>

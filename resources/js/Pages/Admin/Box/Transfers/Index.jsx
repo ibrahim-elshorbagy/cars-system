@@ -150,7 +150,7 @@ useEffect(() => {
           {auth.user.permissions.includes("create-box-transfer") && (
             <button
               onClick={toggleCreateModal}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange "
             >
               تحويلات الصناديق
             </button>

@@ -58,7 +58,7 @@ export default function Index({ auth,site_settings, users,credit, queryParams = 
                       <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">رصيد العميل</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">عدد الذمم</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">السيارات</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الذمم</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">المدفوع</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">الرصيد</td>
@@ -94,8 +94,8 @@ export default function Index({ auth,site_settings, users,credit, queryParams = 
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
-                      <th className="p-3">  مجموع الرصيد</th>
-                      <th className="p-3">{credit}</th>
+                      <th className="p-3 text-base">  اجمالي ارصدة العملاء </th>
+                      <th className="p-3 text-base">{credit}</th>
                       <th className="p-3"></th>
                     </tr>
                   </thead>
@@ -111,16 +111,16 @@ export default function Index({ auth,site_settings, users,credit, queryParams = 
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.id}</td>
                           <th className="p-3 text-xs text-nowrap md:text-base">{user.customer_company}</th>
                           <td className="p-3 text-xs text-nowrap md:text-base">{user.email}</td>
-                            <td className="p-3 text-xs text-blue-700 text-nowrap md:text-base">
+                            <td dir="ltr" className="p-3 text-xs text-blue-700 text-nowrap md:text-base">
                             <a href={`https://wa.me/${user.whatsapp}`} target="_blank" rel="noopener noreferrer">
                                 {user.whatsapp}
                             </a>
                             </td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{user.balance}</td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{user.total_bills_count}</td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{user.total_dues}</td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{user.paid_amount}</td>
-                          <td className="p-3 text-xs text-nowrap md:text-base">{Number(user.total_dues) - Number(user.paid_amount)}</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.balance} $</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.total_bills_count} </td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.total_dues} $</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{user.paid_amount} $</td>
+                          <td className="p-3 text-xs text-nowrap md:text-base">{Number(user.total_dues) - Number(user.paid_amount)} $</td>
                               <td className="p-3 text-xs text-nowrap md:text-base">
                                 <Link
                                     href={route("customers-bills.details", user.id)}

@@ -341,7 +341,7 @@ const toggleShowModal = (payment = null) => {
           {auth.user.permissions.includes("create-billPayment") && (
             <button
               onClick={toggleCreateModal}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange "
             >
               تسديد
             </button>
@@ -524,7 +524,7 @@ const toggleShowModal = (payment = null) => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>
@@ -621,7 +621,7 @@ const toggleShowModal = (payment = null) => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>

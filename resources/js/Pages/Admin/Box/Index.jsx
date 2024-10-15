@@ -103,7 +103,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null }
                 {auth.user.permissions.includes("read-box-transaction") && (
                         <Link
                         href={route('box.index.transaction')}
-                        className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-500 hover:bg-burntOrangeHover"
+                        className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-500 "
                         >
                         موجودات الصندوق
                         </Link>
@@ -111,7 +111,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null }
                 {auth.user.permissions.includes("create-box") && (
                     <button
                     onClick={toggleCreateModal}
-                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange "
                     >
                     اضافة جديد
                     </button>
@@ -240,7 +240,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null }
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>
@@ -286,7 +286,7 @@ export default function Index({ auth, site_settings, boxes, queryParams = null }
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ التغييرات
                   </button>

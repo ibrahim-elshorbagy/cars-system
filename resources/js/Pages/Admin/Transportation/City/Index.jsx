@@ -150,7 +150,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
           {auth.user.permissions.includes("create-city") && (
             <button
               onClick={toggleCreateModal}
-              className="p-3 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
+              className="p-3 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange "
             >
               إضافة مدينة
             </button>
@@ -307,7 +307,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>
@@ -376,7 +376,7 @@ export default function Index({ auth, cities,ports,site_settings ,queryParams = 
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ التغييرات
                   </button>

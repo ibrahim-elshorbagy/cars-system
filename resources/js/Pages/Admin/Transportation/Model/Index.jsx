@@ -146,7 +146,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
           {auth.user.permissions.includes("create-model") && (
             <button
               onClick={toggleCreateModal}
-              className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
+              className="px-3 py-2 text-sm text-white transition-all rounded shadow md:text-base text-nowrap bg-burntOrange "
             >
               إضافة موديل
             </button>
@@ -281,7 +281,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>
@@ -337,7 +337,7 @@ export default function Index({ auth,site_settings, models, makes, queryParams =
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ التغييرات
                   </button>

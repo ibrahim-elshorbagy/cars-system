@@ -102,7 +102,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
           site_settings={site_settings}
 
       header={
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
           <h2 className="text-base font-semibold leading-tight md:text-xl dark:text-gray-200">
                 {customer.data.customer_company}  -  {customer.data.balance} $
               </h2>
@@ -110,7 +110,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                 {auth.user.permissions.includes("create-customer-credit") && (
                     <button
                     onClick={toggleCreateModal}
-                    className="p-1.5 text-sm text-white transition-all rounded shadow md:text-lg md:py-1 md:px-3 bg-burntOrange hover:bg-burntOrangeHover"
+                    className="p-1.5 text-sm text-white transition-all rounded shadow md:text-lg md:py-1 md:px-2 bg-burntOrange "
                     >
                     إضافة رصيد
                     </button>
@@ -118,11 +118,15 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                     {auth.user.permissions.includes("reverse-customer-credit") && (
                     <button
                     onClick={toggleReverseModal}
-                    className="text-sm p-1.5 text-white transition-all rounded shadow md:text-lg md:py-1 md:px-3 bg-burntOrange hover:bg-burntOrangeHover"
+                    className="text-sm p-1.5 text-white transition-all rounded shadow md:text-lg md:py-1 md:px-2 bg-burntOrange "
                     >
                     رصيد عكسي
                     </button>
                         )}
+
+                    <Link
+                    className="text-sm p-1.5 text-white transition-all rounded shadow md:text-lg md:py-1 md:px-2 bg-blue-600 "
+                    href={route("customer-credit.index")}>السابق</Link>
             </div>
         </div>
       }
@@ -202,7 +206,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
             <div className="p-6">
               <form onSubmit={handleCreateRecord}>
 
-                        <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-2">
+                        <div className="grid grid-cols-1 md:gap-4 mb-3 md:m-0 md:grid-cols-2">
                             <div className="mb-4">
                                 <InputLabel htmlFor="added_credit" value={"القيمة"} />
                                 <TextInput
@@ -214,6 +218,18 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                                 onChange={(e) => setCreateData("added_credit", e.target.value)}
                                 />
                                 <InputError message={createErrors.added_credit} className="mt-2" />
+                                </div>
+                                <div className="mb-4">
+                                <InputLabel htmlFor="created_at" value={"التاريخ"} />
+                                <TextInput
+                                id="created_at"
+                                type="date"
+                                name="created_at"
+                                value={createData.created_at || ""}
+                                className="block w-full mt-1"
+                                onChange={(e) => setCreateData("created_at", e.target.value)}
+                                />
+                                <InputError message={createErrors.created_at} className="mt-2" />
                                 </div>
                                 {!auth.user.roles.includes("Accountant") && boxes && boxes.length > 0 && (
                                 <div>
@@ -239,7 +255,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>
@@ -261,7 +277,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
             <div className="p-6">
               <form onSubmit={handleReverseRecord}>
 
-                        <div className="grid grid-cols-1 gap-4 mb-3 md:m-0 md:grid-cols-2">
+                        <div className="grid grid-cols-1 md:gap-4 mb-3 md:m-0 md:grid-cols-2">
                             <div className="mb-4">
                                 <InputLabel htmlFor="used_credit" value={"القيمة"} />
                                 <TextInput
@@ -274,6 +290,21 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                                 />
                                 <InputError message={ReverseErrors.used_credit} className="mt-2" />
                                   </div>
+
+                                  <div className="mb-4">
+                                <InputLabel htmlFor="created_at" value={"التاريخ"} />
+                                <TextInput
+                                id="created_at"
+                                type="date"
+                                name="name"
+                                value={ReverseData.created_at || ""}
+                                className="block w-full mt-1"
+                                onChange={(e) => setReverseData("created_at", e.target.value)}
+                                />
+                                <InputError message={ReverseErrors.created_at} className="mt-2" />
+                                  </div>
+
+
                                                                   {!auth.user.roles.includes("Accountant") && boxes && boxes.length > 0 && (
                                 <div>
                                     <InputLabel className="mb-1.5" htmlFor="box_id" value={"الصندوق"} />
@@ -317,7 +348,7 @@ export default function Index({ auth,site_settings, records, customer,boxes }) {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>

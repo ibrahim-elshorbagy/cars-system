@@ -93,6 +93,7 @@ class CustomerCreditController extends Controller
         $rules = [
             'user_id' => ['required'],
             'added_credit' => ['required', 'numeric', 'min:1'],
+            'created_at'=>['required','date'],
         ];
 
         if (!Auth::user()->hasRole('Accountant')) {
@@ -125,6 +126,7 @@ class CustomerCreditController extends Controller
                 'user_id' => $data['user_id'],
                 'box_id' => $data['box_id'],
                 'income' => $data['added_credit'],
+                'created_at' =>$data['created_at'],
                 'description' => 'تم اضافه رصيد ' . $data['added_credit'] . " $ ". ' الي العميل ' . $customer_company,
                 'created_by' => Auth::user()->id,
             ]);
@@ -151,6 +153,8 @@ class CustomerCreditController extends Controller
             'user_id' => ['required'],
             'used_credit' => ['required', 'numeric', 'min:1'],
             'description' => ['nullable', 'string'],
+            'created_at'=>['required','date'],
+
         ];
 
         if (!Auth::user()->hasRole('Accountant')) {
@@ -194,6 +198,7 @@ class CustomerCreditController extends Controller
                 'user_id' => $data['user_id'],
                 'box_id' => $data['box_id'],
                 'outcome' => $data['used_credit'],
+                'created_at'=>$data['created_at'],
                 'description' => 'تم خصم ' . $data['used_credit']. " $ " . ' من ' . $customer_company . ' نتيجه عمليه رصيد عكسيه ' . " , " . $data['description'],
                 'created_by' => Auth::id(),
 

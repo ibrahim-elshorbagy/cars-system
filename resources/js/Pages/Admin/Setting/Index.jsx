@@ -60,7 +60,7 @@ export default function SettingsPage({ auth, site_settings,settings }) {
                     </h2>
                     <button
                         onClick={toggleEditModal}
-                        className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                        className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange "
                     >
                         تعديل الإعدادات
                     </button>
@@ -181,7 +181,7 @@ export default function SettingsPage({ auth, site_settings,settings }) {
                                     >
                                         إلغاء
                                     </Button>
-                                    <Button type="submit" className="text-white bg-burntOrange hover:bg-burntOrangeHover">
+                                    <Button type="submit" className="text-white bg-burntOrange ">
                                         حفظ التغييرات
                                     </Button>
                                 </div>

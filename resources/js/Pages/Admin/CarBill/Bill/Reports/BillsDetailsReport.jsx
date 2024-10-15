@@ -8,7 +8,7 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
     return `$${parseFloat(amount).toFixed(2)}`;
   };
 
-  // Function to calculate total debts
+  // Function to calculate total debts For car
   const calculateTotalDebts = (bill) => {
     const totalAmount =
       parseFloat(bill.won_price.amount) + parseFloat(bill.shipping_cost.amount);
@@ -16,6 +16,21 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
       parseFloat(bill.won_price.total_paid) +
       parseFloat(bill.shipping_cost.total_paid);
     return (totalAmount - totalPaid).toFixed(2);
+  };
+
+  const calculateTotalDebtsForAllBills = () => {
+    return bills.reduce((total, bill) => {
+      return total + parseFloat(calculateTotalDebts(bill));
+    }, 0).toFixed(2);
+  };
+
+
+
+  // this new function to check if the bill is fully paid
+  const isFullyPaid = (bill) => {
+    const totalDue = (bill.won_price.amount - bill.won_price.total_paid) +
+                     (bill.shipping_cost.amount - bill.shipping_cost.total_paid);
+    return Math.abs(totalDue) == 0;
   };
 
   return (
@@ -58,19 +73,26 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
             <div className="my-4 mb-8">
               <h1 className="text-2xl font-bold">العميل : {customer.name}</h1>
               <h1 className="text-2xl font-bold">الشركة : {customer.customer.customer_company}</h1>
+              <h1 className="text-base  " >  <span className="font-bold">التاريخ</span>: {new Date().toLocaleString()}</h1>
             </div>
           {/* For each car */}
           {bills.map((bill, index) => (
             <div key={index} className="mb-8">
               {/* Car Details */}
-              <h3  className="mb-2 text-sm font-bold text-right text-gray-800 md:text-lg dark:text-white">
-                    <div dir="ltr" className="font-bold dark:text-white">
-                                        <span dir="rtl" className="mx-10 text-base">تاريخ الشراء - {bill.car_created_at}</span> <span>  {bill.car_year} {bill.car_make} {bill.car_model} </span>  - Chassis : <span className="">{bill.car_chassis}</span>
-                    </div>
+              <h3 className="mb-2 text-sm font-bold text-right text-gray-800 md:text-lg dark:text-white">
+                <div dir="ltr" className="font-bold dark:text-white">
+                  {isFullyPaid(bill) ? (
+                    <span dir="ltr" className="text-base text-green-600 bg-green-100 p-1 px-2 rounded-full">مسددة</span>
+                  ) : (
+                    <span dir="ltr" className=""></span>
+                  )}
+                  <span dir="rtl" className="mx-10 text-base">تاريخ الشراء - {bill.car_created_at}</span>
+                  <span>{bill.car_year} {bill.car_make} {bill.car_model}</span> - Chassis : <span className="">{bill.car_chassis}</span>
+                </div>
               </h3>
               <table className="w-full mb-4 border-collapse print:border-none dark:text-white">
                 <thead>
-                  <tr className="bg-blue-100 dark:bg-blue-700">
+                  <tr className="bg-gray-100 dark:bg-gray-700">
                     <th className="p-2 text-xs text-right border dark:border-gray-600 text-nowrap md:text-base">
                       سعر الشراء
                     </th>
@@ -115,7 +137,7 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
               {bill.won_price.payments.length > 0 ? (
                 <table className="w-full mb-4 text-xs border-collapse print:border-none dark:text-white md:text-base">
                   <thead>
-                    <tr className="bg-gray-200 dark:bg-gray-700">
+                    <tr className="bg-blue-100 dark:bg-blue-700">
                       <th className="p-2 text-xs text-right border dark:border-gray-600 text-nowrap md:text-base">
                         رقم الدفع
                       </th>
@@ -148,6 +170,11 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
                         </td>
                       </tr>
                     ))}
+
+                    <tr>
+                        <td colSpan={1} className="p-2 text-xs text-right border dark:border-gray-600 md:text-base">المجموع</td>
+                        <td colSpan={2} className="p-2 text-xs text-right border dark:border-gray-600 md:text-base">{bill.won_price.total_paid} $</td>
+                    </tr>
                   </tbody>
                 </table>
               ) : (
@@ -192,6 +219,11 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
                         </td>
                       </tr>
                     ))}
+                        <tr>
+                        <td colSpan={1} className="p-2 text-xs text-right border dark:border-gray-600 md:text-base">المجموع</td>
+                        <td colSpan={2} className="p-2 text-xs text-right border dark:border-gray-600 md:text-base">{bill.shipping_cost.total_paid} $</td>
+                    </tr>
+
                   </tbody>
                 </table>
               ) : (
@@ -199,7 +231,15 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
               )}
             </div>
           ))}
+
+
         </div>
+
+
+            <div className="text-left px-6 py-3 text-black rounded-lg">
+                <h1 className="text-2xl font-bold">اجمالي الذمم : {calculateTotalDebtsForAllBills()} $</h1>
+            </div>
+
       </div>
     </AuthenticatedLayout>
   );

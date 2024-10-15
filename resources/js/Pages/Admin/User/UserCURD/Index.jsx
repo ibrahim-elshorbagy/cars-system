@@ -165,7 +165,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
           {auth.user.permissions.includes("create-user") && (
             <button
               onClick={toggleCreateModal}
-              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+              className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange "
             >
               إضافة مستخدم
             </button>
@@ -454,7 +454,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ
                   </button>
@@ -628,7 +628,7 @@ export default function Index({ auth,site_settings, users, queryParams = null, s
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-white rounded bg-burntOrange hover:bg-burntOrangeHover"
+                    className="px-4 py-2 text-white rounded bg-burntOrange "
                   >
                     حفظ التغييرات
                   </button>
