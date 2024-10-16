@@ -1,6 +1,6 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import  { useState } from "react";
+import  { useState,useEffect } from "react";
 import { Head,Link } from "@inertiajs/react";
 
 import {
@@ -9,7 +9,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/Components/ui/tabs"
-import { GrDocumentPdf } from "react-icons/gr";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 
@@ -20,28 +19,43 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function Show({ auth, site_settings, car }) {
 
-      const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [flattenedImages, setFlattenedImages] = useState([]);
 
-  const openModal = (image) => {
-    setSelectedImage(image);
-    setIsModalOpen(true);
+ useEffect(() => {
+    const allImages = [];
+    car.imagesForShow.forEach((dateGroup) => {
+      dateGroup.images.forEach((image) => {
+        allImages.push(image);
+      });
+    });
+    setFlattenedImages(allImages);
+  }, [car.imagesForShow]);
+
+  const openModal = (imageUrl) => {
+    const index = flattenedImages.findIndex((image) => image.image_url === imageUrl);
+    if (index !== -1) {
+      setSelectedImageIndex(index);
+      setIsModalOpen(true);
+    }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedImage(null);
   };
 
-  const [currentIndex, setCurrentIndex] = useState(0)
-
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : car.images.length - 1))
-  }
+    setSelectedImageIndex((prevIndex) =>
+      prevIndex === 0 ? flattenedImages.length - 1 : prevIndex - 1
+    );
+  };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex < car.images.length - 1 ? prevIndex + 1 : 0))
-  }
+    setSelectedImageIndex((prevIndex) =>
+      prevIndex === flattenedImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
 
 
 
@@ -65,7 +79,7 @@ export default function Show({ auth, site_settings, car }) {
 
         <div>
         <div className="mx-auto">
-            <div className=" bg-white shadow-sm dark:bg-gray-800">
+            <div className="bg-white shadow-sm dark:bg-gray-800">
             <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
                 <div className="mt-6">
                 <Tabs defaultValue="general" >
@@ -296,77 +310,38 @@ export default function Show({ auth, site_settings, car }) {
                 <TabsContent value="photos">
                     {/* Images below the table */}
                     <div>
-
-                    <div className="my-6 flex flex-col">
+                    <div className="flex flex-col my-6">
                         {car.imagesForShow.map((dateGroup, groupIndex) => (
-                            <div key={groupIndex} className="my-8">
-                                <h3 className="mb-4 text-xl font-bold text-right px-6 py-3 text-black rounded-lg bg-blue-100">{dateGroup.date}</h3>
-                                <div className="flex flex-wrap gap-4">
-                                    {dateGroup.images.map((image, imageIndex) => (
-                                        <div
-                                            key={imageIndex}
-                                            className="w-32 h-32 md:w-64 md:h-64 cursor-pointer"
-                                            onClick={() => openModal(image.image_url)}
-                                        >
-                                            <img
-                                                className="object-cover w-full h-full rounded-lg"
-                                                src={image.image_url}
-                                                alt={`Car Image ${groupIndex + 1}-${imageIndex + 1}`}
-                                            />
-                                            <div className="mt-2 text-sm">
-                                                <p>اضافة بواسطة: {image.created_by}</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                        <div key={groupIndex} className="my-8">
+                            <h3 className="px-6 py-3 mb-4 text-xl font-bold text-right text-black bg-blue-100 rounded-lg">
+                            {dateGroup.date}
+                            </h3>
+                            <div className="flex flex-wrap gap-4">
+                            {dateGroup.images.map((image, imageIndex) => (
+                                <div
+                                key={imageIndex}
+                                className="w-32 h-32 cursor-pointer md:w-64 md:h-64"
+                                onClick={() => openModal(image.image_url)}
+                                >
+                                <img
+                                    className="object-cover w-full h-full rounded-lg"
+                                    src={image.image_url}
+                                    alt={`Car Image ${groupIndex + 1}-${imageIndex + 1}`}
+                                />
+                                <div className="mt-2 text-sm">
+                                    <p>اضافة بواسطة: {image.created_by}</p>
                                 </div>
+                                </div>
+                            ))}
                             </div>
+                        </div>
                         ))}
                     </div>
 
-                    <h3 className="mb-4 text-xl font-bold text-right px-6 py-3 text-black rounded-lg bg-blue-100">معرض</h3>
-
-                    <div className="w-full my-10">
-                        <Tabs value={currentIndex.toString()} onValueChange={(value) => setCurrentIndex(parseInt(value))}>
-                            <div className="relative ">
-                            <TabsContent value={currentIndex.toString()} forceMount={true}>
-                                <img
-                                src={car.images[currentIndex]}
-                                alt={`Car Image ${currentIndex + 1}`}
-                                className="w-full h-full object-cover rounded-lg"
-                                />
-                            </TabsContent>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className="absolute left-2 top-1/2 transform -translate-y-1/2"
-                                onClick={goToPrevious}
-                            >
-                                <ChevronLeft className="h-4 w-4" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="icon"
-                                className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                                onClick={goToNext}
-                            >
-                                <ChevronRight className="h-4 w-4" />
-                            </Button>
-                            </div>
-
-                        </Tabs>
-                    </div>
-
-
-
 
                     </div>
-
-
-
-
-
-
                 </TabsContent>
+
 
 
                 </Tabs>
@@ -375,27 +350,53 @@ export default function Show({ auth, site_settings, car }) {
             </div>
         </div>
         </div>
-        {isModalOpen && (
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-                    onClick={closeModal}
-                    >
-                    <div className="relative">
-                        <button
-                        className="absolute text-3xl text-white top-2 right-2"
-                        onClick={closeModal}
-                        >
-                        &times;
-                      </button>
+      {/* Modal with Slider */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 "
+          onClick={closeModal}
+        >
+          <div className="relative  max-w-[90%]" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="absolute text-3xl text-white top-2 right-2"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
 
-                        <img
-                        className="max-w-[90%] max-h-[90%]"
-                        src={selectedImage}
-                        alt="Selected Car"
-                        />
-                    </div>
-                </div>
-          )}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute left-0 transform -translate-y-1/2 top-1/2"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToPrevious();
+              }}
+            >
+              <ChevronLeft className="w-4 h-4 dark:text-white" />
+            </Button>
+            <img
+              className=" max-h-[90%]"
+              src={flattenedImages[selectedImageIndex]?.image_url}
+              alt="Selected Car"
+            />
+
+
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute right-0 transform -translate-y-1/2 top-1/2"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToNext();
+              }}
+            >
+              <ChevronRight className="w-4 h-4 dark:text-white" />
+            </Button>
+          </div>
+        </div>
+      )}
+
 
       </AuthenticatedLayout>
 

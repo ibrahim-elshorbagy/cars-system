@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TerminalSeeder::class);
         $this->call(LineSeeder::class);
         $this->call(ShippingFeeTypesSeeder::class);
+        $this->call(ShippingFeeTypesSeeder::class);
 
         //admin
         $user = User::factory()->create([
@@ -55,6 +56,48 @@ class DatabaseSeeder extends Seeder
         ]);
         $user->assignRole('customer');
 
+
+
+        //---------------------------------------------
+
+          DB::table('makes')->insert([
+            ["id"=>1,'name' => 'Toyota'],
+            ]);
+
+         DB::table('models')->insert([
+            ['name' => 'Corolla', 'make_id' => 1],  // Assuming Toyota's ID is 1
+        ]);
+
+        DB::table('cars')->insert([
+            [
+                'color' => 'Red',
+                'year' => '2020',
+                'chassis' => '1HGCM82633A123456',
+
+                // Foreign keys
+                'user_id' => 2,
+                'make_id' => 1,
+                'model_id' => 1,
+
+                'created_by' => 1,
+                'updated_by' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+        DB::table('bills')->insert([
+            [
+                'car_id' => 1,
+                'user_id' => 2,
+                'won_price' => 0,
+                'shipping_cost' => 0,
+                'created_by' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        //---------------------------------------------
         Box::create(
             [
                 'id' => 1,
@@ -73,6 +116,10 @@ class DatabaseSeeder extends Seeder
                 'name'=>'االحمداني'
             ]
         );
+        //---------------------------------------------
+
+
+
 
     $statuses = [
             ['id' => 1, 'name' => 'Purchased'],
@@ -92,6 +139,7 @@ class DatabaseSeeder extends Seeder
             ShipStatus::updateOrCreate(['id' => $status['id']], $status);
         }
 
+        //---------------------------------------------
 
         $ports = [
             ['name' => 'Port of Alexandria'],
@@ -109,6 +157,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         DB::table('cities')->insert($cities);
+        //---------------------------------------------
 
     }
 }

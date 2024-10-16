@@ -2014,10 +2014,10 @@ const handleEditVinBlur = () => {
                                                             &times;
                                                         </span>
                                                         <img className="w-full h-auto rounded-lg" src={image.image_url} alt={`Car Image ${index + 1}`} />
-                                                        <span className="block mt-1 text-xs text-gray-600">
+                                                        <span className="block mt-1 text-xs text-gray-600 dark:text-white">
                                                             اضافة بواسطة: {image.created_by}
                                                         </span>
-                                                        <span className="block mt-1 text-xs text-gray-600">
+                                                        <span className="block mt-1 text-xs text-gray-600 dark:text-white">
                                                             تاريخ: {image.created_at}
                                                         </span>
                                                     </div>

@@ -45,7 +45,7 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
           {/* Print Button */}
           <button
             onClick={() => window.print()}
-            className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            className="px-4 py-2 text-sm text-white bg-blue-600 rounded-md md:text-base hover:bg-blue-700"
           >
             طباعة كشف الحساب
           </button>
@@ -71,24 +71,28 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
           </div>
               <div className="overflow-auto">
             <div className="my-4 mb-8">
-              <h1 className="text-2xl font-bold">العميل : {customer.name}</h1>
-              <h1 className="text-2xl font-bold">الشركة : {customer.customer.customer_company}</h1>
-              <h1 className="text-lg  " >  <span className="font-bold">التاريخ</span>: {new Date().toLocaleString()}</h1>
+              <h1 className="text-base font-bold md:text-2xl dark:text-white">العميل : {customer.name}</h1>
+              <h1 className="text-base font-bold md:text-2xl dark:text-white">الشركة : {customer.customer.customer_company}</h1>
+              <h1 className="text-sm md:text-lg dark:text-white" >  <span className="font-bold">التاريخ</span>: {new Date().toLocaleString()}</h1>
             </div>
           {/* For each car */}
           {bills.map((bill, index) => (
             <div key={index} className="mb-8">
               {/* Car Details */}
-              <h3 className="mb-2 text-sm font-bold text-right text-gray-800 md:text-lg dark:text-white">
-                <div dir="ltr" className="text-2xl font-bold dark:text-white text-blue-900">
-                  {isFullyPaid(bill) ? (
-                    <span dir="ltr" className="text-base text-green-600 bg-green-100 p-1 px-2 rounded-full">مسددة</span>
-                  ) : (
-                    <span dir="ltr" className=""></span>
-                  )}
-                  <span dir="rtl" className="mx-10 text-lg">تاريخ الشراء - {bill.car_created_at}</span>
-                  <span className="">{bill.car_year} {bill.car_make} {bill.car_model}</span> - Chassis : <span className="">{bill.car_chassis}</span>
-                </div>
+              <h3 className="mb-2 text-sm font-bold text-gray-800 dark:text-white">
+                    <div dir="ltr" className="flex flex-col gap-2 text-2xl font-bold text-right text-blue-900 dark:text-white">
+                                <div >
+                                        <span className="ml-2 text-sm md:text-lg text-nowrap" >تاريخ الشراء - {bill.car_created_at}</span>
+
+                                        {isFullyPaid(bill) ? (
+                                            <span  className="p-1 text-xs text-green-600 bg-green-100 rounded-full md:px-2 md:text-base">مسددة</span>
+                                        ) : (
+                                            <span className=""></span>
+                                        )}
+                                </div>
+
+                            <div className="text-sm md:text-2xl text-nowrap">{bill.car_year} {bill.car_make} {bill.car_model}- Chassis : {bill.car_chassis}</div>
+                    </div>
               </h3>
               <table className="w-full mb-4 border-collapse print:border-none dark:text-white">
                 <thead>
@@ -236,8 +240,8 @@ export default function BillsDetailsReport({ auth, site_settings, bills,customer
         </div>
 
 
-            <div className="text-left px-6 py-3 text-black rounded-lg bg-blue-100">
-                <h1 className="text-2xl font-bold">اجمالي الذمم : {calculateTotalDebtsForAllBills()} $</h1>
+            <div className="px-6 py-3 text-left text-black bg-blue-100 rounded-lg">
+                <h1 className="text-sm font-bold md:text-2xl">اجمالي الذمم : {calculateTotalDebtsForAllBills()} $</h1>
             </div>
 
       </div>
