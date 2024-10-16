@@ -36,7 +36,6 @@ use Illuminate\Support\Facades\DB;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\Encoders\AutoEncoder;
 
 
 class CarController extends Controller
@@ -44,7 +43,7 @@ class CarController extends Controller
     public function index()
     {
 
-        $query = Car::with('user.customer','bill.shippingExpenses.shippingFeeType')->orderBy("id", "desc");
+        $query = Car::with('user.customer','bill.shippingExpenses.shippingFeeType',"carImages.createdBy")->orderBy("id", "desc");
 
         if (request("chassis")) {
             $query->where("chassis", "like", "%" . request("chassis") . "%");
@@ -78,6 +77,10 @@ class CarController extends Controller
                 'name' => " $feeType->name ( $feeType->ar_name )",
             ];
         });
+
+
+
+
         return inertia("Admin/CarBill/Car/Index", [
 
             "cars" => ShowCarResource::collection($cars),
@@ -188,6 +191,8 @@ class CarController extends Controller
                             CarImage::create([
                                 'car_id' => $car->id,
                                 'image_url' => $imageUrl,
+                                'created_at' => now(),
+                                'created_by' => Auth::user()->id,
                             ]);
                     }
             }
@@ -289,7 +294,8 @@ class CarController extends Controller
 
                 // If old_images_url is present, keep those, otherwise delete from the server
                 if ($request->filled('old_images_url')) {
-                    $oldImagesUrl = $request->input('old_images_url');
+                    $oldImagesData = $request->input('old_images_url');
+                    $oldImagesUrl = collect($oldImagesData)->pluck('image_url')->toArray();
                     // Find images that are in the database but not in the old_images_url array (i.e., deleted by the user)
                     $imagesToDelete = array_diff($existingImages, $oldImagesUrl);
                     // Delete these images from the storage and the database
@@ -350,6 +356,9 @@ class CarController extends Controller
                         CarImage::create([
                             'car_id' => $car->id,
                             'image_url' => $imageUrl,
+                            'created_at' => now(),
+                            'created_by' => Auth::user()->id,
+
                         ]);
                     }
                 }

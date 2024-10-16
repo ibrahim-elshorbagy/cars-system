@@ -2,7 +2,6 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import  { useState } from "react";
 import { Head,Link } from "@inertiajs/react";
-import Input from "@/Components/ui/input";
 
 import {
   Tabs,
@@ -12,6 +11,12 @@ import {
 } from "@/Components/ui/tabs"
 import { GrDocumentPdf } from "react-icons/gr";
 import { FaCheck, FaTimes } from "react-icons/fa";
+
+
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+
 
 export default function Show({ auth, site_settings, car }) {
 
@@ -27,6 +32,19 @@ export default function Show({ auth, site_settings, car }) {
     setIsModalOpen(false);
     setSelectedImage(null);
   };
+
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : car.images.length - 1))
+  }
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex < car.images.length - 1 ? prevIndex + 1 : 0))
+  }
+
+
+
   return (
       <AuthenticatedLayout user={auth.user} site_settings={site_settings}
             header={
@@ -47,7 +65,7 @@ export default function Show({ auth, site_settings, car }) {
 
         <div>
         <div className="mx-auto">
-            <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800">
+            <div className=" bg-white shadow-sm dark:bg-gray-800">
             <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
                 <div className="mt-6">
                 <Tabs defaultValue="general" >
@@ -277,23 +295,78 @@ export default function Show({ auth, site_settings, car }) {
                 {/* Photos Tab */}
                 <TabsContent value="photos">
                     {/* Images below the table */}
-                    <div className="mt-6">
-                        <div className="flex flex-wrap gap-4">
-                            {car.images.map((image, index) => (
-                            <div
-                                key={index}
-                                className="w-64 h-64 cursor-pointer"
-                                onClick={() => openModal(image)}
-                            >
-                                <img
-                                className="object-cover w-full h-full rounded-lg"
-                                src={image}
-                                alt={`Car Image ${index + 1}`}
-                                />
+                    <div>
+
+                    <div className="my-6 flex flex-col">
+                        {car.imagesForShow.map((dateGroup, groupIndex) => (
+                            <div key={groupIndex} className="my-8">
+                                <h3 className="mb-4 text-xl font-bold text-right px-6 py-3 text-black rounded-lg bg-blue-100">{dateGroup.date}</h3>
+                                <div className="flex flex-wrap gap-4">
+                                    {dateGroup.images.map((image, imageIndex) => (
+                                        <div
+                                            key={imageIndex}
+                                            className="w-32 h-32 md:w-64 md:h-64 cursor-pointer"
+                                            onClick={() => openModal(image.image_url)}
+                                        >
+                                            <img
+                                                className="object-cover w-full h-full rounded-lg"
+                                                src={image.image_url}
+                                                alt={`Car Image ${groupIndex + 1}-${imageIndex + 1}`}
+                                            />
+                                            <div className="mt-2 text-sm">
+                                                <p>اضافة بواسطة: {image.created_by}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            ))}
+                        ))}
                     </div>
+
+                    <h3 className="mb-4 text-xl font-bold text-right px-6 py-3 text-black rounded-lg bg-blue-100">معرض</h3>
+
+                    <div className="w-full my-10">
+                        <Tabs value={currentIndex.toString()} onValueChange={(value) => setCurrentIndex(parseInt(value))}>
+                            <div className="relative ">
+                            {/* <div className="relative h-64 sm:h-72 md:h-80 lg:h-96"> */}
+                            <TabsContent value={currentIndex.toString()} forceMount={true}>
+                                <img
+                                src={car.images[currentIndex]}
+                                alt={`Car Image ${currentIndex + 1}`}
+                                className="w-full h-full object-cover rounded-lg"
+                                />
+                            </TabsContent>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                                onClick={goToPrevious}
+                            >
+                                <ChevronLeft className="h-4 w-4" />
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                                onClick={goToNext}
+                            >
+                                <ChevronRight className="h-4 w-4" />
+                            </Button>
+                            </div>
+
+                        </Tabs>
                     </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
                 </TabsContent>
 
 

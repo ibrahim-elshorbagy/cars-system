@@ -15,6 +15,9 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('car_id')->constrained('cars')->onDelete('cascade');
                 $table->string('image_url');
+                $table->timestamp('created_at')->nullable(); // Adds only created_at
+                $table->foreignId('created_by')->references('id')->on('users')->onDelete('cascade');
+
 
         });
     }

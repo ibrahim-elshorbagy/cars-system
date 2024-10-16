@@ -2,6 +2,7 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import  { useState } from "react";
 import { Head,Link } from "@inertiajs/react";
+
 import {
   Tabs,
   TabsContent,
@@ -11,12 +12,18 @@ import {
 import { GrDocumentPdf } from "react-icons/gr";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
+
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+
+
 export default function Show({ auth, site_settings, car }) {
 
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [selectedImage, setSelectedImage] = useState(null);
+      const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
- const openModal = (image) => {
+  const openModal = (image) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
@@ -26,36 +33,48 @@ const [selectedImage, setSelectedImage] = useState(null);
     setSelectedImage(null);
   };
 
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : car.images.length - 1))
+  }
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex < car.images.length - 1 ? prevIndex + 1 : 0))
+  }
+
+
+
   return (
       <AuthenticatedLayout user={auth.user} site_settings={site_settings}
-       header={
+            header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             معلومات السيارة
-               </h2>
-                    <button
-                    onClick={() => window.history.back()}
-                    className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-400"
-                    >
-                    الرجوع
-                    </button>
-           </div>
-      }
-      >
+            </h2>
+                <button
+                onClick={() => window.history.back()}
+                className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-400"
+                >
+                الرجوع
+                </button>
+
+        </div>
+      }>
       <Head title={site_settings.websiteName + " - " + "معلومات السيارة"} />
 
-    <div>
+        <div>
         <div className="mx-auto">
-            <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800">
+            <div className=" bg-white shadow-sm dark:bg-gray-800">
             <div className="p-3 text-gray-900 md:p-3 dark:text-gray-100">
                 <div className="mt-6">
                 <Tabs defaultValue="general" >
-                    <TabsList >
+                    <TabsList className="">
                     <div>
                     <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="shipping">Shipping</TabsTrigger>
                     <TabsTrigger value="shipping_fees">Shipping Fees</TabsTrigger>
-                    <TabsTrigger value="photos">Photos</TabsTrigger>
+                     <TabsTrigger value="photos">Photos</TabsTrigger>
                     </div>
                     </TabsList>
 
@@ -122,14 +141,14 @@ const [selectedImage, setSelectedImage] = useState(null);
                             <th className="px-3 py-3 ">{car.created_by}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">انشئ بوسطة</td>
                         </tr>
-                            {/* <tr className="bg-white dark:bg-gray-800">
+                            <tr className="bg-white dark:bg-gray-800">
                             <th className="px-3 py-3 ">{car.updated_at}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">تاريخ التحديث</td>
                         </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
+                            <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.updated_by}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">تحديث بواسطه</td>
-                        </tr> */}
+                        </tr>
 
 
                         </tbody>
@@ -188,7 +207,7 @@ const [selectedImage, setSelectedImage] = useState(null);
                         <tr className="bg-gray-100 dark:bg-gray-700">
                             <th className="px-3 py-3 ">{car.arrival_date}</th>
                             <td className="w-20 px-3 py-3 text-left whitespace-nowrap">Arrival Date</td>
-                        </tr>
+                                              </tr>
 
                         <tr className="bg-white dark:bg-gray-800">
                             <th className="px-3 py-3 ">{car.won_price}</th>
@@ -201,11 +220,10 @@ const [selectedImage, setSelectedImage] = useState(null);
 
                         </tbody>
                     </table>
-                                  </TabsContent>
+                    </TabsContent>
 
 
-
-                                                      <TabsContent value="shipping_fees">
+                    <TabsContent value="shipping_fees">
 
                     <div className="w-[98%] mx-auto">
                     {car.shipping_expenses.length === 0 ? (
@@ -225,10 +243,10 @@ const [selectedImage, setSelectedImage] = useState(null);
                                 <tr className="bg-gray-200 dark:bg-gray-600">
                                     <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">التكلفة</th>
                                     <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">القيمة</th>
-                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تاريخ الإنشاء</th>
-                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تم الإنشاء بواسطة</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">التاريخ</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base"> الإنشاء بواسطة</th>
                                     <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تاريخ التحديث</th>
-                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base">تم التحديث بواسطة</th>
+                                    <th className="p-2 text-xs text-right border dark:border-gray-700 text-nowrap md:text-base"> التحديث بواسطة</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -270,29 +288,84 @@ const [selectedImage, setSelectedImage] = useState(null);
                     </div>
 
 
-                                  </TabsContent>
+                    </TabsContent>
+
 
 
                 {/* Photos Tab */}
                 <TabsContent value="photos">
                     {/* Images below the table */}
-                    <div className="mt-6">
-                        <div className="flex flex-wrap gap-4">
-                            {car.images.map((image, index) => (
-                            <div
-                                key={index}
-                                className="w-64 h-64 cursor-pointer"
-                                onClick={() => openModal(image)}
-                            >
-                                <img
-                                className="object-cover w-full h-full rounded-lg"
-                                src={image}
-                                alt={`Car Image ${index + 1}`}
-                                />
+                    <div>
+
+                    <div className="my-6 flex flex-col">
+                        {car.imagesForShow.map((dateGroup, groupIndex) => (
+                            <div key={groupIndex} className="my-8">
+                                <h3 className="mb-4 text-xl font-bold text-right px-6 py-3 text-black rounded-lg bg-blue-100">{dateGroup.date}</h3>
+                                <div className="flex flex-wrap gap-4">
+                                    {dateGroup.images.map((image, imageIndex) => (
+                                        <div
+                                            key={imageIndex}
+                                            className="w-32 h-32 md:w-64 md:h-64 cursor-pointer"
+                                            onClick={() => openModal(image.image_url)}
+                                        >
+                                            <img
+                                                className="object-cover w-full h-full rounded-lg"
+                                                src={image.image_url}
+                                                alt={`Car Image ${groupIndex + 1}-${imageIndex + 1}`}
+                                            />
+                                            <div className="mt-2 text-sm">
+                                                <p>اضافة بواسطة: {image.created_by}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            ))}
+                        ))}
                     </div>
+
+                    <h3 className="mb-4 text-xl font-bold text-right px-6 py-3 text-black rounded-lg bg-blue-100">معرض</h3>
+
+                    <div className="w-full my-10">
+                        <Tabs value={currentIndex.toString()} onValueChange={(value) => setCurrentIndex(parseInt(value))}>
+                            <div className="relative ">
+                            <TabsContent value={currentIndex.toString()} forceMount={true}>
+                                <img
+                                src={car.images[currentIndex]}
+                                alt={`Car Image ${currentIndex + 1}`}
+                                className="w-full h-full object-cover rounded-lg"
+                                />
+                            </TabsContent>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                                onClick={goToPrevious}
+                            >
+                                <ChevronLeft className="h-4 w-4" />
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                                onClick={goToNext}
+                            >
+                                <ChevronRight className="h-4 w-4" />
+                            </Button>
+                            </div>
+
+                        </Tabs>
                     </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
                 </TabsContent>
 
 
@@ -301,17 +374,12 @@ const [selectedImage, setSelectedImage] = useState(null);
             </div>
             </div>
         </div>
-    </div>
-
-
-
-
-
+        </div>
         {isModalOpen && (
                 <div
-                className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-                onClick={closeModal}
-                >
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+                    onClick={closeModal}
+                    >
                     <div className="relative">
                         <button
                         className="absolute text-3xl text-white top-2 right-2"
@@ -321,11 +389,10 @@ const [selectedImage, setSelectedImage] = useState(null);
                       </button>
 
                         <img
-                            className="max-w-[90%] max-h-[90%]"
-                            src={selectedImage}
-                            alt="Selected Car"
-                      />
-
+                        className="max-w-[90%] max-h-[90%]"
+                        src={selectedImage}
+                        alt="Selected Car"
+                        />
                     </div>
                 </div>
           )}

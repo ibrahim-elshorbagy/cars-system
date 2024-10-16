@@ -13,6 +13,36 @@ class ShowCarResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+
+        // Fetch car images once
+        $carImages = $this->carImages;
+
+        // Grouped Images by Date
+        $groupedImages = $carImages->groupBy(function ($image) {
+            return Carbon::parse($image->created_at)->format('Y-m-d');
+        })->map(function ($images, $date) {
+            return [
+                'date' => $date,
+                'images' => $images->map(function ($image) {
+                    return [
+                        'image_url' => $image->image_url,
+                        'created_at' => Carbon::parse($image->created_at)->format('Y-m-d'),
+                        'created_by' => $image->createdBy->name ?? 'Unknown',
+                    ];
+                }),
+            ];
+        })->values();
+
+        // Images with Creators
+        $images_creators = $carImages->map(function ($image) {
+            return [
+                'image_url' => $image->image_url,
+                'created_by' => $image->createdBy->name ?? 'Unknown',
+                'created_at' => (new Carbon($image->created_at))->format('Y-m-d'),
+
+            ];
+        })->values();
+
         return [
             'id' => $this->id ,
             'user_id' => $this->user_id ?? null,
@@ -54,7 +84,9 @@ class ShowCarResource extends JsonResource
             'facility_name' => $this->facility->name ?? null,
             'facility_id' => $this->facility->id ?? null,
 
-            'images' => $this->carImages->pluck('image_url') ?? [],
+            'images' => $carImages->sortByDesc('created_at')->pluck('image_url') ?? [],
+            'images_creators' => $images_creators ?? [],
+            'imagesForShow' => $groupedImages ?? [],
 
             'ship_status' => $this->ship_status ?? null,
 

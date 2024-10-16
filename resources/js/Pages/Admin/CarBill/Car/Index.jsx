@@ -350,7 +350,7 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
                     arrival_date: car.arrival_date,
                     date_won: car.date_won,
                     images: [],
-                    old_images_url: car.images,
+                    old_images_url: car.images_creators,
 
                     shipping_expenses: car.shipping_expenses,
                     shipping_cost: car.shipping_cost,
@@ -358,7 +358,8 @@ export default function Index({ auth,site_settings, cars,customers, makes,models
 
                     _method: "PUT", });
 
-                setEditOldImages(car.images);
+                setEditOldImages(car.images_creators);
+
                 setEditVin(car.chassis || '');
                 setSelectedEditMakeId(car.make_id);
                 setselectedMakeName(car.make_name);
@@ -2002,7 +2003,6 @@ const handleEditVinBlur = () => {
                                                 />
                                                 <InputError message={editErrors.images} className="mt-2" />
                                             </div>
-
                                             {/* Preview Old Images */}
                                             <div className="gap-4 sm:columns-2 md:columns-5">
                                                 {editOldImages.map((image, index) => (
@@ -2013,7 +2013,13 @@ const handleEditVinBlur = () => {
                                                         >
                                                             &times;
                                                         </span>
-                                                        <img className="w-full h-auto rounded-lg" src={image} alt={`Car Image ${index + 1}`} />
+                                                        <img className="w-full h-auto rounded-lg" src={image.image_url} alt={`Car Image ${index + 1}`} />
+                                                        <span className="block mt-1 text-xs text-gray-600">
+                                                            اضافة بواسطة: {image.created_by}
+                                                        </span>
+                                                        <span className="block mt-1 text-xs text-gray-600">
+                                                            تاريخ: {image.created_at}
+                                                        </span>
                                                     </div>
                                                 ))}
                                             </div>

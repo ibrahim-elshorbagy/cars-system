@@ -54,7 +54,7 @@ export default function Index({ auth,site_settings, users,credit, queryParams = 
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <td className="p-3 text-xs text-nowrap md:text-base">Id</td>
-                      <td className="p-3 text-xs text-nowrap md:text-base">الشركه</td>
+                      <td className="p-3 text-xs text-nowrap md:text-base">الشركة</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">البريد الإلكتروني</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">whatsapp</td>
                       <td className="p-3 text-xs text-nowrap md:text-base">رصيد العميل</td>
@@ -72,7 +72,7 @@ export default function Index({ auth,site_settings, users,credit, queryParams = 
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.customer_company}
-                          placeholder={"الشركه"}
+                          placeholder={"الشركة"}
                           onBlur={(e) =>
                             searchFieldChanged("customer_company", e.target.value)
                           }
@@ -94,8 +94,8 @@ export default function Index({ auth,site_settings, users,credit, queryParams = 
                       <th className="p-3"></th>
                       <th className="p-3"></th>
                       <th className="p-3"></th>
-                      <th className="p-3 text-base">  اجمالي ارصدة العملاء </th>
-                      <th className="p-3 text-base">{credit}</th>
+                      <th className="p-3 text-base text-blue-700">  اجمالي ارصدة العملاء </th>
+                      <th className="p-3 text-base text-blue-700">{credit} $</th>
                       <th className="p-3"></th>
                     </tr>
                   </thead>
