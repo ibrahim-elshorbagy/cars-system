@@ -12,29 +12,29 @@ import {
     CardHeader,
     CardTitle,
 } from "@/Components/ui/card";
-export default function Index({ auth,site_settings, cars, queryParams = null, customer_balance,total_won_price,total_shipping_cost,total_require,total_paid }) {
+export default function Index({ auth,site_settings, cars,carsCount, queryParams = null, customer_balance,total_won_price,total_shipping_cost,total_require,total_paid }) {
   queryParams = queryParams || {};
 
 
 
 
 
-  const searchFieldChanged = (name, value) => {
-    if (value) {
-      queryParams[name] = value;
-    } else {
-      delete queryParams[name];
-    }
-      delete queryParams.page;
+//   const searchFieldChanged = (name, value) => {
+//     if (value) {
+//       queryParams[name] = value;
+//     } else {
+//       delete queryParams[name];
+//     }
+//       delete queryParams.page;
 
-    router.get(route("customer-my-cars.index"), queryParams);
-  };
+//     router.get(route("customer-my-cars.index"), queryParams);
+//   };
 
-  const onKeyPress = (name, e) => {
-    if (e.key === "Enter") {
-      searchFieldChanged(name, e.target.value);
-    }
-  };
+//   const onKeyPress = (name, e) => {
+//     if (e.key === "Enter") {
+//       searchFieldChanged(name, e.target.value);
+//     }
+//   };
 
 
   return (
@@ -45,7 +45,13 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             الذمم
-          </h2>
+              </h2>
+                <Link
+                    href={route("customer-my-bills.details")}
+                    className="px-4 py-3 mx-1 font-medium text-white rounded-lg bg-emerald-500 hover:underline"
+                >
+                تفاصيل
+                </Link>
         </div>
       }
     >
@@ -156,104 +162,35 @@ export default function Index({ auth,site_settings, cars, queryParams = null, cu
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       {/* <th className="p-3">ID</th> */}
-                      <th className="p-2 text-xs text-nowrap md:text-base">VIN</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">الشركة</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">البريد الاكتروني</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">رصيد العميل</th>
 
-
-
-                        <th className="p-2 text-xs text-nowrap md:text-base ">سعر الشراء</th>
-                        <th className="p-2 text-xs text-nowrap md:text-base ">مدفوع</th>
-                        <th className="p-2 text-xs text-nowrap md:text-base ">متبقي</th>
-
-                        <th className="p-2 text-xs text-nowrap md:text-base">تكلفة الشحن</th>
-                        <th className="p-2 text-xs text-nowrap md:text-base ">مدفوع</th>
-                        <th className="p-2 text-xs text-nowrap md:text-base ">متبقي</th>
-
-                        <th className="p-2 text-xs text-nowrap md:text-base ">مجموع الذمم</th>
-
-                        <th className="p-2 text-xs text-nowrap md:text-base ">الإجراءات</th>
-                    </tr>
-                  </thead>
-                  <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr className="text-nowrap">
-                        <th className="p-2">
-                        <TextInput
-                          className="w-full"
-                          defaultValue={queryParams.chassis}
-                          placeholder={"VIN"}
-                          onBlur={(e) => searchFieldChanged("chassis", e.target.value)}
-                          onKeyPress={(e) => onKeyPress("chassis", e)}
-                        />
-                      </th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
+                        <th className="p-2 text-xs text-nowrap md:text-base">السيارات</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">الذمم</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">المدفوع</th>
+                        <th className="p-2 text-xs text-nowrap md:text-base ">الرصيد</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {cars && cars.data.length > 0 ? (
-                      cars.data.map((car,index) => (
-                        <tr
-                            className={`${
-                            index % 2 === 0 ? "bg-white" : "bg-gray-100"
-                            } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+                        <tr>
 
-                          key={car.id}
-                        >
-                          {/* <td className="px-3 py-2">{car.id}</td> */}
-                                <td className="p-3 text-nowrap">
-                                <div className="flex flex-col items-start ">
-                                    {/* VIN Name */}
-                                    <span className="text-lg text-black dark:text-white">{car.chassis}</span>
-
-                                    {/* Car Details */}
-                                    <div className="text-sm lg:text-base">
-                                    <span className="mr-1">{car.make_name}</span>
-                                    <span className="mr-1">{car.model_name}</span>
-                                    <span>{car.year}</span>
-                                    </div>
-                                </div>
-                                </td>
-
-
-                            <td className="p-2 text-nowrap">{car.won_price}</td>
-                            <td className="p-2 text-nowrap">{car.paid_won_price}</td>
-                            <td className="p-2 text-nowrap">{car.remain_won_price}</td>
-
-                            <td className="p-2 text-nowrap">{car.shipping_cost}</td>
-                            <td className="p-2 text-nowrap">{car.paid_shipping_cost}</td>
-                            <td className="p-2 text-nowrap">{car.remain_shipping_cost}</td>
-
-                            <td className="p-2 text-nowrap">{parseFloat(car.remain_shipping_cost) + parseFloat(car.remain_won_price)}</td>
+                            <td className="p-2 text-nowrap">{auth.user.customer_company}</td>
+                            <td className="p-2 text-nowrap">{auth.user.email}</td>
+                            <td className="p-2 text-nowrap">{customer_balance}</td>
+                            <td className="p-2 text-nowrap">{carsCount}</td>
+                            <td className="p-2 text-nowrap">{((Number(total_won_price)) + (Number(total_shipping_cost))).toFixed(2) }</td>
+                            <td className="p-2 text-nowrap">{(Number(total_paid)).toFixed(2)}</td>
+                            <td className="p-2 text-nowrap">{(((Number(total_won_price)) + (Number(total_shipping_cost))) - (Number(total_paid))).toFixed(2)}</td>
 
 
 
-
-                            <td className="p-2 text-nowrap">
-                            <Link
-                                href={route("customer-my-car.show", car.id)}
-                                className="mx-1 font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
-                            >
-                            مشاهدة
-                            </Link>
-                          </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" className="px-3 py-2 text-center">
-                          لا يوجد سيارات
-                        </td>
-                      </tr>
-                    )}
+
                   </tbody>
                 </table>
               </div>
-              {cars && <Pagination links={cars.meta.links} />}
+              {/* {cars && <Pagination links={cars.meta.links} />} */}
             </div>
           </div>
         </div>

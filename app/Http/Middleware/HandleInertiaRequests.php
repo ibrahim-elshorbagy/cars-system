@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
                         'whatsapp' => $user->whatsapp,
                         'user_name' => $user->user_name,
 
-                        // 'customer_company' => $user->customer?->customer_company ?? null,
+                        'customer_company' => $user->customer?->customer_company ?? null,
                         'box_id'=> $user->accountant?->box_id ?? null,
                         'box_name'=> $user->accountant?->box->name ?? null,
 

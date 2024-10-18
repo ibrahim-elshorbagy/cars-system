@@ -239,7 +239,7 @@ const MySidebar = ({ user, site_settings }) => {
                 },
                 {
                     text: "الذمم",
-                    href: "customer-my-bills.index",
+                    href: "customer-my-bills.details",
                     icon: <TbReceiptTax />,
                     permissions: ["read-my-bills"],
                 },

@@ -20,6 +20,9 @@ Route::group(['prefix' => 'Customer/Dashboard'], function () {
 
     Route::group(['middleware' => ['permission:read-my-bills']], function () {
         Route::get('/bills', [CustomerDashboardController::class, 'BillsIndex'])->name('customer-my-bills.index');
+        Route::get('/report/bills/Details', [CustomerDashboardController::class, 'BillsDetails'])->name('customer-my-bills.details');
+        Route::get('/report/bills/Details/print', [CustomerDashboardController::class, 'BillsDetailsPrint'])->name('customer-my-bills.details-print');
+
     });
 
 });

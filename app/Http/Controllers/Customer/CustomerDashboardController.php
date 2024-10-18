@@ -14,6 +14,7 @@ use App\Models\Admin\Customer\CustomerCredit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\Admin\CarBill\Bill\Reports\BillsDetailsResource;
 
 class CustomerDashboardController extends Controller
 {
@@ -72,14 +73,15 @@ class CustomerDashboardController extends Controller
     public function BillsIndex(){
         $userId = Auth::id();
 
-        $query = Car::where('user_id', $userId)->with('bill.paymentBills')->orderBy("id", "desc");
+        // $query = Car::where('user_id', $userId)->with('bill.paymentBills')->orderBy("id", "desc");
+        $carsCount = Car::where('user_id', $userId)->with('bill.paymentBills')->count();
 
 
-        if (request("chassis")) {
-            $query->where("chassis", "like", "%" . request("chassis") . "%");
-        }
+        // if (request("chassis")) {
+        //     $query->where("chassis", "like", "%" . request("chassis") . "%");
+        // }
 
-        $cars = $query->paginate(25)->onEachSide(1);
+        // $cars = $query->paginate(25)->onEachSide(1);
 
 
         // Calculate the customer balance
@@ -101,14 +103,59 @@ class CustomerDashboardController extends Controller
 
         return inertia("Customer/Bill/Index", [
 
-            "cars" => BillsResouce::collection($cars),
+            // "cars" => BillsResouce::collection($cars),
             'queryParams' => request()->query() ?: null,
             'customer_balance' => $customer_balance,
             'total_won_price' => $total_won_price,
             'total_shipping_cost' => $total_shipping_cost,
             'total_require' => $total_require,
             'total_paid' => $total_paid,
+            'carsCount' => $carsCount
 
         ]);
     }
+
+
+    //Reportys
+    public function BillsDetails(){
+
+            $user = Auth::user();
+
+            $bills = $user->load([
+                'cars' => function ($query) {
+                    $query->select('id', 'chassis', 'user_id','model_id','make_id','year','created_at');
+                },
+                'cars.bill.paymentBills.payment',
+                'cars.make',
+                'cars.model',
+            ]);
+
+
+            return inertia("Customer/Bill/Reports/BillsDetails", [
+                "bills" => new BillsDetailsResource($bills),
+            ]);
+
+    }
+
+    public function BillsDetailsPrint()
+    {
+        $user = Auth::user();
+        $bills = $user->load([
+            'cars' => function ($query) {
+                    $query->select('id', 'chassis', 'user_id','model_id','make_id','year','created_at');
+            },
+            'cars.bill.paymentBills.payment',
+            'cars.make',
+            'cars.model',
+        ]);
+        $user->load('customer');
+        return inertia("Customer/Bill/Reports/BillsDetailsReport", [
+            "bills" => new BillsDetailsResource($bills),
+        ]);
+    }
+
+
+
 }
+
+

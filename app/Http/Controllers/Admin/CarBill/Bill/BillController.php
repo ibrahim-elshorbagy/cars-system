@@ -287,6 +287,7 @@ class BillController extends Controller
                 'cars.model',
             ]);
 
+            $user->load('customer');
 
             return inertia("Admin/CarBill/Bill/Reports/BillsDetails", [
                 "bills" => new BillsDetailsResource($bills),

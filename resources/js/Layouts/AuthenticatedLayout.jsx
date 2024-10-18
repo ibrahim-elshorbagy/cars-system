@@ -91,7 +91,7 @@ export default function Authenticated({ user,site_settings,header, children }) {
                     { text: "لوحة التحكم", href: "customer.dashboard", permissions: ["for-customer-view-dashboard"] },
                     { text: "سياراتي", href: "customer-my-cars.index", permissions: ["read-my-cars"] },
                     { text: "المحاسبة", href: "customer-my-credits.index", permissions: ["read-my-credits"] },
-                    { text: "الذمم", href: "customer-my-bills.index", permissions: ["read-my-bills"] },
+                    { text: "الذمم", href: "customer-my-bills.details", permissions: ["read-my-bills"] },
                     { text: "اسعار الشحن", href: "customer.show.shipping-prices", permissions: ['customer-read-shipping-price'] },
                 ],
             },
