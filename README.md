@@ -29,10 +29,12 @@ CRUD operations for managing Cars information ,multi shipping fees on one car .
 Upload cars images with date category.
 
 ![pic](Readme/images/x2.jpeg)
-![pic](Readme/images/x3.jpeg)
+![pic](Readme/images/x3.png)
 Shipping Fee Details
+![pic](Readme/images/x15.png)
 ![pic](Readme/images/x4.png)
 Cars Images With  Details
+![pic](Readme/images/x14.png)
 ![pic](Readme/images/x5.jpeg)
 Shipping Fee Details Table for every destination Shipping Line and port
 ![pic](Readme/images/x6.jpeg)
