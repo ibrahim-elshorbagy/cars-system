@@ -20,7 +20,22 @@ class DashboardController extends Controller
 
 
 
+    public function welcome()
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
 
+            if ($user->can('view-admin-dashboard')) {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->can('for-customer-view-dashboard')) {
+                return redirect()->route('customer.dashboard');
+            }
+        }
+
+        return inertia('Welcome', [
+            'canLogin' => route('login'),
+        ]);
+    }
 
     public function AdminDashboard()
     {

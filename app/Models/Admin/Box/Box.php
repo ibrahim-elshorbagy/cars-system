@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin\Box;
 
+use App\Models\Admin\Users\Accountant\Accountant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,6 +23,11 @@ class Box extends Model
     public function toTransfers()
     {
         return $this->hasMany(BoxTransfer::class, 'to_box_id');
+    }
+
+    public function accountants()
+    {
+        return $this->hasMany(Accountant::class);
     }
 
 }

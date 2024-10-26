@@ -10,20 +10,8 @@ use Inertia\Inertia;
 
 //--------------------------------------------------------------------------------------------- guest
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        $user = Auth::user();
+Route::get('/', [DashboardController::class, 'welcome'])->name('/');
 
-        if ($user->can('view-admin-dashboard')) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->can('for-customer-view-dashboard')) {
-            return redirect()->route('customer.dashboard');
-        }
-    }
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-    ]);
-})->name('/');
 
 //--------------------------------------------------------------------------------------------- Site Essentials
 

@@ -45,13 +45,13 @@ export default function Index({ auth,site_settings, bills }) {
                             className="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700"
                             >
                             {/* Show Full Details on Medium and Larger Screens */}
-                                <AccordionTrigger className="p-2 text-xs font-semibold text-white rounded-t-lg lg:text-lg lg:p-4 lg:flex bg-indigoBlue dark:bg-indigoBlue">
+                                <AccordionTrigger className="p-2 text-xs font-semibold bg-gray-100 rounded-t-lg lg:text-lg lg:p-4 lg:flex dark:bg-gray-700">
                                         <div className="text-right">
-                                        <div dir="ltr" className="text-xl font-bold text-white ">
+                                        <div dir="ltr" className="text-xl font-bold text-blue-900 dark:text-white">
                                         <span dir="rtl" className="mx-10 text-base">تاريخ الشراء - {bill.car_created_at}</span> <span>  {bill.car_year} {bill.car_make} {bill.car_model} </span>  - Chassis : <span className="">{bill.car_chassis}</span>
                                         </div>
 
-                                        <table className="w-full">
+                                        <table className="w-full text-gray-700 dark:text-gray-300">
                                             <tbody>
                                                 <tr >
                                                 <td className="text-right lg:py-2 ">سعر الشراء : ${parseFloat(bill.won_price.amount)}</td>

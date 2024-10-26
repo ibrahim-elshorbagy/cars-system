@@ -75,6 +75,7 @@ class HandleInertiaRequests extends Middleware
                 'site_cover' => $site_cover ,
                 'phone' => $phone ,
                 'email' => $email ,
+
             ],
             'flash'=>[
                 'success'=>session('success'),

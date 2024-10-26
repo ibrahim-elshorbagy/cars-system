@@ -4,13 +4,15 @@ import GuestLayout from "@/Layouts/GuestLayout";
 
 
 
-export default function Welcome({ auth,site_settings }) {
+export default function Welcome({ auth,site_settings  }) {
 
 
     return (
         <>
             <GuestLayout site_settings={site_settings}>
-                <Head title={site_settings.websiteName + " - " +"مرحباً"} />
+                  <Head title={site_settings.websiteName + " - " + "مرحباً"}/>
+
+
                 <div className="flex flex-col items-center min-h-screen text-white ">
                     <div className="m-3 md:m-10">
                         <img className="rounded-xl" src={site_settings.site_cover} alt="" />

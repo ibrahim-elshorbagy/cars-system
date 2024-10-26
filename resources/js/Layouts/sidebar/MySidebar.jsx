@@ -220,7 +220,7 @@ const MySidebar = ({ user, site_settings }) => {
             permissions: ['for-customer-view-dashboard'],
             links: [
                 {
-                    text: "لوحة التحكم",
+                    text: "الرئيسية (dashboard)",
                     href: "customer.dashboard",
                     icon: <MdDashboard />,
                     permissions: ["for-customer-view-dashboard"],
@@ -238,7 +238,7 @@ const MySidebar = ({ user, site_settings }) => {
                     permissions: ["read-my-credits"],
                 },
                 {
-                    text: "الذمم",
+                    text: "كشف الذمم",
                     href: "customer-my-bills.details",
                     icon: <TbReceiptTax />,
                     permissions: ["read-my-bills"],
