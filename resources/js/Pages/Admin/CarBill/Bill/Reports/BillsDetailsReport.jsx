@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 
-export default function BillsDetailsReport({ auth, site_settings, bills }) {
+export default function BillsDetailsReport({ auth, site_settings, bills ,customer}) {
   // State for date filtering
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -135,10 +135,10 @@ export default function BillsDetailsReport({ auth, site_settings, bills }) {
         <div className="overflow-auto">
                   <div className="my-4 mb-8">
             <h1 className="text-base font-bold md:text-2xl dark:text-white">
-              العميل : {auth.user.name}
+              العميل : {customer.name}
             </h1>
             <h1 className="text-base font-bold md:text-2xl dark:text-white">
-              الشركة : {auth.user.customer_company}
+              الشركة : {customer.customer.customer_company}
             </h1>
             <h1 className="text-sm md:text-lg dark:text-white">
               <span className="font-bold">التاريخ</span>:{" "}

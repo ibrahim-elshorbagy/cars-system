@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion"
 import { Link } from '@inertiajs/react';
 
-export default function Index({ auth,site_settings, bills }) {
+export default function Index({ auth,site_settings, bills,customer }) {
 
 
 
@@ -23,7 +23,7 @@ export default function Index({ auth,site_settings, bills }) {
                   تقرير الذمم
         </h2>
             <Link
-                href={route("customer-my-bills.details-print")}
+                href={route("customers-bills.details-print",customer.id)}
                 className="px-2 py-1 text-sm text-white rounded-md bg-emerald-500 sm:text-base sm:px-4 sm:py-2 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
             طباعة كشف الحساب
@@ -31,7 +31,7 @@ export default function Index({ auth,site_settings, bills }) {
         </div>
       }
     >
-      <Head title={site_settings.websiteName + " - " +"تقرير ذمم العميل"} />
+          <Head title={site_settings.websiteName + " - " + "تقرير ذمم العميل"} />
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden overflow-y-auto bg-white shadow-sm dark:bg-gray-800 ">
