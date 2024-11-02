@@ -1,7 +1,7 @@
 import GuestLayout from "@/Layouts/GuestLayout";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useTranslation } from "react-i18next";
+
 
 
 

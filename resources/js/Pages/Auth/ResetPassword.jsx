@@ -5,11 +5,11 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
-import { useTranslation } from "react-i18next";
 
 
 
-export default function ResetPassword({ token, email }) {
+
+export default function ResetPassword({ token, email ,site_settings}) {
 
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
@@ -30,13 +30,13 @@ export default function ResetPassword({ token, email }) {
     };
 
     return (
-        <GuestLayout centerContent>
+        <GuestLayout centerContent site_settings={site_settings}>
             <Head title={"Reset Password"} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 ">
                     <form onSubmit={submit}>
                         <div>
-                            <InputLabel htmlFor="email" value={"Email"} />
+                            <InputLabel htmlFor="email" value={"البريد الالكتروني"} />
                             <TextInput
                                 id="email"
                                 type="email"
@@ -57,7 +57,7 @@ export default function ResetPassword({ token, email }) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password"
-                                value={"Password"}
+                                value={"كلمة المرور"}
                             />
                             <TextInput
                                 id="password"
@@ -80,7 +80,7 @@ export default function ResetPassword({ token, email }) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="password_confirmation"
-                                value={"Confirm Password"}
+                                value={"تأكيد كلمة المرور"}
                             />
                             <TextInput
                                 type="password"
@@ -107,7 +107,7 @@ export default function ResetPassword({ token, email }) {
                                 className="ms-4"
                                 disabled={processing}
                             >
-                                Reset Password
+                                تغير كلمة المرور
                             </PrimaryButton>
                         </div>
                     </form>

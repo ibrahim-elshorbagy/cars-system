@@ -6,7 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useTranslation } from "react-i18next";
+
 
 
 export default function Login({ status, canResetPassword ,site_settings}) {
@@ -98,14 +98,14 @@ export default function Login({ status, canResetPassword ,site_settings}) {
                         </div>
 
                         <div className="flex items-center justify-end gap-3 mt-6">
-                            {/* {canResetPassword && (
+                            {canResetPassword && (
                                 <Link
                                     href={route("password.request")}
                                     className="text-sm text-gray-600 underline dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
                                 >
-                                    {t("Forgot your password?")}
+                                    نسيت كلمة المرور ؟
                                 </Link>
-                            )} */}
+                            )}
                             <PrimaryButton
                                 className="ml-4"
                                 disabled={processing}
